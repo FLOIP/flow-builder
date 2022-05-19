@@ -1,11 +1,11 @@
-import lodash from 'lodash'
+import {chain, keyBy, uniqBy, union} from 'lodash'
 import axios from 'axios'
 import Vue from 'vue'
 import {SupportedContentType, SupportedMode} from '@floip/flow-runner'
 import {routeFrom} from '@/lib/mixins/Routes'
 
 export default {
-  state: lodash.chain(global)
+  state: chain(global)
     .get('__AUDIO__', {})
     .defaultsDeep({
       library: [],
@@ -20,11 +20,12 @@ export default {
 
   getters: {
     availableAudioFiles: (state) => state.library || [],
+    availableAudiosByUri: (state) => keyBy(state.library, 'uri'),
   },
 
   mutations: {
     addRecorder({recording}, recorder) {
-      recording.recorders = lodash.uniqBy(lodash.union(recording.recorders, [recorder]), 'id')
+      recording.recorders = uniqBy(union(recording.recorders, [recorder]), 'id')
     },
 
     pushAudioIntoLibrary({library, recording}, audio) {

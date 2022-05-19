@@ -44,8 +44,8 @@
                     :audio-files="availableAudioFiles"
                     :lang-id="languageId"
                     :resource-id="resource.uuid"
-                    :selected-audio-file="findOrGenerateStubbedVariantOn(
-                    resource,
+                    :selected-audio-uri="findOrGenerateStubbedVariantOn(
+                      resource,
                     {language_id: languageId, content_type: contentType, modes: [mode]}).value" />
                 </validation-message>
 

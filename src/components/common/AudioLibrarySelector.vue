@@ -1,8 +1,8 @@
 <template>
   <div class="audio-library-selector">
     <audio-library-selection
-      v-if="selectedAudioFile"
-      :audio-file-uri="selectedAudioFile"
+      v-if="selectedAudioUri"
+      :audio-file="selectedFile"
       :lang-id="langId"
       @clear="clearSelection" />
 
@@ -27,13 +27,13 @@
 <script lang="js">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 // import {isEmpty} from 'lodash'
-import {mapActions} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 import {SupportedContentType, SupportedMode} from '@floip/flow-runner'
 
 export const AudioLibrarySelector = {
   props: [
     'alternateSelections',
-    'selectedAudioFile',
+    'selectedAudioUri',
     'langId',
     'audioFiles',
     'isPlaying',
@@ -41,11 +41,15 @@ export const AudioLibrarySelector = {
     'resourceId',
   ],
 
-  // computed: {
-  //   selectable() {
-  //     return !isEmpty(this.alternateSelections)
-  //   },
-  // },
+  computed: {
+    ...mapGetters(['availableAudiosByUri']),
+    selectedFile() {
+      return this.availableAudiosByUri[this.selectedAudioUri]
+    },
+    // selectable() {
+    //   return !isEmpty(this.alternateSelections)
+    // },
+  },
 
   methods: {
     ...mapActions('flow', [
@@ -61,6 +65,7 @@ export const AudioLibrarySelector = {
     },
 
     selectAudioFile({value, langId}) {
+      console.log('select', value)
       this.resource_setOrCreateValueModeSpecific({
         resourceId: this.resourceId,
         filter: {language_id: langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
