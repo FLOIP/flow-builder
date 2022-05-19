@@ -403,11 +403,6 @@
       "hasNewFlowButton": true,
       "hasExportButton": true
     },
-    "defaultModes": [
-      "SMS",
-      "USSD",
-      "IVR"
-    ],
     "appWideInteractionTimeout": null,
     "pages": {
       "createFlow": {
