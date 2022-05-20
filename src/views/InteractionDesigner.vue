@@ -319,6 +319,10 @@ export default {
     z-index: 4*10;
   }
 
+  .viamo-app-container .interaction-designer-header {
+    margin-left: -100px;
+  }
+
   .tree-sidebar-container {
     position: fixed;
     right: 0;
