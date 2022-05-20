@@ -54,7 +54,6 @@ export default BlockEditor
   transition: right 200ms ease-in-out, 200ms background-color ease-in-out, 200ms border-color ease-in-out, 200ms border-radius ease-in-out;
 }
 
-
 .viamo-app-container .block-editor-wrapper.block-editor {
   left: 90px;
 }
