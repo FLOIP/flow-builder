@@ -663,7 +663,7 @@ export default TreeBuilderToolbar
   position: sticky;
   left: 0;
   padding-left: 100px;
-  width: 95vw;
+  width: calc(100vw - 30px);
 }
 
 .tree-builder-toolbar-main-menu {
