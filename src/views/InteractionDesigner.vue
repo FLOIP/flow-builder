@@ -311,12 +311,13 @@ export default {
   }
 
   .interaction-designer-header {
-    width: 100%;
+    width: 100vw;
     position: sticky;
     top: 0;
     left: 0;
     display:inline-block;
     z-index: 4*10;
+    margin-right: -100%;
   }
 
   .viamo-app-container .interaction-designer-header {
