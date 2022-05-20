@@ -55,11 +55,16 @@ module.exports = {
       //   'uri': 'some_uri_value',
       // }
       app.all('/audiofiles/upload', (req, res) => {
-        // Simulate failed upload if we upload a file with `failure-test` text
         if (req.query.flowFilename.includes('failure-test')) {
+          // Simulate failed upload if we upload a file with `failure-test` text
           res.writeHead(500, { 'Content-Type': 'application/json' })
           res.end(JSON.stringify({message: 'failed upload'}))
+        } else if (req.method == 'GET') {
+          // Simulate `unknown upload chunk` with 404 status for GET method
+          res.writeHead(404, { 'Content-Type': 'application/json' })
+          res.end(JSON.stringify({status: 'error', status_description: 'Unknown upload chunk'}))
         } else {
+          // Simulate success upload if having POST
           const now = new Date()
             .toISOString()
             .split('T')
@@ -82,7 +87,7 @@ module.exports = {
             audio_uuid,
             uri: `https://your-domain/path/to/${audio_uuid}.${original_extension}`,
           }
-          res.writeHead(200, { 'Content-Type': 'application/json' })
+          res.writeHead(200, {'Content-Type': 'application/json'})
           res.end(JSON.stringify(result))
         }
       })

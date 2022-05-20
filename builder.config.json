@@ -62,8 +62,7 @@
         "resumeableAudioUpload": {
           "name": "resumeableAudioUpload",
           "path": "\/audiofiles\/upload",
-          "params": [],
-          "methods": ["POST", "HEAD"]
+          "methods": ["POST", "GET", "HEAD"]
         },
         "calltorecordStart": {
           "name": "calltorecordStart",
