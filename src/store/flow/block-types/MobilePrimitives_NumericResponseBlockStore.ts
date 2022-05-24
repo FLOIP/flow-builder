@@ -105,6 +105,11 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return validateCommunityBlock({block, schemaVersion})
   },
 
+  /**
+   * Generic validation action which will call:
+   * - the consumer validateVendorBlock
+   * - any custom validation logic in the community version
+   */
   async validate({rootGetters, dispatch}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
     const validationResults = await dispatch('validateVendorBlock', {block, schemaVersion})
 
