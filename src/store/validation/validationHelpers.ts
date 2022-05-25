@@ -197,7 +197,7 @@ export function getOrCreateResourceValidator(schemaVersion: string): ValidateFun
  * @param schemaVersion
  * @param customBlockJsonSchema,
  */
-export function validateCommunityBlock({block, schemaVersion, customBlockJsonSchema}: {block: IBlock, schemaVersion: string, customBlockJsonSchema?: JSONSchema7}): IValidationStatus {
+export function validateBlockWithJsonSchema({block, schemaVersion, customBlockJsonSchema}: {block: IBlock, schemaVersion: string, customBlockJsonSchema?: JSONSchema7}): IValidationStatus {
   let validate = null
   if (isEmpty(validators) || !validators.has(block.type)) {
     const blockTypeWithoutNameSpace = block.type.split('.')[block.type.split('.').length - 1]

@@ -3,7 +3,7 @@ import {IRootState} from '@/store'
 import {IBlock, IBlockExit, ISetGroupMembershipBlockConfig} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {defaultsDeep} from 'lodash'
-import {validateCommunityBlock} from '@/store/validation/validationHelpers'
+import {validateBlockWithJsonSchema} from '@/store/validation/validationHelpers'
 import {IFlowsState} from '../index'
 
 export interface IGroupOption {
@@ -68,7 +68,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-    return validateCommunityBlock({block, schemaVersion})
+    return validateBlockWithJsonSchema({block, schemaVersion})
   },
 }
 

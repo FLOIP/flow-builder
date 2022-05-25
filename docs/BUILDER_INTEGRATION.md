@@ -268,17 +268,17 @@ You then have several options:
     - Extending base store
         - Provides a generic `createWith` action - pass props to this which your block defaults to on creation
         - Provides a generic `handleBranchingTypeChangedToUnified` action - defines what should happen if you set your block to have a unified exit (if your block supports this)
-        - Provides a generic validation action - `validateVendorBlock`, and specify the validation repo in `validationLib` param when calling `validateCommunityBlock()`. The basic method validates your block is a minimal spec compliant IBlock according to your schema version. See `@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`.
+        - Provides a generic validation action - `validateBlockWithCustomJsonSchema`, and specify the validation repo in `validationLib` param when calling `validateBlockWithJsonSchema()`. The basic method validates your block is a minimal spec compliant IBlock according to your schema version. See `@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`.
 
   ```
-  async validateVendorBlock({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}): Promise<IValidationStatus> {=
-    return validateCommunityBlock({block, schemaVersion, customBlockJsonSchema: require(`path/to/CustomBlockJsonSchema.json`)})
+  async validateBlockWithCustomJsonSchema({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}): Promise<IValidationStatus> {=
+    return validateBlockWithJsonSchema({block, schemaVersion, customBlockJsonSchema: require(`path/to/CustomBlockJsonSchema.json`)})
   },
   ```
-  We can have a very flexible option by redefining `validateVendorBlock()` completely. This can be overriden with validations specific to your custom block. See here for an example:
+  We can have a very flexible option by redefining `validateBlockWithCustomJsonSchema()` completely. This can be overriden with validations specific to your custom block. See here for an example:
 
   ```
-  async validateVendorBlock({block, schemaVersion}: {block: IBlock, schemaVersion: string}): IValidationStatus {
+  async validateBlockWithCustomJsonSchema({block, schemaVersion}: {block: IBlock, schemaVersion: string}): IValidationStatus {
   let validate = null
   if (isEmpty(validators) || !validators.has(block.type)) {
     const blockTypeWithoutNameSpace = block.type.split('.')[block.type.split('.').length - 1]

@@ -4,7 +4,7 @@ import {IBlock, IBlockExit, INumericBlockConfig} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {INumericResponseBlock} from '@floip/flow-runner/src/model/block/INumericResponseBlock'
 import {defaultsDeep} from 'lodash'
-import {validateCommunityBlock} from '@/store/validation/validationHelpers'
+import {validateBlockWithJsonSchema} from '@/store/validation/validationHelpers'
 import Lang from '@/lib/filters/lang'
 import {ErrorObject} from 'ajv'
 import {IValidationStatus} from '@/store/validation'
@@ -101,17 +101,17 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
    * Important: This will be overridden in the consumer side, so DO NOT add generic validations here,
    * instead edit the `validate()` if needed.
    */
-  async validateVendorBlock({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}): Promise<IValidationStatus> {
-    return validateCommunityBlock({block, schemaVersion})
+  async validateBlockWithCustomJsonSchema({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}): Promise<IValidationStatus> {
+    return validateBlockWithJsonSchema({block, schemaVersion})
   },
 
   /**
    * Generic validation action which will call:
-   * - the consumer validateVendorBlock
+   * - the consumer validateBlockWithCustomJsonSchema
    * - any custom validation logic in the community version
    */
   async validate({rootGetters, dispatch}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-    const validationResults = await dispatch('validateVendorBlock', {block, schemaVersion})
+    const validationResults = await dispatch('validateBlockWithCustomJsonSchema', {block, schemaVersion})
 
     // Custom validation specific for the block
     if (validationResults.ajvErrors == null) {

@@ -2,7 +2,7 @@ import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlockConfig, IBlock} from '@floip/flow-runner'
 import {defaultsDeep} from 'lodash'
-import {validateCommunityBlock} from '@/store/validation/validationHelpers'
+import {validateBlockWithJsonSchema} from '@/store/validation/validationHelpers'
 import {IFlowsState} from '../index'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {}
@@ -33,7 +33,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   //Will need to be fully overridden in embedding apps
   validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-    return validateCommunityBlock({block, schemaVersion})
+    return validateBlockWithJsonSchema({block, schemaVersion})
   },
 }
 
