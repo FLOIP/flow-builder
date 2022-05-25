@@ -11,7 +11,7 @@ import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
 import Vue from 'vue'
 import {defaultsDeep, findKey, get, map, omit, snakeCase} from 'lodash'
-import {validateCommunityBlock} from '@/store/validation/validationHelpers'
+import {validateBlockWithJsonSchema} from '@/store/validation/validationHelpers'
 import {IFlowsState} from '../index'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
@@ -117,7 +117,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
   },
 
   validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-    return validateCommunityBlock({block, schemaVersion})
+    return validateBlockWithJsonSchema({block, schemaVersion})
   },
 }
 
