@@ -41,6 +41,10 @@ export * from '@/components/resource-editor'
 export * from '@/components/interaction-designer/toolbar'
 export * from '@/store/flow/block-types'
 
+// We may need those validation helpers to customize the validation in the consumer side
+export * from '@/store/validation'
+export * from '@/store/validation/validationHelpers'
+
 const Components = registerCustomComponents({
   InteractionDesigner: InteractionDesignerComponent,
   FetchFlow: FetchFlowComponent,
