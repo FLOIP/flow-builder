@@ -27,7 +27,7 @@
     "@avcs/autosuggest": "^1.7.5",
     "@floip/expression-evaluator": "^2.1.0",
     "@floip/expression-parser": "^1.11.3",
-    "@floip/flow-runner": "https://github.com/FLOIP/flow-runner.git#3a3020c3b14a27d14b62003c3fc54270cf287ad9",
+    "@floip/flow-runner": "https://github.com/FLOIP/flow-runner.git#67b9eb006c45df2bb1ebc9e62f1dac73b0893a75",
     "@flowjs/flow.js": "^2.13.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
