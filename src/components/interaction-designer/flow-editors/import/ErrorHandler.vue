@@ -72,30 +72,31 @@ import {IContext} from '@floip/flow-runner'
 import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
 import {IContactPropertyOption} from '@/store/flow/block-types/Core_SetContactPropertyStore'
 import {IGroupOption} from '@/store/flow/block-types/Core_SetGroupMembershipStore'
+import {BlockClasses} from '@/lib/types'
 
 const importVuexNamespace = namespace('flow/import')
 
 @Component({})
 export class ErrorHandler extends mixins(Lang) {
-  handleMatchLanguage(oldLanguage: ILanguage, matchingNewLanguage: ILanguage) {
+  handleMatchLanguage(oldLanguage: ILanguage, matchingNewLanguage: ILanguage): void {
     this.matchLanguage({oldLanguage, matchingNewLanguage})
   }
 
   handleMatchProperty(
     oldProperty: { name: string, blockIds: string[] },
     matchingNewProperty: IContactPropertyOption,
-  ) {
+  ): void {
     this.matchProperty({oldProperty, matchingNewProperty})
   }
 
   handleMatchGroup(
     oldGroup: { id: string, group_name: string, blockIds: string[] },
     matchingNewGroup: IGroupOption,
-  ) {
+  ): void {
     this.matchGroup({oldGroup, matchingNewGroup})
   }
 
-  @Getter blockClasses!: string[]
+  @Getter blockClasses!: BlockClasses
 
   @importVuexNamespace.Action matchLanguage!: (
     {oldLanguage, matchingNewLanguage}: { oldLanguage: ILanguage, matchingNewLanguage: ILanguage },

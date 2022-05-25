@@ -1,6 +1,6 @@
 <template>
   <div class="choices-builder form-group">
-    <h4>{{'flow-builder.choices' | trans}}</h4>
+    <h4>{{ 'flow-builder.choices' | trans }}</h4>
 
     <!-- Show non-empty choices -->
     <template v-for="(resource, i) in choiceResourcesOrderedByResourcesList">
@@ -34,7 +34,7 @@
         draftResource,
         {language_id: activeFlow.languages[0].id,
          content_type: SupportedContentType.TEXT,
-         mime_type: this.choiceMimeType,
+         mime_type: choiceMimeType,
          modes: [SupportedMode.TEXT]})"
       :mode="SupportedMode.TEXT"
       @beforeResourceVariantChanged="addDraftResourceToChoices"
@@ -80,7 +80,8 @@ export class ChoicesBuilder extends mixins(Lang) {
   }
 
   async generateDraftResource(): Promise<void> {
-    this.draftResource = await this.resource_createWith({ // todo: abstract as createResourceForVanillaChoice()
+    // todo: abstract as createResourceForVanillaChoice()
+    this.draftResource = await this.resource_createWith({
       props: {uuid: await (new IdGeneratorUuidV4()).generate()},
     })
   }
@@ -90,7 +91,8 @@ export class ChoicesBuilder extends mixins(Lang) {
       console.warn(
         'interaction-designer/block-editors/ChoicesBuilder',
         'Unable to add absent draft resource to block choices.',
-        {block: this.block})
+        {block: this.block},
+)
       return
     }
 
