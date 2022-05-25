@@ -9,47 +9,42 @@
   </div>
 </template>
 
-<script lang="js">
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import {mapGetters, mapState} from 'vuex'
+<script lang="ts">
+import {Component, Prop, Vue} from 'vue-property-decorator'
+import {Getter, State} from 'vuex-class'
+import {Recorder} from '@/components/interaction-designer/block-editors/PhoneRecordingRecorderSelector.vue'
 
-export const PhoneRecorder = {
-  props: ['recordingKey'],
+@Component({})
+export class PhoneRecorder extends Vue {
+  @Prop({type: String, required: true}) readonly recordingKey!: string
 
-  data() {
-    return {
-      // this is set by hooking into the v-model property of <phone-recording-recorder-selector v-model="callConfig">
-      // which $emits a new value that results in setting this variable by reference.
-      callConfig: null,
+  /*
+   * This is set by hooking into the v-model property of <phone-recording-recorder-selector v-model="callConfig">
+   * which $emits a new value that results in setting this variable by reference.
+   */
+  callConfig: Partial<{ recorder: Recorder, description: string }> = {}
+
+  handleRecorderSelectionChanged(): void {
+    this.$store.commit('setAudioRecordingConfigVisibilityForSelectedBlock', {isVisible: false})
+
+    if (this.callConfig.recorder === null) {
+      return
     }
-  },
 
-  computed: {
-    ...mapState({
-      // todo: deprecate (this + setAudioRecordingConfigVisibilityForSelectedBlock) in favor of modal + local state
-      isRecorderSelectorVisible: ({audio: {recording: {isRecorderSelectorVisible}}}) => isRecorderSelectorVisible,
-    }),
+    // noinspection PointlessBooleanExpressionJS
+    const callConfig = {
+      key: this.recordingKey,
+      description: this.callConfig.description,
+      ...this.callConfig.recorder,
+    }
 
-    ...mapGetters(['isFeatureCallToRecordEnabled']),
-  },
+    this.$store.dispatch('startAudioRecordingFor', callConfig)
+  }
 
-  methods: {
-    handleRecorderSelectionChanged() {
-      this.$store.commit('setAudioRecordingConfigVisibilityForSelectedBlock', {isVisible: false})
-
-      if (!this.callConfig.recorder) {
-        return
-      }
-
-      const callConfig = {
-        key: this.recordingKey,
-        description: this.callConfig.description,
-        ...this.callConfig.recorder,
-      }
-
-      this.$store.dispatch('startAudioRecordingFor', callConfig)
-    },
-  },
+  // TODO: Deprecate (this + setAudioRecordingConfigVisibilityForSelectedBlock) in favor of modal + local state
+  @State(({audio: {recording: {isRecorderSelectorVisible}}}) => isRecorderSelectorVisible) isRecorderSelectorVisible!: boolean
+  @Getter isFeatureCallToRecordEnabled!: boolean
 }
+
 export default PhoneRecorder
 </script>

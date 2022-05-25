@@ -1,15 +1,3 @@
-<style lang="scss" scoped>
-.batch-match-audio-files-prompt {
-  > p, > ul {
-    margin-bottom: 10px;
-  }
-
-  table {
-    background: white;
-  }
-}
-</style>
-
 <template>
   <form class="batch-match-audio-files-prompt alert alert-info form-horizontal">
     <h4>{{ 'flow-builder.auto-link-audio-files' | trans }}</h4>
@@ -162,50 +150,60 @@
   </form>
 </template>
 
-<script lang="js">
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import {lang} from '@/lib/filters/lang'
+<script lang="ts">
 import {includes} from 'lodash'
+import {mixins} from 'vue-class-component'
 import VueFocus from 'vue-focus'
+import {Component, Prop} from 'vue-property-decorator'
+import Lang from '@/lib/filters/lang'
+import {IBatchMatchAudioData} from '@/lib/types'
 
-export default {
-  mixins: [lang, VueFocus.mixin],
-  props: ['focus', 'data', 'isAudioLibraryEmpty'],
+@Component({})
+export class BatchMatchAudioFilesPrompt extends mixins(Lang, VueFocus.mixin) {
+  @Prop({type: Boolean, required: true}) readonly focus!: boolean
+  @Prop({type: Object, required: true}) readonly data!: IBatchMatchAudioData
+  @Prop() readonly isAudioLibraryEmpty?: boolean
 
-  data() {
-    return {
-      pattern: '',
-      replaceExisting: true,
-      expanded: false,
-    }
-  },
+  pattern = ''
+  replaceExisting = true
+  expanded = false
 
-  computed: {
-    disabled() {
-      return this.data.isPending
-    },
+  get disabled(): boolean {
+    return this.data.isPending
+  }
 
-    isValid() {
-      return includes(this.pattern, '[label]')
-        && includes(this.pattern, '[language]')
-    },
-  },
+  get isValid(): boolean {
+    return includes(this.pattern, '[label]')
+      && includes(this.pattern, '[language]')
+  }
 
-  methods: {
-    cancel() {
-      this.$emit('cancel')
-    },
+  cancel(): void {
+    this.$emit('cancel')
+  }
 
-    confirm() {
-      this.$emit('confirm', {
-        value: this.pattern,
-        replaceExisting: this.replaceExisting,
-      })
-    },
+  confirm(): void {
+    this.$emit('confirm', {
+      value: this.pattern,
+      replaceExisting: this.replaceExisting,
+    })
+  }
 
-    toggleExpanded() {
-      this.expanded = !this.expanded
-    },
-  },
+  toggleExpanded(): void {
+    this.expanded = !this.expanded
+  }
 }
+
+export default BatchMatchAudioFilesPrompt
 </script>
+
+<style lang="scss" scoped>
+.batch-match-audio-files-prompt {
+  > p, > ul {
+    margin-bottom: 10px;
+  }
+
+  table {
+    background: white;
+  }
+}
+</style>
