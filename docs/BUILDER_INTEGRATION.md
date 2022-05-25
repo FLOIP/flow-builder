@@ -649,6 +649,21 @@ platformBuilderConfig.ui.subscriberPropertyFields = [contactProp1, contactProp2,
 ```
 where each `contactProp` option follow the [IContactPropertyOption](https://github.com/FLOIP/flow-builder/blob/master/src/store/flow/block-types/Core_SetContactPropertyStore.ts#L9) schema.
 
+### Map contact property fields' data_type with relevant block class
+Override this to tell the builder which block could be relevant for which field data_type
+```
+platformBuilderConfig.ui.subscriberPropertyFieldDataTypesMapping: {
+      "text": ["MobilePrimitives.OpenResponse"],
+      "location": ["SmartDevices.LocationResponse"],
+      "number": ["MobilePrimitives.NumericResponse"],
+      "phone": ["MobilePrimitives.NumericResponse"],
+      "multiple_choice": ["MobilePrimitives.SelectOneResponse", "MobilePrimitives.SelectManyResponse"],
+      "media": ["SmartDevices.PhotoResponse"]
+    }
+```
+This will allow us to disable a contact property field in the "contact prop selector" if the block output type doesn't match with the field data_type.
+eg: In the block `MobilePrimitives.NumericResponse`, we only enable contact props having data_type `number` or `phone`.
+
 ### Setting available contact groups
 See below how we may configure available contact groups:
 

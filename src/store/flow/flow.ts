@@ -234,7 +234,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     // todo: use mutations for these:
     if (flow.first_block_id === blockId) {
       // todo: make this optional for builder
-      flow.first_block_id = ''
+      flow.first_block_id = blocks.length ? blocks[0].uuid : ''
     }
 
     if (flow.exit_block_id === blockId) {

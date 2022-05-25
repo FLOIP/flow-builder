@@ -35,7 +35,7 @@
               track-by="id"
               label="display_label"
               :placeholder="'flow-builder.select-a-property' | trans"
-              :options="subscriberPropertyFields"
+              :options="subscriberPropertyFieldsForSelector"
               :multiple="false"
               :show-labels="false"
               :searchable="true" />
@@ -93,11 +93,15 @@
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
         <expression-input
+          class="mb-1"
           :label="''"
           :placeholder="'flow-builder.enter-expression' | trans"
           :current-expression="propertyValue"
           :valid-state="isValid"
           @commitExpressionChange="updatePropertyValue" />
+        <div class="small">
+          {{ trans('flow-builder.hint-to-set-contact-prop-by-expression') }}
+        </div>
       </validation-message>
     </div>
   </div>
@@ -108,11 +112,11 @@ import {IBlock, IBlockConfig} from '@floip/flow-runner'
 import {Component, Prop} from 'vue-property-decorator'
 import {Getter, namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
-import {find, get, has, isEmpty} from 'lodash'
+import {find, get, has, isEmpty, map} from 'lodash'
 import {mixins} from 'vue-class-component'
 import {isBlockInteractive} from '@/store/flow/block.ts'
 import VueMultiselect from 'vue-multiselect'
-import {IContactPropertyOption} from '@/store/flow/block-types/Core_SetContactPropertyStore'
+import {IContactPropertyOption, IContactPropertyOptionForUISelector} from '@/store/flow/block-types/Core_SetContactPropertyStore'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -232,6 +236,20 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
     return !isEmpty(this.subscriberPropertyFields)
   }
 
+  get subscriberPropertyFieldsForSelector(): IContactPropertyOptionForUISelector[] {
+    return map(this.subscriberPropertyFields, (field: IContactPropertyOption) => {
+      let shouldDisable
+      if (this.block.config?.set_contact_property?.property_value === '') {
+        // users choose to set the contact prop from "expression" value
+        shouldDisable = true
+      } else {
+        shouldDisable = this.subscriberPropertyFieldDataTypesMapping[field.data_type].includes(this.block.type)
+      }
+
+      return {...field, $isDisabled: !shouldDisable}
+    })
+  }
+
   @flowVuexNamespace.Mutation block_updateConfigByPath!: (
     {blockId, path, value}: { blockId: string, path: string, value: string | object }
   ) => void
@@ -241,6 +259,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
   @flowVuexNamespace.Mutation block_removeConfigByKey!: ({blockId, key}: { blockId: string, key: string}) => void
 
   @Getter subscriberPropertyFields!: IContactPropertyOption[]
+  @Getter subscriberPropertyFieldDataTypesMapping!: Record<string, string[]>
 }
 
 export default GenericContactPropertyEditor
