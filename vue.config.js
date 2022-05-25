@@ -55,14 +55,16 @@ module.exports = {
       //   'uri': 'some_uri_value',
       // }
       app.all('/audiofiles/upload', (req, res) => {
-        if (req.query.flowFilename.includes('failure-test')) {
-          // Simulate failed upload if we upload a file with `failure-test` text
-          res.writeHead(500, { 'Content-Type': 'application/json' })
-          res.end(JSON.stringify({message: 'failed upload'}))
-        } else if (req.method == 'GET') {
-          // Simulate `unknown upload chunk` with 404 status for GET method
-          res.writeHead(404, { 'Content-Type': 'application/json' })
-          res.end(JSON.stringify({status: 'error', status_description: 'Unknown upload chunk'}))
+        if (req.method == 'GET') {
+          if (req.query.flowFilename.includes('failure-test')) {
+            // Simulate failed upload if we upload a file with `failure-test` text
+            res.writeHead(500, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify({message: 'failed upload'}))
+          } else {
+            // Simulate `unknown upload chunk` with 404 status for GET method
+            res.writeHead(404, { 'Content-Type': 'application/json' })
+            res.end(JSON.stringify({status: 'error', status_description: 'Unknown upload chunk'}))
+          }
         } else {
           // Simulate success upload if having POST
           const now = new Date()
@@ -74,11 +76,11 @@ module.exports = {
             .substr(2, 16)}.${Math.random()
             .toString(36)
             .substr(2, 10)}`
-          const original_extension = req.query.flowFilename.split('.').pop()
+          const original_extension = req.body.flowFilename.split('.').pop()
           const result = {
             audio_file_id: Math.floor(Math.random() * (1000 + 1)),
             duration_seconds: Math.random() * 10,
-            description: `a description for ${req.query.flowFilename}`,
+            description: `a description for ${req.body.flowFilename}`,
             created_at: {
               date: `${now[0]} ${now[1].split('.')[0]}`,
               timezone_type: 3,

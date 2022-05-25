@@ -1,7 +1,10 @@
 import Vue from 'vue'
-import Flow from '@flowjs/flow.js'
 import {chain, extend} from 'lodash'
 import Component from 'vue-class-component'
+// Important:
+// for now we're using flowjs 2.0.0 to match with existing backend server of Viamo
+// see readme to see an example of resumeableAudioUpload() controller implementation to handle GET & POST requests from flowjs
+import Flow from '@/lib/flow-2.0.0.js'
 
 const dispatch = (el: HTMLElement, name: string, data: {}): void => {
   el.dispatchEvent(extend(new Event(name, {
