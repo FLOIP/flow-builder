@@ -1,6 +1,6 @@
 import {Route} from 'vue-router'
 
-export const scrollBehavior = (to: Route) => {
+export const scrollBehavior = (to: Route): void => {
   if (to.params.field) {
     const anchor = to.params.field
     const domElement = document.getElementById(anchor)
@@ -12,10 +12,10 @@ export const scrollBehavior = (to: Route) => {
   }
 }
 
-export const scrollBlockIntoView = (blockId: string) => {
+export const scrollBlockIntoView = (blockId: string): void => {
   const blockElement = document.querySelector(`#block\\/${blockId} .plain-draggable`)
   if (blockElement) {
-    blockElement.scrollIntoView({behavior: 'smooth', block: 'center',  inline: 'center'})
+    blockElement.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'})
   } else {
     console.debug('Deep linking: cannot scroll block ', blockElement, 'as block is not found in the DOM')
   }

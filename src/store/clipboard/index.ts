@@ -1,17 +1,15 @@
-import {
-  ActionTree, GetterTree, Module, MutationTree,
-} from 'vuex'
-import { IRootState } from '@/store'
-import { IPrompt } from '@floip/flow-runner';
+import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
+import {IRootState} from '@/store'
+import {IPrompt} from '@floip/flow-runner'
 
 export interface BlocksData {
-  isFocused: boolean;
-  prompt: IPrompt<any>;
+  isFocused: boolean,
+  prompt: IPrompt,
 }
 
 export interface IClipboardState {
-  isSimulatorActive: boolean;
-  blocksData: BlocksData[];
+  isSimulatorActive: boolean,
+  blocksData: BlocksData[],
 }
 
 export const stateFactory = (): IClipboardState => ({
@@ -30,35 +28,35 @@ export const mutations: MutationTree<IClipboardState> = {
   setSimulatorActive(state, value) {
     state.isSimulatorActive = value
   },
-  setIsFocused(state, { index, value }) {
+  setIsFocused(state, {index, value}) {
     state.blocksData[index].isFocused = value
   },
 }
 
 export const actions: ActionTree<IClipboardState, IRootState> = {
-  setSimulatorActive({ commit }, value) {
+  setSimulatorActive({commit}, value) {
     commit('setSimulatorActive', value)
   },
-  resetBlocksData({ state }) {
+  resetBlocksData({state}) {
     state.blocksData = []
   },
-  setIsFocused({ commit }, data) {
+  setIsFocused({commit}, data) {
     commit('setIsFocused', data)
   },
-  setLastBlockUnEditable({ commit, state }) {
+  setLastBlockUnEditable({commit, state}) {
     const lastIndex = state.blocksData.length - 1
-    commit('setIsFocused', { index: lastIndex, value: false })
+    commit('setIsFocused', {index: lastIndex, value: false})
   },
-  setLastBlockEditable({ commit, state }) {
+  setLastBlockEditable({commit, state}) {
     const lastIndex = state.blocksData.length - 1
-    commit('setIsFocused', { index: lastIndex, value: true })
+    commit('setIsFocused', {index: lastIndex, value: true})
   },
-  addToBlocksData({ state }, data: BlocksData) {
+  addToBlocksData({state}, data: BlocksData) {
     state.blocksData.push(data)
   },
-  removeFromBlocksData({ state }, index: number) {
+  removeFromBlocksData({state}, index: number) {
     state.blocksData.splice(index)
-  }
+  },
 }
 
 export const store: Module<IClipboardState, IRootState> = {

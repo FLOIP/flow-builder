@@ -41,20 +41,20 @@ export class PromptKindMixin extends Vue {
         this.isBlockInteraction = false
       }
       this.prompt.value = value
-      this.setIsFocused({ index: this.index, value: false })
+      this.setIsFocused({index: this.index, value: false})
       this.goNext()
     }
   }
 
   editBlockCommon() {
     this.setLastBlockUnEditable()
-    this.setIsFocused({ index: this.index, value: true })
+    this.setIsFocused({index: this.index, value: true})
     this.isBlockInteraction = true
   }
 
   onCancelCommon() {
     this.setLastBlockEditable()
-    this.setIsFocused({ index: this.index, value: false })
+    this.setIsFocused({index: this.index, value: false})
     this.isBlockInteraction = false
     this.errorMsg = ''
   }
