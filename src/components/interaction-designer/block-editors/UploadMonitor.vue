@@ -3,7 +3,7 @@
     <div
       v-if="hasProgress"
       class="upload-monitor-progress">
-      <h6>{{ 'trees.uploading' | trans }}&hellip; {{ upload.file.name }}</h6>
+      <h6>{{ 'flow-builder.uploading' | trans }}&hellip; {{ upload.file.name }}</h6>
 
       <div class="progress">
         <b-progress

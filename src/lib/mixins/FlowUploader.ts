@@ -1,7 +1,10 @@
 import Vue from 'vue'
-import Flow from '@flowjs/flow.js'
 import {chain, extend} from 'lodash'
 import Component from 'vue-class-component'
+
+// For now we're using flowjs 2.0.0 to match with existing backend server of Viamo
+// see readme to see an example of resumeableAudioUpload() controller implementation to handle GET & POST requests from flowjs
+import Flow from '@flowjs/flow.js'
 
 const dispatch = (el: HTMLElement, name: string, data: {}): void => {
   el.dispatchEvent(extend(new Event(name, {
@@ -52,22 +55,22 @@ const dispatch = (el: HTMLElement, name: string, data: {}): void => {
         // todo: when do we call upload on a multiselect-upload and file-added triggered multiple times? (voto5 legacy todo)
         // uploader.upload()
         // uploader.on('fileAdded', (file, e) => dispatch(el, 'filesSubmitted', {file, uploader}))
-        uploader.on('filesSubmitted', (files, e) => dispatch(el, 'filesSubmitted', {
+        uploader.on('filesSubmitted', (files: any, _even: any) => dispatch(el, 'filesSubmitted', {
           files,
           uploader,
           // uploader.upload()
         }))
-        uploader.on('fileProgress', (file, e) => dispatch(el, 'fileProgress', {
+        uploader.on('fileProgress', (file: any, _event: any) => dispatch(el, 'fileProgress', {
           file,
           uploader,
         }))
-        uploader.on('fileSuccess', (file, json) => dispatch(el, 'fileSuccess', {
+        uploader.on('fileSuccess', (file: any, json: any) => dispatch(el, 'fileSuccess', {
           file,
           uploader,
           json,
           // uploader.cancel()
         }))
-        uploader.on('error', (message, file) => dispatch(el, 'fileError', {
+        uploader.on('error', (message: any, file: any) => dispatch(el, 'fileError', {
           file,
           uploader,
           message,

@@ -1,6 +1,6 @@
 {
   "name": "@floip/flow-builder",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "flow-builder provides an open source frontend for authoring flow interoperability project specification compliant flows.",
   "main": "./dist/flow-builder.common.js",
   "files": [
@@ -28,12 +28,11 @@
     "@floip/expression-evaluator": "^2.1.0",
     "@floip/expression-parser": "^1.11.3",
     "@floip/flow-runner": "~1.0.0-rc4.0",
-    "@flowjs/flow.js": "^2.13.0",
+    "@flowjs/flow.js": "link:./src/lib/flow-2.0.0.js",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/vue-fontawesome": "^2.0.2",
-    "@types/flowjs__flow.js": "^2.13.0",
     "@types/json-schema": "^7.0.7",
     "@types/lodash": "^4.14.157",
     "@types/uuid": "^8.0.0",
