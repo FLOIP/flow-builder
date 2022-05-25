@@ -675,7 +675,7 @@ where each `group` option follow the [IGroupOption](https://github.com/FLOIP/flo
 ```typescript
 platformBuilderConfig.audio.library = [
   {
-    uri: 'some_uri_value_123',
+    uri: 'https://your-domain/path/to/myFile.wav',
     duration_seconds: 2.802000,
     description: "53f7f192c5fa82.79265819.wav",
     audio_file_id: "918719",

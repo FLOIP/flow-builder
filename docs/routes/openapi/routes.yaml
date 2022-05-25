@@ -134,29 +134,89 @@ paths:
             The builder should prevent these client side before we get to that point but that cannot always be done due to race conditions around concurrent use.
           content: {}
       x-codegen-request-body-name: language
+/audiofiles/upload:
+  get:
+    tags:
+      - Audiofiles
+      - Flowjs
+      - Get
+    operationId: Get request for flowjs upload
+    summary: GET request for for flowjs 2.0.0 upload, see https://packagist.org/packages/flowjs/flow-php-server for an example
+    parameters:
+      # See https://github.com/flowjs/flow.js/ v2.0.0 for more details
+      flowChunkNumber: number
+      flowChunkSize: number
+      flowCurrentChunkSize: number
+      flowTotalSize: number
+      flowIdentifier: string
+      flowFilename: string
+      flowRelativePath: string
+      flowTotalChunks: number
+      upload_token: string
+    responses:
+      404:
+        description: Information about the new audio file
+        content:
+          application/json:
+            schema:
+              type: object
+              required: true
+              properties:
+                status:
+                  description: response status
+                  type: string
+                  example: error
+                  required: true
+                status_description:
+                  description: status description
+                  type: string
+                  example: Unknown upload chunk
+                  required: true
+      500:
+        description: Unknown upload error
+        content:
+          application/json:
+            schema:
+              type: object
+              required: true
+              properties:
+                status:
+                  description: short error description
+                  type: string
+                  example: error
+                  required: false
+                status_description:
+                  description: error description
+                  type: string
+                  example: Unknown file type
+                  required: false
   /audiofiles/upload:
     post:
       tags:
       - Audiofiles
-      operationId: Upload Audiofiles
-      summary:
-        # See also voto5/docs/api/audio_files.rst
-        # and voto5/resources/js/floip/schemas/flow-builder/split/audioFiles.schema.json
-        All services are available through voice in multiple languages.
-        This requires users to upload audio file segments to use for messages, survey questions, menus, etc.
-        For example, each survey question would require one audio file in each language.
-        The audio_files interface allows you to upload, update, query, or delete audio files that will later be used for any of these purposes.
-        --
-        Since the entire POST body will be treated as the file, the parameters must be passed as part of the URL.
-        Note that this differs from all other API requests, where the url-encoded parameters are passed in the request body as a regular POST.
+      - Flowjs
+      - Post
+      operationId: Post request for flowjs upload
+      summary: POST request for for flowjs 2.0.0 upload, see https://packagist.org/packages/flowjs/flow-php-server for an example
       requestBody:
         description: The file contents to be uploaded
         content:
-          # To be more specific, we can use these types: ul | mp3 | m4a | aac | wav | ogg
-          # as supported by voto5, see V3AudioFilesController.php
-          # And get the content media types from https://www.iana.org/assignments/media-types/media-types.xhtml#audio
-          audio/*: {}
-        required: true
+          multipart/form-data:
+            type: object
+            properties:
+              # See https://github.com/flowjs/flow.js/ v2.0.0 for more details
+              flowChunkNumber: number
+              flowChunkSize: number
+              flowCurrentChunkSize: number
+              flowTotalSize: number
+              flowIdentifier: string
+              flowFilename: string
+              flowRelativePath: string
+              flowTotalChunks: number
+              upload_token: string
+              file:
+                type: string
+                format: binary
       responses:
         200:
           description: Information about the new audio file
@@ -164,27 +224,26 @@ paths:
             application/json:
               schema:
                 type: object
-                required: true
                 properties:
                   uri:
                     description: resource value for IVR
                     type: string
-                    example: ??
+                    example: https://your-domain/path/to/myFile.wav
                     required: true
                   audio_file_id:
                     description: file identifier
                     type: string
-                    example: 918719
+                    example: 2kbr34g6w46.b833ihcyt5
                     required: true
                   duration_seconds:
                     description: the duration of the audio in seconds
                     type: number
-                    example: 2.802000
+                    example: 5.520118105685274
                     required: true
                   description:
                     description: human-recognizable description for this audio (e.g. original file name)
                     type: string
-                    example: 53f7f192c5fa82.79265819.wav
+                    example: myFile.wav (version Aug 2020-04)
                     required: true
                   created_at:
                     description: upload date in ISO format
@@ -194,7 +253,7 @@ paths:
                   audio_uuid:
                     description: uuid
                     type: string
-                    example: 623c87ceae7aa0.02375053
+                    example: 2kbr34g6w46.b833ihcyt5
                     required: true
         500:
           description: Unknown upload error

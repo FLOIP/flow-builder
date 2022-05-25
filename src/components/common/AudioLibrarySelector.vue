@@ -65,7 +65,6 @@ export const AudioLibrarySelector = {
     },
 
     selectAudioFile({value, langId}) {
-      console.log('select', value)
       this.resource_setOrCreateValueModeSpecific({
         resourceId: this.resourceId,
         filter: {language_id: langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
