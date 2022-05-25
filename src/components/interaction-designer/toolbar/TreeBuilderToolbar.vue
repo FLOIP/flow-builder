@@ -486,6 +486,11 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   async handlePersistFlow(route: RawLocation): Promise<void> {
     //TODO - hook into validation system when we have it - block the logic here if invalid.
 
+    // Handle redundant navigation
+    if (this.$route.path === route) {
+      return
+    }
+
     //If we aren't in edit mode there should be nothing to persist
     if (this.isEditable) {
       this.setTreeSaving(true)
