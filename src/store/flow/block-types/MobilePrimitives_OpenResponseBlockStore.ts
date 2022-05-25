@@ -25,6 +25,18 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }, {root: true})
     return newDuration
   },
+  async setEndRecordingDigits({commit, rootGetters}, endRecordingDigits: number) {
+    const activeBlock = rootGetters['builder/activeBlock']
+    const value = {
+      end_recording_digits: endRecordingDigits,
+    }
+    commit('flow/block_updateConfigByKey', {
+      blockId: activeBlock.uuid,
+      key: 'ivr',
+      value,
+    }, {root: true})
+    return value
+  },
   async createWith({dispatch, commit}, {props}: { props: { uuid: string } & Partial<IOpenResponseBlock> }) {
     const exits: IBlockExit[] = [
       await dispatch('flow/block_createBlockDefaultExitWith', {
