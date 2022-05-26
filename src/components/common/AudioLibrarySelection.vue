@@ -22,24 +22,14 @@
         <span class="caret" />
       </button>
 
-      <ul class="dropdown-menu dropdown-menu-right">
-        <li>
-          <a
-            :href="audioFileUrl"
-            target="_blank">
-            {{ 'flow-builder.original-file' | trans }}
-          </a>
-        </li>
-
-        <!--
-        <li><a :href="`/audiofiles/download/${audioFile.filename}/ogg`" target="_blank" class="tree-block-audio-files-download-ogg">
-          {{'flow-builder.download-X-format'|trans({kind: '.ogg'})}}
-        </a></li>
-        <li><a :href="`/audiofiles/download/${audioFile.filename}/ul`" target="_blank" class="tree-block-audio-files-download-ul">
-          {{'flow-builder.download-X-format'|trans({kind: '.ul'})}}
-        </a></li>
-        -->
-      </ul>
+      <div class="dropdown-menu dropdown-menu-right">
+        <a
+          class="dropdown-item"
+          :href="audioFileUrl"
+          target="_blank">
+          {{ 'flow-builder.original-file' | trans }}
+        </a>
+      </div>
     </div>
 
     <p
@@ -71,7 +61,6 @@ export const AudioLibrarySelection = {
   mixins: [lang, momentFilters],
   props: [
     'audioFile',
-    // 'selected',
     'selectable',
     'langId',
   ],
