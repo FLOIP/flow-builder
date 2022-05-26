@@ -3,12 +3,10 @@
     <validation-message
       :message-key="`block/${block.uuid}/config/ivr/end_recording_digits`">
       <template #input-control="{ isValid }">
-        <div
-          v-if="hasIvr"
-          class="block-end-recording-digits">
+        <div v-if="hasIvr">
           <digits-editor
             v-model="endRecordingDigits"
-            :label="'flow-builder.end-recording-digits' | trans"
+            :label="'flow-builder.end-recording-by-pressing' | trans"
             :placeholder="'flow-builder.enter-value' | trans"
             :valid-state="isValid" />
         </div>
