@@ -277,29 +277,54 @@
       {
         "id": "10",
         "name": "name",
-        "display_label": "Name (Text)"
+        "display_label": "Name (text)",
+        "data_type": "text"
       },
       {
         "id": "11",
         "name": "comment",
-        "display_label": "Comment (Text)"
+        "display_label": "Comment (text)",
+        "data_type": "text"
       },
       {
         "id": "12",
-        "name": "start_date",
-        "display_label": "Start Date (Date)"
+        "name": "age",
+        "display_label": "Age (number)",
+        "data_type": "number"
+      },
+      {
+        "id": "13",
+        "name": "phone_number",
+        "display_label": "Phone number (phone)",
+        "data_type": "phone"
+      },
+      {
+        "id": "14",
+        "name": "favourite_fruits",
+        "display_label": "Favourite fruits (multiple_choice)",
+        "data_type": "multiple_choice"
+      },
+      {
+        "id": "15",
+        "name": "address",
+        "display_label": "Address (location)",
+        "data_type": "location"
+      },
+      {
+        "id": "16",
+        "name": "avatar",
+        "display_label": "Avatar (media)",
+        "data_type": "media"
       }
     ],
-    "subscriberPropertyFieldDataTypes": [
-      "text",
-      "location",
-      "number",
-      "map_coordinates",
-      "boolean",
-      "phone",
-      "multiple_choice",
-      "date"
-    ],
+    "subscriberPropertyFieldDataTypesMapping": {
+      "text": ["MobilePrimitives.OpenResponse", "SmartDevices.LocationResponse", "MobilePrimitives.NumericResponse", "MobilePrimitives.SelectOneResponse", "MobilePrimitives.SelectManyResponse"],
+      "location": ["SmartDevices.LocationResponse"],
+      "number": ["MobilePrimitives.NumericResponse", "MobilePrimitives.OpenResponse"],
+      "phone": ["MobilePrimitives.NumericResponse"],
+      "multiple_choice": ["MobilePrimitives.SelectOneResponse", "MobilePrimitives.SelectManyResponse"],
+      "media": ["SmartDevices.PhotoResponse"]
+    },
     "treeTitles": {},
     "treeSetTitles": {},
     "groupNames": {},

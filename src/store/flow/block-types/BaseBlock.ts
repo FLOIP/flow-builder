@@ -2,7 +2,7 @@ import {Dispatch, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlockConfig, IBlock, IBlockExit} from '@floip/flow-runner'
 import {defaults} from 'lodash'
-import {validateCommunityBlock} from '@/store/validation/validationHelpers'
+import {validateBlockWithJsonSchema} from '@/store/validation/validationHelpers'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IValidationStatus} from '@/store/validation'
 
@@ -45,9 +45,31 @@ export const actions = {
     }, {root: true})
   },
 
+  /**
+   * Override this in the consumer side to add extra config props to avoid the validation saying we have missing prop at the creation
+   * eg: {
+   *   prop1: undefined,
+   *   prop2: undefined,
+   * }
+   */
+  async initiateExtraVendorConfig(_ctx: unknown): Promise<object> {
+    return {}
+  },
+
+  /**
+   * Validate the vendor block (Consumer block)
+   * By overriding this action in the consumer side, we will be able to customize it using different json schema for eg.
+   *
+   * Important: This will be overridden in the consumer side, so DO NOT add generic validations here,
+   * instead edit the `validate()` if needed.
+   */
+  async validateBlockWithCustomJsonSchema({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}): Promise<IValidationStatus> {
+    return validateBlockWithJsonSchema({block, schemaVersion})
+  },
+
   //Will need to be fully overridden in embedding apps
-  validate(ctx: unknown, {block, schemaVersion}: {block: IBlock, schemaVersion: string}): IValidationStatus {
-    return validateCommunityBlock({block, schemaVersion})
+  async validate({rootGetters, dispatch}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}): Promise<IValidationStatus> {
+    return dispatch('validateBlockWithCustomJsonSchema', {block, schemaVersion})
   },
 }
 

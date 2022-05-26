@@ -30,15 +30,19 @@
           :has-ivr="hasVoiceMode"
           @commitMaxDigitsChange="updateMaxDigits" />
       </slot>
-      <slot name="vendor-extras" />
+      <slot
+        slot="vendor-extras"
+        name="vendor-extras" />
       <slot
         slot="branching"
         name="branching" />
       <slot
         slot="contact-props"
         name="contact-props" />
+      <slot
+        slot="vendor"
+        name="vendor" />
     </base-block>
-    <slot name="vendor" />
   </div>
 </template>
 
@@ -75,25 +79,14 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
 
   updateValidationMin(value: number | string): void {
     this.setValidationMinimum({blockId: this.block.uuid, value})
-    this.handleActionsAccordingToBranchingType()
   }
 
   updateValidationMax(value: number | string): void {
     this.setValidationMaximum({blockId: this.block.uuid, value})
-    this.handleActionsAccordingToBranchingType()
   }
 
   updateMaxDigits(value: number | string): void {
     this.setMaxDigits({blockId: this.block.uuid, value})
-  }
-
-  handleActionsAccordingToBranchingType(): void {
-    const {vendor_metadata: metadata} = this.block as unknown as IBlockWithBranchingType
-    const {UNIFIED} = OutputBranchingType
-
-    if (metadata.io_viamo.branchingType === UNIFIED) {
-      this.handleBranchingTypeChangedToUnified({block: this.block})
-    }
   }
 
   @flowVuexNamespace.Getter resourcesByUuidOnActiveFlow!: { [key: string]: IResource }

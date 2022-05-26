@@ -97,6 +97,8 @@ export default {
 
     subscriberPropertyFields: ({ui}) => lodash.get(ui, 'subscriberPropertyFields', []),
 
+    subscriberPropertyFieldDataTypesMapping: ({ui}) => lodash.get(ui, 'subscriberPropertyFieldDataTypesMapping', {}),
+
     groups: ({ui}) => lodash.get(ui, 'groups', []),
 
     interactiveBlockClasses: ({ui}) => lodash.pickBy(ui.blockClasses, (value) => value.is_interactive),

@@ -96,6 +96,10 @@ export class FlowEditor extends mixins(Lang) {
 
   async updateFlowLanguages(value: ILanguage[] | ILanguage): Promise<void> {
     this.flow_setLanguages({flowId: this.flow.uuid, value})
+    // flow modes/languages could have been changed, so
+    // 1. Trigger validation for all blocks
+    await this.validate_allBlocksWithinFlow()
+    // 2. Trigger validation for resources
     await this.validate_resourcesOnSupportedValues({
       resources: this.activeFlow.resources,
       supportedModes: this.activeFlow.supported_modes,
@@ -104,6 +108,10 @@ export class FlowEditor extends mixins(Lang) {
 
   async updateFlowModes(value: SupportedMode[] | SupportedMode): Promise<void> {
     this.flow_setSupportedMode({flowId: this.flow.uuid, value})
+    // flow modes/languages could have been changed, so
+    // 1. Trigger validation for all blocks
+    await this.validate_allBlocksWithinFlow()
+    // 2. Trigger validation for resources
     await this.validate_resourcesOnSupportedValues({
       resources: this.activeFlow.resources,
       supportedModes: this.activeFlow.supported_modes,
@@ -116,6 +124,7 @@ export class FlowEditor extends mixins(Lang) {
   @flowVuexNamespace.Mutation flow_setSupportedMode!: any
   @builderVuexNamespace.Getter isEditable!: boolean
 
+  @validationVuexNamespace.Action validate_allBlocksWithinFlow!: () => Promise<void>
   @validationVuexNamespace.Action validate_resourcesOnSupportedValues!: (
     {resources, supportedModes}: {resources: IResource[], supportedModes: SupportedMode[]}
   ) => Promise<void>
