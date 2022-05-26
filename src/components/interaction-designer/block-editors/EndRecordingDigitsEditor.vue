@@ -6,7 +6,7 @@
         <div
           v-if="hasIvr"
           class="block-end-recording-digits">
-          <text-editor
+          <digits-editor
             v-model="endRecordingDigits"
             :label="'flow-builder.end-recording-digits' | trans"
             :placeholder="'flow-builder.enter-value' | trans"
