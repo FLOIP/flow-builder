@@ -54,6 +54,9 @@ module.exports = {
        *   'audio_uuid': '5fbc64e0c74e90.82972899',
        *   'uri': 'some_uri_value',
        * }
+       * We can find a server implementation sample from:
+       * - https://github.com/flowjs/flow-php-server
+       * - https://packagist.org/packages/flowjs/flow-php-server
        */
       app.get('/audiofiles/upload', (req, res) => {
         // Simulate `unknown upload chunk` with 404 status for GET method
@@ -62,7 +65,10 @@ module.exports = {
       })
       /**
        * Mock the flowjs-2.0.0 backend POST route
-       * Note, flowjs sends form-data as payload
+       * Note, flowjs sends form-data as payload.
+       * We can find a server implementation sample from:
+       * - https://github.com/flowjs/flow-php-server
+       * - https://packagist.org/packages/flowjs/flow-php-server
        */
       app.post('/audiofiles/upload', bodyParser.json(), (req, res) => {
         const now = new Date()

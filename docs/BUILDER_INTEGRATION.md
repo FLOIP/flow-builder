@@ -202,12 +202,6 @@ When using the builder in an app with server side persistence, the following rou
 
 Auth is up to the implementer for now
 
-### Implement a server for the upload route `/audiofiles/upload`
-The frontend is using [flowjs](https://github.com/flowjs/flow.js) `v2.0.0`. We can find a server implementation sample from:
-- https://github.com/flowjs/flow-php-server
-- https://packagist.org/packages/flowjs/flow-php-server
-Note: the flowjs v2.0.0 server could be slight different of recent version's, we can use old version of `flow-php-server` to assure compatibility.
-
 # Customising the Builder
 
 ## Customising and overriding community version blocks

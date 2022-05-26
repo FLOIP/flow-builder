@@ -134,63 +134,62 @@ paths:
             The builder should prevent these client side before we get to that point but that cannot always be done due to race conditions around concurrent use.
           content: {}
       x-codegen-request-body-name: language
-/audiofiles/upload:
-  get:
-    tags:
-      - Audiofiles
-      - Flowjs
-      - Get
-    operationId: Get request for flowjs upload
-    summary: GET request for for flowjs 2.0.0 upload, see https://packagist.org/packages/flowjs/flow-php-server for an example
-    parameters:
-      # See https://github.com/flowjs/flow.js/ v2.0.0 for more details
-      flowChunkNumber: number
-      flowChunkSize: number
-      flowCurrentChunkSize: number
-      flowTotalSize: number
-      flowIdentifier: string
-      flowFilename: string
-      flowRelativePath: string
-      flowTotalChunks: number
-      upload_token: string
-    responses:
-      404:
-        description: Information about the new audio file
-        content:
-          application/json:
-            schema:
-              type: object
-              required: true
-              properties:
-                status:
-                  description: response status
-                  type: string
-                  example: error
-                  required: true
-                status_description:
-                  description: status description
-                  type: string
-                  example: Unknown upload chunk
-                  required: true
-      500:
-        description: Unknown upload error
-        content:
-          application/json:
-            schema:
-              type: object
-              required: true
-              properties:
-                status:
-                  description: short error description
-                  type: string
-                  example: error
-                  required: false
-                status_description:
-                  description: error description
-                  type: string
-                  example: Unknown file type
-                  required: false
   /audiofiles/upload:
+    get:
+      tags:
+        - Audiofiles
+        - Flowjs
+        - Get
+      operationId: Get request for flowjs upload
+      summary: GET request for for flowjs 2.0.0 upload, see https://packagist.org/packages/flowjs/flow-php-server for an example
+      parameters:
+        # See https://github.com/flowjs/flow.js/ v2.0.0 for more details
+        flowChunkNumber: number
+        flowChunkSize: number
+        flowCurrentChunkSize: number
+        flowTotalSize: number
+        flowIdentifier: string
+        flowFilename: string
+        flowRelativePath: string
+        flowTotalChunks: number
+        upload_token: string
+      responses:
+        404:
+          description: Information about the new audio file
+          content:
+            application/json:
+              schema:
+                type: object
+                required: true
+                properties:
+                  status:
+                    description: response status
+                    type: string
+                    example: error
+                    required: true
+                  status_description:
+                    description: status description
+                    type: string
+                    example: Unknown upload chunk
+                    required: true
+        500:
+          description: Unknown upload error
+          content:
+            application/json:
+              schema:
+                type: object
+                required: true
+                properties:
+                  status:
+                    description: short error description
+                    type: string
+                    example: error
+                    required: false
+                  status_description:
+                    description: error description
+                    type: string
+                    example: Unknown file type
+                    required: false
     post:
       tags:
       - Audiofiles

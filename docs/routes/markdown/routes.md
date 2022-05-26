@@ -317,6 +317,160 @@ fetch('/languages',
 This operation does not require authentication
 </aside>
 
+<h1 id="flow-builder-routes-audiofiles">Audiofiles</h1>
+
+## Get request for flowjs upload
+
+<a id="opIdGet request for flowjs upload"></a>
+
+> Code samples
+
+```javascript
+
+const headers = {
+  'Accept':'application/json'
+};
+
+fetch('/audiofiles/upload',
+{
+  method: 'GET',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+`GET /audiofiles/upload`
+
+*GET request for for flowjs 2.0.0 upload, see https://packagist.org/packages/flowjs/flow-php-server for an example*
+
+> Example responses
+
+> 404 Response
+
+```json
+{
+  "status": "error",
+  "status_description": "Unknown upload chunk"
+}
+```
+
+<h3 id="get-request-for-flowjs-upload-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Information about the new audio file|Inline|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unknown upload error|Inline|
+
+<h3 id="get-request-for-flowjs-upload-responseschema">Response Schema</h3>
+
+Status Code **404**
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» status|string|false|none|response status|
+|» status_description|string|false|none|status description|
+
+Status Code **500**
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» status|string|false|none|short error description|
+|» status_description|string|false|none|error description|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## Post request for flowjs upload
+
+<a id="opIdPost request for flowjs upload"></a>
+
+> Code samples
+
+```javascript
+const inputBody = '{}';
+const headers = {
+  'Content-Type':'multipart/form-data',
+  'Accept':'application/json'
+};
+
+fetch('/audiofiles/upload',
+{
+  method: 'POST',
+  body: inputBody,
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+
+```
+
+`POST /audiofiles/upload`
+
+*POST request for for flowjs 2.0.0 upload, see https://packagist.org/packages/flowjs/flow-php-server for an example*
+
+> Body parameter
+
+```yaml
+{}
+
+```
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "uri": "https://your-domain/path/to/myFile.wav",
+  "audio_file_id": "2kbr34g6w46.b833ihcyt5",
+  "duration_seconds": 5.520118105685274,
+  "description": "myFile.wav (version Aug 2020-04)",
+  "created_at": "2022-03-24T15:01:35.000000Z",
+  "audio_uuid": "2kbr34g6w46.b833ihcyt5"
+}
+```
+
+<h3 id="post-request-for-flowjs-upload-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Information about the new audio file|Inline|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unknown upload error|Inline|
+
+<h3 id="post-request-for-flowjs-upload-responseschema">Response Schema</h3>
+
+Status Code **200**
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» uri|string|false|none|resource value for IVR|
+|» audio_file_id|string|false|none|file identifier|
+|» duration_seconds|number|false|none|the duration of the audio in seconds|
+|» description|string|false|none|human-recognizable description for this audio (e.g. original file name)|
+|» created_at|string|false|none|upload date in ISO format|
+|» audio_uuid|string|false|none|uuid|
+
+Status Code **500**
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» status|string|false|none|short error description|
+|» status_description|string|false|none|error description|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
 # Schemas
 
 <h2 id="tocS_FlowContainer">FlowContainer</h2>
