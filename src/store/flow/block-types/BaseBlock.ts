@@ -1,4 +1,4 @@
-import {Dispatch, GetterTree, Module, MutationTree} from 'vuex'
+import {ActionContext, Dispatch, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlockConfig, IBlock, IBlockExit} from '@floip/flow-runner'
 import {defaults} from 'lodash'
@@ -63,12 +63,17 @@ export const actions = {
    * Important: This will be overridden in the consumer side, so DO NOT add generic validations here,
    * instead edit the `validate()` if needed.
    */
-  async validateBlockWithCustomJsonSchema({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}): Promise<IValidationStatus> {
+  async validateBlockWithCustomJsonSchema(
+    _ctx: unknown, {block, schemaVersion}: {block: IBlock, schemaVersion: string},
+  ): Promise<IValidationStatus> {
     return validateBlockWithJsonSchema({block, schemaVersion})
   },
 
-  //Will need to be fully overridden in embedding apps
-  async validate({rootGetters, dispatch}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}): Promise<IValidationStatus> {
+  //Will need to be fully overridden in block stores if needed (see MobilePrimitives_NumericResponseBlockStore.ts, for example)
+  async validate(
+    {dispatch}: ActionContext<IEmptyState, IRootState>,
+    {block, schemaVersion}: {block: IBlock, schemaVersion: string},
+  ): Promise<IValidationStatus> {
     return dispatch('validateBlockWithCustomJsonSchema', {block, schemaVersion})
   },
 }
