@@ -7,6 +7,7 @@
       :options="options"
       :placeholder="placeholder"
       :show-labels="false"
+      :preselect-first="true"
       track-by="name"
       label="label" />
     <slot />
@@ -19,7 +20,7 @@ import {mixins} from 'vue-class-component'
 import VueMultiselect from 'vue-multiselect'
 import Lang from '@/lib/filters/lang'
 
-const KEYS = '0123456789#*'
+const KEYS = '1234567890#*'
 
 type MultiselectOption = {
   name: string,
