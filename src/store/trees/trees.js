@@ -184,6 +184,7 @@ export default {
     treeUpdatedAt: ({tree}) => tree.updatedAt.date,
 
     supportedModes: ({ui}) => ui.supportedModes || [],
+    defaultModes: ({ui}) => ui.defaultModes || [],
   },
 
   mutations: {

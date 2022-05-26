@@ -333,7 +333,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         last_modified: moment().toISOString(),
         interaction_timeout: rootState.trees.ui.appWideInteractionTimeout,
         vendor_metadata: {},
-        supported_modes: [],
+        supported_modes: rootState.trees.ui.defaultModes,
         languages: [],
         blocks: [],
         first_block_id: '',

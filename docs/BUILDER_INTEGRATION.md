@@ -434,6 +434,7 @@ platformBuilderConfig.ui.enabledFeatures.push(
 //Turn some other things off
 platformBuilderConfig.ui.enabledFeatures = without(platformBuilderConfig.ui.enabledFeatures, 'addLanguageOnImport')
 platformBuilderConfig.ui.supportedModes = ['SMS']
+platformBuilderConfig.ui.defaultModes = ['SMS']
 
 //Override existing block type
 platformBuilderConfig.ui.blockClasses['Core.SetContactProperty'] = {
@@ -603,6 +604,12 @@ Supported modes are defined in builder.config.json as ["TEXT", "SMS", "USSD", "I
 This can be limited to a subset, for example:
 ```
 platformBuilderConfig.ui.supportedModes = ['SMS', 'USSD']
+```
+
+### Setting default modes
+Likewise, the modes that are *selected* by default when a new flow is created can be configured as follows:
+```
+platformBuilderConfig.ui.defaultModes = ['SMS']
 ```
 
 ### Configuring page headings visibility
