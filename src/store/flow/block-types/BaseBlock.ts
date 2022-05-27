@@ -64,7 +64,8 @@ export const actions = {
    * instead edit the `validate()` if needed.
    */
   async validateBlockWithCustomJsonSchema(
-    _ctx: unknown, {block, schemaVersion}: {block: IBlock, schemaVersion: string},
+    _ctx: unknown,
+    {block, schemaVersion}: {block: IBlock, schemaVersion: string},
   ): Promise<IValidationStatus> {
     return validateBlockWithJsonSchema({block, schemaVersion})
   },
