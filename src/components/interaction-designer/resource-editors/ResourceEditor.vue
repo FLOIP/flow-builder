@@ -61,7 +61,7 @@
                       v-if="isEditable && isFeatureAudioUploadEnabled"
                       v-flow-uploader="{
                         target: route('trees.resumeableAudioUpload'),
-                        token: `${block.uuid}_${languageId}`,
+                        token: `${block.uuid}:${languageId}`,
                         accept: 'audio/*'}"
                       class="btn btn-primary ivr-buttons"
                       @filesSubmitted="handleFilesSubmittedFor(`${block.uuid}:${languageId}`, $event)"
