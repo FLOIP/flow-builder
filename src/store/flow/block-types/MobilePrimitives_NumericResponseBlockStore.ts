@@ -1,24 +1,19 @@
-import {ActionTree, GetterTree, MutationTree} from 'vuex'
+import {ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IBlockExit, INumericBlockConfig} from '@floip/flow-runner'
-import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import {IBlock, INumericBlockConfig} from '@floip/flow-runner'
 import {INumericResponseBlock} from '@floip/flow-runner/src/model/block/INumericResponseBlock'
-import {defaultsDeep} from 'lodash'
-import {validateBlockWithJsonSchema} from '@/store/validation/validationHelpers'
+import {cloneDeep} from 'lodash'
 import Lang from '@/lib/filters/lang'
 import {ErrorObject} from 'ajv'
-import {IValidationStatus} from '@/store/validation'
-import {IFlowsState} from '../index'
+import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 
 const lang = new Lang()
 
 export const BLOCK_TYPE = 'MobilePrimitives.NumericResponse'
 
-export const getters: GetterTree<IFlowsState, IRootState> = {}
+const actions: ActionTree<IEmptyState, IRootState> = {
+  ...baseActions,
 
-export const mutations: MutationTree<IFlowsState> = {}
-
-export const actions: ActionTree<IFlowsState, IRootState> = {
   async setValidationMinimum({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string }) {
     const valueAsNumberOrUnset = value === '' ? undefined : value
     commit('flow/block_updateConfigByKey', {
@@ -28,6 +23,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }, {root: true})
     return valueAsNumberOrUnset
   },
+
   async setValidationMaximum({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string }) {
     const valueAsNumberOrUnset = value === '' ? undefined : value
     commit('flow/block_updateConfigByKey', {
@@ -37,6 +33,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }, {root: true})
     return valueAsNumberOrUnset
   },
+
   async setMaxDigits({commit}, {blockId, value}: { blockId: IBlock['uuid'], value: number | string }) {
     const valueAsNumberOrUnset = value === '' ? undefined : value
     commit('flow/block_updateConfigByKey', {
@@ -48,43 +45,17 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }, {root: true})
     return valueAsNumberOrUnset
   },
+
   async createWith({dispatch, commit}, {props}: { props: { uuid: string } & Partial<INumericResponseBlock> }) {
-    const exits: IBlockExit[] = [
-      await dispatch('flow/block_createBlockDefaultExitWith', {
-        props: ({
-          uuid: await (new IdGeneratorUuidV4()).generate(),
-        }) as IBlockExit,
-      }, {root: true}),
-    ]
-
+    props.type = BLOCK_TYPE
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
-
-    return defaultsDeep(props, {
-      type: BLOCK_TYPE,
-      name: '',
-      label: '',
-      semantic_label: '',
-      exits,
-      config: {
-        prompt: blankResource.uuid,
-        validation_minimum: undefined,
-        validation_maximum: undefined,
-        ...await dispatch('initiateExtraVendorConfig'),
-      },
-      tags: [],
-      vendor_metadata: {},
-    })
-  },
-
-  /**
-   * Override this in the consumer side to add extra config props to avoid the validation saying we have missing prop at the creation
-   * eg: {
-   *   prop1: undefined,
-   *   prop2: undefined,
-   * }
-   */
-  async initiateExtraVendorConfig(_ctx: unknown): Promise<object> {
-    return {}
+    props.config = {
+      prompt: blankResource.uuid,
+      validation_minimum: undefined,
+      validation_maximum: undefined,
+      ...await dispatch('initiateExtraVendorConfig'),
+    }
+    return baseActions.createWith({dispatch}, {props})
   },
 
   handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
@@ -92,17 +63,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       blockId: block.uuid,
       test: 'is_number(block.value)',
     }, {root: true})
-  },
-
-  /**
-   * Validate the vendor block (Consumer block)
-   * By overriding this action in the consumer side, we will be able to customize it using different json schema for eg.
-   *
-   * Important: This will be overridden in the consumer side, so DO NOT add generic validations here,
-   * instead edit the `validate()` if needed.
-   */
-  async validateBlockWithCustomJsonSchema({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}): Promise<IValidationStatus> {
-    return validateBlockWithJsonSchema({block, schemaVersion})
   },
 
   /**
@@ -180,9 +140,9 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 }
 
-export default {
-  namespaced: true,
-  getters,
-  mutations,
+const MobilePrimitives_NumericResponseBlockStore: Module<IEmptyState, IRootState> = {
+  ...cloneDeep(BaseStore),
   actions,
 }
+
+export default MobilePrimitives_NumericResponseBlockStore
