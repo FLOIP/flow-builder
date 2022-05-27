@@ -1,15 +1,15 @@
 <template>
-  <div class="end-recording-digits-editor">
+  <div
+    v-if="hasIvr"
+    class="end-recording-digits-editor">
     <validation-message
       :message-key="`block/${block.uuid}/config/ivr/end_recording_digits`">
       <template #input-control="{ isValid }">
-        <div v-if="hasIvr">
-          <digits-editor
-            v-model="endRecordingDigits"
-            :label="'flow-builder.end-recording-by-pressing' | trans"
-            :placeholder="'flow-builder.enter-value' | trans"
-            :valid-state="isValid" />
-        </div>
+        <digits-editor
+          v-model="endRecordingDigits"
+          :label="'flow-builder.end-recording-by-pressing' | trans"
+          :placeholder="'flow-builder.enter-value' | trans"
+          :valid-state="isValid" />
       </template>
     </validation-message>
   </div>

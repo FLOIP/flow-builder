@@ -54,9 +54,7 @@ export class DigitsEditor extends mixins(Lang) {
   }
 
   set modelValue(value: MultiselectOption | undefined) {
-    if (value) {
-      this.$emit('input', value.name)
-    }
+    this.$emit('input', value?.name)
   }
 }
 

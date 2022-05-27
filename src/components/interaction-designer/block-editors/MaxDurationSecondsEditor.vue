@@ -1,17 +1,16 @@
 <template>
   <validation-message
-    #input-control="{ isValid }"
+    v-if="hasIvr"
+    class="max-duration-seconds-editor"
     :message-key="`block/${block.uuid}/config/ivr/max_duration_seconds`">
-    <div
-      v-if="hasIvr"
-      class="max-duration-seconds-editor">
+    <template #input-control="{ isValid }">
       <numeric-editor
         v-model.number="duration"
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.max-duration-in-seconds' | trans"
         :placeholder="'flow-builder.enter-value' | trans"
         :valid-state="isValid" />
-    </div>
+    </template>
   </validation-message>
 </template>
 
