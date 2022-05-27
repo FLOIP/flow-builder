@@ -5,7 +5,7 @@ import {defaultsDeep, isNumber} from 'lodash'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlockWithBranchingType, OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
-import {validateCommunityBlock} from '@/store/validation/validationHelpers'
+import {validateBlockWithJsonSchema} from '@/store/validation/validationHelpers'
 import {
   actions as selectOneActions,
   getters as selectOneGetters,
@@ -93,7 +93,7 @@ export const actions: ActionTree<ICustomFlowState, IRootState> = {
   },
 
   validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-    return validateCommunityBlock({block, schemaVersion})
+    return validateBlockWithJsonSchema({block, schemaVersion})
   },
 }
 

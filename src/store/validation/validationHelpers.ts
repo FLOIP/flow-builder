@@ -190,20 +190,31 @@ export function getOrCreateResourceValidator(schemaVersion: string): ValidateFun
   return validators.get(validationType)!
 }
 
-export function validateCommunityBlock({block, schemaVersion}: {block: IBlock, schemaVersion: string}): IValidationStatus {
+/**
+ * Validate Community block
+ *
+ * @param block
+ * @param schemaVersion
+ * @param customBlockJsonSchema,
+ */
+export function validateBlockWithJsonSchema({block, schemaVersion, customBlockJsonSchema}: {block: IBlock, schemaVersion: string, customBlockJsonSchema?: JSONSchema7}): IValidationStatus {
   let validate = null
   if (isEmpty(validators) || !validators.has(block.type)) {
     const blockTypeWithoutNameSpace = block.type.split('.')[block.type.split('.').length - 1]
     let blockJsonSchema
     try {
-      blockJsonSchema = require(
-        `@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/I${blockTypeWithoutNameSpace}Block.json`,
-      )
-      validate = createDefaultJsonSchemaValidatorFactoryFor(blockJsonSchema)
+      if (customBlockJsonSchema == null) {
+        // eslint-disable-next-line import/no-dynamic-require,global-require
+        blockJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/I${blockTypeWithoutNameSpace}Block.json`)
+        validate = createDefaultJsonSchemaValidatorFactoryFor(blockJsonSchema)
+      } else {
+        validate = createDefaultJsonSchemaValidatorFactoryFor(customBlockJsonSchema)
+      }
     } catch (e) {
       if (e.code === 'MODULE_NOT_FOUND') {
-        console.info(`A Specific Validator for the ${blockTypeWithoutNameSpace}Block could not be found. `
+        console.warn(`A Specific Validator for the ${blockTypeWithoutNameSpace}Block could not be found. `
           + `Falling back the generic Block validator for ${schemaVersion}`)
+        // eslint-disable-next-line import/no-dynamic-require,global-require
         blockJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`)
         validate = createDefaultJsonSchemaValidatorFactoryFor(blockJsonSchema, '#/definitions/IBlock')
       } else {

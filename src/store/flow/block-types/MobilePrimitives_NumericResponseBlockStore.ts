@@ -3,10 +3,11 @@ import {IRootState} from '@/store'
 import {IBlock, IBlockExit, INumericBlockConfig} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {INumericResponseBlock} from '@floip/flow-runner/src/model/block/INumericResponseBlock'
-import {defaultsDeep, get} from 'lodash'
-import {validateCommunityBlock} from '@/store/validation/validationHelpers'
+import {defaultsDeep} from 'lodash'
+import {validateBlockWithJsonSchema} from '@/store/validation/validationHelpers'
 import Lang from '@/lib/filters/lang'
 import {ErrorObject} from 'ajv'
+import {IValidationStatus} from '@/store/validation'
 import {IFlowsState} from '../index'
 
 const lang = new Lang()
@@ -68,10 +69,22 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         prompt: blankResource.uuid,
         validation_minimum: undefined,
         validation_maximum: undefined,
+        ...await dispatch('initiateExtraVendorConfig'),
       },
       tags: [],
       vendor_metadata: {},
     })
+  },
+
+  /**
+   * Override this in the consumer side to add extra config props to avoid the validation saying we have missing prop at the creation
+   * eg: {
+   *   prop1: undefined,
+   *   prop2: undefined,
+   * }
+   */
+  async initiateExtraVendorConfig(_ctx: unknown): Promise<object> {
+    return {}
   },
 
   handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
@@ -81,8 +94,24 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }, {root: true})
   },
 
-  validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-    const validationResults = validateCommunityBlock({block, schemaVersion})
+  /**
+   * Validate the vendor block (Consumer block)
+   * By overriding this action in the consumer side, we will be able to customize it using different json schema for eg.
+   *
+   * Important: This will be overridden in the consumer side, so DO NOT add generic validations here,
+   * instead edit the `validate()` if needed.
+   */
+  async validateBlockWithCustomJsonSchema({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}): Promise<IValidationStatus> {
+    return validateBlockWithJsonSchema({block, schemaVersion})
+  },
+
+  /**
+   * Generic validation action which will call:
+   * - the consumer validateBlockWithCustomJsonSchema
+   * - any custom validation logic in the community version
+   */
+  async validate({rootGetters, dispatch}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
+    const validationResults = await dispatch('validateBlockWithCustomJsonSchema', {block, schemaVersion})
 
     // Custom validation specific for the block
     if (validationResults.ajvErrors == null) {
