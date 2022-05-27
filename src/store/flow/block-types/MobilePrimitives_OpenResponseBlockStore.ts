@@ -25,14 +25,14 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }, {root: true})
     return newDuration
   },
-  async setMaxResponseCharacters({commit, rootGetters}, newLength: number) {
+  async setEndRecordingDigits({commit, rootGetters}, endRecordingDigits: number) {
     const activeBlock = rootGetters['builder/activeBlock']
     const value = {
-      max_response_characters: newLength,
+      end_recording_digits: endRecordingDigits,
     }
     commit('flow/block_updateConfigByKey', {
       blockId: activeBlock.uuid,
-      key: 'text',
+      key: 'ivr',
       value,
     }, {root: true})
     return value
