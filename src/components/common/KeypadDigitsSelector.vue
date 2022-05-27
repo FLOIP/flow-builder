@@ -1,5 +1,5 @@
 <template>
-  <div class="digits-editor">
+  <div class="keypad-digits-selector">
     <label class="text-primary">{{ label }}</label>
     <vue-multiselect
       v-model="modelValue"
@@ -30,7 +30,7 @@ type MultiselectOption = {
 @Component({
   components: {VueMultiselect},
 })
-export class DigitsEditor extends mixins(Lang) {
+export class KeypadDigitsSelector extends mixins(Lang) {
   @Prop({type: String, required: true}) label!: string;
   @Prop({type: String, required: true}) value!: string;
   @Prop({type: String, default: ''}) placeholder!: string;
@@ -58,7 +58,7 @@ export class DigitsEditor extends mixins(Lang) {
   }
 }
 
-export default DigitsEditor
+export default KeypadDigitsSelector
 </script>
 
 <style lang="css" scoped>

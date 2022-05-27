@@ -5,7 +5,7 @@
     <validation-message
       :message-key="`block/${block.uuid}/config/ivr/end_recording_digits`">
       <template #input-control="{ isValid }">
-        <digits-editor
+        <keypad-digits-selector
           v-model="endRecordingDigits"
           :label="'flow-builder.end-recording-by-pressing' | trans"
           :placeholder="'flow-builder.enter-value' | trans"
