@@ -116,5 +116,6 @@
     "vue-cli-plugin-storybook": "~1.2.2",
     "vue-template-compiler": "^2.6.14",
     "widdershins": "^4.0.1"
-  }
+  },
+  "packageManager": "yarn@3.2.1"
 }
