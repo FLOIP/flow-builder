@@ -16,6 +16,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       blockId: activeBlock.uuid,
       key: 'ivr',
       value: {
+        ...activeBlock.config?.ivr,
         max_duration_seconds: newDuration,
       },
     }, {root: true})
@@ -24,15 +25,15 @@ const actions: ActionTree<IEmptyState, IRootState> = {
 
   async setEndRecordingDigits({commit, rootGetters}, endRecordingDigits: number) {
     const activeBlock = rootGetters['builder/activeBlock']
-    const value = {
-      end_recording_digits: endRecordingDigits,
-    }
     commit('flow/block_updateConfigByKey', {
       blockId: activeBlock.uuid,
       key: 'ivr',
-      value,
+      value: {
+        ...activeBlock.config?.ivr,
+        end_recording_digits: endRecordingDigits,
+      },
     }, {root: true})
-    return value
+    return endRecordingDigits
   },
 
   async createWith({dispatch, commit}, {props}: { props: { uuid: string } & Partial<IOpenResponseBlock> }) {
