@@ -1,15 +1,13 @@
-import {ActionTree, GetterTree, MutationTree} from 'vuex'
+import {ActionTree, GetterTree, Module} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IBlockExit, IFlow} from '@floip/flow-runner'
-import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import {IFlow} from '@floip/flow-runner'
 import {IRunFlowBlock} from '@floip/flow-runner/src/model/block/IRunFlowBlock'
-import {defaultsDeep} from 'lodash'
-import {validateCommunityBlock} from '@/store/validation/validationHelpers'
-import {IFlowsState} from '../index'
+import {cloneDeep} from 'lodash'
+import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 
 export const BLOCK_TYPE = 'Core.RunFlow'
 
-export const getters: GetterTree<IFlowsState, IRootState> = {
+const getters: GetterTree<IEmptyState, IRootState> = {
   otherFlows: (
     state,
     _getters,
@@ -18,51 +16,26 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   ): IFlow[] => rootState.flow.flows.filter((flow: IFlow) => flow.uuid !== rootGetters['flow/activeFlow'].uuid),
 }
 
-export const mutations: MutationTree<IFlowsState> = {}
+const actions: ActionTree<IEmptyState, IRootState> = {
+  ...baseActions,
 
-export const actions: ActionTree<IFlowsState, IRootState> = {
   async setDestinationFlowId({commit}, {blockId, newDestinationFlowId}: { blockId: string, newDestinationFlowId: string }) {
     commit('flow/block_updateConfig', {blockId, newConfig: {flow_id: newDestinationFlowId}}, {root: true})
     return newDestinationFlowId
   },
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IRunFlowBlock> }) {
-    const exits: IBlockExit[] = [
-      await dispatch('flow/block_createBlockDefaultExitWith', {
-        props: ({
-          uuid: await (new IdGeneratorUuidV4()).generate(),
-        }) as IBlockExit,
-      }, {root: true}),
-    ]
-
-    return defaultsDeep(props, {
-      type: BLOCK_TYPE,
-      name: '',
-      label: '',
-      semantic_label: '',
-      config: {
-        flow_id: '',
-      },
-      exits,
-      tags: [],
-      vendor_metadata: {},
-    })
-  },
-
-  handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
-    dispatch('flow/block_convertExitFormationToUnified', {
-      blockId: block.uuid,
-      test: 'block.value = true',
-    }, {root: true})
-  },
-
-  validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-    return validateCommunityBlock({block, schemaVersion})
+    props.type = BLOCK_TYPE
+    props.config = {
+      flow_id: '',
+    }
+    return baseActions.createWith({dispatch}, {props})
   },
 }
 
-export default {
-  namespaced: true,
+const Core_RunFlowBlockStore: Module<IEmptyState, IRootState> = {
+  ...cloneDeep(BaseStore),
   getters,
-  mutations,
   actions,
 }
+
+export default Core_RunFlowBlockStore

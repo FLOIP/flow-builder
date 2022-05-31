@@ -668,6 +668,13 @@ export default TreeBuilderToolbar
   }
 }
 
+.viamo-app-container .tree-builder-toolbar {
+  position: sticky;
+  left: 0;
+  padding-left: 100px;
+  width: calc(100vw - 30px);
+}
+
 .tree-builder-toolbar-main-menu {
   background: $neutral-50;
 

@@ -147,28 +147,32 @@ export class ErrorNotifications extends mixins(Routes, Lang) {
     return size(this.invalidBlocksInActiveFlow)
   }
 
-  fixFlowError(): void {
-    this.$router.push({
-      name: 'flow-details',
-    }).catch((err) => {
+  async fixFlowError(): Promise<void> {
+    try {
+      await this.$router.push({
+        name: 'flow-details',
+      })
+    } catch (err) {
       if (err.name !== 'NavigationDuplicated') {
         console.error(err)
       }
-    })
+    }
   }
 
-  fixBlockError(blockId: string, dataPath: string): void {
-    this.$router.push({
-      name: 'block-scroll-to-anchor',
-      params: {
-        blockId,
-        field: dataPath,
-      },
-    }).catch((err) => {
+  async fixBlockError(blockId: string, dataPath: string): Promise<void> {
+    try {
+      await this.$router.push({
+        name: 'block-scroll-to-anchor',
+        params: {
+          blockId,
+          field: dataPath,
+        },
+      })
+    } catch (err) {
       if (err.name !== 'NavigationDuplicated') {
         console.error(err)
       }
-    })
+    }
   }
 
   @validationVuexNamespace.State validationStatuses!: { [key: string]: IValidationStatus }

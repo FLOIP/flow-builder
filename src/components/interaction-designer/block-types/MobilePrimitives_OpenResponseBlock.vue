@@ -23,10 +23,10 @@
           :block="block"
           :has-ivr="hasVoiceMode"
           @commitMaxDurationChange="setMaxDurationSeconds" />
-        <max-response-characters-editor
+        <end-recording-digits-editor
           :block="block"
-          :has-text="hasTextMode"
-          @commitMaxResponseCharactersChange="setMaxResponseCharacters" />
+          :has-ivr="hasVoiceMode"
+          @commitEndRecordingDigitsChange="setEndRecordingDigits" />
       </slot>
       <slot
         slot="vendor-extras"
@@ -75,7 +75,7 @@ class MobilePrimitives_OpenResponseBlock extends mixins(Lang) {
   @flowVuexNamespace.Getter hasVoiceMode!: boolean
 
   @blockVuexNamespace.Action setMaxDurationSeconds!: (newDuration: number) => Promise<string>
-  @blockVuexNamespace.Action setMaxResponseCharacters!: (newLength: number) => Promise<string>
+  @blockVuexNamespace.Action setEndRecordingDigits!: (endRecordingDigits: string) => Promise<string>
   @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
 
   @builderVuexNamespace.Getter isEditable !: boolean
