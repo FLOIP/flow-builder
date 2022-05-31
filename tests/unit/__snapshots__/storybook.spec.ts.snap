@@ -169,6 +169,487 @@ exports[`Storyshots InteractionDesigner/Toolbar Edit Flow 1`] = `
 </div>
 `;
 
+exports[`Storyshots InteractionDesigner/Toolbar Saving State 1`] = `
+<div>
+  <div
+    class="viamo-app-container flow-builder-sidebar-editor-container"
+    id="viamo-app"
+  >
+    <div
+      class="container-full"
+    >
+      <div
+        class="main-content-container"
+      >
+        <section
+          id="tree-app"
+        >
+          <div
+            class="edit-tree"
+            id="tree-interaction-designer"
+          >
+            <div
+              class="interaction-designer-contents panel panel-default"
+            >
+              <div
+                class="tree-builder-toolbar d-flex flex-column"
+              >
+                <div
+                  class="tree-builder-toolbar-main-menu d-flex flex-column"
+                >
+                  <!---->
+                   
+                  <div
+                    class="tree-workspace-panel-heading panel-heading w-100"
+                  >
+                    <div
+                      class="tree-workspace-panel-heading-contents"
+                    >
+                      <div
+                        class="btn-toolbar"
+                      >
+                        <h4
+                          class="text-primary mr-4 mb-0 flow-label"
+                        >
+                          
+            
+          
+                        </h4>
+                         
+                        <div>
+                          <a
+                            aria-current="page"
+                            class="mr-2 router-link-exact-active router-link-active"
+                            href="#/"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="fa-btn svg-inline--fa fa-home fa-w-16"
+                              data-icon="home"
+                              data-prefix="fac"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                class=""
+                                d="M9.38843 22.559V15.3539H14.6058V22.559C14.6058 23.3515 15.1927 24 15.9101 24H19.8231C20.5405 24 21.1275 23.3515 21.1275 22.559V12.4719H23.3448C23.9448 12.4719 24.2318 11.6506 23.7753 11.2183L12.871 0.367457C12.3754 -0.122486 11.6188 -0.122486 11.1232 0.367457L0.218936 11.2183C-0.224539 11.6506 0.0493717 12.4719 0.649367 12.4719H2.86674V22.559C2.86674 23.3515 3.45369 24 4.17108 24H8.08409C8.80148 24 9.38843 23.3515 9.38843 22.559Z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </a>
+                           
+                          <a
+                            class="btn btn-primary btn-sm mr-2"
+                            href="#/flows/new"
+                          >
+                            
+              New Flow
+            
+                          </a>
+                           
+                          <button
+                            class="btn btn-sm btn-outline-primary"
+                          >
+                            
+              Flow Details
+            
+                          </button>
+                           
+                          <!---->
+                           
+                          <div
+                            class="vertical-divider"
+                          />
+                           
+                          <a
+                            class="btn btn-outline-primary btn-sm"
+                            href="#/flows/1/resource-viewer"
+                          >
+                            
+                Resources view
+              
+                          </a>
+                           
+                          <div
+                            class="vertical-divider"
+                          />
+                           
+                          <div
+                            class="btn-group"
+                          >
+                            <a
+                              class="btn btn-outline-primary btn-sm"
+                              href="#/flows/1/designer/view"
+                            >
+                              
+                View Mode
+              
+                            </a>
+                             
+                            <a
+                              class="btn btn-outline-primary btn-sm active"
+                              href="#/flows/1/designer/edit"
+                            >
+                              
+                Edit Mode
+              
+                            </a>
+                          </div>
+                           
+                          <a
+                            class="btn btn-success btn-sm ml-4"
+                            disabled="disabled"
+                            href="#"
+                            title="another grouped button"
+                          >
+                            
+           Action X
+        
+                          </a>
+                           
+                          <a
+                            class="btn btn-warning btn-sm"
+                            href="#"
+                            title="another grouped button"
+                          >
+                            
+           Action Y
+        
+                          </a>
+                        </div>
+                         
+                        <div
+                          class="ml-auto mr-2"
+                        >
+                          <!---->
+                           
+                          <div
+                            class="btn-group mr-2"
+                          />
+                           
+                          <button
+                            class="btn btn-outline-primary btn-sm"
+                          >
+                            
+              Export
+            
+                          </button>
+                           
+                          <button
+                            class="btn btn-outline-primary btn-sm ml-4 save-button"
+                            type="button"
+                          >
+                            
+              Save
+              
+                            <!---->
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                   
+                  <div
+                    class="tree-workspace-panel-heading panel-heading w-100 bg-white d-flex justify-content-start pt-0 pb-0"
+                  >
+                    <div
+                      class="tree-workspace-panel-heading-contents"
+                    >
+                      <ul
+                        class="nav"
+                      >
+                        <li
+                          class="nav-item dropdown nav"
+                        >
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <span
+                              class="nav-link-text"
+                            >
+                              Content
+                            </span>
+                          </a>
+                           
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="MobilePrimitives.Message"
+                              href="#"
+                            >
+                              
+                  Message
+                
+                            </a>
+                            <div
+                              class="dropdown-divider"
+                            />
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="MobilePrimitives.SelectOneResponse"
+                              href="#"
+                            >
+                              
+                  Select One Response
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="MobilePrimitives.SelectManyResponse"
+                              href="#"
+                            >
+                              
+                  Select Many Responses
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="MobilePrimitives.NumericResponse"
+                              href="#"
+                            >
+                              
+                  Numeric Response
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="MobilePrimitives.OpenResponse"
+                              href="#"
+                            >
+                              
+                  Open Response
+                
+                            </a>
+                            <div
+                              class="dropdown-divider"
+                            />
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="SmartDevices.LocationResponse"
+                              href="#"
+                            >
+                              
+                  Location Response
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="SmartDevices.PhotoResponse"
+                              href="#"
+                            >
+                              
+                  Photo Response
+                
+                            </a>
+                             
+                          </div>
+                        </li>
+                         
+                        <li
+                          class="nav-item dropdown"
+                        >
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <span
+                              class="nav-link-text"
+                            >
+                              Contact
+                            </span>
+                          </a>
+                           
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.SetContactProperty"
+                              href="#"
+                            >
+                              
+                  Set Contact Property
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.SetGroupMembership"
+                              href="#"
+                            >
+                              
+                  Set Group Membership
+                
+                            </a>
+                             
+                          </div>
+                        </li>
+                         
+                        <li
+                          class="nav-item dropdown"
+                        >
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <span
+                              class="nav-link-text"
+                            >
+                              Branching
+                            </span>
+                          </a>
+                           
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.Case"
+                              href="#"
+                            >
+                              
+                  Case
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.Output"
+                              href="#"
+                            >
+                              
+                  Output
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.RunFlow"
+                              href="#"
+                            >
+                              
+                  Run Flow
+                
+                            </a>
+                             
+                          </div>
+                        </li>
+                         
+                        <li
+                          class="nav-item dropdown"
+                        >
+                          <a
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="nav-link dropdown-toggle"
+                            data-toggle="dropdown"
+                            href="#"
+                            role="button"
+                          >
+                            <span
+                              class="nav-link-text"
+                            >
+                              Developer
+                            </span>
+                          </a>
+                           
+                          <div
+                            class="dropdown-menu mt-0"
+                          >
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="ConsoleIO.Print"
+                              href="#"
+                            >
+                              
+                  Print
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="ConsoleIO.Read"
+                              href="#"
+                            >
+                              
+                  Read
+                
+                            </a>
+                            <!---->
+                             
+                            <a
+                              class="dropdown-item"
+                              data-block-type="Core.Log"
+                              href="#"
+                            >
+                              
+                  Log
+                
+                            </a>
+                             
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                 
+                <div
+                  class="tree-builder-toolbar-alerts w-100"
+                >
+                  <selection-banner />
+                   
+                  <error-notifications />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
 <div>
   <div

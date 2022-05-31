@@ -95,7 +95,7 @@
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: !isEditable, disabled: isTreeSaving}"
                   :aria-disabled="isTreeSaving"
-                  :tabindex="isTreeSaving ? -1 : 0"
+                  :tabindex="isTreeSaving ? -1 : undefined"
                   @click.native.prevent="handlePersistFlow(viewTreeUrl)">
                   {{ trans('flow-builder.view-mode') }}
                 </router-link>
@@ -106,7 +106,7 @@
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: isEditable, disabled: isTreeSaving}"
                   :aria-disabled="isTreeSaving"
-                  :tabindex="isTreeSaving ? -1 : 0"
+                  :tabindex="isTreeSaving ? -1 : undefined"
                   @click.native.prevent="handlePersistFlow(editTreeUrl)">
                   {{ trans('flow-builder.edit-mode') }}
                 </router-link>
