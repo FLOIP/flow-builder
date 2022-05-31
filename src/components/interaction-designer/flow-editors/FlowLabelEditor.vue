@@ -2,6 +2,7 @@
   <div class="flow-label-editor form-group">
     <text-editor
       v-model="label"
+      :valid-state="validState"
       :label="'flow-builder.flow-label' | trans"
       :placeholder="'flow-builder.enter-flow-label' | trans"
       :class="{ 'is-invalid': isInvalid }" />
