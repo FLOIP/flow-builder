@@ -44,7 +44,8 @@
 
       <template v-if="!isAudioLibraryEmpty">
         <a
-          v-for="audio in search(query).slice(offset * limit, (offset + 1) * limit)"
+          v-for="(audio, i) in search(query).slice(offset * limit, (offset + 1) * limit)"
+          :key="i"
           class="dropdown-item"
           href="#"
           @click.prevent="select(audio)">
@@ -104,108 +105,105 @@
   </div>
 </template>
 
-<script lang="js">
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import fuse from 'fuse.js'
+<script lang="ts">
+import Fuse from 'fuse.js'
 import {trim} from 'lodash'
 import VueFocus from 'vue-focus'
-import {lang} from '@/lib/filters/lang'
+import {mixins} from 'vue-class-component'
+import {Component, Prop} from 'vue-property-decorator'
+import Lang from '@/lib/filters/lang'
+import {IAudioFile} from '@/store/builder'
+import {IAudioFileSelection} from '@/lib/types'
+import FuseResult = Fuse.FuseResult;
 
-export const AudioLibrarySearchField = {
-  mixins: [VueFocus.mixin, lang],
-  props: ['langId', 'audioFiles'],
+@Component({})
+export class AudioLibrarySearchField extends mixins(Lang, VueFocus.mixin) {
+  @Prop() readonly langId?: string
+  @Prop() readonly audioFiles?: IAudioFile[]
 
-  data() {
-    return {
-      isActive: false,
+  isActive = false
 
-      // querying
-      rawQuery: '',
-      cache: {},
-      isEntireLibraryModeEnabled: false,
+  // querying
+  rawQuery = ''
+  cache: Record<string, FuseResult<IAudioFile>[]> = {}
+  isEntireLibraryModeEnabled = false
 
-      // pagination
-      offset: 0,
-      limit: 10,
+  // pagination
+  offset = 0
+  limit = 10
+
+  get query(): string {
+    return trim(this.rawQuery)
+  }
+
+  get isAudioLibraryEmpty(): boolean {
+    return this.isActive && this.audioFiles?.length === 0
+  }
+
+  get hasNext(): boolean {
+    return (this.search(this.query).length / (this.offset + 1)) > this.limit
+  }
+
+  get hasPrevious(): boolean {
+    return this.offset > 0
+  }
+
+  search(query: string): FuseResult<IAudioFile>[] | IAudioFile[] {
+    if (this.isEntireLibraryModeEnabled) {
+      return this.audioFiles ?? []
     }
-  },
 
-  computed: {
-    query() {
-      return trim(this.rawQuery)
-    },
+    if (query.length < 3) {
+      return []
+    }
 
-    isAudioLibraryEmpty() {
-      return this.isActive && !this.audioFiles.length
-    },
+    console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'searching', query)
 
-    hasNext() {
-      return (this.search(this.query).length / (this.offset + 1)) > this.limit
-    },
-
-    hasPrevious() {
-      return this.offset > 0
-    },
-  },
-
-  methods: {
-    search(query) {
-      if (this.isEntireLibraryModeEnabled) {
-        return this.audioFiles
-      }
-
-      if (query.length < 3) {
-        return []
-      }
-
-      console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'searching', query)
-
-      if (query in this.cache) {
-        console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache hit', query)
-        return this.cache[query]
-      }
-
-      console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache miss', query)
-
-      const keys = ['filename', 'description']
-      this.cache[query] = new fuse(this.audioFiles, {keys}).search(query)
+    if (query in this.cache) {
+      console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache hit', query)
       return this.cache[query]
-    },
+    }
 
-    // todo: push pagination into isolated component
-    incrementPage() {
-      if (this.hasNext) {
-        this.offset += 1
-      }
-    },
+    console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache miss', query)
 
-    decrementPage() {
-      if (this.hasPrevious) {
-        (this.offset -= 1)
-      }
-    },
+    const keys = ['filename', 'description']
+    this.cache[query] = new Fuse(this.audioFiles ?? [], {keys, fieldNormWeight: 1}).search(query)
+    return this.cache[query]
+  }
 
-    resetPagination() {
-      this.offset = 0
-    },
+  // TODO: Push pagination into isolated component
+  incrementPage(): void {
+    if (this.hasNext) {
+      this.offset += 1
+    }
+  }
 
-    toggleAudioLibrary() {
-      this.isEntireLibraryModeEnabled = !this.isEntireLibraryModeEnabled
-      this.resetPagination()
-    },
+  decrementPage(): void {
+    if (this.hasPrevious) {
+      (this.offset -= 1)
+    }
+  }
 
-    select(audio) {
-      this.$emit('select', {value: audio, langId: this.langId})
-    },
+  resetPagination(): void {
+    this.offset = 0
+  }
 
-    activate() {
-      this.isActive = true
-    },
+  toggleAudioLibrary(): void {
+    this.isEntireLibraryModeEnabled = !this.isEntireLibraryModeEnabled
+    this.resetPagination()
+  }
 
-    deactivate() {
-      this.isActive = false
-    },
-  },
+  select(audio: unknown): void {
+    this.$emit('select', {value: audio, langId: this.langId} as IAudioFileSelection)
+  }
+
+  activate(): void {
+    this.isActive = true
+  }
+
+  deactivate(): void {
+    this.isActive = false
+  }
 }
 
 export default AudioLibrarySearchField

@@ -1,29 +1,37 @@
 <template>
   <div class="select-many">
     <div class="d-flex justify-content-between">
-      <slot name="title"></slot>
-      <i v-if="!isFocused && !isComplete" @click="editBlock"
-         class="glyphicon glyphicon-pencil cursor-pointer"></i>
+      <slot name="title" />
+      <i
+        v-if="!isFocused && !isComplete"
+        class="glyphicon glyphicon-pencil cursor-pointer"
+        @click="editBlock" />
     </div>
-    <slot name="content"></slot>
+    <slot name="content" />
 
     <div class="form-group">
-      <div v-for="(option, index) in options" :key="index" class="form-check">
+      <div
+        v-for="(option, index) in options"
+        :key="index"
+        class="form-check">
         <input
+          :id="index"
+          v-model="selectedChoices"
           type="checkbox"
           name="select-many"
           class="form-check-input"
           :class="{'is-invalid': errorMsg}"
-          :id="index"
           :value="option.key"
           :disabled="!isFocused"
-          v-model="selectedChoices"
-          @change="checkIsValid(selectedChoices)"
-        />
-        <label class="form-check-label" :for="index">{{option.value}}</label>
+          @change="checkIsValid(selectedChoices)">
+        <label
+          class="form-check-label"
+          :for="index">{{ option.value }}</label>
       </div>
-      <div v-if="errorMsg" class="text-danger">
-        <small>{{errorMsg}}</small>
+      <div
+        v-if="errorMsg"
+        class="text-danger">
+        <small>{{ errorMsg }}</small>
       </div>
     </div>
 
@@ -33,9 +41,7 @@
       :is-focused="isFocused"
       :on-next-clicked="submitAnswer"
       :is-block-interaction="isBlockInteraction"
-      :on-cancel-clicked="onCancel"
-    />
-
+      :on-cancel-clicked="onCancel" />
   </div>
 </template>
 
@@ -48,7 +54,7 @@ import BlockActionButtons from '../shared/BlockActionButtons.vue'
 
 @Component({
   components: {
-    BlockActionButtons
+    BlockActionButtons,
   },
 })
 export default class SelectMany extends mixins(Lang, PromptKindMixin) {
@@ -56,12 +62,12 @@ export default class SelectMany extends mixins(Lang, PromptKindMixin) {
   options: {key: string, value: string}[] = []
   backUpValue = []
 
-  mounted() {
+  mounted(): void {
     this.setOptions()
   }
 
-  setOptions() {
-    const { choices } = this.prompt.config
+  setOptions(): void {
+    const {choices} = this.prompt.config
     choices.forEach((choice: {key: string, value: string}) => {
       try {
         const option = Context.prototype.getResource.call(this.context, choice.value).getText()
@@ -75,17 +81,17 @@ export default class SelectMany extends mixins(Lang, PromptKindMixin) {
     })
   }
 
-  async submitAnswer() {
+  async submitAnswer(): Promise<void> {
     this.checkIsValid(this.selectedChoices)
     await this.submitAnswerCommon(this.selectedChoices)
   }
 
-  editBlock() {
+  editBlock(): void {
     this.editBlockCommon()
     this.backUpValue = this.prompt.value
   }
 
-  onCancel() {
+  onCancel(): void {
     this.onCancelCommon()
     this.selectedChoices = this.backUpValue
   }

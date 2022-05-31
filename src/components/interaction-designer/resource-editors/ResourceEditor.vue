@@ -1,5 +1,7 @@
 <template>
-  <div class="resource-editor" v-if="flow.languages.length > 0">
+  <div
+    v-if="flow.languages.length > 0"
+    class="resource-editor">
     <hr>
 
     <h4 v-if="label">
@@ -21,7 +23,9 @@
                 v-if="iconsMap.get(mode)"
                 :icon="iconsMap.get(mode)"
                 :class="{'custom-icons': iconsMap.get(mode)[0] === 'fac', 'library-icons': iconsMap.get(mode)[0] !== 'fac'}" />
-              <h6 class="ml-1">{{ `flow-builder.${mode.toLowerCase()}-content` | trans }}</h6>
+              <h6 class="ml-1">
+                {{ `flow-builder.${mode.toLowerCase()}-content` | trans }}
+              </h6>
             </header>
 
             <template v-for="contentType in discoverContentTypesFor(mode)">
@@ -45,8 +49,8 @@
                     :lang-id="languageId"
                     :resource-id="resource.uuid"
                     :selected-audio-file="findOrGenerateStubbedVariantOn(
-                    resource,
-                    {language_id: languageId, content_type: contentType, modes: [mode]}).value" />
+                      resource,
+                      {language_id: languageId, content_type: contentType, modes: [mode]}).value" />
                 </validation-message>
 
                 <phone-recorder
@@ -117,21 +121,12 @@ import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/Vali
 import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
 import {mixins} from 'vue-class-component'
 import {TabsPlugin} from 'bootstrap-vue'
+import {IAudioFile} from '@/store/builder'
 
 Vue.use(TabsPlugin)
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
-
-interface IAudioFile {
-  id: string,
-  filename: string,
-  description: string,
-  language_id: string,
-  duration_seconds: string,
-  original_extension: string,
-  created_at: string,
-}
 
 interface IResourceDefinitionVariantOverModesWithOptionalValue extends Partial<IResourceDefinitionVariantOverModes> {
   value?: IResourceDefinitionVariantOverModes['value'],

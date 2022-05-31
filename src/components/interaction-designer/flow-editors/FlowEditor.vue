@@ -120,7 +120,7 @@ export class FlowEditor extends mixins(Lang) {
 
   @State(({trees: {ui}}) => ui) ui!: any
   @flowVuexNamespace.Getter activeFlow!: IFlow
-  @flowVuexNamespace.Mutation flow_setLanguages: any
+  @flowVuexNamespace.Mutation flow_setLanguages!: ({flowId, value}: {flowId: string, value: ILanguage | ILanguage[]}) => void
   @flowVuexNamespace.Mutation flow_setSupportedMode!: any
   @builderVuexNamespace.Getter isEditable!: boolean
 

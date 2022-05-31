@@ -1,22 +1,26 @@
 <template>
   <div class="open">
     <div class="d-flex justify-content-between">
-      <slot name="title"></slot>
-      <i v-if="!isFocused && !isComplete" @click="editBlock"
-         class="glyphicon glyphicon-pencil cursor-pointer"></i>
+      <slot name="title" />
+      <i
+        v-if="!isFocused && !isComplete"
+        class="glyphicon glyphicon-pencil cursor-pointer"
+        @click="editBlock" />
     </div>
-    <slot name="content"></slot>
+    <slot name="content" />
     <div>
       <textarea
-          v-model="enteredValue"
-          rows="4"
-          cols="50"
-          class="form-control"
-          :class="{'is-invalid': errorMsg}"
-          :disabled="!isFocused"
-          @keyup="checkIsValid(enteredValue)"/>
-      <div v-if="errorMsg" class="invalid-feedback">
-        <small>{{errorMsg}}</small>
+        v-model="enteredValue"
+        rows="4"
+        cols="50"
+        class="form-control"
+        :class="{'is-invalid': errorMsg}"
+        :disabled="!isFocused"
+        @keyup="checkIsValid(enteredValue)" />
+      <div
+        v-if="errorMsg"
+        class="invalid-feedback">
+        <small>{{ errorMsg }}</small>
       </div>
     </div>
     <block-action-buttons
@@ -25,8 +29,7 @@
       :is-focused="isFocused"
       :on-next-clicked="submitAnswer"
       :is-block-interaction="isBlockInteraction"
-      :on-cancel-clicked="onCancel"
-    />
+      :on-cancel-clicked="onCancel" />
   </div>
 </template>
 
@@ -38,24 +41,24 @@ import BlockActionButtons from '../shared/BlockActionButtons.vue'
 
 @Component({
   components: {
-    BlockActionButtons
+    BlockActionButtons,
   },
 })
 export default class Open extends mixins(Lang, PromptKindMixin) {
   enteredValue = ''
   backUpValue = ''
 
-  async submitAnswer() {
+  async submitAnswer(): Promise<void> {
     this.checkIsValid(this.enteredValue)
     await this.submitAnswerCommon(this.enteredValue)
   }
 
-  editBlock() {
+  editBlock(): void {
     this.editBlockCommon()
     this.backUpValue = this.prompt.value
   }
 
-  onCancel() {
+  onCancel(): void {
     this.onCancelCommon()
     this.enteredValue = this.backUpValue
   }

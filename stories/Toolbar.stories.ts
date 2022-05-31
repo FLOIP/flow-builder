@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import Vue from 'vue'
 import {Action, Mutation, namespace} from 'vuex-class'
 import {Component} from 'vue-property-decorator'
@@ -205,3 +206,19 @@ class ExtraButtonsSlotClass extends BaseMountedClass {
 }
 
 export const WithExtraButtonsSlot = () => (ExtraButtonsSlotClass)
+
+// Saving State
+@Component(
+  {
+    ...BaseOptions,
+  },
+)
+class SavingStateClass extends BaseMountedClass {
+  async mounted() {
+    this.setTreeSaving(true)
+  }
+
+  @Mutation setTreeSaving: any
+}
+
+export const SavingState = () => (SavingStateClass)

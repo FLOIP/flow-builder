@@ -179,9 +179,9 @@
     set noValidResponse(value: NoValidResponseHandler) {
       const {uuid: blockId} = this.block
       this.block_updateVendorMetadataByPath({blockId, path: 'io_viamo.noValidResponse', value})
-      const defaultExit: IBlockExit = find(this.block.exits, 'default')!
+      const defaultExit = find(this.block.exits, (exit) => exit.default) as IBlockExit | undefined
 
-      if (defaultExit == null) {
+      if (defaultExit === undefined) {
         throw new ValidationException(`Missing default exit on block ${blockId}.`)
       }
 

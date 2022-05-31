@@ -397,5 +397,11 @@ module.exports = {
     'jest/no-identical-title': 'error',
     'jest/prefer-to-have-length': 'warn',
     'jest/valid-expect': 'error',
+
+    '@viamo/vue-root-class-name': [
+      'warn', [
+        'validation-message',
+      ],
+    ],
   },
 }
