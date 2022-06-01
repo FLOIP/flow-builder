@@ -39,7 +39,10 @@
               <div v-if="contentType === SupportedContentType.AUDIO">
                 <validation-message
                   #input-control="{ isValid }"
-                  :message-key="`resource/${resource.uuid}/values/${computeResourceIndex(langIndex, modeIndex)}/value`">
+                  :message-key="`resource/${resource.uuid}/values/${computeResourceIndex(langIndex, modeIndex)}/value`"
+                  :overrides="{
+                    'resource-values-x-value-pattern': 'ivr-audio-should-be-selected'
+                  }">
                   <audio-library-selector
                     :audio-files="availableAudioFiles"
                     :lang-id="languageId"

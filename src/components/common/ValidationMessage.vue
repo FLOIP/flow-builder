@@ -31,13 +31,29 @@ const validationVuexNamespace = namespace('validation')
 export class ValidationMessage extends mixins(Lang) {
   @Prop() messageKey!: string
   @Prop({default: false}) shouldHideValidation!: boolean
+  @Prop() readonly overrides?: Record<string, string>
 
   get errorMessage(): string {
     // get value by property (not by path like with lodash.get()), as the messageKey can contain `.` chars
     if (!Object.prototype.hasOwnProperty.call(this.flattenErrorMessages, this.messageKey)) {
       return ''
     }
-    return this.flattenErrorMessages[this.messageKey]
+
+    const message = this.flattenErrorMessages[this.messageKey]
+
+    return this.messageOverrides.has(message)
+      ? this.messageOverrides.get(message)!
+      : message
+  }
+
+  get messageOverrides(): Map<string, string> {
+    return Object.entries(this.overrides ?? {}).reduce((map, [lookupKey, replaceKey]) => {
+      map.set(
+        this.trans(`flow-builder-validation.${lookupKey}`),
+        this.trans(`flow-builder-validation.${replaceKey}`),
+      )
+      return map
+    }, new Map<string, string>())
   }
 
   get isValid(): boolean {
