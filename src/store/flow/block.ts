@@ -2,9 +2,8 @@ import Vue from 'vue'
 import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext} from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {cloneDeep, defaults, defaultsDeep, get, has, isArray, last, reduce, reject, set, snakeCase, toPath} from 'lodash'
+ import {defaults, get, has, isArray, last, reduce, reject, snakeCase, toPath} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import next from 'ajv/dist/vocabularies/next'
 import {IFlowsState} from '.'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
@@ -68,12 +67,12 @@ export const mutations: MutationTree<IFlowsState> = {
   },
   // note that the {key} could be undefined inside `config` at block creation (eg: optional config)
   block_updateConfigByKey(state, {blockId, key, value}: { blockId: string, key: string, value: object }) {
-    const currentConfig: { [key: string]: any } = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!
+    const currentConfig: { [key: string]: any } = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config
     currentConfig[key] = value
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config = {...currentConfig}
   },
   block_removeConfigByKey(state, {blockId, key}: { blockId: string, key: string}) {
-    Vue.delete(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config!, key)
+    Vue.delete(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config, key)
   },
   /**
    * update config by path, and make nested assignment reactive for vue

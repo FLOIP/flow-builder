@@ -1,5 +1,7 @@
 <template>
-  <div class="resource-editor" v-if="flow.languages.length > 0">
+  <div
+    v-if="flow.languages.length > 0"
+    class="resource-editor">
     <hr>
 
     <h4 v-if="label">
@@ -21,7 +23,9 @@
                 v-if="iconsMap.get(mode)"
                 :icon="iconsMap.get(mode)"
                 :class="{'custom-icons': iconsMap.get(mode)[0] === 'fac', 'library-icons': iconsMap.get(mode)[0] !== 'fac'}" />
-              <h6 class="ml-1">{{ `flow-builder.${mode.toLowerCase()}-content` | trans }}</h6>
+              <h6 class="ml-1">
+                {{ `flow-builder.${mode.toLowerCase()}-content` | trans }}
+              </h6>
             </header>
 
             <template v-for="contentType in discoverContentTypesFor(mode)">
@@ -49,7 +53,7 @@
                     :resource-id="resource.uuid"
                     :selected-audio-uri="findOrGenerateStubbedVariantOn(
                       resource,
-                    {language_id: languageId, content_type: contentType, modes: [mode]}).value" />
+                      {language_id: languageId, content_type: contentType, modes: [mode]}).value" />
                 </validation-message>
 
                 <phone-recorder
@@ -127,8 +131,9 @@ Vue.use(TabsPlugin)
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 
-interface IAudioFile {
+export interface IAudioFile {
   id: string,
+  // filename: string,
   audio_uuid: string,
   description: string,
   language_id: string,

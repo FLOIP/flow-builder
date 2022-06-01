@@ -110,7 +110,7 @@ export const mutations: MutationTree<IImportState> = {
       set(state.flowContainer, 'flows[0].blocks', blocks)
     }
   },
-  setFlowErrorWithInterpolations(state, { text, interpolations }) {
+  setFlowErrorWithInterpolations(state, {text, interpolations}) {
     state.flowError = text
     state.flowErrorInterpolations = interpolations
   },
@@ -173,9 +173,9 @@ export const actions: ActionTree<IImportState, IRootState> = {
       commit('setFlowError', 'flow-builder.importer-currently-supports-single-flow-only')
       return
     }
-    const validationErrors = await dispatch('validation/validate_flowContainer', { flowContainer }, { root: true })
+    const validationErrors = await dispatch('validation/validate_flowContainer', {flowContainer}, {root: true})
     if (!validationErrors.isValid) {
-      commit('setFlowErrorWithInterpolations', { text: 'flow-builder.flow-invalid', interpolations: { version: flowContainer.specification_version } })
+      commit('setFlowErrorWithInterpolations', {text: 'flow-builder.flow-invalid', interpolations: {version: flowContainer.specification_version}})
       return
     }
 

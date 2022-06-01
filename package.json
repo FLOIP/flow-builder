@@ -51,6 +51,7 @@
     "bootstrap-vue": "^2.21.1",
     "core-js": "^3.6.5",
     "cssprefix": "^2.0.16",
+    "fuse.js": "^6.6.0",
     "i18n-iso-countries": "^6.8.0",
     "iso-639-3": "^3.0.0",
     "jquery": "^3.5.1",

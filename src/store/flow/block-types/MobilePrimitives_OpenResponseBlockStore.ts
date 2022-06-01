@@ -1,19 +1,15 @@
-import {ActionTree, GetterTree, MutationTree} from 'vuex'
+import {ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IBlockExit} from '@floip/flow-runner'
-import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import {IBlock} from '@floip/flow-runner'
 import {IOpenResponseBlock} from '@floip/flow-runner/src/model/block/IOpenResponseBlock'
-import {defaultsDeep} from 'lodash'
-import {validateBlockWithJsonSchema} from '@/store/validation/validationHelpers'
-import {IFlowsState} from '../index'
+import {cloneDeep} from 'lodash'
+import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 
 export const BLOCK_TYPE = 'MobilePrimitives.OpenResponse'
 
-export const getters: GetterTree<IFlowsState, IRootState> = {}
+const actions: ActionTree<IEmptyState, IRootState> = {
+  ...baseActions,
 
-export const mutations: MutationTree<IFlowsState> = {}
-
-export const actions: ActionTree<IFlowsState, IRootState> = {
   async setMaxDurationSeconds({commit, rootGetters}, newDuration: number) {
     const activeBlock = rootGetters['builder/activeBlock']
     commit('flow/block_updateConfigByKey', {
@@ -25,58 +21,40 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }, {root: true})
     return newDuration
   },
-  async setMaxResponseCharacters({commit, rootGetters}, newLength: number) {
+
+  async setEndRecordingDigits({commit, rootGetters}, endRecordingDigits: number) {
     const activeBlock = rootGetters['builder/activeBlock']
     const value = {
-      max_response_characters: newLength,
+      end_recording_digits: endRecordingDigits,
     }
     commit('flow/block_updateConfigByKey', {
       blockId: activeBlock.uuid,
-      key: 'text',
+      key: 'ivr',
       value,
     }, {root: true})
     return value
   },
+
   async createWith({dispatch, commit}, {props}: { props: { uuid: string } & Partial<IOpenResponseBlock> }) {
-    const exits: IBlockExit[] = [
-      await dispatch('flow/block_createBlockDefaultExitWith', {
-        props: ({
-          uuid: await (new IdGeneratorUuidV4()).generate(),
-        }) as IBlockExit,
-      }, {root: true}),
-    ]
-
+    props.type = BLOCK_TYPE
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
-
-    return defaultsDeep(props, {
-      type: BLOCK_TYPE,
-      name: '',
-      label: '',
-      semantic_label: '',
-      exits,
-      config: {
-        prompt: blankResource.uuid,
-      },
-      tags: [],
-      vendor_metadata: {},
-    })
+    props.config = {
+      prompt: blankResource.uuid,
+    }
+    return baseActions.createWith({dispatch}, {props})
   },
 
-  handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
+  handleBranchingTypeChangedToUnified({dispatch}, {block}: { block: IBlock }) {
     dispatch('flow/block_convertExitFormationToUnified', {
       blockId: block.uuid,
       test: 'LEN(block.value) > 0',
     }, {root: true})
   },
-
-  validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-    return validateBlockWithJsonSchema({block, schemaVersion})
-  },
 }
 
-export default {
-  namespaced: true,
-  getters,
-  mutations,
+const MobilePrimitives_OpenResponseBlockStore: Module<IEmptyState, IRootState> = {
+  ...cloneDeep(BaseStore),
   actions,
 }
+
+export default MobilePrimitives_OpenResponseBlockStore

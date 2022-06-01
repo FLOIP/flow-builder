@@ -202,7 +202,7 @@ export class LanguageAdder extends mixins(Lang, Routes) {
 
   //Taken from voto5 restrictions
   filterVariant(e: KeyboardEvent): void {
-    if (e.key.match(/[^a-z_]/g) && e.keyCode !== 8 && e.keyCode !== 46) {//allow backspace and delete
+    if (e.key.match(/[^a-z_]/g) && e.keyCode !== 8 && e.keyCode !== 46) { //allow backspace and delete
       e.preventDefault()
     }
     if (this.newLanguage.variant !== undefined && !isEmpty(this.newLanguage.variant)) {

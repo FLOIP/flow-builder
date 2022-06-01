@@ -51,39 +51,36 @@
   </div>
 </template>
 
-<script lang="js">
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import {lang} from '@/lib/filters/lang'
-import momentFilters from '@/lib/filters/moment'
+<script lang="ts">
+import {mixins} from 'vue-class-component'
+import {Component, Prop} from 'vue-property-decorator'
+import Lang from '@/lib/filters/lang'
+import Moment from '@/lib/filters/moment'
+import {IAudioFile} from '../interaction-designer/resource-editors'
 
-export const AudioLibrarySelection = {
+@Component({})
+export class AudioLibrarySelection extends mixins(Lang, Moment) {
+  @Prop({type: Object, required: true}) audioFile!: IAudioFile
+  @Prop() selectable?: boolean
+  @Prop() langId?: string
 
-  mixins: [lang, momentFilters],
-  props: [
-    'audioFile',
-    'selectable',
-    'langId',
-  ],
+  get audioFileUrl(): string {
+    return this.audioFile?.uri
+  }
 
-  computed: {
-    audioFileUrl() {
-      return this.audioFile?.uri
-    },
-    audioFileDescription() {
-      return this.audioFile?.description
-    },
-  },
+  get audioFileDescription(): string {
+    return this.audioFile?.description
+  }
 
-  methods: {
-    select() {
-      this.$emit('select')
-    },
+  select(): void {
+    this.$emit('select')
+  }
 
-    clear() {
-      this.$emit('clear')
-    },
-  },
+  clear(): void {
+    this.$emit('clear')
+  }
 }
+
 export default AudioLibrarySelection
 </script>
 

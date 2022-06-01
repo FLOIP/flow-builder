@@ -2,7 +2,7 @@ import {filter, flatMap, isEqual, keyBy, map, mapValues, union} from 'lodash'
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IBlockExit, IFlow, IResource, ValidationException} from '@floip/flow-runner'
+import {IBlock, IBlockExit, ValidationException} from '@floip/flow-runner'
 import {IDeepBlockExitIdWithinFlow} from '@/store/flow/block'
 
 // todo migrate these to flight-monitor
@@ -41,7 +41,7 @@ export interface IConnectionContext {
 
 export type SupportedOperation = IConnectionSourceRelocateOperation | IConnectionCreateOperation
 
-interface IPosition {
+export interface IPosition {
   x: number,
   y: number,
 }
@@ -80,6 +80,8 @@ export const stateFactory = (): IBuilderState => ({
   interactionDesignerBoundingClientRect: {} as DOMRect,
 })
 
+export type ConnectionLayout = any[]
+
 export const getters: GetterTree<IBuilderState, IRootState> = {
   activeBlock: ({activeBlockId}, {blocksById}) => (activeBlockId ? blocksById[activeBlockId] : null),
 
@@ -98,7 +100,7 @@ export const getters: GetterTree<IBuilderState, IRootState> = {
 }
 
 export const mutations: MutationTree<IBuilderState> = {
-  activateBlock(state, {blockId}: { blockId: IBlock['uuid'] }) {
+  activateBlock(state, {blockId}: { blockId: IBlock['uuid'] | null }) {
     state.activeBlockId = blockId
 
     // simulate engaging with specified block
@@ -143,7 +145,7 @@ export const mutations: MutationTree<IBuilderState> = {
 
   setInteractionDesignerBoundingClientRect(state, value) {
     state.interactionDesignerBoundingClientRect = value
-  }
+  },
 }
 
 export const actions: ActionTree<IBuilderState, IRootState> = {
@@ -322,7 +324,7 @@ export function createDefaultBlockTypeInstallerFor(
     || builder.$store.registerModule(['flow', blockType], storeForBlockType)
 }
 
-export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock) {
+export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): ConnectionLayout {
   console.debug('store/builder', 'generateConnectionLayoutKeyFor', source.uuid, target.uuid)
   return [
     // coords
@@ -370,7 +372,7 @@ export function getViewportCenter() {
   const sideBarElement = document.getElementsByClassName('tree-sidebar-container')[0]
   const rect = builderCanvasElement.getBoundingClientRect()
 
-  const sidebarAdjustment = sideBarElement ? sideBarElement.clientWidth : 0
+  const sidebarAdjustment = sideBarElement !== undefined ? sideBarElement.clientWidth : 0
 
   return {
     x: Math.round(Math.abs(rect.left) + (window.innerWidth - sidebarAdjustment) / 2),

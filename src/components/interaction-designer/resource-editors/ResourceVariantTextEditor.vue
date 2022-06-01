@@ -23,7 +23,7 @@ import Lang from '@/lib/filters/lang'
 import {IResource, IResourceValue} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 import ExpressionInput from '@/components/common/ExpressionInput.vue'
-import {SupportedMode} from '@floip/flow-runner/src/flow-spec/SupportedMode';
+import {SupportedMode} from '@floip/flow-runner/src/flow-spec/SupportedMode'
 
 const flowVuexNamespace = namespace('flow')
 

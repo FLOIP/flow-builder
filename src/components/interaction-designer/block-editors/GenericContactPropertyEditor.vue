@@ -256,7 +256,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
   @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!: (
     {blockId, path, value}: { blockId: string, path: string, value: string }
   ) => void
-  @flowVuexNamespace.Mutation block_removeConfigByKey!: ({blockId, key}: { blockId: string, key: string}) => void
+  @flowVuexNamespace.Mutation block_removeConfigByKey!: ({blockId, key}: { blockId: IBlock['uuid'], key: string}) => void
 
   @Getter subscriberPropertyFields!: IContactPropertyOption[]
   @Getter subscriberPropertyFieldDataTypesMapping!: Record<string, string[]>
