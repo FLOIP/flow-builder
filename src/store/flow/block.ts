@@ -12,7 +12,6 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   // blocksByUuid: ({flows}) => map(resources, 'uuid')
 }
 
-// @ts-ignore
 export const mutations: MutationTree<IFlowsState> = {
   block_setName(state, {blockId, value}) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
@@ -77,7 +76,7 @@ export const mutations: MutationTree<IFlowsState> = {
   /**
    * update config by path, and make nested assignment reactive for vue
    */
-  block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value: object | string}) {
+  block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value: object | string | number}) {
     const base = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config
     const chunks = path.split('.')
 
