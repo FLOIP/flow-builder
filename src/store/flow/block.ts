@@ -76,7 +76,7 @@ export const mutations: MutationTree<IFlowsState> = {
   /**
    * update config by path, and make nested assignment reactive for vue
    */
-  block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value: object | string | number}) {
+  block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value: object | string | number | boolean}) {
     const base = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config
     const chunks = path.split('.')
 
