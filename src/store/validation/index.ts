@@ -97,7 +97,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
       ...status,
       ajvErrors: getLocalizedAjvErrors(key, status.ajvErrors),
     })
-    if (status.ajvErrors === null || status.ajvErrors.length === 0) {
+    if (status.ajvErrors === null) {
       commit('removeValidationStatusesFor', {key})
     }
     debugValidationStatus(state.validationStatuses[key], `validation status for ${key}`)

@@ -156,10 +156,12 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       }
     }
 
-    validationResults.ajvErrors = [
+    const allErrors = [
       ...validationResults.ajvErrors ?? [],
       ...errors.list(),
     ]
+
+    validationResults.ajvErrors = allErrors.length > 0 ? allErrors : null
 
     return validationResults
   },
