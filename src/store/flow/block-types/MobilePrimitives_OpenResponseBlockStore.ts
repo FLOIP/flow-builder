@@ -10,30 +10,22 @@ export const BLOCK_TYPE = 'MobilePrimitives.OpenResponse'
 const actions: ActionTree<IEmptyState, IRootState> = {
   ...baseActions,
 
-  async setMaxDurationSeconds({commit, rootGetters}, newDuration: number) {
+  async setMaxDurationSeconds({commit, rootGetters}, duration: number) {
     const activeBlock = rootGetters['builder/activeBlock']
-    commit('flow/block_updateConfigByKey', {
+    commit('flow/block_updateConfigByPath', {
       blockId: activeBlock.uuid,
-      key: 'ivr',
-      value: {
-        ...activeBlock.config?.ivr,
-        max_duration_seconds: newDuration,
-      },
+      path: 'ivr.max_duration_seconds',
+      value: duration,
     }, {root: true})
-    return newDuration
   },
 
   async setEndRecordingDigits({commit, rootGetters}, endRecordingDigits: number) {
     const activeBlock = rootGetters['builder/activeBlock']
-    commit('flow/block_updateConfigByKey', {
+    commit('flow/block_updateConfigByPath', {
       blockId: activeBlock.uuid,
-      key: 'ivr',
-      value: {
-        ...activeBlock.config?.ivr,
-        end_recording_digits: endRecordingDigits,
-      },
+      path: 'ivr.end_recording_digits',
+      value: endRecordingDigits,
     }, {root: true})
-    return endRecordingDigits
   },
 
   async createWith({dispatch, commit}, {props}: { props: { uuid: string } & Partial<IOpenResponseBlock> }) {
