@@ -78,8 +78,8 @@ class SmartDevices_LocationResponseBlock extends mixins(Lang) {
 
   @flowVuexNamespace.Getter resourcesByUuidOnActiveFlow!: { [key: string]: IResource }
 
-  @blockVuexNamespace.Action setAccuracyThreshold!: ({blockId, value}: { blockId: string, value: number }) => Promise<string>
-  @blockVuexNamespace.Action setAccuracyTimeout!: ({blockId, value}: { blockId: string, value: number }) => Promise<string>
+  @blockVuexNamespace.Action setAccuracyThreshold!: ({blockId, value}: { blockId: IBlock['uuid'], value: number }) => Promise<string>
+  @blockVuexNamespace.Action setAccuracyTimeout!: ({blockId, value}: { blockId: IBlock['uuid'], value: number }) => Promise<string>
   @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
 
   @builderVuexNamespace.Getter isEditable !: boolean

@@ -13,7 +13,7 @@ import * as resourceEditorComponents from '@/components/resource-editor'
 
 require('./font-awesome-icon')
 
-export default function registerCustomComponents(extra = {}) {
+export default function registerCustomComponents(extra = {}): void {
   Object.entries({
     ...commonComponents,
     ...interactionDesignerComponents,
@@ -26,7 +26,9 @@ export default function registerCustomComponents(extra = {}) {
     ...blockResourceEditorsComponents,
     ...resourceEditorComponents,
     ...extra,
-  }).forEach(([name, component]: [string, any]) => {
-    Vue.component(name, component)
   })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .forEach(([name, component]: [string, any]) => {
+      Vue.component(name, component)
+    })
 }

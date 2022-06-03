@@ -11,7 +11,7 @@ import {
   IResource,
   SupportedContentType,
   SupportedMode,
-  IResourceValue,
+
 } from '@floip/flow-runner'
 import {cloneDeep, each, filter, find, forIn, includes, intersection, isEmpty, isEqual, map} from 'lodash'
 import {
@@ -181,7 +181,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
    */
   async validate_resourcesOnSupportedValues(
     {dispatch, getters},
-    {resources, supportedModes}: {resources: IResource[], supportedModes: SupportedMode[]}
+    {resources, supportedModes}: {resources: IResource[], supportedModes: SupportedMode[]},
   ): Promise<void> {
     if (!resources) {
       return
@@ -209,7 +209,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
         await dispatch('validate_resource', {resource: currentResource})
       }),
     )
-  }
+  },
 }
 
 export const store: Module<IValidationState, IRootState> = {

@@ -30,7 +30,7 @@ import {IRootState} from '@/store'
 export const getters: GetterTree<IFlowsState, IRootState> = {
   resourcesByUuidOnActiveFlow: (_state, getters) => keyBy(getters.activeFlow.resources, 'uuid'),
 
-  resourceUuidsOnActiveFlow: (_state, getters) => filter(map(getters.activeFlow.resources, (res) => res.uuid)),
+  resourceUuidsOnActiveFlow: (_state, getters) => filter(getters.activeFlow.resources, (res) => res.uuid),
 }
 
 export const mutations: MutationTree<IFlowsState> = {
@@ -38,12 +38,14 @@ export const mutations: MutationTree<IFlowsState> = {
     findFlowWith(flowId, state as unknown as IContext).resources.push(resource)
   },
 
-  // currently unused - see todo
-  // TODO - we need an action that can clean resources and then call this to actuall remove. We need logic to truly check resources are unused
-  // resource_delete({resources}, {resourceId}: { resourceId: string }) {
-  //   const resourceIndex = findIndex(resources, (resource) => resource.uuid === resourceId)
-  //   resources.splice(resourceIndex, 1)
-  // },
+  /*
+   * TODO We need an action that can clean resources and then call this to actual remove.
+   * TODO We need logic to truly check resources are unused
+   *
+   * resource_delete({resources}, {resourceId}: { resourceId: string }) {
+   *   const resourceIndex = findIndex(resources, (resource) => resource.uuid === resourceId)
+   *   resources.splice(resourceIndex, 1)
+   */
 
   resource_createVariantOnFlow(
     state,
@@ -62,7 +64,7 @@ export const mutations: MutationTree<IFlowsState> = {
       flowId: IFlow['uuid'],
       resourceId: string,
       filter: IResourceDefinitionVariantOverModesFilter,
-      value: string
+      value: string,
     },
   ) {
     const flow = findFlowWith(flowId, state as unknown as IContext)
@@ -76,7 +78,7 @@ export const mutations: MutationTree<IFlowsState> = {
       {
         flowId: IFlow['uuid'],
         resourceId: string,
-        filter: IResourceDefinitionVariantOverModesFilter
+        filter: IResourceDefinitionVariantOverModesFilter,
       } & { modes: SupportedMode[] },
   ) {
     if (isEmpty(modes)) {
@@ -106,7 +108,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     {resourceId, filter, value}: {
       resourceId: IResource['uuid'],
       filter: IResourceDefinitionVariantOverModesFilter,
-      value: string
+      value: string,
     },
   ) {
     commit('resource_setValueOnFlow', {flowId: getters.activeFlow.uuid, resourceId, filter, value})

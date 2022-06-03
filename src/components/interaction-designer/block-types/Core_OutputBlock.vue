@@ -64,7 +64,7 @@ class Core_OutputBlock extends mixins(Lang) {
     return this.block.config.value || ''
   }
 
-  @blockVuexNamespace.Action editOutputExpression!: (params: { blockId: string, value: string }) => Promise<string>
+  @blockVuexNamespace.Action editOutputExpression!: (params: { blockId: IBlock['uuid'], value: string }) => Promise<string>
   @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
 
   @builderVuexNamespace.Getter isEditable !: boolean

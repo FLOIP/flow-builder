@@ -93,7 +93,9 @@
                   :to="viewTreeUrl"
                   event=""
                   class="btn btn-outline-primary btn-sm"
-                  :class="{active: !isEditable}"
+                  :class="{active: !isEditable, disabled: isTreeSaving}"
+                  :aria-disabled="isTreeSaving"
+                  :tabindex="isTreeSaving ? -1 : undefined"
                   @click.native.prevent="handlePersistFlow(viewTreeUrl)">
                   {{ trans('flow-builder.view-mode') }}
                 </router-link>
@@ -102,7 +104,9 @@
                   :to="editTreeUrl"
                   event=""
                   class="btn btn-outline-primary btn-sm"
-                  :class="{active: isEditable}"
+                  :class="{active: isEditable, disabled: isTreeSaving}"
+                  :aria-disabled="isTreeSaving"
+                  :tabindex="isTreeSaving ? -1 : undefined"
                   @click.native.prevent="handlePersistFlow(editTreeUrl)">
                   {{ trans('flow-builder.edit-mode') }}
                 </router-link>
@@ -135,9 +139,9 @@
               <!--TODO - do disable if no changes logic-->
               <button
                 v-if="isEditable && isFeatureTreeSaveEnabled"
+                v-b-tooltip.hover="trans('flow-builder.save-changes-to-the-flow')"
                 type="button"
                 class="btn btn-outline-primary btn-sm ml-4 save-button"
-                v-b-tooltip.hover="trans('flow-builder.save-changes-to-the-flow')"
                 :disabled="!!isTreeSaving"
                 @click="handlePersistFlow()">
                 {{ saveButtonText }}
@@ -341,11 +345,11 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     const routeMeta = this.$route.meta ? this.$route.meta : {}
     this.onMetaChanged(routeMeta)
 
-    const editFlowModal: any = this.$refs['edit-flow-modal']
+    const editFlowModal = this.$refs['edit-flow-modal'] as BModal | undefined
     if (editFlowModal) {
       editFlowModal.$on('shown', () => {
         const routeMeta = this.$route.meta
-        if (!routeMeta || !routeMeta.isFlowEditorShown) {
+        if (!routeMeta || routeMeta.isFlowEditorShown !== true) {
           this.$router.replace({
             name: 'flow-details',
           })
@@ -353,7 +357,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       })
       editFlowModal.$on('hidden', () => {
         const routeMeta = this.$route.meta
-        if (routeMeta && routeMeta.isFlowEditorShown) {
+        if (routeMeta && routeMeta.isFlowEditorShown === true) {
           this.$router.replace({
             name: 'flow-canvas',
           })
@@ -365,8 +369,8 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   }
 
   @Watch('$route.meta', {immediate: true, deep: true})
-  onMetaChanged(meta: {[key: string]: string}) {
-    const editFlowModal: any = this.$refs['edit-flow-modal']
+  onMetaChanged(meta: {[key: string]: string}): void {
+    const editFlowModal = this.$refs['edit-flow-modal'] as BModal | undefined
     if (editFlowModal) {
       if (meta.isFlowEditorShown) {
         editFlowModal.show()
@@ -378,7 +382,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
 
   // Computed ####################
 
-  isEmpty(value?: any): boolean {
+  isEmpty(value?: unknown): boolean {
     return isEmpty(value)
   }
 
@@ -390,33 +394,33 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     )
   }
 
-  get resourceViewUrl(): any {
+  get resourceViewUrl(): string {
     return this.editTreeRoute({
       component: 'resource-viewer',
     })
   }
 
-  get downloadAudioUrl(): any {
+  get downloadAudioUrl(): string {
     return this.editTreeRoute({
       component: 'downloadaudio',
     })
   }
 
-  get editTreeUrl(): any {
+  get editTreeUrl(): string {
     return this.editTreeRoute({
       component: 'designer',
       mode: 'edit',
     })
   }
 
-  get viewTreeUrl(): any {
+  get viewTreeUrl(): string {
     return this.editTreeRoute({
       component: 'designer',
       mode: 'view',
     })
   }
 
-  get saveButtonText(): any {
+  get saveButtonText(): string {
     if (this.isTreeSaving) {
       return this.trans('flow-builder.saving')
     } else {
@@ -453,12 +457,12 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     )(this.ui.blockClasses)
   }
 
-  get canViewResultsTotals(): any {
+  get canViewResultsTotals(): boolean {
     return (this.can('view-result-totals') && this.isFeatureViewResultsEnabled)
   }
 
-  get hasSimulator() {
-    return this.hasOfflineMode && this.isFeatureSimulatorEnabled
+  get hasSimulator(): boolean {
+    return this.hasOfflineMode === true && this.isFeatureSimulatorEnabled === true
   }
 
   // Methods #####################
@@ -477,7 +481,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       // todo push out to intx-designer
     })
     this.activateBlock({blockId})
-    this.$router.push({
+    await this.$router.push({
       name: 'block-selected-details',
       params: {blockId},
     })
@@ -485,6 +489,11 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
 
   async handlePersistFlow(route: RawLocation): Promise<void> {
     //TODO - hook into validation system when we have it - block the logic here if invalid.
+
+    // Handle redundant navigation
+    if (this.$route.path === route) {
+      return
+    }
 
     //If we aren't in edit mode there should be nothing to persist
     if (this.isEditable) {
@@ -509,7 +518,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       }
     }
     if (route) {
-      this.$router.push(route)
+      await this.$router.push(route)
     }
   }
   showOrHideEditFlowModal(): void {
@@ -518,7 +527,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       editFlowModal.toggle()
     }
   }
-  openDropdownMenu(targetElement: HTMLElement) {
+  openDropdownMenu(targetElement: HTMLElement): void {
     if (!targetElement.hasAttribute('aria-expanded')) {
       return
     }
@@ -534,7 +543,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     this.isExportVisible = !this.isExportVisible
   }
 
-  editTreeRoute({component = null, mode = null}: { component?: any, mode?: string | null } = {}): any {
+  editTreeRoute({component = null, mode = null}: { component?: any, mode?: string | null } = {}): string {
     const context = this.removeNilValues({
       flowId: this.activeFlow?.uuid,
       component,
@@ -543,19 +552,19 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     return this.route('flows.editFlow', context)
   }
 
-  hasClassDetail(classDetails: { [key: string]: any }, attribute: string): any {
+  hasClassDetail(classDetails: { [key: string]: any }, attribute: string): boolean {
     return !isNil(classDetails[attribute]) && classDetails[attribute]
   }
 
-  hasMenuCategory(classDetails: { [key: string]: any }, category: number): any {
+  hasMenuCategory(classDetails: { [key: string]: any }, category: number): boolean {
     return this.hasClassDetail(classDetails, 'menu_category') && classDetails.menu_category === category
   }
 
-  translateTreeClassName(className: string): any {
+  translateTreeClassName(className: string): string {
     return this.trans(`flow-builder.${className}`)
   }
 
-  shouldDisplayDividerBefore(blockClasses: { [key: string]: any }, className: string): any {
+  shouldDisplayDividerBefore(blockClasses: { [key: string]: any }, className: string): string {
     const shouldShowDividerBeforeBlock = _pickBy(
       blockClasses,
       (classDetails) => this.hasClassDetail(classDetails, 'divider_before'),
@@ -605,13 +614,13 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @Getter hasChanges!: boolean
   @Getter isTreeValid!: boolean
   @Getter selectedBlock?: IBlock
-  @Getter isFeatureTreeSaveEnabled!: boolean
-  @Getter isFeatureTreeSendEnabled!: boolean
-  @Getter isFeatureTreeDuplicateEnabled!: boolean
-  @Getter isFeatureViewResultsEnabled!: boolean
-  @Getter isFeatureSimulatorEnabled!: boolean
-  @Getter isFeatureUpdateInteractionTotalsEnabled!: boolean
-  @Getter isResourceEditorEnabled!: boolean
+  @Getter isFeatureTreeSaveEnabled?: boolean
+  @Getter isFeatureTreeSendEnabled?: boolean
+  @Getter isFeatureTreeDuplicateEnabled?: boolean
+  @Getter isFeatureViewResultsEnabled?: boolean
+  @Getter isFeatureSimulatorEnabled?: boolean
+  @Getter isFeatureUpdateInteractionTotalsEnabled?: boolean
+  @Getter isResourceEditorEnabled?: boolean
   @Mutation setTreeSaving!: (isSaving: boolean) => void
   @Action attemptSaveTree!: void
   @Getter getToolbarConfig!: boolean
@@ -623,12 +632,12 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @flowVuexNamespace.Getter isActiveFlowValid?: boolean
   @flowVuexNamespace.State flows?: IFlow[]
   @flowVuexNamespace.State resources?: IResource[]
-  @flowVuexNamespace.Action flow_removeBlock!: ({flowId, blockId}: { flowId?: string, blockId: IBlock['uuid'] | undefined }) => void
+  @flowVuexNamespace.Action flow_removeBlock!: ({flowId, blockId}: { flowId?: string, blockId?: IBlock['uuid'] }) => void
   @flowVuexNamespace.Action flow_addBlankBlockByType!: ({type, ...props}: Partial<IBlock>) => Promise<IBlock>
   @flowVuexNamespace.Action flow_duplicateBlock!: ({
     flowId,
     blockId,
-  }: { flowId?: string, blockId: IBlock['uuid'] | undefined }) => Promise<IBlock>
+  }: { flowId?: string, blockId?: IBlock['uuid'] }) => Promise<IBlock>
   @flowVuexNamespace.Action flow_persist!: ({
     persistRoute,
     flowContainer,
@@ -643,7 +652,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   // Clipboard
   @clipboardVuexNamespace.Action setSimulatorActive!: (value: boolean) => void
 
-  @validationVuexNamespace.Action remove_block_validation!: ({blockId}: { blockId: IBlock['uuid'] | undefined}) => void
+  @validationVuexNamespace.Action remove_block_validation!: ({blockId}: { blockId?: IBlock['uuid']}) => void
 }
 
 export default TreeBuilderToolbar

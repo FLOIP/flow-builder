@@ -24,46 +24,56 @@
   </div>
 </template>
 
-<script lang="js">
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
+<script lang="ts">
+import {mixins} from 'vue-class-component'
+import {Component, Prop} from 'vue-property-decorator'
+import {namespace} from 'vuex-class'
 import {isEmpty} from 'lodash'
-import {mapActions} from 'vuex'
-import {SupportedContentType, SupportedMode} from '@floip/flow-runner'
+import {IResource, SupportedContentType, SupportedMode} from '@floip/flow-runner'
+import Lang from '@/lib/filters/lang'
+import {IResourceValue as IResourceDefinitionVariantOverModes} from '@floip/flow-runner/dist/flow-spec/IResource'
+import {IAudioFile} from '@/store/builder'
+import {IAudioFileSelection} from '@/lib/types'
 
-export const AudioLibrarySelector = {
-  props: [
-    'alternateSelections',
-    'selectedAudioFile',
-    'langId',
-    'audioFiles',
-    'isPlaying',
-    'audioPlayerUrl',
-    'resourceId',
-  ],
+const flowNamespace = namespace('flow')
 
-  computed: {
-    selectable() {
-      return !isEmpty(this.alternateSelections)
-    },
-  },
+const EMPTY_RESOURCE_UUID: IResource['uuid'] = ''
 
-  methods: {
-    ...mapActions('flow', ['resource_setOrCreateValueModeSpecific']),
-    clearSelection() {
-      this.resource_setOrCreateValueModeSpecific({
-        resourceId: this.resourceId,
-        filter: {language_id: this.langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
-        value: '',
-      })
-    },
-    selectAudioFile({value, langId}) {
-      this.resource_setOrCreateValueModeSpecific({
-        resourceId: this.resourceId,
-        filter: {language_id: langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
-        value: value.description,
-      })
-    },
-  },
+@Component({})
+export class AudioLibrarySelector extends mixins(Lang) {
+  @Prop() alternateSelections: unknown
+  @Prop() selectedAudioFile?: string
+  @Prop() langId?: string
+  @Prop() audioFiles?: IAudioFile[]
+  @Prop() audioPlayerUrl?: string
+  @Prop() resourceId?: string
+
+  get selectable(): boolean {
+    return !isEmpty(this.alternateSelections)
+  }
+
+  clearSelection(): void {
+    this.resource_setOrCreateValueModeSpecific({
+      resourceId: this.resourceId ?? EMPTY_RESOURCE_UUID,
+      filter: {language_id: this.langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
+      value: '',
+    })
+  }
+
+  selectAudioFile({value, langId}: IAudioFileSelection): void {
+    this.resource_setOrCreateValueModeSpecific({
+      resourceId: this.resourceId ?? EMPTY_RESOURCE_UUID,
+      filter: {language_id: langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
+      value: value.description,
+    })
+  }
+
+  @flowNamespace.Action resource_setOrCreateValueModeSpecific!: (data: {
+    resourceId: string,
+    filter: Partial<IResourceDefinitionVariantOverModes>,
+    value: string,
+  }) => void
 }
+
 export default AudioLibrarySelector
 </script>

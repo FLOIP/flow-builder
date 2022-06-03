@@ -1,14 +1,17 @@
 <template>
   <div class="numeric">
     <div class="d-flex justify-content-between">
-      <slot name="title"></slot>
-      <i v-if="!isFocused && !isComplete" @click="editBlock"
-         class="glyphicon glyphicon-pencil cursor-pointer"></i>
+      <slot name="title" />
+      <i
+        v-if="!isFocused && !isComplete"
+        class="glyphicon glyphicon-pencil cursor-pointer"
+        @click="editBlock" />
     </div>
-    <slot name="content"></slot>
+    <slot name="content" />
 
     <div class="input-group has-validation">
-      <input v-model="enteredValue"
+      <input
+        v-model="enteredValue"
         class="form-control"
         :class="{'is-invalid': errorMsg}"
         type="number"
@@ -16,9 +19,11 @@
         :disabled="!isFocused"
         :min="prompt.config.min"
         :max="prompt.config.max"
-        @keyup="checkIsValid(+enteredValue)" />
-      <div v-if="errorMsg" class="invalid-feedback">
-        <small>{{errorMsg}}</small>
+        @keyup="checkIsValid(+enteredValue)">
+      <div
+        v-if="errorMsg"
+        class="invalid-feedback">
+        <small>{{ errorMsg }}</small>
       </div>
     </div>
 
@@ -28,8 +33,7 @@
       :is-focused="isFocused"
       :on-next-clicked="submitAnswer"
       :is-block-interaction="isBlockInteraction"
-      :on-cancel-clicked="onCancel"
-    />
+      :on-cancel-clicked="onCancel" />
   </div>
 </template>
 
@@ -41,25 +45,25 @@ import BlockActionButtons from '../shared/BlockActionButtons.vue'
 
 @Component({
   components: {
-    BlockActionButtons
+    BlockActionButtons,
   },
 })
 export default class Numeric extends mixins(Lang, PromptKindMixin) {
   enteredValue = ''
   backUpValue = ''
 
-  async submitAnswer() {
+  async submitAnswer(): Promise<void> {
     const value = +this.enteredValue
     this.checkIsValid(value)
     await this.submitAnswerCommon(value)
   }
 
-  editBlock() {
+  editBlock(): void {
     this.editBlockCommon()
     this.backUpValue = this.prompt.value
   }
 
-  onCancel() {
+  onCancel(): void {
     this.onCancelCommon()
     this.enteredValue = this.backUpValue
   }

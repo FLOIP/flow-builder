@@ -1,18 +1,20 @@
 <template>
   <div class="unsupported-block card">
     <div class="card-body sm-padding-below font-roboto">
-      {{blockName}} {{'flow-builder.simulator-unsupported-block' | trans}}
+      {{ blockName }} {{ 'flow-builder.simulator-unsupported-block' | trans }}
     </div>
   </div>
 </template>
 
-<script>
-import lang from '@/lib/filters/lang'
+<script lang="ts">
+import Lang from '@/lib/filters/lang'
+import {mixins} from 'vue-class-component'
+import {Component, Prop} from 'vue-property-decorator'
 
-export default {
-  props: {
-    blockName: String,
-  },
-  mixins: [lang],
+@Component({})
+export class UnsupportedBlock extends mixins(Lang) {
+  @Prop(String) readonly blockName?: string
 }
+
+export default UnsupportedBlock
 </script>

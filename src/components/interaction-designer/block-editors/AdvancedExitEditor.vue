@@ -13,7 +13,9 @@
       </template>
     </validation-message>
 
-    <h6 class="mt-2">{{ 'flow-builder.advanced-exit-name' | trans }}</h6>
+    <h6 class="mt-2">
+      {{ 'flow-builder.advanced-exit-name' | trans }}
+    </h6>
     <textarea
       ref="name"
       v-model="name"
@@ -38,7 +40,7 @@ export class AdvancedExitEditor extends mixins(Lang) {
   @Prop() readonly exit!: IBlockExit
   @Prop() readonly label!: string
 
-  get index() {
+  get index(): number {
     return this.block.exits?.findIndex(({uuid}) => uuid === this.exit.uuid)
   }
 

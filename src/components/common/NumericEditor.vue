@@ -8,7 +8,9 @@
         :icon="['fas', 'info-circle']"
         class="fa-btn text-primary" />
     </label>
-    <div class="small mb-2">{{subTitle}}</div>
+    <div class="small mb-2">
+      {{ subTitle }}
+    </div>
     <div>
       <input
         type="number"
@@ -25,57 +27,32 @@
   </div>
 </template>
 
-<script lang="js">
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-export const NumericEditor = {
-  props: {
-    validState: {
-      type: Boolean,
-      default: null,
-      required: false,
-    },
-    label: {
-      type: [String, Number],
-      required: true,
-    },
-    placeholder: {
-      type: String,
-      default: '',
-    },
-    value: {
-      type: [String, Number],
-      required: false,
-    },
-    regexNumericFiltering: {
-      type: String,
-      required: false,
-      default: '[0-9-]',
-    },
-    subTitle: {
-      type: [String],
-      required: false,
-      default: '',
-    },
+<script lang="ts">
+import {mixins} from 'vue-class-component'
+import {Component, Prop} from 'vue-property-decorator'
+import Lang from '@/lib/filters/lang'
 
-    tooltipHint: {
-      type: String,
-      required: false,
-      default: '',
-    },
-  },
-  computed: {
-    isInvalid() {
-      // strict comparison, because `undefined` doesn't mean invalid
-      return this.validState === false
-    },
-  },
-  methods: {
-    filterNumeric(e) {
-      if (!e.key.match(new RegExp(this.regexNumericFiltering, 'g'))) {
-        e.preventDefault()
-      }
-    },
-  },
+@Component({})
+export class NumericEditor extends mixins(Lang) {
+  @Prop({type: Boolean}) readonly validState?: boolean
+  @Prop({type: [String, Number], required: true}) readonly label!: string | number
+  @Prop({type: String, default: ''}) readonly placeholder!: string
+  @Prop({type: [String, Number]}) readonly value?: string | number
+  @Prop({type: String, default: '[0-9-]'}) readonly regexNumericFiltering!: string
+  @Prop({type: String, default: ''}) readonly subTitle!: string
+  @Prop({type: String, default: ''}) readonly tooltipHint!: string
+
+  get isInvalid(): boolean {
+    // Strict comparison, because `undefined` doesn't mean invalid
+    return typeof this.validState === 'boolean' && !this.validState
+  }
+
+  filterNumeric(e: KeyboardEvent): void {
+    if ((new RegExp(this.regexNumericFiltering, 'g').exec(e.key)) === null) {
+      e.preventDefault()
+    }
+  }
 }
+
 export default NumericEditor
 </script>
