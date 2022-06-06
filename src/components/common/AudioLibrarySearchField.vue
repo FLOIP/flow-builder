@@ -112,14 +112,14 @@ import VueFocus from 'vue-focus'
 import {mixins} from 'vue-class-component'
 import {Component, Prop} from 'vue-property-decorator'
 import Lang from '@/lib/filters/lang'
-import {IAudioFile} from '@/store/builder'
+import {IAudioFile} from '../interaction-designer/resource-editors'
 import {IAudioFileSelection} from '@/lib/types'
 import FuseResult = Fuse.FuseResult;
 
 @Component({})
 export class AudioLibrarySearchField extends mixins(Lang, VueFocus.mixin) {
   @Prop() readonly langId?: string
-  @Prop() readonly audioFiles?: IAudioFile[]
+  @Prop({ required: true }) readonly audioFiles!: IAudioFile[]
 
   isActive = false
 
@@ -166,8 +166,8 @@ export class AudioLibrarySearchField extends mixins(Lang, VueFocus.mixin) {
 
     console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache miss', query)
 
-    const keys = ['filename', 'description']
-    this.cache[query] = new Fuse(this.audioFiles ?? [], {keys, fieldNormWeight: 1}).search(query)
+    const keys = ['uri', 'description']
+    this.cache[query] = new Fuse(this.audioFiles, {keys, fieldNormWeight: 1}).search(query)
     return this.cache[query]
   }
 

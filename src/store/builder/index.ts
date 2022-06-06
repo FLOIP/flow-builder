@@ -80,16 +80,6 @@ export const stateFactory = (): IBuilderState => ({
   interactionDesignerBoundingClientRect: {} as DOMRect,
 })
 
-export interface IAudioFile {
-  id: string,
-    filename: string,
-    description: string,
-    language_id: string,
-    duration_seconds: string,
-    original_extension: string,
-    created_at: string,
-}
-
 export type ConnectionLayout = any[]
 
 export const getters: GetterTree<IBuilderState, IRootState> = {
