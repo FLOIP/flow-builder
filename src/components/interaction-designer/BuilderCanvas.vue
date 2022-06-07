@@ -18,7 +18,7 @@
 import {Component, Prop, Vue, Watch} from 'vue-property-decorator'
 import {cloneDeep, debounce, find, isEqual, maxBy} from 'lodash'
 import {namespace} from 'vuex-class'
-import {IBlock, IFlow, IResource, IResources, SupportedMode} from '@floip/flow-runner'
+import {IBlock, IFlow, ILanguage, IResource, IResources, SupportedMode} from '@floip/flow-runner'
 import {IValidationStatus} from '@/store/validation'
 
 const flowVuexNamespace = namespace('flow')
@@ -70,6 +70,7 @@ export class BuilderCanvas extends Vue {
     await this.validate_resourcesOnSupportedValues({
       resources: newResources,
       supportedModes: this.activeFlow.supported_modes,
+      supportedLanguages: this.activeFlow.languages,
     })
   }
   // ] ######### end Validation API Watchers
@@ -213,7 +214,7 @@ export class BuilderCanvas extends Vue {
   @validationVuexNamespace.Action validate_flow!: ({flow}: { flow: IFlow }) => Promise<IValidationStatus>
   @validationVuexNamespace.Action validate_block!: ({block}: { block: IBlock }) => Promise<IValidationStatus>
   @validationVuexNamespace.Action validate_resourcesOnSupportedValues!: (
-    {resources, supportedModes}: {resources: IResource[], supportedModes: SupportedMode[]}
+    {resources, supportedModes, supportedLanguages}: {resources: IResource[], supportedModes: SupportedMode[], supportedLanguages: ILanguage[]}
   ) => Promise<void>
 }
 

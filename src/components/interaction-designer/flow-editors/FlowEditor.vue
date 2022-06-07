@@ -103,6 +103,7 @@ export class FlowEditor extends mixins(Lang) {
     await this.validate_resourcesOnSupportedValues({
       resources: this.activeFlow.resources,
       supportedModes: this.activeFlow.supported_modes,
+      supportedLanguages: this.activeFlow.languages,
     })
   }
 
@@ -115,6 +116,7 @@ export class FlowEditor extends mixins(Lang) {
     await this.validate_resourcesOnSupportedValues({
       resources: this.activeFlow.resources,
       supportedModes: this.activeFlow.supported_modes,
+      supportedLanguages: this.activeFlow.languages,
     })
   }
 
@@ -126,7 +128,7 @@ export class FlowEditor extends mixins(Lang) {
 
   @validationVuexNamespace.Action validate_allBlocksWithinFlow!: () => Promise<void>
   @validationVuexNamespace.Action validate_resourcesOnSupportedValues!: (
-    {resources, supportedModes}: {resources: IResource[], supportedModes: SupportedMode[]}
+    {resources, supportedModes, supportedLanguages}: {resources: IResource[], supportedModes: SupportedMode[], supportedLanguages: ILanguage[]}
   ) => Promise<void>
 }
 
