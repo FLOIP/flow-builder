@@ -1,6 +1,5 @@
 const path = require('path')
 const fs = require('fs')
-const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 
 module.exports = {
@@ -41,41 +40,69 @@ module.exports = {
       app.use(bodyParser.urlencoded({ extended: true }))
       app.use(bodyParser.json())
 
-      // Mock a route to mimic this upload result format:
-      // {
-      //   'audio_file_id': 147,
-      //   'duration_seconds': '4.803250',
-      //   'description': 'xyz.wav',
-      //   'created_at': {
-      //     'date': '2020-11-24 01:41:58',
-      //     'timezone_type': 3,
-      //     'timezone': 'UTC'
-      //   },
-      //   'audio_uuid': '5fbc64e0c74e90.82972899'
-      // }
-      app.all('/audiofiles/upload', (req, res) => {
+      /**
+       * Mock the flowjs-2.0.0 backend GET route to mimic the upload result format:
+       * {
+       *   'audio_file_id': 147,
+       *   'duration_seconds': '4.803250',
+       *   'description': 'xyz.wav',
+       *   'created_at': {
+       *     'date': '2020-11-24 01:41:58',
+       *     'timezone_type': 3,
+       *     'timezone': 'UTC'
+       *   },
+       *   'audio_uuid': '5fbc64e0c74e90.82972899',
+       *   'uri': 'some_uri_value',
+       * }
+       * We can find a server implementation sample from:
+       * - https://github.com/flowjs/flow-php-server
+       * - https://packagist.org/packages/flowjs/flow-php-server
+       */
+      app.get('/audiofiles/upload', (req, res) => {
+        // Simulate `unknown upload chunk` with 404 status for GET method
+        res.writeHead(404, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({status: 'error', status_description: 'Unknown upload chunk'}))
+      })
+      /**
+       * Mock the flowjs-2.0.0 backend POST route
+       * Note, flowjs sends form-data as payload.
+       * We can find a server implementation sample from:
+       * - https://github.com/flowjs/flow-php-server
+       * - https://packagist.org/packages/flowjs/flow-php-server
+       */
+      app.post('/audiofiles/upload', bodyParser.json(), (req, res) => {
         const now = new Date()
           .toISOString()
           .split('T')
 
+        const audio_uuid = `${Math.random()
+          .toString(36)
+          .substr(2, 16)}.${Math.random()
+          .toString(36)
+          .substr(2, 10)}`
+        // TODO (Nice to have): replace original_extension with `req.body.flowFilename.split('.').pop()` when we know how to parse form-data from POST request
+        const original_extension = 'ogg'
         const result = {
           audio_file_id: Math.floor(Math.random() * (1000 + 1)),
           duration_seconds: Math.random() * 10,
-          description: req.query.flowFilename,
+          // TODO (Nice to have): replace description with `a description for ${req.body.flowFilename}` when we know how to parse form-data from POST request
+          description: `{a description from backend}`,
           created_at: {
             date: `${now[0]} ${now[1].split('.')[0]}`,
             timezone_type: 3,
             timezone: 'UTC',
           },
-          audio_uuid: `${Math.random()
-            .toString(36)
-            .substr(2, 16)}.${Math.random()
-            .toString(36)
-            .substr(2, 10)}`,
+          audio_uuid,
+          uri: `https://your-domain/path/to/${audio_uuid}.${original_extension}`,
         }
-        res.writeHead(200, { 'Content-Type': 'application/json' })
-        res.end(JSON.stringify(result))
+
+        // wait a while just to see the status in UI
+        setTimeout(function(){
+          res.writeHead(200, {'Content-Type': 'application/json'})
+          res.end(JSON.stringify(result))
+        }, 2000)
       })
+
       // Returns a flow container. The first flow is the active flow.
       // (Other flows are there because they are nested in this first flow
       // ...and referenced by UUID I think)

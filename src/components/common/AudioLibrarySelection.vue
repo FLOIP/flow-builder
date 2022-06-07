@@ -1,6 +1,6 @@
 <template>
   <div
-    class="well well-sm audio-library-selection"
+    class="audio-library-selection well well-sm"
     :data-audio-file-container-language="langId"
     :class="{
       'tree-audio-control-text-container-selectable': selectable,
@@ -22,33 +22,20 @@
         <span class="caret" />
       </button>
 
-      <ul class="dropdown-menu dropdown-menu-right">
-        <li>
-          <a
-            :href="audioFileUrl"
-            target="_blank"
-            class="tree-block-audio-files-download-original">{{ 'flow-builder.original-file'|trans }}</a>
-        </li>
-
-        <!--
-        <li>
-          <a :href="`/audiofiles/download/${audioFile.filename}/ogg`" target="_blank" class="tree-block-audio-files-download-ogg">
-            {{'flow-builder.download-X-format'|trans({kind: '.ogg'})}}
-          </a>
-        </li>
-        <li>
-          <a :href="`/audiofiles/download/${audioFile.filename}/ul`" target="_blank" class="tree-block-audio-files-download-ul">
-            {{'flow-builder.download-X-format'|trans({kind: '.ul'})}}
-          </a>
-        </li>
-        -->
-      </ul>
+      <div class="dropdown-menu dropdown-menu-right">
+        <a
+          class="dropdown-item"
+          :href="audioFileUrl"
+          target="_blank">
+          {{ 'flow-builder.original-file' | trans }}
+        </a>
+      </div>
     </div>
 
     <p
       class="audio-file-description"
       :title="audioFileUrl">
-      {{ audioFileUrl }}
+      {{ audioFileDescription }}
     </p>
 
     <div class="btn-toolbar">
@@ -69,15 +56,20 @@ import {mixins} from 'vue-class-component'
 import {Component, Prop} from 'vue-property-decorator'
 import Lang from '@/lib/filters/lang'
 import Moment from '@/lib/filters/moment'
+import {IAudioFile} from '../interaction-designer/resource-editors'
 
 @Component({})
 export class AudioLibrarySelection extends mixins(Lang, Moment) {
-  @Prop({type: String, required: true}) audioFile!: string
+  @Prop({type: Object, required: true}) audioFile!: IAudioFile
   @Prop() selectable?: boolean
   @Prop() langId?: string
 
   get audioFileUrl(): string {
-    return this.audioFile
+    return this.audioFile?.uri
+  }
+
+  get audioFileDescription(): string {
+    return this.audioFile?.description
   }
 
   select(): void {

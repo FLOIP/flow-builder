@@ -1,5 +1,5 @@
 import {IBlock, ILanguage} from '@floip/flow-runner'
-import {IAudioFile} from '@/store/builder'
+import {IAudioFile} from '../components/interaction-designer/resource-editors'
 
 export interface IBlockExtended extends IBlock {
   jsKey: string,
