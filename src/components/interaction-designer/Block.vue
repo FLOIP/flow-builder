@@ -78,7 +78,7 @@
           }"
           @mouseenter="isConnectionSourceRelocateActive && activateExitAsDropZone($event, exit)"
           @mouseleave="isConnectionSourceRelocateActive && deactivateExitAsDropZone($event, exit)">
-          <div v-if="!(exit.default && block.vendor_metadata.io_viamo.noValidResponse === NoValidResponseHandler.END_CALL)">
+          <div class="visible-exits">
             <div class="total-label-container">
               <span class="badge badge-primary tree-block-item-label tree-block-item-output-subscribers-1" />
             </div>
@@ -255,8 +255,8 @@ export class Block extends mixins(Lang) {
 
   get numberOfExitsShown(): number {
     const {exits} = this.block
-    const isDefaultShown = get(this.block.vendor_metadata, 'io_viamo.noValidResponse') === NoValidResponseHandler.CONTINUE_THRU_EXIT
-    return exits.length - (isDefaultShown ? 0 : 1)
+    // With the `Default` exit
+    return exits.length
   }
 
   get hasExitsShown(): boolean {
