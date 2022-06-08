@@ -17,15 +17,16 @@ export const actions = {
     {dispatch}: {dispatch: Dispatch},
     {props}: { props: { uuid: string } & Partial<IBlockConfig> },
   ): Promise<IBlock> {
-    return defaults(props, {
-      type: '',
-      name: '',
-      label: '',
-      semantic_label: '',
+    return defaults({
       config: {
         ...props?.config,
         ...await dispatch('initiateExtraVendorConfig'),
       },
+    }, props, {
+      type: '',
+      name: '',
+      label: '',
+      semantic_label: '',
       exits: [
         await dispatch('flow/block_createBlockDefaultExitWith', {
           props: ({
