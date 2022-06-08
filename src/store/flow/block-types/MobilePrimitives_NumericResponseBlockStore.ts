@@ -11,6 +11,43 @@ const lang = new Lang()
 
 export const BLOCK_TYPE = 'MobilePrimitives.NumericResponse'
 
+function normalizeNumericConfigProperty(value?: number | string | null): [number, boolean] {
+  let normalizedValue = 0
+  let hasValue = false
+
+  if (value !== undefined && value !== null) {
+    hasValue = true
+    normalizedValue = typeof value === 'number' ? value : parseInt(value, 10)
+  }
+
+  return [
+    normalizedValue,
+    hasValue,
+  ]
+}
+
+type DataPath = ErrorObject['dataPath']
+type MessageKey = string
+
+class SupplementaryAJVErrorsBuilder {
+  errors = new Map<DataPath, MessageKey>()
+
+  add(dataPath: DataPath, messageKey: MessageKey): SupplementaryAJVErrorsBuilder {
+    if (!this.errors.has(dataPath)) {
+      this.errors.set(dataPath, `flow-builder-validation.${messageKey}`)
+    }
+
+    return this
+  }
+
+  list(): ErrorObject[] {
+    return [...this.errors].map(([dataPath, messageKey]) => ({
+      dataPath,
+      message: lang.trans(messageKey),
+    } as ErrorObject))
+  }
+}
+
 const actions: ActionTree<IEmptyState, IRootState> = {
   ...baseActions,
 
@@ -72,69 +109,59 @@ const actions: ActionTree<IEmptyState, IRootState> = {
    */
   async validate({rootGetters, dispatch}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
     const validationResults = await dispatch('validateBlockWithCustomJsonSchema', {block, schemaVersion})
+    const errors = new SupplementaryAJVErrorsBuilder()
 
-    // Custom validation specific for the block
-    if (validationResults.ajvErrors == null) {
-      validationResults.ajvErrors = []
+    const [maxDigits, hasMaxDigits] = normalizeNumericConfigProperty((block.config as INumericBlockConfig)?.ivr?.max_digits)
+    const [validationMax, hasMax] = normalizeNumericConfigProperty((block.config as INumericBlockConfig)?.validation_maximum)
+    const [validationMin, hasMin] = normalizeNumericConfigProperty((block.config as INumericBlockConfig)?.validation_minimum)
+
+    const hasMinAndMax = hasMax && hasMin
+    const isMinGreaterThanMax = hasMinAndMax && validationMin > validationMax
+    const hasMinOnly = hasMin && !hasMax
+
+    const CONFIG_VALIDATION_MINIMUM = '/config/validation_minimum'
+    const CONFIG_VALIDATION_MAXIMUM = '/config/validation_maximum'
+    const CONFIG_MAX_DIGITS = '/config/ivr/max_digits'
+
+    // validationMax must be greater than validationMin
+    if (isMinGreaterThanMax || hasMinOnly) {
+      errors
+        .add(CONFIG_VALIDATION_MINIMUM, 'numeric-block-min-value-must-be-lower-than-max-value')
+        .add(CONFIG_VALIDATION_MAXIMUM, 'numeric-block-max-value-must-be-greater-than-min-value')
     }
 
-    const maxDigits = (block.config as INumericBlockConfig)?.ivr?.max_digits
-    const validationMax = (block.config as INumericBlockConfig)?.validation_maximum
-    const validationMin = (block.config as INumericBlockConfig)?.validation_minimum
-
-    // validationMin & validationMax relations, valid for all modes
-    if ((validationMax != null && validationMin != null && validationMax < validationMin)
-      || (validationMax == null && validationMin != null)) {
-      validationResults.ajvErrors.push({
-        dataPath: '/config/validation_minimum',
-        message: lang.trans('flow-builder-validation.numeric-block-min-value-must-be-lower-than-max-value'),
-      } as ErrorObject)
-      validationResults.ajvErrors.push({
-        dataPath: '/config/validation_maximum',
-        message: lang.trans('flow-builder-validation.numeric-block-max-value-must-be-greater-than-min-value'),
-      } as ErrorObject)
-    }
-
-    // MaxDigit & validationMin/validationMax relations, valid for iVR only
+    // IVR only checks
     if (rootGetters['flow/hasVoiceMode'] as boolean) {
-      // Must have one of MaxDigit or validationMax
-      if (maxDigits == null && validationMax == null) {
-        validationResults.ajvErrors.push({
-          dataPath: '/config/ivr/max_digits',
-          message: lang.trans('flow-builder-validation.numeric-block-missing-max-value-and-max-digits'),
-        } as ErrorObject)
-        validationResults.ajvErrors.push({
-          dataPath: '/config/validation_maximum',
-          message: lang.trans('flow-builder-validation.numeric-block-missing-max-value-and-max-digits'),
-        } as ErrorObject)
+      if (!hasMax && !hasMaxDigits) {
+        // Either maxDigits or validationMax must be defined
+        errors
+          .add(CONFIG_MAX_DIGITS, 'numeric-block-missing-max-value-and-max-digits')
+          .add(CONFIG_VALIDATION_MAXIMUM, 'numeric-block-missing-max-value-and-max-digits')
       }
 
-      if (maxDigits != null) {
-        // validationMin must comply with MaxDigit
-        if (validationMin != null && maxDigits * 9 < validationMin) {
-          validationResults.ajvErrors.push({
-            dataPath: '/config/ivr/max_digits',
-            message: lang.trans('flow-builder-validation.numeric-block-min-value-must-be-lower-than-implied-max-digits'),
-          } as ErrorObject)
-          validationResults.ajvErrors.push({
-            dataPath: '/config/validation_minimum',
-            message: lang.trans('flow-builder-validation.numeric-block-min-value-must-be-lower-than-implied-max-digits'),
-          } as ErrorObject)
-        }
+      // Both validationMin and validationMax must have no more digits than allowed
+      if (hasMaxDigits) {
+        const maxValue = 10 ** maxDigits - 1
 
-        // validationMax must comply with MaxDigit
-        if (validationMax != null && maxDigits * 9 < validationMax) {
-          validationResults.ajvErrors.push({
-            dataPath: '/config/ivr/max_digits',
-            message: lang.trans('flow-builder-validation.numeric-block-max-value-must-be-lower-than-implied-max-digits'),
-          } as ErrorObject)
-          validationResults.ajvErrors.push({
-            dataPath: '/config/validation_maximum',
-            message: lang.trans('flow-builder-validation.numeric-block-max-value-must-be-lower-than-implied-max-digits'),
-          } as ErrorObject)
+        if (hasMin && validationMin > maxValue) {
+          errors
+            .add(CONFIG_MAX_DIGITS, 'numeric-block-min-value-must-be-lower-than-implied-max-digits')
+            .add(CONFIG_VALIDATION_MINIMUM, 'numeric-block-min-value-must-be-lower-than-implied-max-digits')
+        }
+        if (hasMax && validationMax > maxValue) {
+          errors
+            .add(CONFIG_MAX_DIGITS, 'numeric-block-max-value-must-be-lower-than-implied-max-digits')
+            .add(CONFIG_VALIDATION_MAXIMUM, 'numeric-block-max-value-must-be-lower-than-implied-max-digits')
         }
       }
     }
+
+    const allErrors = [
+      ...validationResults.ajvErrors ?? [],
+      ...errors.list(),
+    ]
+
+    validationResults.ajvErrors = allErrors.length > 0 ? allErrors : null
 
     return validationResults
   },
