@@ -22,7 +22,10 @@ export const actions = {
       name: '',
       label: '',
       semantic_label: '',
-      config: {},
+      config: {
+        ...props?.config,
+        ...await dispatch('initiateExtraVendorConfig'),
+      },
       exits: [
         await dispatch('flow/block_createBlockDefaultExitWith', {
           props: ({
