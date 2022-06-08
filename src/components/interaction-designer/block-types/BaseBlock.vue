@@ -3,6 +3,7 @@
     <h3 class="block-editor-header">
       {{ `flow-builder.${block.type}` | trans }}
     </h3>
+    <slot name="description" />
 
     <fieldset :disabled="!isEditable">
       <label-editor
