@@ -187,7 +187,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
 
     const resourcesWithSupportedValues = map(resources, (resource: IResource) => {
       const resourceWithNewValues = cloneDeep(resource)
-      // only get values having supported modes && values which content type is supported by the UI
+      // only get values having supported modes and values which content type is supported by the UI
       resourceWithNewValues.values = filter(
         resource.values,
         (v) => {
