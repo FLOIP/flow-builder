@@ -75,7 +75,7 @@
 
 <script lang="ts">
 import Lang from '@/lib/filters/lang'
-import {Dictionary, castArray, filter, get, has, pickBy, replace, size} from 'lodash'
+import {castArray, filter, has, pickBy, size} from 'lodash'
 import {IValidationStatus} from '@/store/validation'
 import Routes from '@/lib/mixins/Routes'
 import Component, {mixins} from 'vue-class-component'
@@ -111,13 +111,6 @@ export class ErrorNotifications extends mixins(Routes, Lang) {
     return pickBy(this.validationStatuses, (value: IValidationStatus, key) => key.includes('block/') && blocksMap[key])
   }
 
-  get resourceValidationStatusesForActiveFlow(): Dictionary<IValidationStatus> {
-    return pickBy(this.validationStatuses, (status, key) => {
-      const resourceUuid = replace(key, 'resource/', '')
-      return this.resourceUuidsOnActiveFlow.includes(resourceUuid) && !get(this.validationStatuses, `resource/${resourceUuid}`)?.isValid
-    })
-  }
-
   hasBlockValidationErrors(uuid: string): boolean {
     return has(this.blockValidationStatuses, `block/${uuid}`)
   }
@@ -125,12 +118,12 @@ export class ErrorNotifications extends mixins(Routes, Lang) {
   hasResourceValidationErrors(uuidOrUuids: string | string[]): boolean {
     const uuids = castArray(uuidOrUuids)
 
-    for (let i = 0; i < uuids.length; i += 1) {
-      if (has(this.resourceValidationStatusesForActiveFlow, `resource/${uuids[i]}`)) {
-        return true
-      }
-    }
-    return false
+    return uuids.some(uuid => {
+      const isValid = this.validationStatuses[`resource/${uuid}`]?.isValid
+      const doesBelongToActiveFlow = this.activeFlow?.resources.some(resource => resource.uuid === uuid)
+
+      return isValid === false && doesBelongToActiveFlow
+    }, this)
   }
 
   isBlockInvalid(block: IBlock): boolean {
