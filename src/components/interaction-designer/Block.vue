@@ -182,7 +182,6 @@ import {
   SupportedOperation,
 } from '@/store/builder'
 import Lang from '@/lib/filters/lang'
-import {NoValidResponseHandler} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import {BlockClasses, IPositionLeftTop} from '@/lib/types'
 
 const LABEL_CONTAINER_MAX_WIDTH = 650
@@ -209,8 +208,6 @@ export class Block extends mixins(Lang) {
   blockHeight = 0
   exitHovers = {}
   lineHovers: Record<IBlockExit['uuid'], boolean> = {}
-
-  readonly NoValidResponseHandler = NoValidResponseHandler
 
   created(): void {
     this.initDraggableForExitsByUuid()
