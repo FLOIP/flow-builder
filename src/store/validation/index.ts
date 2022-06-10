@@ -174,14 +174,12 @@ export const actions: ActionTree<IValidationState, IRootState> = {
    * Resources may have unsupported values, so we should only validate:
    * - values which correspond to supported modes (provided by user)
    * - values which correspond to supported content type: ['TEXT', 'AUDIO'] (hard coded in UI, see ResourceEditor component)
+   * - values which correspond to supported languages
    *
-   * @param dispatch
-   * @param resources
-   * @param supportedModes
    */
   async validate_resourcesOnSupportedValues(
     {dispatch, getters},
-    {resources, supportedModes}: {resources: IResource[], supportedModes: SupportedMode[]},
+    {resources, supportedModes, supportedLanguages}: {resources: IResource[], supportedModes: SupportedMode[], supportedLanguages: ILanguage[]},
   ): Promise<void> {
     if (!resources) {
       return
@@ -189,15 +187,16 @@ export const actions: ActionTree<IValidationState, IRootState> = {
 
     const resourcesWithSupportedValues = map(resources, (resource: IResource) => {
       const resourceWithNewValues = cloneDeep(resource)
-      // only get values having supported modes && values which content type is supported by the UI
+      // only get values having supported modes and values which content type is supported by the UI
       resourceWithNewValues.values = filter(
         resource.values,
         (v) => {
+          const hasSupportedLang = includes(map(supportedLanguages, 'id'), v.language_id)
           const isChoiceResource = v.mime_type === getters.choiceMimeType
           const hasSupportedMode = !isEmpty(intersection(supportedModes, v.modes))
           const hasContentType = includes([SupportedContentType.TEXT, SupportedContentType.AUDIO], v.content_type)
 
-          return isChoiceResource || (hasSupportedMode && hasContentType)
+          return isChoiceResource || (hasSupportedLang && hasSupportedMode && hasContentType)
         },
       )
 
