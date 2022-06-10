@@ -1,0 +1,2 @@
+# Ignore 3rd party dependency codes
+src/lib/flow-2.0.0.js
