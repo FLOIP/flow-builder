@@ -74,8 +74,8 @@ class MobilePrimitives_OpenResponseBlock extends mixins(Lang) {
   @flowVuexNamespace.Getter hasTextMode!: boolean
   @flowVuexNamespace.Getter hasVoiceMode!: boolean
 
-  @blockVuexNamespace.Action setMaxDurationSeconds!: (newDuration: number) => Promise<string>
-  @blockVuexNamespace.Action setEndRecordingDigits!: (endRecordingDigits: string) => Promise<string>
+  @blockVuexNamespace.Action setMaxDurationSeconds!: (newDuration: number) => Promise<void>
+  @blockVuexNamespace.Action setEndRecordingDigits!: (endRecordingDigits: string) => Promise<void>
   @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
 
   @builderVuexNamespace.Getter isEditable !: boolean

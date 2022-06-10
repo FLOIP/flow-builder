@@ -1,6 +1,6 @@
 <template>
   <div class="advanced-exits-builder">
-    <h6>Set advanced exit configurations using test expressions</h6>
+    <h6>{{ trans('flow-builder.hint-to-set-advance-exit') }}</h6>
 
     <template v-for="(exit, i) in block.exits">
       <advanced-exit-editor
@@ -10,7 +10,7 @@
         :block="block"
         :exit="exit"
         :label="(i + 1).toString()"
-        class="advanced-block-exit-builder-item mb-3"
+        class="advanced-block-exit-builder-item mb-2"
         @afterExitTestChanged="handleExitChanged(exit, i)"
         @afterExitNameChanged="handleExitChanged(exit, i)" />
     </template>

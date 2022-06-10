@@ -360,6 +360,7 @@ module.exports = {
     'no-else-return': ['off'],
     'spaced-comment': 'off',
     'line-comment-position': ['error', {position: 'above'}],
+    'arrow-parens': 'off',
 
     /**********
      * Lodash *
