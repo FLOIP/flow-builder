@@ -1,8 +1,8 @@
 <template>
   <div class="base-block">
-    <h3 class="block-editor-header">
-      {{ `flow-builder.${block.type}` | trans }}
-    </h3>
+    <div class="block-editor-header remove-margin-left-right">
+      <h3 class="put-back-margin-left-right">{{ `flow-builder.${block.type}` | trans }}</h3>
+    </div>
 
     <fieldset :disabled="!isEditable">
       <label-editor
