@@ -24,6 +24,7 @@
             :placeholder="'flow-builder.enter-expression' | trans"
             :current-expression="value"
             :valid-state="isValid"
+            :rows="expressionEditorRows"
             @commitExpressionChange="commitExpressionChange" />
         </validation-message>
       </slot>
@@ -62,6 +63,7 @@ class Core_OutputBlock extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
   @Prop({default: false}) readonly usesDefaultContactPropsEditor!: boolean
+  @Prop({type: Number, default: 1}) readonly expressionEditorRows!: number
 
   get value(): string {
     return this.block.config.value || ''
