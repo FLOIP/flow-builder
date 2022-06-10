@@ -13,7 +13,7 @@ import {
   cloneDeep,
   defaults,
   difference,
-  filter,
+  compact,
   find,
   first,
   isEmpty,
@@ -30,7 +30,7 @@ import {IRootState} from '@/store'
 export const getters: GetterTree<IFlowsState, IRootState> = {
   resourcesByUuidOnActiveFlow: (_state, getters) => keyBy(getters.activeFlow.resources, 'uuid'),
 
-  resourceUuidsOnActiveFlow: (_state, getters) => filter(getters.activeFlow.resources, (res) => res.uuid),
+  resourceUuidsOnActiveFlow: (_state, getters) => compact(map(getters.activeFlow.resources, (res) => res.uuid)),
 }
 
 export const mutations: MutationTree<IFlowsState> = {
