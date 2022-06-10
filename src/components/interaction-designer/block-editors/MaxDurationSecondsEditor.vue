@@ -1,15 +1,15 @@
 <template>
   <validation-message
     v-if="hasIvr"
-    class="max-duration-seconds-editor"
     :message-key="`block/${block.uuid}/config/ivr/max_duration_seconds`">
     <template #input-control="{ isValid }">
       <numeric-editor
         v-model.number="duration"
         :regex-numeric-filtering="'[0-9]'"
-        :label="'flow-builder.max-duration-in-seconds' | trans"
-        :placeholder="'flow-builder.enter-value' | trans"
-        :valid-state="isValid" />
+        :label="trans('flow-builder.max-duration-in-seconds')"
+        :placeholder="trans('flow-builder.enter-value')"
+        :valid-state="isValid"
+        class="max-duration-seconds-editor" />
     </template>
   </validation-message>
 </template>
@@ -26,7 +26,7 @@ export class MaxDurationSecondsEditor extends mixins(Lang) {
   @Prop({type: Object, required: true}) readonly block!: IBlock
   @Prop({type: Boolean, default: true}) readonly hasIvr!: boolean
 
-  readonly defaultMaxDuration = 0
+  readonly defaultMaxDuration = 60
 
   get duration(): number {
     return get(this.block, 'config.ivr.max_duration_seconds', '')
@@ -34,6 +34,12 @@ export class MaxDurationSecondsEditor extends mixins(Lang) {
 
   set duration(value: number) {
     this.$emit('commitMaxDurationChange', value)
+  }
+
+  created(): void {
+    if (!this.duration) {
+      this.duration = this.defaultMaxDuration
+    }
   }
 }
 

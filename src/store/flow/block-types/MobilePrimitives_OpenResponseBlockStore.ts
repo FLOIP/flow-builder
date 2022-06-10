@@ -10,29 +10,22 @@ export const BLOCK_TYPE = 'MobilePrimitives.OpenResponse'
 const actions: ActionTree<IEmptyState, IRootState> = {
   ...baseActions,
 
-  async setMaxDurationSeconds({commit, rootGetters}, newDuration: number) {
+  async setMaxDurationSeconds({commit, rootGetters}, duration: number) {
     const activeBlock = rootGetters['builder/activeBlock']
-    commit('flow/block_updateConfigByKey', {
+    commit('flow/block_updateConfigByPath', {
       blockId: activeBlock.uuid,
-      key: 'ivr',
-      value: {
-        max_duration_seconds: newDuration,
-      },
+      path: 'ivr.max_duration_seconds',
+      value: duration,
     }, {root: true})
-    return newDuration
   },
 
   async setEndRecordingDigits({commit, rootGetters}, endRecordingDigits: number) {
     const activeBlock = rootGetters['builder/activeBlock']
-    const value = {
-      end_recording_digits: endRecordingDigits,
-    }
-    commit('flow/block_updateConfigByKey', {
+    commit('flow/block_updateConfigByPath', {
       blockId: activeBlock.uuid,
-      key: 'ivr',
-      value,
+      path: 'ivr.end_recording_digits',
+      value: endRecordingDigits,
     }, {root: true})
-    return value
   },
 
   async createWith({dispatch, commit}, {props}: { props: { uuid: string } & Partial<IOpenResponseBlock> }) {
@@ -40,6 +33,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
     props.config = {
       prompt: blankResource.uuid,
+      ...await dispatch('initiateExtraVendorConfig'),
     }
     return baseActions.createWith({dispatch}, {props})
   },
