@@ -24,3 +24,18 @@ h3 {
 h4 {
   color: #812C5A;
 }
+
+/*remove margin to make sure the element won't use Bootstrap margins, and then the right background*/
+.remove-margin-left-right {
+  margin-left: -15px !important;
+  margin-right: -15px !important;
+}
+
+.put-back-margin-left-right {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.bg-grey {
+  background-color: $neutral-50;
+}
