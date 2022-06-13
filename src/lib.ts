@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import {createDefaultBlockTypeInstallerFor as createDefaultBlockTypeInstallerForFunction} from '@/store/builder'
-import {Component} from 'vue-property-decorator'
 
+import './class-component-hooks'
 import registerCustomComponents from '@/common-imports'
 
 // To register components globally by default
@@ -15,8 +15,6 @@ import defaultLocalisationsJson from './assets/messages.json'
 // Block helpers
 import BaseBlockComponent from './components/interaction-designer/block-types/BaseBlock.vue'
 import BaseStore from './store/flow/block-types/BaseBlock'
-
-Component.registerHooks(['beforeRouteUpdate'])
 
 export const appConfig = require('../app.config')
 export const builderConfig = require('../builder.config')

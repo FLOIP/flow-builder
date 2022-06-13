@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {Component} from 'vue-property-decorator'
 
 /**
  * This import modifies the jquery that should already be on the page globally at global.$
@@ -12,12 +11,11 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'vue-multiselect/dist/vue-multiselect.min.css'
 import 'scss/main.scss'
 
+import './class-component-hooks'
 import registerCustomComponents from '@/common-imports'
 
 import router from './router'
 import App from './App.vue'
-
-Component.registerHooks(['beforeRouteUpdate'])
 
 registerCustomComponents()
 
