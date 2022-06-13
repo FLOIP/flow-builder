@@ -57,9 +57,18 @@ const flowNamespace = namespace('flow')
 const builderNamespace = namespace('builder')
 const clipboardNamespace = namespace('clipboard')
 
-@Component({
+@Component<InteractionDesigner>({
   components: {
     ClipboardRoot,
+  },
+  beforeRouteUpdate(to: Route, from: Route, next: Function): void {
+    console.log('Bulat InteractionDesigner.beforeRouteUpdate activateBlock. blockId:', to.params.blockId)
+    this.activateBlock({blockId: to.params.blockId || null})
+    if (to.meta?.isBlockEditorShown as boolean) {
+      scrollBlockIntoView(to.params.blockId)
+      this.setIsBlockEditorOpen(true)
+    }
+    next()
   },
 })
 export class InteractionDesigner extends mixins(Lang, Routes) {
@@ -211,16 +220,6 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     if (this.activeFlow && this.$refs['interaction-designer-contents'] !== undefined) {
       this.setInteractionDesignerBoundingClientRect((this.$refs['interaction-designer-contents'] as Element).getBoundingClientRect())
     }
-  }
-
-  beforeRouteUpdate(to: Route, from: Route, next: Function): void {
-    console.log('Bulat InteractionDesigner.beforeRouteUpdate activateBlock. blockId:', to.params.blockId)
-    this.activateBlock({blockId: to.params.blockId || null})
-    if (to.meta?.isBlockEditorShown as boolean) {
-      scrollBlockIntoView(to.params.blockId)
-      this.setIsBlockEditorOpen(true)
-    }
-    next()
   }
 
   @Mutation configure!: ({appConfig, builderConfig}: {appConfig: object, builderConfig: object}) => void

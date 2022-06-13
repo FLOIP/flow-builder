@@ -100,7 +100,7 @@ export class BlockToolbar extends mixins(Lang) {
   }
 
   handleExpandMinimizeBlockEditor(): void {
-    console.log('Bulat handleExpandMinimizeBlockEditor')
+    console.log('Bulat handleExpandMinimizeBlockEditor. this.$router:', this.$router)
     this.setIsBlockEditorOpen(!this.isEditorVisible)
     let routerName = ''
     if (this.isEditorVisible) {
