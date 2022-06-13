@@ -480,6 +480,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       },
       // todo push out to intx-designer
     })
+    console.log('Bulat handleAddBlockByTypeSelected activateBlock. blockId:', blockId)
     this.activateBlock({blockId})
     await this.$router.push({
       name: 'block-selected-details',

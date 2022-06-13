@@ -246,6 +246,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       })
     })
 
+    console.log('Bulat flow_removeBlock activateBlock')
     commit('builder/activateBlock', {blockId: null}, {root: true})
   },
 

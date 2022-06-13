@@ -111,6 +111,7 @@ export class BaseMountedVueClass extends Vue {
     const block = await this.flow_addBlankBlockByType({type: BLOCK_TYPE})
     const {uuid: blockId} = block
 
+    console.log('Bulat storeSetup activateBlock. blockId:', blockId)
     this.activateBlock({blockId})
 
     return {block, flow}

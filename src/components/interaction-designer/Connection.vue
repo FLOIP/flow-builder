@@ -215,12 +215,15 @@ export class Connection extends mixins(Lang) {
   clickHandler(): void {
     this.isPermanentlyActive = true
     this.activateConnection({connectionContext: this.connectionContext})
+    console.log('Bulat clickHandler activateBlock')
     this.activateBlock({blockId: null})
     this.$emit('lineMouseIn')
   }
 
   clickAwayHandler(connectionElement: Element): void {
     document.addEventListener('click', (event) => {
+      console.log('Bulat clickAwayHandler event')
+
       // Do not listen if the connection was not fully set
       if (!this.line?.end) {
         return

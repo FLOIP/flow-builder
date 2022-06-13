@@ -101,6 +101,7 @@ export const getters: GetterTree<IBuilderState, IRootState> = {
 
 export const mutations: MutationTree<IBuilderState> = {
   activateBlock(state, {blockId}: { blockId: IBlock['uuid'] | null }) {
+    console.log('Bulat activateBlock mutation. blockId:', blockId)
     state.activeBlockId = blockId
 
     // simulate engaging with specified block

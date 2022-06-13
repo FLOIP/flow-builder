@@ -196,6 +196,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     setTimeout(() => {
       const {blockId, field} = this.$route.params
       if (blockId) {
+        console.log('Bulat InteractionDesigner.mounted activateBlock. this.$route.params:', this.$route.params)
         this.activateBlock({blockId})
         scrollBlockIntoView(blockId)
       }
@@ -215,6 +216,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   }
 
   beforeRouteUpdate(to: Route, from: Route, next: Function): void {
+    console.log('Bulat InteractionDesigner.beforeRouteUpdate activateBlock. blockId:', to.params.blockId)
     this.activateBlock({blockId: to.params.blockId || null})
     if (to.meta?.isBlockEditorShown as boolean) {
       scrollBlockIntoView(to.params.blockId)
