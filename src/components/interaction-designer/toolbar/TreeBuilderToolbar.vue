@@ -468,24 +468,29 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   // Methods #####################
 
   async handleAddBlockByTypeSelected({type}: { type: IBlock['type'] }): Promise<void> {
-    const {uuid: blockId} = await this.flow_addBlankBlockByType({
-      type,
-      ui_metadata: {
-        canvas_coordinates: computeBlockUiData(this.activeBlock),
-      },
-      vendor_metadata: {
-        io_viamo: {
-          uiData: computeBlockVendorUiData(this.activeBlock),
+    console.log('Bulat handleAddBlockByTypeSelected 0')
+    try {
+      const {uuid: blockId} = await this.flow_addBlankBlockByType({
+        type,
+        ui_metadata: {
+          canvas_coordinates: computeBlockUiData(this.activeBlock),
         },
-      },
-      // todo push out to intx-designer
-    })
-    console.log('Bulat handleAddBlockByTypeSelected activateBlock. blockId:', blockId)
-    this.activateBlock({blockId})
-    await this.$router.push({
-      name: 'block-selected-details',
-      params: {blockId},
-    })
+        vendor_metadata: {
+          io_viamo: {
+            uiData: computeBlockVendorUiData(this.activeBlock),
+          },
+        },
+        // todo push out to intx-designer
+      })
+      console.log('Bulat handleAddBlockByTypeSelected activateBlock. blockId:', blockId)
+      this.activateBlock({blockId})
+      await this.$router.push({
+        name: 'block-selected-details',
+        params: {blockId},
+      })
+    } catch (e) {
+      console.log('Bulat flow_addBlankBlockByType error:', e)
+    }
   }
 
   async handlePersistFlow(route: RawLocation): Promise<void> {
