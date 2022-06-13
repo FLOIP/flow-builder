@@ -53,8 +53,6 @@ import {Route} from 'vue-router'
 import {IBlock, IFlow} from '@floip/flow-runner'
 import {ErrorObject} from 'ajv'
 
-Component.registerHooks(['beforeRouteUpdate'])
-
 const flowNamespace = namespace('flow')
 const builderNamespace = namespace('builder')
 const clipboardNamespace = namespace('clipboard')

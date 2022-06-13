@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import {Component} from 'vue-property-decorator'
 
 /**
  * This import modifies the jquery that should already be on the page globally at global.$
@@ -15,6 +16,8 @@ import registerCustomComponents from '@/common-imports'
 
 import router from './router'
 import App from './App.vue'
+
+Component.registerHooks(['beforeRouteUpdate'])
 
 registerCustomComponents()
 
