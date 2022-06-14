@@ -20,24 +20,10 @@ const actions: ActionTree<IEmptyState, IRootState> = {
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ISetGroupMembershipBlockConfig> }) {
     props.type = BLOCK_TYPE
     props.config = {
-      group_key: '',
-      group_name: '',
-      is_member: null,
+      is_member: true,
+      groups: [],
     }
     return baseActions.createWith({dispatch}, {props})
-  },
-
-  async setIsMember({commit, rootGetters}, action) {
-    const activeBlock = rootGetters['builder/activeBlock']
-    let isMember = false
-    if (action) {
-      isMember = action.id === ADD_KEY
-    }
-    commit('flow/block_updateConfigByPath', {
-      blockId: activeBlock.uuid,
-      path: 'is_member',
-      value: isMember,
-    }, {root: true})
   },
 }
 

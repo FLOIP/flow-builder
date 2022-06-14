@@ -74,32 +74,8 @@ class Core_SetGroupMembershipBlock extends mixins(Lang) {
     },
   ]
 
-  get selectedAction(): IGroupActionOption {
-    const {is_member} = this.block.config as ISetGroupMembershipBlockConfig
-    if (!is_member) {
-      return find(this.actionsList, {id: REMOVE_KEY}) || {} as IGroupActionOption
-    }
-
-    if (is_member) {
-      return find(this.actionsList, {id: ADD_KEY}) || {} as IGroupActionOption
-    }
-
-    return {} as IGroupActionOption
-  }
-
-  set selectedAction(action: IGroupActionOption) {
-    this.setIsMember(action)
-  }
-
-  @blockVuexNamespace.Action setIsMember!: (action: IGroupActionOption) => Promise<void>
   @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
   @builderVuexNamespace.Getter isEditable!: boolean
-
-  @flowVuexNamespace.Mutation block_updateConfigByPath!: ({
-    blockId,
-    path,
-    value,
-  }: { blockId: string, path: string, value: object | string }) => void
 }
 
 export default Core_SetGroupMembershipBlock
