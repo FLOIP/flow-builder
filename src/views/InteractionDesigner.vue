@@ -53,22 +53,15 @@ import {Route} from 'vue-router'
 import {IBlock, IFlow} from '@floip/flow-runner'
 import {ErrorObject} from 'ajv'
 
+Component.registerHooks(['beforeRouteUpdate'])
+
 const flowNamespace = namespace('flow')
 const builderNamespace = namespace('builder')
 const clipboardNamespace = namespace('clipboard')
 
-@Component<InteractionDesigner>({
+@Component({
   components: {
     ClipboardRoot,
-  },
-  beforeRouteUpdate(to: Route, from: Route, next: Function): void {
-    console.log('Bulat InteractionDesigner.beforeRouteUpdate activateBlock. blockId:', to.params.blockId)
-    this.activateBlock({blockId: to.params.blockId || null})
-    if (to.meta?.isBlockEditorShown as boolean) {
-      scrollBlockIntoView(to.params.blockId)
-      this.setIsBlockEditorOpen(true)
-    }
-    next()
   },
 })
 export class InteractionDesigner extends mixins(Lang, Routes) {
@@ -203,7 +196,6 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     setTimeout(() => {
       const {blockId, field} = this.$route.params
       if (blockId) {
-        console.log('Bulat InteractionDesigner.mounted activateBlock. this.$route.params:', this.$route.params)
         this.activateBlock({blockId})
         scrollBlockIntoView(blockId)
       }
@@ -220,6 +212,15 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     if (this.activeFlow && this.$refs['interaction-designer-contents'] !== undefined) {
       this.setInteractionDesignerBoundingClientRect((this.$refs['interaction-designer-contents'] as Element).getBoundingClientRect())
     }
+  }
+
+  beforeRouteUpdate(to: Route, from: Route, next: Function): void {
+    this.activateBlock({blockId: to.params.blockId || null})
+    if (to.meta?.isBlockEditorShown as boolean) {
+      scrollBlockIntoView(to.params.blockId)
+      this.setIsBlockEditorOpen(true)
+    }
+    next()
   }
 
   @Mutation configure!: ({appConfig, builderConfig}: {appConfig: object, builderConfig: object}) => void

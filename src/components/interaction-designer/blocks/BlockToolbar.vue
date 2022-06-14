@@ -100,7 +100,6 @@ export class BlockToolbar extends mixins(Lang) {
   }
 
   handleExpandMinimizeBlockEditor(): void {
-    console.log('Bulat handleExpandMinimizeBlockEditor. this.$router:', this.$router)
     this.setIsBlockEditorOpen(!this.isEditorVisible)
     let routerName = ''
     if (this.isEditorVisible) {
@@ -116,9 +115,8 @@ export class BlockToolbar extends mixins(Lang) {
         name: routerName,
         params: {blockId: this.block.uuid},
       },
-      () => console.log('Bulat handleExpandMinimizeBlockEditor onComplete'),
+      undefined,
       (err) => {
-        console.log('Bulat handleExpandMinimizeBlockEditor onAbort')
         if (err == null) {
           console.warn('Unknown navigation error has occurred when expanding/minimizing a block editor')
         } else if (err.name !== 'NavigationDuplicated') {

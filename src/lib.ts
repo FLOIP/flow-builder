@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import {createDefaultBlockTypeInstallerFor as createDefaultBlockTypeInstallerForFunction} from '@/store/builder'
 
-import './class-component-hooks'
 import registerCustomComponents from '@/common-imports'
 
 // To register components globally by default

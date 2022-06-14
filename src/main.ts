@@ -11,7 +11,6 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'vue-multiselect/dist/vue-multiselect.min.css'
 import 'scss/main.scss'
 
-import './class-component-hooks'
 import registerCustomComponents from '@/common-imports'
 
 import router from './router'
