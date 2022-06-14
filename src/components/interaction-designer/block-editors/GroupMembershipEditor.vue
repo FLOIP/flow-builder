@@ -2,8 +2,8 @@
   <div class="group-membership-editor">
     <hr>
     <div class="form-group">
-      <label class="text-primary">{{ 'flow-builder.action-label' | trans }}</label>
-      <p>{{ 'flow-builder.group-membership-action-hint' | trans }}</p>
+      <label class="text-primary">{{ trans('flow-builder.action-label') }}</label>
+      <p>{{ trans('flow-builder.group-membership-action-hint') }}</p>
       <div class="form-group">
         <div class="custom-control custom-radio">
           <input
@@ -16,7 +16,7 @@
           <label
             class="custom-control-label font-weight-normal"
             for="addGroup">
-            {{ 'flow-builder.set-group-membership' | trans }}
+            {{ trans('flow-builder.set-group-membership') }}
           </label>
         </div>
         <div class="custom-control custom-radio">
@@ -30,7 +30,7 @@
           <label
             class="custom-control-label font-weight-normal"
             for="clearGroup">
-            {{ 'flow-builder.clear-group-membership' | trans }}
+            {{ trans('flow-builder.clear-group-membership') }}
           </label>
         </div>
         <div class="custom-control custom-radio">
@@ -44,35 +44,38 @@
           <label
             class="custom-control-label font-weight-normal"
             for="setFromExpression">
-            {{ 'flow-builder.set-group-membership-from-expression' | trans }}
+            {{ trans('flow-builder.set-group-membership-from-expression') }}
           </label>
         </div>
       </div>
 
       <validation-message
-        #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/group_key`">
-        <div class="block-group-key">
-          <text-editor
-            v-model="groupKey"
-            :label="'flow-builder.group-label' | trans"
-            :label-class="'font-weight-bold'"
-            :placeholder="'flow-builder.enter-group-label' | trans"
-            :valid-state="isValid" />
-        </div>
+        <template #input-control="{ isValid }">
+          <div class="block-group-key">
+            <text-editor
+              v-model="groupKey"
+              :label="trans('flow-builder.group-label')"
+              :label-class="'font-weight-bold'"
+              :placeholder="trans('flow-builder.enter-group-label')"
+              :valid-state="isValid" />
+          </div>
+        </template>
       </validation-message>
 
       <validation-message
         v-if="membershipAction === MEMBERSHIP_ACTION.SET_FROM_EXPRESSION"
-        #input-control="{ isValid }"
+
         :message-key="`block/${block.uuid}/config/is_member`">
-        <expression-input
-          :label="'flow-builder.value-expression' | trans"
-          :placeholder="'flow-builder.enter-expression' | trans"
-          :label-class="'font-weight-bold'"
-          :current-expression="isMember"
-          :valid-state="isValid"
-          @commitExpressionChange="updateIsMemberExpression" />
+        <template #input-control="{ isValid }">
+          <expression-input
+            :label="trans('flow-builder.value-expression')"
+            :placeholder="trans('flow-builder.enter-expression')"
+            :label-class="'font-weight-bold'"
+            :current-expression="isMember"
+            :valid-state="isValid"
+            @commitExpressionChange="updateIsMemberExpression" />
+        </template>
       </validation-message>
     </div>
   </div>
