@@ -1,7 +1,9 @@
 <template>
   <div class="base-block">
     <div class="block-editor-header remove-margin-left-right">
-      <h3 class="put-back-margin-left-right">{{ `flow-builder.${block.type}` | trans }}</h3>
+      <h3 class="put-back-margin-left-right">
+        {{ trans(`flow-builder.${block.type}`) }}
+      </h3>
     </div>
 
     <slot name="description" />
