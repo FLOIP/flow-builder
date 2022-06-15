@@ -216,8 +216,6 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
 
   @Watch('$route', {deep: true})
   handleRouteUpdate(to: Route): void {
-    console.log('Bulat this', this)
-    console.log('Bulat this.$route', this.$route)
     this.activateBlock({blockId: to.params.blockId || null})
     if (to.meta?.isBlockEditorShown as boolean) {
       scrollBlockIntoView(to.params.blockId)
