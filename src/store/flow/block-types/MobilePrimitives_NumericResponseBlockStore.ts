@@ -1,11 +1,12 @@
 import {ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, INumericBlockConfig} from '@floip/flow-runner'
+import {IBlock, IBlockExit, INumericBlockConfig} from '@floip/flow-runner'
 import {INumericResponseBlock} from '@floip/flow-runner/src/model/block/INumericResponseBlock'
 import {cloneDeep} from 'lodash'
 import Lang from '@/lib/filters/lang'
 import {ErrorObject} from 'ajv'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 
 const lang = new Lang()
 
@@ -92,13 +93,22 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       validation_maximum: undefined,
       ...await dispatch('initiateExtraVendorConfig'),
     }
+
+    props.exits = [
+      await dispatch('flow/block_createBlockDefaultExitWith', {
+        props: ({
+          uuid: await (new IdGeneratorUuidV4()).generate(),
+          name: 'Invalid',
+        }) as IBlockExit,
+      }, {root: true}),
+    ]
     return baseActions.createWith({dispatch}, {props})
   },
 
   handleBranchingTypeChangedToUnified({dispatch}, {block}: {block: IBlock}) {
-    dispatch('flow/block_convertExitFormationToUnified', {
+    dispatch('flow/block_updateBranchingExitsWithInvalidScenario', {
       blockId: block.uuid,
-      test: 'is_number(block.value)',
+      test: '@ISNUMBER(block.value)',
     }, {root: true})
   },
 

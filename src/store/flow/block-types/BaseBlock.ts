@@ -15,7 +15,7 @@ export const mutations: MutationTree<IEmptyState> = {}
 export const actions = {
   async createWith(
     {dispatch}: {dispatch: Dispatch},
-    {props}: { props: { uuid: string } & Partial<IBlockConfig> },
+    {props}: { props: { uuid: string } & Partial<IBlock> },
   ): Promise<IBlock> {
     return defaults(props, {
       type: '',
@@ -23,7 +23,7 @@ export const actions = {
       label: '',
       semantic_label: '',
       config: {},
-      exits: [
+      exits: props?.exits ?? [
         await dispatch('flow/block_createBlockDefaultExitWith', {
           props: ({
             uuid: await (new IdGeneratorUuidV4()).generate(),

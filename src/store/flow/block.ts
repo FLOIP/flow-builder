@@ -132,13 +132,12 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     {props}: { props: { uuid: string } & Partial<IBlockExit> },
   ): Promise<IBlockExit> {
     return dispatch('block_createBlockExitWith', {
-      props: {
-        ...props,
-        name: 'Default',
-        default: true,
-        // todo: fix flow-runner's handling of ".test"-less exits
-        test: '',
-      },
+      props: defaults(props, {
+          name: 'Default',
+          default: true,
+          // todo: fix flow-runner's handling of ".test"-less exits
+          test: '',
+      }),
     })
   },
 
@@ -199,6 +198,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
+  // TODO: remove this when all blocks are updated to not use it
   async block_convertExitFormationToUnified({state, dispatch}, {blockId, test}: {blockId: IBlock['uuid'], test: IBlockExit['test']}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     const primaryExitProps: Partial<IBlockExit> = {
@@ -210,6 +210,40 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     block.exits = [
       await dispatch('block_createBlockExitWith', {props: primaryExitProps}),
       last(block.exits),
+    ]
+  },
+
+  /**
+   * Update exits after the block creation.
+   * Standard exit where the end user can make an error. We have 02 exits:
+   * - Valid
+   * - Invalid
+   */
+  async block_updateBranchingExitsWithInvalidScenario({state, dispatch}, {blockId, test}: {blockId: IBlock['uuid'], test: IBlockExit['test']}) {
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+    const primaryExitProps: Partial<IBlockExit> = {
+      uuid: await (new IdGeneratorUuidV4()).generate(),
+      name: 'Valid',
+      test,
+    }
+
+    block.exits = [
+      await dispatch('block_createBlockExitWith', {props: primaryExitProps}),
+      // the last exit is the Default one, which handles the invalid scenario
+      last(block.exits),
+    ]
+  },
+
+  /**
+   * Update exits after the block creation.
+   * Standard exit mode where the user can’t provide invalid response. We have 01 single exit `Default`
+   */
+  async block_updateBranchingExitsToDefaultOnly({state, dispatch}, {blockId}: {blockId: IBlock['uuid']}) {
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+
+    block.exits = [
+      // the last exit is the Default one
+      last(block.exits) as IBlockExit,
     ]
   },
 
