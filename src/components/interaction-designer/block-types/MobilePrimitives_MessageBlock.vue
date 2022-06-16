@@ -64,9 +64,6 @@ class MobilePrimitives_MessageBlock extends mixins(Lang) {
 
   @flowVuexNamespace.Getter resourcesByUuidOnActiveFlow!: { [key: string]: IResource }
 
-  @flowVuexNamespace.Action block_convertExitFormationToUnified!:
-    ({blockId, test}: {blockId: IBlock['uuid'], test: IBlockExit['test']}) => Promise<void>
-
   @builderVuexNamespace.Getter isEditable !: boolean
 
   @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void

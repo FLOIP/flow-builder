@@ -35,11 +35,14 @@ export const actions = {
     })
   },
 
+  /**
+   * This will be the default standard exit mode, but we can override it in the specific block store
+   */
   async handleBranchingTypeChangedToUnified(
     {dispatch}: {dispatch: Dispatch},
     {block}: {block: IBlock},
   ): Promise<void> {
-    return dispatch('flow/block_convertExitFormationToUnified', {
+    return dispatch('flow/block_updateBranchingExitsWithInvalidScenario', {
       blockId: block.uuid,
       test: 'block.value = true',
     }, {root: true})

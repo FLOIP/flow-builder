@@ -24,6 +24,9 @@ const actions: ActionTree<IEmptyState, IRootState> = {
   },
 
   handleBranchingTypeChangedToUnified({dispatch}, {block}: { block: IBlock }) {
+    // TODO in VMO-6022: replace block_convertExitFormationToUnified usage with:
+    // - block_updateBranchingExitsWithInvalidScenario
+    // - or block_updateBranchingExitsToDefaultOnly
     dispatch('flow/block_convertExitFormationToUnified', {
       blockId: block.uuid,
       test: 'block.value > 0',

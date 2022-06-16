@@ -198,7 +198,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
-  // TODO: remove this when all blocks are updated to not use it
+  // TODO in VMO-6181: update the name & definition to correspond for MCQ context, no more block is using this apart from MCQ
   async block_convertExitFormationToUnified({state, dispatch}, {blockId, test}: {blockId: IBlock['uuid'], test: IBlockExit['test']}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     const primaryExitProps: Partial<IBlockExit> = {
