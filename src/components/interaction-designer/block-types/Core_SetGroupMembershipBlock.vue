@@ -35,7 +35,7 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
-import {IBlock, IFlow, ISetGroupMembershipBlockConfig} from '@floip/flow-runner'
+import {IBlock, IFlow, IGroupMembership} from '@floip/flow-runner'
 import VueMultiselect from 'vue-multiselect'
 import SetGroupMembershipStore, {ADD_KEY, BLOCK_TYPE, REMOVE_KEY} from '@/store/flow/block-types/Core_SetGroupMembershipStore'
 import Lang from '@/lib/filters/lang'
@@ -62,6 +62,9 @@ class Core_SetGroupMembershipBlock extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
   @Prop({default: false}) readonly usesDefaultContactPropsEditor!: boolean
+
+  @Prop() readonly availableGroups?: IGroupMembership[]
+  @Prop() readonly groupsLoading?: boolean
 
   actionsList: IGroupActionOption[] = [
     {
