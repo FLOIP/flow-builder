@@ -214,13 +214,13 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     }
   }
 
-  beforeRouteUpdate(to: Route, from: Route, next: Function): void {
+  @Watch('$route', {deep: true})
+  handleRouteUpdate(to: Route): void {
     this.activateBlock({blockId: to.params.blockId || null})
     if (to.meta?.isBlockEditorShown as boolean) {
       scrollBlockIntoView(to.params.blockId)
       this.setIsBlockEditorOpen(true)
     }
-    next()
   }
 
   @Mutation configure!: ({appConfig, builderConfig}: {appConfig: object, builderConfig: object}) => void
