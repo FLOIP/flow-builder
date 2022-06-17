@@ -4,7 +4,6 @@
       <label class="text-primary">{{ trans('flow-builder.action-label') }}</label>
       <p>{{ trans('flow-builder.group-membership-action-hint') }}</p>
 
-      <!-- Radio button group -->
       <div class="form-group">
         <div
           v-for="action in membershipActions"
@@ -25,7 +24,6 @@
         </div>
       </div>
 
-      <!-- vue-multiselect -->
       <vue-multiselect
         v-if="isGroupListVisible"
         v-model="selectedGroups"
