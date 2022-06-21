@@ -11,7 +11,11 @@ const actions: ActionTree<IEmptyState, IRootState> = {
   ...baseActions,
 
   async editOutputExpression({commit}, {blockId, value}: { blockId: string, value: string }): Promise<string> {
-    commit('flow/block_updateConfig', {blockId, newConfig: {value}}, {root: true})
+    commit('flow/block_updateConfigByKey', {
+      blockId,
+      key: 'value',
+      value,
+    }, {root: true})
     return value
   },
 

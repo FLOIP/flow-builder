@@ -15,7 +15,6 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     const blankMessageResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
     props.config = {
       prompt: blankMessageResource.uuid,
-      ...await dispatch('initiateExtraVendorConfig'),
     }
     return baseActions.createWith({dispatch}, {props})
   },
