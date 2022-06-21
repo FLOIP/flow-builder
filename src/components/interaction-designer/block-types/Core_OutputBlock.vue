@@ -8,20 +8,24 @@
       :uses-default-branching-editor="usesDefaultBranchingEditor"
       @handleBranchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})">
       <slot
+        slot="description"
+        name="description" />
+      <slot
         slot="resource-editors"
         name="resource-editors" />
       <slot
         slot="extras"
         name="extras">
-        <validation-message
-          #input-control="{ isValid }"
-          :message-key="`block/${block.uuid}/config/value`">
-          <expression-input
-            :label="'flow-builder.output-expression' | trans"
-            :placeholder="'flow-builder.enter-expression' | trans"
-            :current-expression="value"
-            :valid-state="isValid"
-            @commitExpressionChange="commitExpressionChange" />
+        <validation-message :message-key="`block/${block.uuid}/config/value`">
+          <template #input-control="{ isValid }">
+            <expression-input
+              :label="trans('flow-builder.output-expression')"
+              :placeholder="trans('flow-builder.enter-expression')"
+              :current-expression="value"
+              :valid-state="isValid"
+              :rows="expressionEditorRows"
+              @commitExpressionChange="commitExpressionChange" />
+          </template>
         </validation-message>
       </slot>
       <slot
@@ -58,7 +62,8 @@ class Core_OutputBlock extends mixins(Lang) {
   @Prop() readonly block!: IOutputBlock
   @Prop() readonly flow!: IFlow
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
-  @Prop({default: false}) readonly usesDefaultContactPropsEditor!: boolean
+  @Prop({default: true}) readonly usesDefaultContactPropsEditor!: boolean
+  @Prop({type: Number, default: 1}) readonly expressionEditorRows!: number
 
   get value(): string {
     return this.block.config.value || ''

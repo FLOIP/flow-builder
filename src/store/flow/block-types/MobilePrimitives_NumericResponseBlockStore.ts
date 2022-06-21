@@ -90,7 +90,6 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       prompt: blankResource.uuid,
       validation_minimum: undefined,
       validation_maximum: undefined,
-      ...await dispatch('initiateExtraVendorConfig'),
     }
     return baseActions.createWith({dispatch}, {props})
   },
