@@ -20,9 +20,8 @@ const actions: ActionTree<IEmptyState, IRootState> = {
   },
 
   handleBranchingTypeChangedToUnified({dispatch}, {block}: { block: IBlock }) {
-    dispatch('flow/block_convertExitFormationToUnified', {
+    dispatch('flow/block_updateBranchingExitsToDefaultOnly', {
       blockId: block.uuid,
-      test: 'block.value > 0',
     }, {root: true})
   },
 }

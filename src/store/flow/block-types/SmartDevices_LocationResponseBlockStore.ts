@@ -1,8 +1,9 @@
 import {ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock} from '@floip/flow-runner'
+import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {cloneDeep} from 'lodash'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 
 export const BLOCK_TYPE = 'SmartDevices.LocationResponse'
 
@@ -34,12 +35,22 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       prompt: blankMessageResource.uuid,
       accuracy_threshold_meters: 5.0,
       accuracy_timeout_seconds: 120,
+      ...await dispatch('initiateExtraVendorConfig'),
     }
+
+    props.exits = [
+      await dispatch('flow/block_createBlockDefaultExitWith', {
+        props: ({
+          uuid: await (new IdGeneratorUuidV4()).generate(),
+          name: 'Invalid',
+        }) as IBlockExit,
+      }, {root: true}),
+    ]
     return baseActions.createWith({dispatch}, {props})
   },
 
   handleBranchingTypeChangedToUnified({dispatch}, {block}: { block: IBlock }) {
-    dispatch('flow/block_convertExitFormationToUnified', {
+    dispatch('flow/block_updateBranchingExitsWithInvalidScenario', {
       blockId: block.uuid,
       test: 'NOT(block.value = false)',
     }, {root: true})
