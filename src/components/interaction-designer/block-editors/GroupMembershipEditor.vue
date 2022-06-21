@@ -6,7 +6,7 @@
 
       <div class="form-group">
         <div
-          v-for="action in membershipActions"
+          v-for="action in availableMembershipActions"
           :key="action.id"
           class="custom-control custom-radio">
           <input
@@ -19,7 +19,7 @@
           <label
             class="custom-control-label font-weight-normal"
             :for="action.id">
-            {{ trans(action.localizationKey) }}
+            {{ action.label }}
           </label>
         </div>
       </div>
@@ -52,7 +52,7 @@ const flowVuexNamespace = namespace('flow')
 
 type MembershipAction = {
   id: string,
-  localizationKey: string,
+  label: string,
   value: string,
 }
 
@@ -67,6 +67,22 @@ enum MEMBERSHIP_ACTION {
 })
 export class GroupMembershipEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
+
+  /*
+   * The following two props should be used together
+   * when a user is only be allowed to select groups
+   * from a pre-defined list.
+   *
+   * availableGroups = [
+   *  { group_key: 'gr1', group_name: 'Foo' },
+   *  { group_key: 'gr2', group_name: 'Bar' },
+   * ]
+   *
+   * groupsLoading should be set when the availableGroups
+   * list is unknown yet, e.g., while an asynchronous request
+   * to fetch the list after the group-search event
+   * has not been resolved.
+   */
   @Prop() readonly availableGroups?: IGroupMembership[]
   @Prop({type: Boolean, default: false}) readonly groupsLoading!: boolean
 
@@ -81,21 +97,21 @@ export class GroupMembershipEditor extends mixins(Lang) {
     return this.availableGroups ?? this.customGroupOptions
   }
 
-  get membershipActions(): MembershipAction[] {
+  get availableMembershipActions(): MembershipAction[] {
     return [
       {
         id: 'addGroup',
-        localizationKey: 'flow-builder.set-group-membership',
+        label: this.trans('flow-builder.set-group-membership'),
         value: MEMBERSHIP_ACTION.ADD,
       },
       {
         id: 'removeGroup',
-        localizationKey: 'flow-builder.remove-group-membership',
+        label: this.trans('flow-builder.remove-group-membership'),
         value: MEMBERSHIP_ACTION.REMOVE,
       },
       {
         id: 'clearGroup',
-        localizationKey: 'flow-builder.clear-group-membership',
+        label: this.trans('flow-builder.clear-group-membership'),
         value: MEMBERSHIP_ACTION.CLEAR,
       },
     ]
@@ -124,7 +140,7 @@ export class GroupMembershipEditor extends mixins(Lang) {
     } else {
       this.updateBlockConfig({
         clear: undefined,
-        groups: this.cachedGroupsSelection,
+        groups: this.block.config?.groups ?? this.cachedGroupsSelection,
         is_member: value === MEMBERSHIP_ACTION.ADD,
       })
     }
