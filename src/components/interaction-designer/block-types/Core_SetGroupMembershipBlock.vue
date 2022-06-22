@@ -13,7 +13,10 @@
       <slot
         slot="extras"
         name="extras">
-        <group-membership-editor :block="block" />
+        <group-membership-editor
+          :block="block"
+          :available-groups="availableGroups"
+          :has-groups-loading="hasGroupsLoading" />
       </slot>
       <slot
         slot="vendor-extras"
@@ -51,11 +54,11 @@ class Core_SetGroupMembershipBlock extends mixins(Lang) {
   @Prop({default: false}) readonly usesDefaultContactPropsEditor!: boolean
 
  /**
-  * The availableGroups and groupsLoading are forwarded to group-membership-editor as is.
+  * The availableGroups and hasGroupsLoading are forwarded to group-membership-editor as is.
   * @see group-membership-editor for details of use
   */
   @Prop() readonly availableGroups?: IGroupMembership[]
-  @Prop() readonly groupsLoading?: boolean
+  @Prop() readonly hasGroupsLoading?: boolean
 
   @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
 }

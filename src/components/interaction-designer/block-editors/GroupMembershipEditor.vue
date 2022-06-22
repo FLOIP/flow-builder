@@ -28,7 +28,7 @@
         v-if="isGroupListVisible"
         v-model="selectedGroups"
         :internal-search="!hasCustomSearch"
-        :is-loading="groupsLoading"
+        :is-loading="hasGroupsLoading"
         :options="groupOptions"
         :taggable="!hasCustomSearch"
         :multiple="true"
@@ -78,13 +78,13 @@ export class GroupMembershipEditor extends mixins(Lang) {
    *  { group_key: 'gr2', group_name: 'Bar' },
    * ]
    *
-   * groupsLoading should be set when the availableGroups
+   * hasGroupsLoading should be set when the availableGroups
    * list is unknown yet, e.g., while an asynchronous request
    * to fetch the list after the group-search event
    * has not been resolved.
    */
   @Prop() readonly availableGroups?: IGroupMembership[]
-  @Prop({type: Boolean, default: false}) readonly groupsLoading!: boolean
+  @Prop({type: Boolean, default: false}) readonly hasGroupsLoading!: boolean
 
   customGroupOptions: IGroupMembership[] = []
   cachedGroupsSelection: IGroupMembership[] = []
