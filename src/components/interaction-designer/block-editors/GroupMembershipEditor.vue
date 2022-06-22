@@ -27,10 +27,9 @@
       <vue-multiselect
         v-if="isGroupListVisible"
         v-model="selectedGroups"
-        :internal-search="!hasCustomSearch"
         :is-loading="hasGroupsLoading"
         :options="groupOptions"
-        :taggable="!hasCustomSearch"
+        :taggable="!availableGroups"
         :multiple="true"
         track-by="group_key"
         label="group_name"
@@ -91,10 +90,6 @@ export class GroupMembershipEditor extends mixins(Lang) {
   // User adds these  groups with vue-multiselect tagging interface
   userAddedGroups: IGroupMembership[] = []
   cachedGroupsSelection: IGroupMembership[] = []
-
-  get hasCustomSearch(): boolean {
-    return this.availableGroups !== undefined
-  }
 
   get groupOptions(): unknown {
     return this.availableGroups ?? this.userAddedGroups
@@ -182,9 +177,7 @@ export class GroupMembershipEditor extends mixins(Lang) {
   }
 
   onSearchChange(e: Event): void {
-    if (this.hasCustomSearch) {
-      this.$emit('group-search', e)
-    }
+    this.$emit('group-search', e)
   }
 
   onGroupAdd(name: string): void {
