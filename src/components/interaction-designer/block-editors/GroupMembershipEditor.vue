@@ -89,7 +89,6 @@ export class GroupMembershipEditor extends mixins(Lang) {
 
   // User adds these  groups with vue-multiselect tagging interface
   userAddedGroups: IGroupMembership[] = []
-  cachedGroupsSelection: IGroupMembership[] = []
 
   get groupOptions(): unknown {
     return this.availableGroups ?? this.userAddedGroups
@@ -129,16 +128,12 @@ export class GroupMembershipEditor extends mixins(Lang) {
 
   set membershipAction(value: MEMBERSHIP_ACTION) {
     if (value === MEMBERSHIP_ACTION.CLEAR) {
-      this.cachedGroupsSelection = this.selectedGroups
       this.updateBlockConfig({
         clear: true,
-        groups: undefined,
-        is_member: undefined,
       })
     } else {
       this.updateBlockConfig({
-        clear: undefined,
-        groups: this.block.config?.groups ?? this.cachedGroupsSelection,
+        clear: false,
         is_member: value === MEMBERSHIP_ACTION.ADD,
       })
     }
@@ -159,21 +154,13 @@ export class GroupMembershipEditor extends mixins(Lang) {
   }
 
   updateBlockConfig(config: Partial<ISetGroupMembershipBlockConfig>): void {
-    Object.entries(config)
-      .forEach(([key, value]) => {
-        if (value === undefined) {
-          this.block_removeConfigByKey({
-            blockId: this.block.uuid,
-            key,
-          })
-        } else {
-          this.block_updateConfigByPath({
-            blockId: this.block.uuid,
-            path: key,
-            value,
-          })
-        }
+    Object.entries(config).forEach(([key, value]) => {
+      this.block_updateConfigByPath({
+        blockId: this.block.uuid,
+        path: key,
+        value,
       })
+    })
   }
 
   onSearchChange(e: Event): void {
@@ -187,7 +174,7 @@ export class GroupMembershipEditor extends mixins(Lang) {
     }
 
     this.userAddedGroups.push(newGroup)
-    this.selectedGroups.push(newGroup)
+    this.selectedGroups = [...this.selectedGroups, newGroup]
   }
 
   @flowVuexNamespace.Mutation block_updateConfigByPath!: (

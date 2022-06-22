@@ -22,6 +22,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     props.config = {
       is_member: true,
       groups: [],
+      clear: false,
     }
     return baseActions.createWith({dispatch}, {props})
   },
