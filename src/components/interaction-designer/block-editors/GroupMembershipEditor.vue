@@ -86,7 +86,8 @@ export class GroupMembershipEditor extends mixins(Lang) {
   @Prop() readonly availableGroups?: IGroupMembership[]
   @Prop({type: Boolean, default: false}) readonly hasGroupsLoading!: boolean
 
-  customGroupOptions: IGroupMembership[] = []
+  // User adds these  groups with vue-multiselect tagging interface
+  userAddedGroups: IGroupMembership[] = []
   cachedGroupsSelection: IGroupMembership[] = []
 
   get hasCustomSearch(): boolean {
@@ -94,7 +95,7 @@ export class GroupMembershipEditor extends mixins(Lang) {
   }
 
   get groupOptions(): unknown {
-    return this.availableGroups ?? this.customGroupOptions
+    return this.availableGroups ?? this.userAddedGroups
   }
 
   get availableMembershipActions(): MembershipAction[] {
@@ -190,7 +191,7 @@ export class GroupMembershipEditor extends mixins(Lang) {
       group_name: name,
     }
 
-    this.customGroupOptions.push(newGroup)
+    this.userAddedGroups.push(newGroup)
     this.selectedGroups.push(newGroup)
   }
 
