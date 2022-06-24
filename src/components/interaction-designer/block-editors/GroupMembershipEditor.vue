@@ -180,8 +180,6 @@ export class GroupMembershipEditor extends mixins(Lang) {
   @flowVuexNamespace.Mutation block_updateConfigByPath!: (
     {blockId, path, value}: { blockId: string, path: string, value?: object | string | number | boolean }
   ) => void
-
-  @flowVuexNamespace.Mutation block_removeConfigByKey!: ({blockId, key}: { blockId: string, key: string}) => void
 }
 
 export default GroupMembershipEditor
