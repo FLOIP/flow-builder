@@ -1,6 +1,6 @@
 import {ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
-import {ISetGroupMembershipBlockConfig} from '@floip/flow-runner'
+import {IBlock, ISetGroupMembershipBlockConfig} from '@floip/flow-runner'
 import {cloneDeep} from 'lodash'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 
@@ -25,6 +25,25 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       clear: false,
     }
     return baseActions.createWith({dispatch}, {props})
+  },
+
+  handleBranchingTypeChangedToUnified({dispatch}, {block}: { block: IBlock }) {
+    dispatch('flow/block_updateBranchingExitsToDefaultOnly', {
+      blockId: block.uuid,
+    }, {root: true})
+  },
+
+  async setIsMember({commit, rootGetters}, action) {
+    const activeBlock = rootGetters['builder/activeBlock']
+    let isMember = false
+    if (action) {
+      isMember = action.id === ADD_KEY
+    }
+    commit('flow/block_updateConfigByPath', {
+      blockId: activeBlock.uuid,
+      path: 'is_member',
+      value: isMember,
+    }, {root: true})
   },
 }
 

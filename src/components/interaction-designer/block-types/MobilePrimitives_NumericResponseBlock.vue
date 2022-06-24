@@ -93,9 +93,6 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
 
   @flowVuexNamespace.Getter hasVoiceMode!: boolean
 
-  @flowVuexNamespace.Action block_convertExitFormationToUnified!:
-    ({blockId, test}: {blockId: IBlock['uuid'], test: IBlockExit['test']}) => Promise<void>
-
   @blockVuexNamespace.Action setValidationMinimum!: ({
     blockId,
     value,

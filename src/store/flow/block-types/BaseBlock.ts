@@ -15,7 +15,7 @@ export const mutations: MutationTree<IEmptyState> = {}
 export const actions = {
   async createWith(
     {dispatch}: {dispatch: Dispatch},
-    {props}: { props: { uuid: string } & Partial<IBlockConfig> },
+    {props}: { props: { uuid: string } & Partial<IBlock> },
   ): Promise<IBlock> {
     return defaults({
       config: {
@@ -27,7 +27,7 @@ export const actions = {
       name: '',
       label: '',
       semantic_label: '',
-      exits: [
+      exits: props?.exits ?? [
         await dispatch('flow/block_createBlockDefaultExitWith', {
           props: ({
             uuid: await (new IdGeneratorUuidV4()).generate(),
@@ -39,11 +39,14 @@ export const actions = {
     })
   },
 
+  /**
+   * This will be the default standard exit mode, but we can override it in the specific block store
+   */
   async handleBranchingTypeChangedToUnified(
     {dispatch}: {dispatch: Dispatch},
     {block}: {block: IBlock},
   ): Promise<void> {
-    return dispatch('flow/block_convertExitFormationToUnified', {
+    return dispatch('flow/block_updateBranchingExitsWithInvalidScenario', {
       blockId: block.uuid,
       test: 'block.value = true',
     }, {root: true})
