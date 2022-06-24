@@ -144,7 +144,7 @@ export class GroupMembershipEditor extends mixins(Lang) {
   }
 
   get selectedGroups(): IGroupMembership[] {
-    return this.block.config.groups ?? []
+    return this.block.config?.groups ?? []
   }
 
   set selectedGroups(groups: IGroupMembership[]) {
