@@ -67,6 +67,9 @@ export class NameEditor extends mixins(Lang) {
   }
 
   filterName(e: KeyboardEvent): void {
+    // Consider user input as name editing
+    this.editBlockName = true
+
     if (e.key.match(/\W+|Enter/g)) {
       e.preventDefault()
     }
