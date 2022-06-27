@@ -3,13 +3,13 @@
     <validation-message :message-key="`block/${block.uuid}/name`">
       <template #input-control="{ isValid }">
         <div v-if="editBlockName || isValid === false">
-          <h6>{{ 'flow-builder.edit-block-code' | trans }}</h6>
+          <h6>{{ trans('flow-builder.edit-block-code') }}</h6>
           <div class="d-flex">
             <text-editor
               v-model="blockName"
               class="w-100"
               :label="''"
-              :placeholder="'flow-builder.enter-block-code' | trans"
+              :placeholder="trans('flow-builder.enter-block-code')"
               :valid-state="isValid"
               @keydown="filterName" />
             <span
@@ -26,7 +26,7 @@
           class="d-flex justify-content-between">
           <div class="block-code align-self-center">
             <h6 class="d-inline">
-              {{ 'flow-builder.code' | trans }}:
+              {{ trans('flow-builder.code') }}:
             </h6>
             <span> {{ blockName }} </span>
           </div>
