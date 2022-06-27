@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext} from '@floip/flow-runner'
+import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IBlockUIMetadata, IBlockUIMetadataCanvasCoordinates, IContext} from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
- import {defaults, get, has, isArray, last, reduce, reject, snakeCase, toPath} from 'lodash'
+ import {defaults, get, has, isArray, last, reduce, reject, set, snakeCase, toPath} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IFlowsState} from '.'
 
@@ -16,6 +16,14 @@ export const mutations: MutationTree<IFlowsState> = {
   block_setName(state, {blockId, value}) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .name = value
+  },
+  block_setUserDefinedName(state, {blockId}) {
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+
+    block.ui_metadata = {
+      ...(block.ui_metadata ?? {}),
+      has_user_defined_name: true,
+    } as IBlockUIMetadata
   },
   block_setLabel(state, {blockId, value}) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
@@ -122,9 +130,20 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  block_setLabel({commit}, {blockId, value}) {
+  block_setLabel({commit, dispatch}, {blockId, value}) {
     commit('block_setLabel', {blockId, value})
-    commit('block_setName', {blockId, value: snakeCase(value)})
+    dispatch('block_setName', {blockId, value: snakeCase(value), isOverride: false})
+  },
+
+  block_setName({commit, state}, {blockId, value, isUserDefinedName}) {
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+
+    if (block.ui_metadata?.has_user_defined_name !== true || isUserDefinedName === true) {
+      commit('block_setName', {blockId, value})
+      if (isUserDefinedName === true) {
+        commit('block_setUserDefinedName', {blockId})
+      }
+    }
   },
 
   async block_createBlockDefaultExitWith(

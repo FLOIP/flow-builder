@@ -47,7 +47,7 @@
 import {Component, Prop} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
-import {IBlock} from '@floip/flow-runner'
+import {IBlock, IBlockUIMetadata} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 
 const flowVuexNamespace = namespace('flow')
@@ -63,7 +63,7 @@ export class NameEditor extends mixins(Lang) {
   }
 
   set blockName(value: IBlock['name']) {
-    this.block_setName({blockId: this.block.uuid, value})
+    this.block_setName({blockId: this.block.uuid, value, isUserDefinedName: true})
   }
 
   filterName(e: KeyboardEvent): void {
@@ -75,7 +75,15 @@ export class NameEditor extends mixins(Lang) {
     }
   }
 
-  @flowVuexNamespace.Mutation block_setName!: ({blockId, value}: {blockId: IBlock['uuid'], value: IBlock['name']}) => void
+  @flowVuexNamespace.Action block_setName!: ({
+    blockId,
+    value,
+    isUserDefinedName,
+  }: {
+    blockId: IBlock['uuid'],
+    value: IBlock['name'],
+    isUserDefinedName: IBlockUIMetadata['has_user_defined_name'],
+  }) => void;
 }
 export default NameEditor
 </script>
