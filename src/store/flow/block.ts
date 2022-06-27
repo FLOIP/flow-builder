@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IBlockUIMetadata, IBlockUIMetadataCanvasCoordinates, IContext} from '@floip/flow-runner'
+import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IBlockUIMetadata, IContext} from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
  import {defaults, get, has, isArray, last, reduce, reject, set, snakeCase, toPath} from 'lodash'
