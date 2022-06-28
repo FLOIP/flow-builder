@@ -3,6 +3,7 @@ import {IRootState} from '@/store'
 import {IBlock, ISetGroupMembershipBlockConfig} from '@floip/flow-runner'
 import {cloneDeep} from 'lodash'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import SupplementaryAJVErrorsBuilder from '@/lib/validations/SupplementaryAJVErrorsBuilder'
 
 export interface IGroupOption {
   id: string,
@@ -44,6 +45,28 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       path: 'is_member',
       value: isMember,
     }, {root: true})
+  },
+
+  async validate({rootGetters, dispatch}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
+    const validationResults = await dispatch('validateBlockWithCustomJsonSchema', {block, schemaVersion})
+    const errors = new SupplementaryAJVErrorsBuilder()
+
+    const {groups, clear} = block.config
+
+    console.info(`sgm custom validation: clear ${clear} groups count ${groups.length}`)
+
+    if (clear === false && groups.length === 0) {
+      errors.add('/config/groups', 'set-group-membership-groups-required')
+    }
+
+    const allErrors = [
+      ...validationResults.ajvErrors ?? [],
+      ...errors.list(),
+    ]
+
+    validationResults.ajvErrors = allErrors.length > 0 ? allErrors : null
+
+    return validationResults
   },
 }
 
