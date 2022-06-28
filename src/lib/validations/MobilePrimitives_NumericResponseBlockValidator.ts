@@ -17,9 +17,8 @@ function normalizeNumericConfigProperty(value?: number | string | null): [number
 }
 
 export default class MobilePrimitives_NumericResponseBlockValidator extends ExtendedValidatorBase {
-  static runExtraValidations(block: IBlock<IBlockConfig>): ValidationResults | null {
+  static runExtraValidations(block: IBlock<IBlockConfig>, {hasVoiceMode}: {hasVoiceMode: boolean}): ValidationResults | null {
     const errors: ValidationResults = []
-    const hasVoiceMode = true
 
     const [maxDigits, hasMaxDigits] = normalizeNumericConfigProperty((block.config as INumericBlockConfig)?.ivr?.max_digits)
     const [validationMax, hasMax] = normalizeNumericConfigProperty((block.config as INumericBlockConfig)?.validation_maximum)
