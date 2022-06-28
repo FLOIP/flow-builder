@@ -71,12 +71,27 @@ export const mutations: MutationTree<IFlowsState> = {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config = {...currentConfig}
   },
   block_removeConfigByKey(state, {blockId, key}: { blockId: string, key: string}) {
-    Vue.delete(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config, key)
+    const base = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config
+    const chunks = key.split('.')
+
+    let pointer = base
+
+    while (chunks.length !== 1) {
+      const name = chunks.shift()!
+
+      if (typeof pointer[name] === 'object') {
+        pointer = pointer[name]
+      } else {
+        throw new Error(`block_removeConfigByKey, ${name} datum is not an object`)
+      }
+    }
+
+    Vue.delete(pointer, chunks[0])
   },
   /**
    * update config by path, and make nested assignment reactive for vue
    */
-  block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value: object | string | number | boolean}) {
+  block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value?: object | string | number | boolean}) {
     const base = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config
     const chunks = path.split('.')
 
