@@ -3,12 +3,9 @@ import {IRootState} from '@/store'
 import {IBlock, IBlockExit, INumericBlockConfig} from '@floip/flow-runner'
 import {INumericResponseBlock} from '@floip/flow-runner/src/model/block/INumericResponseBlock'
 import {cloneDeep} from 'lodash'
-import Lang from '@/lib/filters/lang'
-import {ErrorObject} from 'ajv'
+import SupplementaryAJVErrorsBuilder from '@/lib/validations/SupplementaryAJVErrorsBuilder'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-
-const lang = new Lang()
 
 export const BLOCK_TYPE = 'MobilePrimitives.NumericResponse'
 
@@ -25,28 +22,6 @@ function normalizeNumericConfigProperty(value?: number | string | null): [number
     normalizedValue,
     hasValue,
   ]
-}
-
-type DataPath = ErrorObject['dataPath']
-type MessageKey = string
-
-class SupplementaryAJVErrorsBuilder {
-  errors = new Map<DataPath, MessageKey>()
-
-  add(dataPath: DataPath, messageKey: MessageKey): SupplementaryAJVErrorsBuilder {
-    if (!this.errors.has(dataPath)) {
-      this.errors.set(dataPath, `flow-builder-validation.${messageKey}`)
-    }
-
-    return this
-  }
-
-  list(): ErrorObject[] {
-    return [...this.errors].map(([dataPath, messageKey]) => ({
-      dataPath,
-      message: lang.trans(messageKey),
-    } as ErrorObject))
-  }
 }
 
 const actions: ActionTree<IEmptyState, IRootState> = {
