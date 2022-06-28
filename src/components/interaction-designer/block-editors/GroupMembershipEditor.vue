@@ -90,7 +90,7 @@ export class GroupMembershipEditor extends mixins(Lang) {
   // User adds these  groups with vue-multiselect tagging interface
   userAddedGroups: IGroupMembership[] = []
 
-  get groupOptions(): unknown {
+  get groupOptions(): IGroupMembership[] {
     return this.availableGroups ?? this.userAddedGroups
   }
 
@@ -131,11 +131,13 @@ export class GroupMembershipEditor extends mixins(Lang) {
       this.updateBlockConfig({
         clear: true,
       })
-    } else {
+    } else if (value === MEMBERSHIP_ACTION.ADD || value === MEMBERSHIP_ACTION.REMOVE) {
       this.updateBlockConfig({
         clear: false,
         is_member: value === MEMBERSHIP_ACTION.ADD,
       })
+    } else {
+      throw new Error(`Unknown membership action ${value}`)
     }
   }
 
