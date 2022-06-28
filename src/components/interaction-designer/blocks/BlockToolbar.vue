@@ -1,19 +1,21 @@
 <template>
   <div class="block-toolbar d-flex justify-content-between">
     <div class="header-actions-left">
-      <!--Selection-->
-      <font-awesome-icon
-        v-if="isBlockSelected"
-        v-b-tooltip.hover="trans('flow-builder.deselect-block')"
-        :icon="['far', 'check-circle']"
-        class="fa-btn text-info"
-        @click="isEditable && block_deselect({ blockId: block.uuid })" />
-      <font-awesome-icon
-        v-if="!isBlockSelected"
-        v-b-tooltip.hover="trans('flow-builder.select-block')"
-        :icon="['far', 'circle']"
-        class="fa-btn"
-        @click="isEditable && block_select({ blockId: block.uuid })" />
+      <template v-if="isEditable">
+        <!--Selection-->
+        <font-awesome-icon
+          v-if="isBlockSelected"
+          v-b-tooltip.hover="trans('flow-builder.deselect-block')"
+          :icon="['far', 'check-circle']"
+          class="fa-btn text-info"
+          @click="isEditable && block_deselect({ blockId: block.uuid })" />
+        <font-awesome-icon
+          v-if="!isBlockSelected"
+          v-b-tooltip.hover="trans('flow-builder.select-block')"
+          :icon="['far', 'circle']"
+          class="fa-btn"
+          @click="isEditable && block_select({ blockId: block.uuid })" />
+      </template>
     </div>
     <div class="header-actions-right d-flex">
       <!--Delete-->
