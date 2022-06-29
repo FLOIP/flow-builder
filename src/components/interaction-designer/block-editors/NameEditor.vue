@@ -14,7 +14,7 @@
               @keydown="filterName" />
             <span
               class="btn btn-primary btn-xs align-self-center ml-2"
-              @click="editBlockName = false">
+              @click="handleCompleteEditing">
               <font-awesome-icon
                 :icon="['fas', 'check']"
                 class="fa-btn" />
@@ -75,6 +75,15 @@ export class NameEditor extends mixins(Lang) {
     }
   }
 
+  handleCompleteEditing(): void {
+    this.editBlockName = false
+
+    if (this.blockName === '') {
+      // This will turn on automatic name generation from the label
+      this.block_resetName({blockId: this.block.uuid})
+    }
+  }
+
   @flowVuexNamespace.Action block_setName!: ({
     blockId,
     value,
@@ -84,6 +93,8 @@ export class NameEditor extends mixins(Lang) {
     value: IBlock['name'],
     isUserDefinedName: IBlockUIMetadata['has_user_defined_name'],
   }) => void;
+
+  @flowVuexNamespace.Action block_resetName!: ({blockId}: { blockId: IBlock['uuid'] }) => void;
 }
 export default NameEditor
 </script>
