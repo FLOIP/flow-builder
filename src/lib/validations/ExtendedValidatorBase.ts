@@ -2,7 +2,6 @@ import {IValidationStatus, validateBlockWithJsonSchema} from '@/lib'
 import {IBlock} from '@floip/flow-runner'
 import {ErrorObject} from 'ajv'
 import Lang from '@/lib/filters/lang'
-import {castArray} from 'lodash'
 
 const lang = new Lang()
 
@@ -22,7 +21,7 @@ export class ExtendedValidatorBase {
     })
 
     const dataPaths = new Set(validationStatus.ajvErrors?.map(error => error.dataPath))
-    const validationResults = castArray(this.runExtraValidations(block, options) ?? [])
+    const validationResults = this.runExtraValidations(block, options) ?? []
 
     validationResults.forEach(([dataPath, suffix]) => {
       if (!dataPaths.has(dataPath)) {
