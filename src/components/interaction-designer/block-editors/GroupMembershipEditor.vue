@@ -136,6 +136,7 @@ export class GroupMembershipEditor extends mixins(Lang) {
     if (value === MEMBERSHIP_ACTION.CLEAR) {
       this.updateBlockConfig({
         clear: true,
+        is_member: undefined,
       })
     } else if (value === MEMBERSHIP_ACTION.ADD || value === MEMBERSHIP_ACTION.REMOVE) {
       this.updateBlockConfig({
@@ -186,7 +187,7 @@ export class GroupMembershipEditor extends mixins(Lang) {
   }
 
   @flowVuexNamespace.Mutation block_updateConfigByPath!: (
-    {blockId, path, value}: { blockId: string, path: string, value?: object | string | number | boolean }
+    {blockId, path, value}: { blockId: string, path: string, value?: object | string | number | boolean | undefined }
   ) => void
 }
 
