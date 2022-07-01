@@ -31,9 +31,10 @@ const actions: ActionTree<IEmptyState, IRootState> = {
   },
 
   handleBranchingTypeChangedToUnified({dispatch}, {block}: { block: IBlock }) {
-    dispatch('flow/block_updateBranchingExitsWithInvalidScenario', {
+    dispatch('flow/block_resetBranchingExitsByCollapsingNonDefault', {
       blockId: block.uuid,
       test: 'NOT(block.value = false)',
+      name: 'Valid',
     }, {root: true})
   },
 }

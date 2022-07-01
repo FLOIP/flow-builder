@@ -1,6 +1,6 @@
 import {ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlockConfig} from '@floip/flow-runner'
+import {IBlock, IBlockConfig} from '@floip/flow-runner'
 import {cloneDeep} from 'lodash'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 
@@ -30,6 +30,12 @@ const actions: ActionTree<IEmptyState, IRootState> = {
         },
     }
     return baseActions.createWith({dispatch}, {props})
+  },
+
+  handleBranchingTypeChangedToUnified({dispatch}, {block}: { block: IBlock }) {
+    dispatch('flow/block_resetBranchingExitsToDefaultOnly', {
+      blockId: block.uuid,
+    }, {root: true})
   },
 }
 

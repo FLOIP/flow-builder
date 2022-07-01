@@ -46,9 +46,10 @@ export const actions = {
     {dispatch}: {dispatch: Dispatch},
     {block}: {block: IBlock},
   ): Promise<void> {
-    return dispatch('flow/block_updateBranchingExitsWithInvalidScenario', {
+    return dispatch('flow/block_resetBranchingExitsByCollapsingNonDefault', {
       blockId: block.uuid,
       test: 'block.value = true',
+      name: 'Valid',
     }, {root: true})
   },
 

@@ -231,14 +231,17 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   /**
    * Update exits after the block creation.
    * Standard exit where the end user can make an error. We have 02 exits:
-   * - Valid
-   * - Invalid
+   * - Non default exits would be collapsed into 01 exit (eg: Valid, Success)
+   * - Default exit would be the last exit (eg: Invalid, Failure)
    */
-  async block_updateBranchingExitsWithInvalidScenario({state, dispatch}, {blockId, test}: {blockId: IBlock['uuid'], test: IBlockExit['test']}) {
+  async block_resetBranchingExitsByCollapsingNonDefault(
+    {state, dispatch},
+    {blockId, test, name}: {blockId: IBlock['uuid'], test: IBlockExit['test'], name: string},
+  ) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     const primaryExitProps: Partial<IBlockExit> = {
       uuid: await (new IdGeneratorUuidV4()).generate(),
-      name: 'Valid',
+      name,
       test,
     }
 
@@ -253,7 +256,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
    * Update exits after the block creation.
    * Standard exit mode where the user can’t provide invalid response. We have 01 single exit `Default`
    */
-  async block_updateBranchingExitsToDefaultOnly({state, dispatch}, {blockId}: {blockId: IBlock['uuid']}) {
+  async block_resetBranchingExitsToDefaultOnly({state, dispatch}, {blockId}: {blockId: IBlock['uuid']}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
 
     block.exits = [
