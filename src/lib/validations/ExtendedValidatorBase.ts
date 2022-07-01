@@ -9,8 +9,12 @@ export type ValidationMessageSuffix = string
 export type ValidationResult = [ErrorObject['dataPath'], ValidationMessageSuffix]
 export type ValidationResults = ValidationResult[]
 
+/**
+ * This class encapsulates JSON schema validation logic
+ * and also runs user-defined programmatic checks from within subclasses.
+ */
 export class ExtendedValidatorBase {
-  static runExtraValidations(block: IBlock, options?: unknown): ValidationResults | null {
+  static runProgrammaticValidations(_block: IBlock, _options?: unknown): ValidationResults | null {
     return null
   }
 
@@ -21,7 +25,7 @@ export class ExtendedValidatorBase {
     })
 
     const dataPaths = new Set(validationStatus.ajvErrors?.map(error => error.dataPath))
-    const validationResults = this.runExtraValidations(block, options) ?? []
+    const validationResults = this.runProgrammaticValidations(block, options) ?? []
 
     validationResults.forEach(([dataPath, suffix]) => {
       if (!dataPaths.has(dataPath)) {

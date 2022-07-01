@@ -2,7 +2,7 @@ import {IBlock, IBlockConfig} from '@floip/flow-runner'
 import {ExtendedValidatorBase, ValidationResults} from './ExtendedValidatorBase'
 
 export default class Core_SetGroupMembershipValidator extends ExtendedValidatorBase {
-  static runExtraValidations(block: IBlock<IBlockConfig>): ValidationResults | null {
+  static runProgrammaticValidations(block: IBlock<IBlockConfig>, options?: unknown): ValidationResults | null {
     const {groups, clear} = block.config
 
     if (clear === false && groups.length === 0) {
