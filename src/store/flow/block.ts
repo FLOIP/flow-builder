@@ -17,14 +17,6 @@ export const mutations: MutationTree<IFlowsState> = {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .name = value
   },
-  block_setUserDefinedName(state, {blockId, value}) {
-    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-
-    block.ui_metadata = {
-      ...(block.ui_metadata ?? {}),
-      has_user_defined_name: value,
-    } as IBlockUIMetadata
-  },
   block_setLabel(state, {blockId, value}) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .label = value
@@ -116,6 +108,27 @@ export const mutations: MutationTree<IFlowsState> = {
 
     Vue.set(pointer, chunks[0], value)
   },
+  block_updateUIMetadataByPath(state, {blockId, path, value}: {blockId: string, path: string, value?: object | string | number | boolean}) {
+    const chunks = path.split('.')
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+
+    if (!block.ui_metadata) {
+      Vue.set(block, 'ui_metadata', {})
+    }
+    const base = block.ui_metadata!
+
+    let pointer = base
+    while (chunks.length !== 1) {
+      const name = chunks.shift()!
+
+      if (typeof pointer[name] === 'undefined') {
+        Vue.set(pointer, name, {})
+      }
+      pointer = pointer[name]
+    }
+
+    Vue.set(pointer, chunks[0], value)
+  },
   block_setBlockExitDestinationBlockId(state, {blockId, exitId, destinationBlockId}) {
     if (!destinationBlockId) {
       destinationBlockId = undefined
@@ -152,17 +165,21 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   block_setName(
     {commit, state},
-    {blockId, value, isUserDefinedName = false}: {blockId: IBlock['uuid'], value: string, isUserDefinedName: boolean},
+    {blockId, value, lockAutoUpdate = false}: {blockId: IBlock['uuid'], value: string, lockAutoUpdate: boolean},
   ) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    const canSetName = block.ui_metadata?.has_user_defined_name !== true
 
-    if (canSetName || isUserDefinedName) {
+    // lockAutoUpdate = true means user overrides auto-generated name
+    if (block.ui_metadata?.should_auto_update_name === true || lockAutoUpdate) {
       commit('block_setName', {blockId, value})
     }
 
-    if (isUserDefinedName) {
-      commit('block_setUserDefinedName', {blockId, value: true})
+    if (lockAutoUpdate) {
+      commit('block_updateUIMetadataByPath', {
+        blockId,
+        path: 'should_auto_update_name',
+        value: false,
+      })
     }
   },
 
@@ -170,7 +187,11 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
 
     commit('block_setName', {blockId, value: snakeCase(block.label)})
-    commit('block_setUserDefinedName', {blockId, value: false})
+    commit('block_updateUIMetadataByPath', {
+      blockId,
+      path: 'should_auto_update_name',
+      value: true,
+    })
   },
 
   async block_createBlockDefaultExitWith(

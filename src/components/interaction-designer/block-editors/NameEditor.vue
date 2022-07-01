@@ -63,7 +63,11 @@ export class NameEditor extends mixins(Lang) {
   }
 
   set blockName(value: IBlock['name']) {
-    this.block_setName({blockId: this.block.uuid, value, isUserDefinedName: true})
+    this.block_setName({
+      blockId: this.block.uuid,
+      value,
+      lockAutoUpdate: true,
+    })
   }
 
   filterName(e: KeyboardEvent): void {
@@ -87,11 +91,11 @@ export class NameEditor extends mixins(Lang) {
   @flowVuexNamespace.Action block_setName!: ({
     blockId,
     value,
-    isUserDefinedName,
+    lockAutoUpdate,
   }: {
     blockId: IBlock['uuid'],
     value: IBlock['name'],
-    isUserDefinedName: IBlockUIMetadata['has_user_defined_name'],
+    lockAutoUpdate: boolean,
   }) => void;
 
   @flowVuexNamespace.Action block_resetName!: ({blockId}: { blockId: IBlock['uuid'] }) => void;
