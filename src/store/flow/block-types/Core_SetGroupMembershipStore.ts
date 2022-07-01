@@ -20,9 +20,9 @@ const actions: ActionTree<IEmptyState, IRootState> = {
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ISetGroupMembershipBlockConfig> }) {
     props.type = BLOCK_TYPE
     props.config = {
-      group_key: '',
-      group_name: '',
-      is_member: null,
+      is_member: true,
+      groups: [],
+      clear: false,
     }
     return baseActions.createWith({dispatch}, {props})
   },
