@@ -163,13 +163,18 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     dispatch('block_setName', {blockId, value: snakeCase(value)})
   },
 
+  /**
+   * Set block name
+   * @param blockId
+   * @param value
+   * @param lockAutoUpdate, true if user overrides auto-generated name
+   */
   block_setName(
     {commit, state},
     {blockId, value, lockAutoUpdate = false}: {blockId: IBlock['uuid'], value: string, lockAutoUpdate: boolean},
   ) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
 
-    // lockAutoUpdate = true means user overrides auto-generated name
     if (block.ui_metadata?.should_auto_update_name === true || lockAutoUpdate) {
       commit('block_setName', {blockId, value})
     }
