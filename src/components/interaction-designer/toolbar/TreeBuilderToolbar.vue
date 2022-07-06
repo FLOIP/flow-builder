@@ -316,7 +316,7 @@ import pickBy from 'lodash/fp/pickBy'
 import {computeBlockUiData, computeBlockVendorUiData} from '@/store/builder'
 import Component, {mixins} from 'vue-class-component'
 import {Action, Getter, Mutation, namespace, State} from 'vuex-class'
-import {IBlock, IContext, IFlow, IResource, SupportedMode} from '@floip/flow-runner'
+import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
 import {RawLocation} from 'vue-router'
 import {Dictionary} from 'vue-router/types/router'
 import {Watch} from 'vue-property-decorator'
@@ -472,6 +472,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       type,
       ui_metadata: {
         canvas_coordinates: computeBlockUiData(this.activeBlock),
+        should_auto_update_name: true,
       },
       vendor_metadata: {
         io_viamo: {

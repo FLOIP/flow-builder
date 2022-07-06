@@ -375,6 +375,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     merge(duplicatedBlock.ui_metadata, {
       canvas_coordinates: computeBlockUiData(block),
+      should_auto_update_name: true,
     })
 
     commit('flow_addBlock', {block: duplicatedBlock})
