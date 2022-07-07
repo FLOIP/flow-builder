@@ -368,14 +368,13 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     // Set UI positions
     merge(duplicatedBlock.vendor_metadata, {
-      io_viamo: {
-        uiData: computeBlockVendorUiData(block),
+      floip: {
+        ui_metadata: computeBlockVendorUiData(block),
       },
     })
 
     merge(duplicatedBlock.ui_metadata, {
       canvas_coordinates: computeBlockUiData(block),
-      should_auto_update_name: true,
     })
 
     commit('flow_addBlock', {block: duplicatedBlock})

@@ -472,11 +472,10 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       type,
       ui_metadata: {
         canvas_coordinates: computeBlockUiData(this.activeBlock),
-        should_auto_update_name: true,
       },
       vendor_metadata: {
-        io_viamo: {
-          uiData: computeBlockVendorUiData(this.activeBlock),
+        floip: {
+          ui_metadata: computeBlockVendorUiData(this.activeBlock),
         },
       },
       // todo push out to intx-designer

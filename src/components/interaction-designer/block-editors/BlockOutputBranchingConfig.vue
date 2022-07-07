@@ -74,8 +74,10 @@
   }
 
   export interface IVendorMetadataWithBranchingType {
-    io_viamo: {
-      branchingType: OutputBranchingType,
+    floip: {
+      ui_metadata: {
+        branching_type: OutputBranchingType,
+      }
     },
   }
 
@@ -100,12 +102,12 @@
     }
 
     get selectedBranchingType(): OutputBranchingType {
-      return get(this.block.vendor_metadata, 'io_viamo.branchingType')
+      return get(this.block.vendor_metadata, 'floip.ui_metadata.branching_type')
     }
 
     set selectedBranchingType(value: OutputBranchingType) {
       const {uuid: blockId} = this.block
-      this.block_updateVendorMetadataByPath({blockId, path: 'io_viamo.branchingType', value})
+      this.block_updateVendorMetadataByPath({blockId, path: 'floip.ui_metadata.branching_type', value})
 
       switch (value) {
         case OutputBranchingType.UNIFIED:
@@ -122,10 +124,10 @@
         default:
           console.warn('block-editors/BlockOutputBranchingConfig',
             'Unknown branching type received.',
-            {branchingType: value})
+            {branching_type: value})
       }
 
-      this.$emit('branchingTypeChanged', {branchingType: value})
+      this.$emit('branchingTypeChanged', {branching_type: value})
     }
 
     get isBranchingTypeExitPerChoice(): boolean {

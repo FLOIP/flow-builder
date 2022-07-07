@@ -119,14 +119,7 @@ export const mutations: MutationTree<IBuilderState> = {
     operations[operation.kind] = operation
   },
 
-  // @ts-ignore
   setBlockPositionTo(state, {position: {x, y}, block}) {
-    // todo: ensure our vendor_metadata.io_viamo is always instantiated with builder uiData props
-    // if (!block.vendor_metadata.io_viamo.uiData) {
-    //   defaultsDeep(block, {vendor_metadata: {io_viamo: {uiData: {xPosition: 0, yPosition: 0}}}})
-    //   Vue.observable(block.vendor_metadata.io_viamo.uiData)
-    // }
-
     block.ui_metadata.canvas_coordinates.x = x
     block.ui_metadata.canvas_coordinates.y = y
   },
@@ -363,7 +356,8 @@ export function computeBlockUiData(block?: IBlock | null) {
 
 export function computeBlockVendorUiData(block?: IBlock | null) {
   return {
-    isSelected: false,
+    branching_type: 'UNIFIED',
+    should_auto_update_name: true,
   }
 }
 

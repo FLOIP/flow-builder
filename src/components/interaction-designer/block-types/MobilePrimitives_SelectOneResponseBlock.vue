@@ -84,11 +84,11 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
     const {uuid: blockId, vendor_metadata: metadata} = this.block as unknown as IBlockWithBranchingType
     const {EXIT_PER_CHOICE, UNIFIED} = OutputBranchingType
 
-    if (metadata.io_viamo.branchingType === UNIFIED) {
+    if (metadata.floip.ui_metadata.branching_type === UNIFIED) {
       this.handleBranchingTypeChangedToUnified({block: this.block})
     }
 
-    if (metadata.io_viamo.branchingType !== EXIT_PER_CHOICE) {
+    if (metadata.floip.ui_metadata.branching_type !== EXIT_PER_CHOICE) {
       return
     }
 
@@ -98,7 +98,7 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
   reflowExitsWhenSwitchingToBranchingTypeNotUnified(): void {
     const {uuid: blockId, vendor_metadata: metadata} = this.block as unknown as IBlockWithBranchingType
     const {EXIT_PER_CHOICE, ADVANCED} = OutputBranchingType
-    const isEnteringChoiceOrAdvancedBranchingType = includes([EXIT_PER_CHOICE, ADVANCED], metadata.io_viamo.branchingType)
+    const isEnteringChoiceOrAdvancedBranchingType = includes([EXIT_PER_CHOICE, ADVANCED], metadata.floip.ui_metadata.branching_type)
 
     if (!isEnteringChoiceOrAdvancedBranchingType) {
       this.handleBranchingTypeChangedToUnified({block: this.block})
