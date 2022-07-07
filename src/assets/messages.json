@@ -1684,7 +1684,7 @@
     "group-membership-action-hint": "Cette action vous permet d'ajouter le contact à un groupe, en ajoutant une valeur et une expression de groupe",
     "set-group-membership": "Ajouter au groupe",
     "remove-group-membership": "Supprimer des groupes",
-    "clear-group-membership": "Clair de tous les groupes",
+    "clear-group-membership": "Supprimer de tous les groupes",
     "tags-label": "Etiquettes",
     "tags-selector-placeholder": "Sélectionnez ou ajoutez une étiquette",
     "ivr": "IVR",
