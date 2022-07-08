@@ -2,7 +2,7 @@ import {filter, flatMap, isEqual, keyBy, map, mapValues, union} from 'lodash'
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IBlockExit, ValidationException} from '@floip/flow-runner'
+import {IBlock, IBlockExit, IFloipUIMetadata, ValidationException} from '@floip/flow-runner'
 import {IDeepBlockExitIdWithinFlow} from '@/store/flow/block'
 
 // todo migrate these to flight-monitor
@@ -354,7 +354,7 @@ export function computeBlockUiData(block?: IBlock | null) {
   }
 }
 
-export function computeBlockVendorUiData(block?: IBlock | null) {
+export function computeBlockVendorUiMetadata(_block?: IBlock | null): IFloipUIMetadata {
   return {
     branching_type: 'UNIFIED',
     should_auto_update_name: true,
