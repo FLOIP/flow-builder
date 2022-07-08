@@ -1,7 +1,7 @@
 import {ActionContext, Dispatch, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlockConfig, IBlock, IBlockExit} from '@floip/flow-runner'
-import {defaults} from 'lodash'
+import {IBlock, IBlockExit} from '@floip/flow-runner'
+import {defaultsDeep} from 'lodash'
 import {validateBlockWithJsonSchema} from '@/store/validation/validationHelpers'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IValidationStatus} from '@/store/validation'
@@ -17,11 +17,7 @@ export const actions = {
     {dispatch}: {dispatch: Dispatch},
     {props}: { props: { uuid: string } & Partial<IBlock> },
   ): Promise<IBlock> {
-    return defaults({
-      config: {
-        ...props?.config,
-      },
-    }, props, {
+    return defaultsDeep(props, {
       type: '',
       name: '',
       label: '',
