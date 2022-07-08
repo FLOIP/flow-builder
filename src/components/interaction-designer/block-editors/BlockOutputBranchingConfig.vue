@@ -77,7 +77,7 @@
     floip: {
       ui_metadata: {
         branching_type: OutputBranchingType,
-      }
+      },
     },
   }
 

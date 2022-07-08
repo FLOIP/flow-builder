@@ -2,7 +2,7 @@ import {filter, flatMap, isEqual, keyBy, map, mapValues, union} from 'lodash'
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IBlockExit, IFloipUIMetadata, ValidationException} from '@floip/flow-runner'
+import {IBlock, IBlockExit, IBlockUIMetadataCanvasCoordinates, IFloipUIMetadata, ValidationException} from '@floip/flow-runner'
 import {IDeepBlockExitIdWithinFlow} from '@/store/flow/block'
 
 // todo migrate these to flight-monitor
@@ -336,7 +336,7 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): 
   ]
 }
 
-export function computeBlockUiData(block?: IBlock | null) {
+export function computeBlockCanvasCoordinates(block?: IBlock | null): IBlockUIMetadataCanvasCoordinates {
   const xDelta = 120
   const yDelta = 110
   let xPosition = block?.ui_metadata?.canvas_coordinates?.x
