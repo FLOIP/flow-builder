@@ -35,7 +35,6 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       prompt: blankMessageResource.uuid,
       accuracy_threshold_meters: 5.0,
       accuracy_timeout_seconds: 120,
-      ...await dispatch('initiateExtraVendorConfig'),
     }
 
     props.exits = [

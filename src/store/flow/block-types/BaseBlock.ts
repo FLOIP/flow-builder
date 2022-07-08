@@ -20,7 +20,6 @@ export const actions = {
     return defaults({
       config: {
         ...props?.config,
-        ...await dispatch('initiateExtraVendorConfig'),
       },
     }, props, {
       type: '',
@@ -35,7 +34,7 @@ export const actions = {
         }, {root: true}),
       ],
       tags: [],
-      vendor_metadata: {},
+      vendor_metadata: await dispatch('initiateExtraVendorConfig'),
     })
   },
 
@@ -53,10 +52,16 @@ export const actions = {
   },
 
   /**
-   * Override this in the consumer side to add extra config props to avoid the validation saying we have missing prop at the creation
-   * eg: {
-   *   prop1: undefined,
-   *   prop2: undefined,
+   * Override this method in the consumer side to add extra config attributes
+   * to avoid the validation saying we have missing prop at the creation.
+   *
+   * Remember to namespace the fields, e.g.:
+   *
+   * return {
+   *   org_example: {
+   *     foo: 1,
+   *     bar: 'baz',
+   *   },
    * }
    */
   async initiateExtraVendorConfig(_ctx: unknown): Promise<object> {
