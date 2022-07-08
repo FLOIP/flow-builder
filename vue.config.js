@@ -126,6 +126,23 @@ module.exports = {
       app.put('/backend/flows', bodyParser.json(), (req, res) => {
         const flow = req.body
         res.writeHead(200, { 'Content-Type': 'application/json' })
+        // simulate validation errors from backend on 1st block
+        if (flow.blocks.length > 0) {
+          flow.vendor_metadata = {
+            validation_results: {
+              blocks: {
+                [`${flow.blocks[0].uri}`]: [
+                  {
+                    message: 'dummy-error-from-backend'
+                  },
+                  {
+                    message: 'dummy-error-from-backend'
+                  },
+                ]
+              }
+            }
+          }
+        }
         res.end(JSON.stringify(flow))
       })
 
