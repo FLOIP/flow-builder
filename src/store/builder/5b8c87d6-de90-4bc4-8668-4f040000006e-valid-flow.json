@@ -34,8 +34,8 @@
             }
           },
           "vendor_metadata": {
-            "io_viamo": {
-              "uiData": {
+            "floip": {
+              "ui_metadata": {
                 "xPosition": 164,
                 "yPosition": 197
               }
@@ -66,13 +66,10 @@
             }
           },
           "vendor_metadata": {
-            "io_viamo": {
-              "uiData": {
-                "xPosition": 380,
-                "yPosition": 227
-              },
-              "branchingType": "UNIFIED",
-              "noValidResponse": "END_CALL"
+            "floip": {
+              "ui_metadata": {
+                "branching_type": "UNIFIED"
+              }
             }
           },
           "type": "MobilePrimitives.NumericResponse",
@@ -110,12 +107,10 @@
             }
           },
           "vendor_metadata": {
-            "io_viamo": {
-              "uiData": {
-                "isSelected": false
-              },
-              "branchingType": "UNIFIED",
-              "noValidResponse": "END_CALL"
+            "floip": {
+              "ui_metadata": {
+                "branching_type": "UNIFIED"
+              }
             }
           },
           "type": "Core.SetGroupMembership",

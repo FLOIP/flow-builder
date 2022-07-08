@@ -18,7 +18,7 @@ import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {cloneDeep, defaults, every, forEach, get, has, includes, merge, omit, sortBy} from 'lodash'
 import {discoverContentTypesFor} from '@/store/flow/resource'
-import {computeBlockUiData, computeBlockVendorUiData} from '@/store/builder'
+import {computeBlockCanvasCoordinates, computeBlockVendorUiMetadata} from '@/store/builder'
 import {IFlowsState} from '.'
 import {mergeFlowContainer} from './utils/importHelpers'
 
@@ -368,14 +368,13 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     // Set UI positions
     merge(duplicatedBlock.vendor_metadata, {
-      io_viamo: {
-        uiData: computeBlockVendorUiData(block),
+      floip: {
+        ui_metadata: computeBlockVendorUiMetadata(block),
       },
     })
 
     merge(duplicatedBlock.ui_metadata, {
-      canvas_coordinates: computeBlockUiData(block),
-      should_auto_update_name: true,
+      canvas_coordinates: computeBlockCanvasCoordinates(block),
     })
 
     commit('flow_addBlock', {block: duplicatedBlock})

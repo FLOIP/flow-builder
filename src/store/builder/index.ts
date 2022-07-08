@@ -2,7 +2,7 @@ import {filter, flatMap, isEqual, keyBy, map, mapValues, union} from 'lodash'
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IBlockExit, ValidationException} from '@floip/flow-runner'
+import {IBlock, IBlockExit, IBlockUIMetadataCanvasCoordinates, IFloipUIMetadata, ValidationException} from '@floip/flow-runner'
 import {IDeepBlockExitIdWithinFlow} from '@/store/flow/block'
 
 // todo migrate these to flight-monitor
@@ -119,14 +119,7 @@ export const mutations: MutationTree<IBuilderState> = {
     operations[operation.kind] = operation
   },
 
-  // @ts-ignore
   setBlockPositionTo(state, {position: {x, y}, block}) {
-    // todo: ensure our vendor_metadata.io_viamo is always instantiated with builder uiData props
-    // if (!block.vendor_metadata.io_viamo.uiData) {
-    //   defaultsDeep(block, {vendor_metadata: {io_viamo: {uiData: {xPosition: 0, yPosition: 0}}}})
-    //   Vue.observable(block.vendor_metadata.io_viamo.uiData)
-    // }
-
     block.ui_metadata.canvas_coordinates.x = x
     block.ui_metadata.canvas_coordinates.y = y
   },
@@ -328,8 +321,8 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): 
   console.debug('store/builder', 'generateConnectionLayoutKeyFor', source.uuid, target.uuid)
   return [
     // coords
-    [source.ui_metadata?.canvas_coordinates.x, source.ui_metadata?.canvas_coordinates.y],
-    [target.ui_metadata?.canvas_coordinates.x, target.ui_metadata?.canvas_coordinates.y],
+    [source?.ui_metadata?.canvas_coordinates?.x, source?.ui_metadata?.canvas_coordinates?.y],
+    [target?.ui_metadata?.canvas_coordinates?.x, target?.ui_metadata?.canvas_coordinates?.y],
 
     // block titles
     source.label,
@@ -343,11 +336,11 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): 
   ]
 }
 
-export function computeBlockUiData(block?: IBlock | null) {
+export function computeBlockCanvasCoordinates(block?: IBlock | null): IBlockUIMetadataCanvasCoordinates {
   const xDelta = 120
   const yDelta = 110
-  let xPosition = block?.ui_metadata?.canvas_coordinates.x
-  let yPosition = block?.ui_metadata?.canvas_coordinates.y
+  let xPosition = block?.ui_metadata?.canvas_coordinates?.x
+  let yPosition = block?.ui_metadata?.canvas_coordinates?.y
 
   if (xPosition == null || yPosition == null) {
     const viewPortCenter = getViewportCenter()
@@ -361,9 +354,10 @@ export function computeBlockUiData(block?: IBlock | null) {
   }
 }
 
-export function computeBlockVendorUiData(block?: IBlock | null) {
+export function computeBlockVendorUiMetadata(_block?: IBlock | null): IFloipUIMetadata {
   return {
-    isSelected: false,
+    branching_type: 'UNIFIED',
+    should_auto_update_name: true,
   }
 }
 

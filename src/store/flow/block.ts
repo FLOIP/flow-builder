@@ -135,14 +135,14 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   ) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
 
-    if (block.ui_metadata?.should_auto_update_name === true || lockAutoUpdate) {
+    if (block.vendor_metadata?.floip.ui_metadata?.should_auto_update_name === true || lockAutoUpdate) {
       commit('block_setName', {blockId, value})
     }
 
     if (lockAutoUpdate) {
-      commit('block_updateUIMetadataByPath', {
+      commit('block_updateVendorMetadataByPath', {
         blockId,
-        path: 'should_auto_update_name',
+        path: 'floip.ui_metadata.should_auto_update_name',
         value: false,
       })
     }
@@ -152,9 +152,9 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
 
     commit('block_setName', {blockId, value: snakeCase(block.label)})
-    commit('block_updateUIMetadataByPath', {
+    commit('block_updateVendorMetadataByPath', {
       blockId,
-      path: 'should_auto_update_name',
+      path: 'floip.ui_metadata.should_auto_update_name',
       value: true,
     })
   },
