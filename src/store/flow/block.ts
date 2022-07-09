@@ -112,7 +112,7 @@ export const mutations: MutationTree<IFlowsState> = {
   block_updateVendorMetadataByPath(state, {blockId, path, value}: { blockId: string, path: string, value: object | string }) {
     updateBlockValueByPath(state, blockId, `vendor_metadata.${path}`, value)
   },
-  block_removeVendorMetadataByPath(state, {blockId, path, value}: { blockId: string, path: string, value: object | string }) {
+  block_removeVendorMetadataByPath(state, {blockId, path}: { blockId: string, path: string }) {
     removeBlockValueByPath(state, blockId, `vendor_metadata.${path}`)
   },
   block_exitClearDestinationBlockFor(_, {blockExit}) {
