@@ -26,15 +26,8 @@ export function updateBlockValueByPath(
   path: string,
   value: boolean | number | string | object | null | undefined,
 ): void {
-  console.group('updateBlockValueByPath')
   const base = findBlockOnActiveFlowWith(blockId, state as IContext)
   const [pointer, key] = makePath(base, path)
-  console.info('PATH', path)
-  console.info('VALUE', value)
-  console.info('POINTER', pointer)
-  console.info('KEY', key)
-
-  console.groupEnd()
   Vue.set(pointer, key, value)
 }
 
