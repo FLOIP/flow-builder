@@ -12,6 +12,7 @@
       class="card-body d-flex justify-content-between px-2 py-0 highlight-on-hover menu-bg-color">
       <span class="text-danger align-self-center">{{ error.message }}</span>
       <button
+        v-if="error.keyword !== 'backend'"
         type="button"
         class="btn btn-link btn-link-text"
         @click="$emit('fixBlockError', block.uuid, error.dataPath)">
@@ -71,6 +72,7 @@ export class BlockErrorsExpandable extends mixins(Lang) {
     return [
       ...this.blockValidationStatusesForCurrentBlock,
       ...this.resourceValidationStatusesForCurrentBlock,
+      ...this.backendValidationStatusesForCurrentBlock,
     ]
       .filter(Boolean)
   }
@@ -96,11 +98,15 @@ export class BlockErrorsExpandable extends mixins(Lang) {
       .flat()
   }
 
+  get backendValidationStatusesForCurrentBlock(): ErrorObject[] {
+    return this.getAjvErrorsFor('backend', this.block.uuid)
+  }
+
   get blockValidationStatusesForCurrentBlock(): ErrorObject[] {
     return this.getAjvErrorsFor('block', this.block.uuid)
   }
 
-  getAjvErrorsFor(type: 'block' | 'resource', uuid: string): ErrorObject[] {
+  getAjvErrorsFor(type: 'block' | 'resource' | 'backend', uuid: string): ErrorObject[] {
     const validationStatus = get(this.validationStatuses, `${type}/${uuid}`)
 
     if (validationStatus === undefined || !validationStatus.ajvErrors) {
