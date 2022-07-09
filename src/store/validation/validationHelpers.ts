@@ -148,6 +148,23 @@ export function getLocalizedAjvErrors(keyPrefix: string, ajvErrors?: ErrorObject
   }))
 }
 
+export function getLocalizedBackendErrors(keyPrefix: string, blockErrors: { message: string }[]): ErrorObject[] | null {
+  if (blockErrors === undefined || blockErrors === null) {
+    return null
+  }
+
+  return blockErrors.map((error: { message: string }) => {
+    const errorWithRightSchema: ErrorObject = {
+      message: lang.trans(`flow-builder-validation.${error.message}`),
+      keyword: 'backend',
+      dataPath: 'N/A',
+      schemaPath: 'N/A',
+      params: {},
+    }
+    return errorWithRightSchema
+  })
+}
+
 export function flatValidationStatuses({
   keyPrefix,
   errors,

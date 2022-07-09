@@ -134,16 +134,18 @@ module.exports = {
           console.debug('Simulating validation errors from backend on 1st flow\'s 1st block')
           let blockWithValidationIssue = container.flows[0].blocks[0]
           container.flows[0].vendor_metadata = {
-            validation_results: {
-              blocks: {
-                [`${blockWithValidationIssue.uuid}`]: [
-                  {
-                    message: 'dummy validation error #1 from backend'
-                  },
-                  {
-                    message: 'dummy validation error #2 from backend'
-                  },
-                ]
+            floip: {
+              validation_results: {
+                blocks: {
+                  [`${blockWithValidationIssue.uuid}`]: [
+                    {
+                      message: 'dummy-backend-validation-error-#1'
+                    },
+                    {
+                      message: 'dummy-backend-validation-error-#2'
+                    },
+                  ]
+                }
               }
             }
           }
