@@ -4,7 +4,7 @@ import {IBlockConfig} from '@floip/flow-runner'
 import {cloneDeep} from 'lodash'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 
-export interface IMultipleChoiceOption {
+export interface IContactPropertyMultipleChoice {
   value: string,
   description: string,
 }
@@ -14,7 +14,7 @@ export interface IContactPropertyOption {
   name: string,
   display_label: string,
   data_type: string,
-  choices?: IMultipleChoiceOption[],
+  choices?: IContactPropertyMultipleChoice[],
 }
 
 export interface IContactPropertyOptionForUISelector extends IContactPropertyOption {
