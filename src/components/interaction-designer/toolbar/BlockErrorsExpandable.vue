@@ -12,7 +12,6 @@
       class="card-body d-flex justify-content-between px-2 py-0 highlight-on-hover menu-bg-color">
       <span class="text-danger align-self-center">{{ error.message }}</span>
       <button
-        v-if="error.keyword !== 'backend'"
         type="button"
         class="btn btn-link btn-link-text"
         @click="$emit('fixBlockError', block.uuid, error.dataPath)">

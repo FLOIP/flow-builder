@@ -157,8 +157,8 @@ export function getLocalizedBackendErrors(keyPrefix: string, blockErrors: { mess
     const errorWithRightSchema: ErrorObject = {
       message: lang.trans(`flow-builder-validation.${error.message}`),
       keyword: 'backend',
-      dataPath: 'N/A',
-      schemaPath: 'N/A',
+      dataPath: error.message,
+      schemaPath: error.message,
       params: {},
     }
     return errorWithRightSchema

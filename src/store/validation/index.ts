@@ -119,7 +119,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
    * }
    */
   async validate_allBlocksFromBackend({state, rootGetters}): Promise<void> {
-    const backendErrorsList = get(rootGetters['flow/activeFlow'].vendor_metadata, 'floip.validation_results.blocks', [])
+    const backendErrorsList = get(rootGetters['flow/activeFlow'].vendor_metadata, 'floip.ui_metadata.validation_results.blocks', [])
 
     Object.keys(backendErrorsList).forEach((currentBlockUuid: string) => {
       const key = `backend/${currentBlockUuid}`

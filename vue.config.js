@@ -135,16 +135,18 @@ module.exports = {
           let blockWithValidationIssue = container.flows[0].blocks[0]
           container.flows[0].vendor_metadata = {
             floip: {
-              validation_results: {
-                blocks: {
-                  [`${blockWithValidationIssue.uuid}`]: [
-                    {
-                      message: 'dummy-backend-validation-error-#1'
-                    },
-                    {
-                      message: 'dummy-backend-validation-error-#2'
-                    },
-                  ]
+              ui_metadata: {
+                validation_results: {
+                  blocks: {
+                    [`${blockWithValidationIssue.uuid}`]: [
+                      {
+                        message: 'dummy-backend-validation-error-#1'
+                      },
+                      {
+                        message: 'dummy-backend-validation-error-#2'
+                      },
+                    ]
+                  }
                 }
               }
             }
