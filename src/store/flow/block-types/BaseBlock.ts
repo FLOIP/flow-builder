@@ -65,7 +65,7 @@ export const actions = {
   },
 
   /**
-   * Validate the vendor block (Consumer block)
+   * Validate the Consumer block
    * By overriding this action in the consumer side, we will be able to customize it using different json schema for eg.
    *
    * Important: This will be overridden in the consumer side, so DO NOT add generic validations here,
