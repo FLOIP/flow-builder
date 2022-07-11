@@ -48,7 +48,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
   },
 
   async validate(_context, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-    return Core_SetGroupMembershipValidator.validate(block, schemaVersion)
+    return Core_SetGroupMembershipValidator.runAllValidations(block, schemaVersion)
   },
 }
 

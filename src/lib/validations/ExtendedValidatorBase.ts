@@ -14,11 +14,20 @@ export type ValidationResults = ValidationResult[]
  * and also runs user-defined programmatic checks from within subclasses.
  */
 export class ExtendedValidatorBase {
+  /**
+   * Run programmatic validations, which are validations that are not handled by the AJV (jsonSchema)
+   * We can override this in each block type validator for block specific validation.
+   */
   static runProgrammaticValidations(_block: IBlock, _options?: unknown): ValidationResults | null {
     return null
   }
 
-  static validate(block: IBlock, schemaVersion: string, options?: unknown): IValidationStatus {
+  /**
+   * Run all validations logic:
+   * - jsonSchema based
+   * - programmatic logic
+   */
+  static runAllValidations(block: IBlock, schemaVersion: string, options?: unknown): IValidationStatus {
     const validationStatus = validateBlockWithJsonSchema({
       block,
       schemaVersion,
