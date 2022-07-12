@@ -42,10 +42,12 @@
           "label": "",
           "semantic_label": "",
           "config": {
-            "set_contact_property": {
-              "property_key": "name_3",
-              "property_value": ""
-            }
+            "set_contact_property": [
+              {
+                "property_key": "name_3",
+                "property_value": ""
+              }
+            ]
           },
           "exits": [
             {
