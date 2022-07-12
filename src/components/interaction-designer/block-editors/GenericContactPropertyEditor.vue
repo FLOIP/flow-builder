@@ -138,7 +138,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
   }
   propertyValueAction = ''
   propertyKey = ''
-  // Null on propertyValue will help us to enforce validation error on empty value
+  // undefined on propertyValue will help us to enforce validation error on empty value
   propertyValue: string | undefined = ''
 
   created(): void {
