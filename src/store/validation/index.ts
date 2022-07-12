@@ -13,11 +13,12 @@ import {
   SupportedMode,
 
 } from '@floip/flow-runner'
-import {cloneDeep, each, filter, find, forIn, includes, intersection, isEmpty, isEqual, map} from 'lodash'
+import {cloneDeep, each, filter, get, forIn, includes, intersection, isEmpty, map, union} from 'lodash'
 import {
   debugValidationStatus,
   flatValidationStatuses,
   getLocalizedAjvErrors,
+  getLocalizedBackendErrors,
   getOrCreateFlowValidator,
   getOrCreateLanguageValidator,
   getOrCreateResourceValidator,
@@ -102,6 +103,35 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     }
     debugValidationStatus(state.validationStatuses[key], `validation status for ${key}`)
     return state.validationStatuses[key]
+  },
+
+  /**
+   * Validate blocks from backend SAVE action, pick info from from active flow's vendor_metadata:
+   * floip: {
+   *   validation_results: {
+   *      blocks: {
+   *         [`${block.uuid}`]: [
+   *             { message: 'validation error #1 from backend' },
+   *             { message: 'validation error #2 from backend' },
+   *         ]
+   *     }
+   *   }
+   * }
+   */
+  async validate_allBlocksFromBackend({state, rootGetters}): Promise<void> {
+    const backendErrorsList = get(rootGetters['flow/activeFlow'].vendor_metadata, 'floip.ui_metadata.validation_results.blocks', [])
+
+    Object.keys(backendErrorsList).forEach((currentBlockUuid: string) => {
+      const key = `backend/${currentBlockUuid}`
+      const currentBlockErrors = backendErrorsList[currentBlockUuid]
+
+      Vue.set(state.validationStatuses, key, {
+        isValid: currentBlockErrors === undefined || currentBlockErrors.length === 0,
+        ajvErrors: getLocalizedBackendErrors(key, currentBlockErrors),
+      })
+
+      debugValidationStatus(state.validationStatuses[key], 'block validation based on backend action')
+    })
   },
 
   /**
