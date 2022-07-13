@@ -18,6 +18,7 @@ export const actions = {
     {props}: { props: { uuid: string } & Partial<IBlock> },
   ): Promise<IBlock> {
     return defaultsDeep(
+      {},
       // Props from the block type createWith
       props, {
       // Default props if not provided yet
