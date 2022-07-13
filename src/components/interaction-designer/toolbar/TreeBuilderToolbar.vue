@@ -473,7 +473,6 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       ui_metadata: {
         canvas_coordinates: computeBlockCanvasCoordinates(this.activeBlock),
       },
-      // todo push out to intx-designer
     })
     this.activateBlock({blockId})
     await this.$router.push({
