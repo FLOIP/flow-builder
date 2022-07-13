@@ -17,11 +17,12 @@ export const actions = {
     {dispatch}: {dispatch: Dispatch},
     {props}: { props: { uuid: string } & Partial<IBlock> },
   ): Promise<IBlock> {
-    return defaultsDeep(props, {
+    return defaultsDeep({}, props, {
       type: '',
       name: '',
       label: '',
       semantic_label: '',
+      config: {},
       exits: props?.exits ?? [
         await dispatch('flow/block_createBlockDefaultExitWith', {
           props: ({
