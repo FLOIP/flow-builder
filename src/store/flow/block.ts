@@ -4,13 +4,12 @@ import {
   findBlockOnActiveFlowWith,
   IBlock,
   IBlockExit,
-  IBlockUIMetadata,
   IContext,
   SetContactProperty,
 } from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, has, isArray, last, reject, snakeCase} from 'lodash'
+import {defaults, get, has, isArray, isNil, last, reject, snakeCase, toPath} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IFlowsState} from '.'
 import {removeBlockValueByPath, updateBlockValueByPath} from './utils/vuexBlockHelpers'
@@ -110,7 +109,7 @@ export const mutations: MutationTree<IFlowsState> = {
     Vue.set(pointer, chunks[0], value)
   },
   block_setBlockExitDestinationBlockId(state, {blockId, exitId, destinationBlockId}) {
-    if (!destinationBlockId) {
+    if (isNil(destinationBlockId)) {
       destinationBlockId = undefined
     }
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
@@ -287,7 +286,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     {commit, state},
     {first, second}: { first: IDeepBlockExitIdWithinFlow, second: IDeepBlockExitIdWithinFlow },
   ) {
-    if (!first || !second) {
+    if (isNil(first) || isNil(second)) {
       console.warn(`Unable to swap destinationBlockId on null: ${JSON.stringify({first, second})}`)
       return
     }
