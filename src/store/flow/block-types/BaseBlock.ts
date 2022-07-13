@@ -1,7 +1,7 @@
 import {ActionContext, Dispatch, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlock, IBlockExit} from '@floip/flow-runner'
-import {defaultsDeep} from 'lodash'
+import {defaultsDeep, last} from 'lodash'
 import {validateBlockWithJsonSchema} from '@/store/validation/validationHelpers'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IValidationStatus} from '@/store/validation'

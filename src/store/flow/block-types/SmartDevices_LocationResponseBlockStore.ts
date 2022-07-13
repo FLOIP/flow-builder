@@ -7,6 +7,8 @@ import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV
 
 export const BLOCK_TYPE = 'SmartDevices.LocationResponse'
 
+const TEST_ON_VALID_EXIT = 'NOT(block.value = false)'
+
 const actions: ActionTree<IEmptyState, IRootState> = {
   ...baseActions,
 
@@ -38,6 +40,13 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     }
 
     props.exits = [
+      await dispatch('flow/block_createBlockExitWith', {
+        props: ({
+          uuid: await (new IdGeneratorUuidV4()).generate(),
+          name: 'Valid',
+          test: TEST_ON_VALID_EXIT,
+        }) as IBlockExit,
+      }, {root: true}),
       await dispatch('flow/block_createBlockDefaultExitWith', {
         props: ({
           uuid: await (new IdGeneratorUuidV4()).generate(),
@@ -51,7 +60,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
   handleBranchingTypeChangedToUnified({dispatch}, {block}: { block: IBlock }) {
     dispatch('flow/block_updateBranchingExitsWithInvalidScenario', {
       blockId: block.uuid,
-      test: 'NOT(block.value = false)',
+      test: TEST_ON_VALID_EXIT,
     }, {root: true})
   },
 }
