@@ -14,7 +14,7 @@ import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV
 import {IFlowsState} from '.'
 import {removeBlockValueByPath, updateBlockValueByPath} from './utils/vuexBlockHelpers'
 
-import * as SetContactProperty from './block/set-contact-property'
+import * as SetContactPropertyModule from './block/set-contact-property'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   // todo: do we do all bocks in all blocks, or all blocks in [!! active flow !!]  ?
@@ -23,7 +23,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 }
 
 export const mutations: MutationTree<IFlowsState> = {
-  ...SetContactProperty.mutations,
+  ...SetContactPropertyModule.mutations,
 
   block_setName(state, {blockId, value}) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
@@ -132,7 +132,7 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  ...SetContactProperty.actions,
+  ...SetContactPropertyModule.actions,
 
   block_setLabel({commit, dispatch}, {blockId, value}) {
     commit('block_setLabel', {blockId, value})
