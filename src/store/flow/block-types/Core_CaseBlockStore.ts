@@ -16,7 +16,6 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       floip: {
         ui_metadata: {
           branching_type: OutputBranchingType.ADVANCED,
-          should_auto_update_name: true,
         },
       },
     }

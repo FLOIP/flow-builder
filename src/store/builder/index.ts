@@ -354,13 +354,6 @@ export function computeBlockCanvasCoordinates(block?: IBlock | null): IBlockUIMe
   }
 }
 
-export function computeBlockVendorUiMetadata(_block?: IBlock | null): IFloipUIMetadata {
-  return {
-    branching_type: 'UNIFIED',
-    should_auto_update_name: true,
-  }
-}
-
 export function getViewportCenter() {
   const builderCanvasElement = document.getElementsByClassName('builder-canvas')[0]
   const sideBarElement = document.getElementsByClassName('tree-sidebar-container')[0]

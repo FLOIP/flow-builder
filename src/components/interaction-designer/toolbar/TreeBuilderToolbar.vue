@@ -313,7 +313,7 @@ import Routes from '@/lib/mixins/Routes'
 import {identity, isEmpty, isNil, pickBy as _pickBy, reduce, omit} from 'lodash'
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
-import {computeBlockCanvasCoordinates, computeBlockVendorUiMetadata} from '@/store/builder'
+import {computeBlockCanvasCoordinates} from '@/store/builder'
 import Component, {mixins} from 'vue-class-component'
 import {Action, Getter, Mutation, namespace, State} from 'vuex-class'
 import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
@@ -472,11 +472,6 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       type,
       ui_metadata: {
         canvas_coordinates: computeBlockCanvasCoordinates(this.activeBlock),
-      },
-      vendor_metadata: {
-        floip: {
-          ui_metadata: computeBlockVendorUiMetadata(this.activeBlock),
-        },
       },
       // todo push out to intx-designer
     })
