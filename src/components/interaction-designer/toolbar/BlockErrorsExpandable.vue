@@ -41,7 +41,7 @@ import {IValidationStatus} from '@/store/validation'
 import Lang from '@/lib/filters/lang'
 import {ErrorObject} from 'ajv'
 import {Prop} from 'vue-property-decorator'
-import {IBlock, IFlow} from '@floip/flow-runner'
+import {IBlock, IFlow, IResource, IResources} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 import {get, union} from 'lodash'
 
@@ -71,7 +71,8 @@ export class BlockErrorsExpandable extends mixins(Lang) {
     return [
       ...this.blockValidationStatusesForCurrentBlock,
       ...this.resourceValidationStatusesForCurrentBlock,
-      ...this.backendValidationStatusesForCurrentBlock,
+      ...this.backendBlockValidationStatusesForCurrentBlock,
+      ...this.backendResourceValidationStatusesForCurrentBlock,
     ]
       .filter(Boolean)
   }
@@ -84,7 +85,7 @@ export class BlockErrorsExpandable extends mixins(Lang) {
     return this.block.label ?? this.trans('flow-builder.untitled-block')
   }
 
-  get resourceValidationStatusesForCurrentBlock(): ErrorObject[] {
+  get currentBlockResourceUuids(): IResource['uuid'][] {
     const choiceResourceUuids = this.block.config?.choices !== undefined
       ? Object.values(this.block.config.choices)
       : []
@@ -93,19 +94,25 @@ export class BlockErrorsExpandable extends mixins(Lang) {
       this.block.config?.prompt,
       ...choiceResourceUuids,
     ]
-      .map((uuid) => this.getAjvErrorsFor('resource', uuid))
-      .flat()
   }
 
-  get backendValidationStatusesForCurrentBlock(): ErrorObject[] {
-    return this.getAjvErrorsFor('backend', this.block.uuid)
+  get resourceValidationStatusesForCurrentBlock(): ErrorObject[] {
+    return this.currentBlockResourceUuids.map((uuid) => this.getAjvErrorsFor('resource', uuid)).flat()
+  }
+
+  get backendResourceValidationStatusesForCurrentBlock(): ErrorObject[] {
+    return this.currentBlockResourceUuids.map((uuid) => this.getAjvErrorsFor('backend/resource', uuid)).flat()
+  }
+
+  get backendBlockValidationStatusesForCurrentBlock(): ErrorObject[] {
+    return this.getAjvErrorsFor('backend/block', this.block.uuid)
   }
 
   get blockValidationStatusesForCurrentBlock(): ErrorObject[] {
     return this.getAjvErrorsFor('block', this.block.uuid)
   }
 
-  getAjvErrorsFor(type: 'block' | 'resource' | 'backend', uuid: string): ErrorObject[] {
+  getAjvErrorsFor(type: 'block' | 'resource' | 'backend/block' | 'backend/resource', uuid: string): ErrorObject[] {
     const validationStatus = get(this.validationStatuses, `${type}/${uuid}`)
 
     if (validationStatus === undefined || !validationStatus.ajvErrors) {
