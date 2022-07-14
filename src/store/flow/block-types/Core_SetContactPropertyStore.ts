@@ -24,10 +24,12 @@ const actions: ActionTree<IEmptyState, IRootState> = {
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IBlockConfig> }) {
     props.type = BLOCK_TYPE
     props.config = {
-        set_contact_property: {
-          property_key: '',
-          property_value: '',
-        },
+        set_contact_property: [
+          {
+            property_key: '',
+            property_value: '',
+          },
+        ],
     }
     return baseActions.createWith({dispatch}, {props})
   },
