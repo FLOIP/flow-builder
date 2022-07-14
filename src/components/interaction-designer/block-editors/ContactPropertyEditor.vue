@@ -36,7 +36,7 @@
 
       <validation-message
         #input-control="{ isValid }"
-        :message-key="`block/${block.uuid}/config/set_contact_property/property_key`">
+        :message-key="`block/${block.uuid}/config/set_contact_property/x/property_key`">
         <div class="block-contact-property-key">
           <text-editor
             v-model="propertyKey"
@@ -101,31 +101,40 @@ export class ContactPropertyEditor extends mixins(Lang) {
   }
 
   get propertyKey(): string {
-    return get(this.block.config, 'set_contact_property.property_key')
+    return this.block.config?.set_contact_property?.[0].property_key
   }
 
   set propertyKey(value: string) {
-    this.block_updateConfigByPath({
+    this.block_setContactPropertyKeyOnIndex({
       blockId: this.block.uuid,
-      path: 'set_contact_property.property_key',
-      value,
+      // Consider the 1st element only
+      index: 0,
+      propertyKey: value,
     })
   }
 
   get propertyValue(): string {
-    return get(this.block.config, 'set_contact_property.property_value', EMPTY_STRING_EXPRESSION)
+    return this.block.config?.set_contact_property?.[0].property_value ?? EMPTY_STRING_EXPRESSION
   }
 
   updatePropertyValue(value: string): void {
-    this.block_updateConfigByPath({
+    this.block_setContactPropertyValueOnIndex({
       blockId: this.block.uuid,
-      path: 'set_contact_property.property_value',
-      value,
+      // Consider the 1st element only
+      index: 0,
+      propertyValue: value,
     })
   }
 
   @flowVuexNamespace.Mutation block_updateConfigByPath!: (
     {blockId, path, value}: { blockId: string, path: string, value: string }
+  ) => void
+
+  @flowVuexNamespace.Action block_setContactPropertyKeyOnIndex!: (
+    {index, blockId, propertyKey}: { index: number, blockId: string, propertyKey: string },
+  ) => void
+  @flowVuexNamespace.Action block_setContactPropertyValueOnIndex!: (
+    {index, blockId, propertyValue}: { index: number, blockId: string, propertyValue: string },
   ) => void
 }
 

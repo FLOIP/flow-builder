@@ -56,12 +56,16 @@ class ExistingDataBlockClass extends BaseMountedVueClass {
     const blockId = block.uuid
 
     this.setDescription(blockId)
-    this.block_updateConfigByPath({blockId, path: 'set_contact_property.property_key', value: 'gender'})
-    this.block_updateConfigByPath({blockId, path: 'set_contact_property.property_value', value: 'M'})
+    this.block_setContactPropertyKeyOnIndex({blockId, index: 0, propertyKey: 'gender'})
+    this.block_setContactPropertyValueOnIndex({blockId, index: 0, propertyValue: 'M'})
     this.setTags(blockId)
   }
-
-  @flowVuexNamespace.Mutation block_updateConfigByPath!: ({blockId, path, value}: {blockId: string, path: string, value: string}) => void
+  @flowVuexNamespace.Action block_setContactPropertyKeyOnIndex!: (
+    {index, blockId, propertyKey}: { index: number, blockId: string, propertyKey: string },
+  ) => void
+  @flowVuexNamespace.Action block_setContactPropertyValueOnIndex!: (
+    {index, blockId, propertyValue}: { index: number, blockId: string, propertyValue: string },
+  ) => void
 }
 
 export const ExistingDataBlock = () => (ExistingDataBlockClass)
@@ -76,11 +80,16 @@ class ClearActionClass extends BaseMountedVueClass {
     const blockId = block.uuid
 
     this.setDescription(blockId)
-    this.block_updateConfigByPath({blockId, path: 'set_contact_property.property_key', value: 'gender'})
-    this.block_updateConfigByPath({blockId, path: 'set_contact_property.property_value', value: '@(null)'})
+    this.block_setContactPropertyKeyOnIndex({blockId, index: 0, propertyKey: 'gender'})
+    this.block_setContactPropertyValueOnIndex({blockId, index: 0, propertyValue: '@(null)'})
   }
 
-  @flowVuexNamespace.Mutation block_updateConfigByPath!: ({blockId, path, value}: {blockId: string, path: string, value: string}) => void
+  @flowVuexNamespace.Action block_setContactPropertyKeyOnIndex!: (
+    {index, blockId, propertyKey}: { index: number, blockId: string, propertyKey: string },
+  ) => void
+  @flowVuexNamespace.Action block_setContactPropertyValueOnIndex!: (
+    {index, blockId, propertyValue}: { index: number, blockId: string, propertyValue: string },
+  ) => void
 }
 
 export const ClearAction = () => (ClearActionClass)
