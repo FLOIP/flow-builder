@@ -36,7 +36,7 @@
 
       <validation-message
         #input-control="{ isValid }"
-        :message-key="`block/${block.uuid}/config/set_contact_property/0/property_key`">
+        :message-key="`block/${block.uuid}/config/set_contact_property/x/property_key`">
         <div class="block-contact-property-key">
           <text-editor
             v-model="propertyKey"
@@ -101,7 +101,7 @@ export class ContactPropertyEditor extends mixins(Lang) {
   }
 
   get propertyKey(): string {
-    return this.block.config?.set_contact_property?.[0].property_key ?? ''
+    return this.block.config?.set_contact_property?.[0].property_key
   }
 
   set propertyKey(value: string) {

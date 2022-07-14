@@ -25,7 +25,7 @@
       class="form-group">
       <validation-message
         #input-control="{ isValid }"
-        :message-key="`block/${block.uuid}/config/set_contact_property/property_key`">
+        :message-key="`block/${block.uuid}/config/set_contact_property/x/property_key`">
         <div class="block-contact-property-key">
           <div v-if="hasSubscriberPropertyFields">
             <label for="contact-property-selector">{{ trans('flow-builder.property') }}</label>
@@ -143,7 +143,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
 
   created(): void {
     this.shouldSetContactProperty = has(this.block.config, 'set_contact_property')
-    this.propertyKey = this.firstContactPropertyKey ?? ''
+    this.propertyKey = this.firstContactPropertyKey
     this.propertyValue = this.firstContactPropertyValue
     if (this.propertyValue === undefined) {
       // default setting
