@@ -1,6 +1,6 @@
 import {IRootState} from '@/store'
 import {findBlockOnActiveFlowWith as findBlock, IBlock, IContext, SetContactProperty} from '@floip/flow-runner'
-import {ActionTree, GetterTree, MutationTree} from 'vuex'
+import {ActionTree, MutationTree} from 'vuex'
 import {IFlowsState} from '../index'
 
 export interface ISetContactPropertyIndex {
@@ -26,10 +26,13 @@ export const mutations: MutationTree<IFlowsState> = {
       throw new Error(`set_contact_property[${key}] already exists`)
     }
 
-    block.config.set_contact_property.push({
-      property_key: key,
-      property_value: value,
-    })
+    block.config.set_contact_property = [
+      {
+        property_key: key,
+        property_value: value,
+      },
+      ...block.config.set_contact_property ?? [],
+    ]
   },
 
   block_removeContactProperty(state, {blockId, key}: ISetContactPropertyIndex) {
