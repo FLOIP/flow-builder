@@ -3,7 +3,7 @@ import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlock, IContext} from '@floip/flow-runner'
 import {cloneDeep, difference, differenceWith, find, findIndex, get, isEmpty, isEqual, join, keys, reject, set, uniq} from 'lodash'
-import {IContactPropertyOption} from '../block-types/Core_SetContactPropertyStore'
+import {IContactPropertyMultipleChoice} from '../block-types/Core_SetContactPropertyStore'
 import {IGroupOption} from '../block-types/Core_SetGroupMembershipStore'
 
 import {
@@ -221,7 +221,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
     }
   },
   async validateProperties({rootGetters, state, commit}, newPropertyBlocks: IBlock[]) {
-    const matchingProperties: IContactPropertyOption[] = []
+    const matchingProperties: IContactPropertyMultipleChoice[] = []
     const blocksMissingProperties = cloneDeep(state.blocksMissingProperties)
     newPropertyBlocks.forEach((propertyBlock) => {
       const propertyIdentifier = get(propertyBlock, 'config.set_contact_property.property_key')
@@ -356,8 +356,8 @@ export interface IImportState {
   existingLanguagesWithoutMatch: ILanguage[],
   blocksMissingProperties: { [key: string]: string[] },
   missingProperties: { name: string, blockIds: string[] }[],
-  matchingProperties: IContactPropertyOption[],
-  existingPropertiesWithoutMatch: IContactPropertyOption[],
+  matchingProperties: IContactPropertyMultipleChoice[],
+  existingPropertiesWithoutMatch: IContactPropertyMultipleChoice[],
   blocksMissingGroups: { [key: string]: { group_name: string, blockIds: string[] } },
   missingGroups: { id: string, group_name: string, blockIds: string[] }[],
   matchingGroups: IGroupOption[],
