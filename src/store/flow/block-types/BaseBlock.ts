@@ -1,7 +1,7 @@
 import {ActionContext, Dispatch, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlock, IBlockExit} from '@floip/flow-runner'
-import {defaultsDeep} from 'lodash'
+import {defaultsDeep, last} from 'lodash'
 import {validateBlockWithJsonSchema} from '@/store/validation/validationHelpers'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IValidationStatus} from '@/store/validation'
@@ -17,11 +17,16 @@ export const actions = {
     {dispatch}: {dispatch: Dispatch},
     {props}: { props: { uuid: string } & Partial<IBlock> },
   ): Promise<IBlock> {
-    return defaultsDeep(props, {
+    return defaultsDeep(
+      {},
+      // Props from the block type createWith
+      props, {
+      // Default props if not provided yet
       type: '',
       name: '',
       label: '',
       semantic_label: '',
+      config: {},
       exits: props?.exits ?? [
         await dispatch('flow/block_createBlockDefaultExitWith', {
           props: ({
@@ -30,8 +35,19 @@ export const actions = {
         }, {root: true}),
       ],
       tags: [],
+      vendor_metadata: {
+        floip: {
+          ui_metadata: {
+            branching_type: 'UNIFIED',
+            should_auto_update_name: true,
+          },
+        },
+      },
+    }, {
+      // Extra vendor_metadata from consumer side (eg: some configs under a new namespace)
       vendor_metadata: await dispatch('initiateExtraVendorConfig'),
-    })
+    },
+    )
   },
 
   /**
