@@ -116,20 +116,26 @@ export const actions: ActionTree<IValidationState, IRootState> = {
   /**
    * Validate block/resource form backend, pick info from active flow's vendor_metadata:
    * floip: {
-   *   validation_results: {
-   *      blocks: {
-   *         [`${block.uuid}`]: [{ message: 'validation error #1 from backend' },{ message: 'validation error #2 from backend' },]
-   *     }
-   *     resources: {
+   *   ui_metadata:{
+   *      validation_results: {
+   *        blocks: {
+   *          [`${block.uuid}`]: [{ message: 'validation error #1 from backend' },{ message: 'validation error #2 from backend' },]
+   *        }
+   *        resources: {
    *         [`${resource.uuid}`]: [{ message: 'validation error #1 from backend' },{ message: 'validation error #2 from backend' },]
-   *     }
+   *        }
+   *      }
    *   }
    * }
    */
   async validate_fromBackend({state, rootGetters}, {type}: {type: 'block' | 'resource'}): Promise<void> {
-    const backendErrorsList = get(rootGetters['flow/activeFlow']?.vendor_metadata, `floip.ui_metadata.validation_results.${type}s`, [])
+    const backendErrorsList = get(
+    rootGetters['flow/activeFlow']?.vendor_metadata?.floip?.ui_metadata?.validation_results,
+      `${type}s`,
+      {},
+    ) as Record<string, {message: string}[]>
 
-    Object.keys(backendErrorsList).forEach((currentUuid: string) => {
+    Object.keys(backendErrorsList).forEach((currentUuid) => {
       const key = `backend/${type}/${currentUuid}`
       const currentErrors = backendErrorsList[currentUuid]
 
