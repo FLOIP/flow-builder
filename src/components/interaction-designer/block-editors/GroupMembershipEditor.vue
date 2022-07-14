@@ -24,17 +24,22 @@
         </div>
       </div>
 
-      <vue-multiselect
-        v-if="isGroupListVisible"
-        v-model="selectedGroups"
-        :is-loading="hasGroupsLoading"
-        :options="groupOptions"
-        :taggable="!availableGroups"
-        :multiple="true"
-        track-by="group_key"
-        label="group_name"
-        @seach-change="onSearchChange"
-        @tag="onGroupAdd" />
+      <ValidationMessage :message-key="`block/${block.uuid}/config/groups`">
+        <template #input-control="{isValid}">
+          <vue-multiselect
+            v-if="isGroupListVisible"
+            v-model="selectedGroups"
+            :class="{invalid: isValid === false}"
+            :is-loading="hasGroupsLoading"
+            :options="groupOptions"
+            :taggable="!availableGroups"
+            :multiple="true"
+            track-by="group_key"
+            label="group_name"
+            @seach-change="onSearchChange"
+            @tag="onGroupAdd" />
+        </template>
+      </ValidationMessage>
     </div>
   </div>
 </template>
@@ -46,6 +51,7 @@ import {namespace} from 'vuex-class'
 import VueMultiselect from 'vue-multiselect'
 import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
+import ValidationMessage from '../../common/ValidationMessage.vue'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -130,6 +136,7 @@ export class GroupMembershipEditor extends mixins(Lang) {
     if (value === MEMBERSHIP_ACTION.CLEAR) {
       this.updateBlockConfig({
         clear: true,
+        is_member: undefined,
       })
     } else if (value === MEMBERSHIP_ACTION.ADD || value === MEMBERSHIP_ACTION.REMOVE) {
       this.updateBlockConfig({
@@ -180,9 +187,15 @@ export class GroupMembershipEditor extends mixins(Lang) {
   }
 
   @flowVuexNamespace.Mutation block_updateConfigByPath!: (
-    {blockId, path, value}: { blockId: string, path: string, value?: object | string | number | boolean }
+    {blockId, path, value}: { blockId: string, path: string, value?: object | string | number | boolean | undefined }
   ) => void
 }
 
 export default GroupMembershipEditor
 </script>
+
+<style lang="css" scoped>
+.invalid >>> .multiselect__tags {
+  border-color: #dc3545;
+}
+</style>

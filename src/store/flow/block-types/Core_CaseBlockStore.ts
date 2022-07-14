@@ -13,8 +13,10 @@ const actions: ActionTree<IEmptyState, IRootState> = {
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ICaseBlock> }) {
     props.type = BLOCK_TYPE
     props.vendor_metadata = {
-      io_viamo: {
-        branchingType: OutputBranchingType.ADVANCED,
+      floip: {
+        ui_metadata: {
+          branching_type: OutputBranchingType.ADVANCED,
+        },
       },
     }
     return baseActions.createWith({dispatch}, {props})

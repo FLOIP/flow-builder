@@ -22,7 +22,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
 
     const {vendor_metadata: metadata} = block as unknown as IBlockWithBranchingType
     const {UNIFIED} = OutputBranchingType
-    if (metadata.io_viamo.branchingType === UNIFIED) {
+    if (metadata.floip.ui_metadata.branching_type === UNIFIED) {
       dispatch('handleBranchingTypeChangedToUnified', {block})
     }
   },
@@ -38,7 +38,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     // todo: we should probably review our getters + setters in vue files and pull domain logic our stores ?! Schedule this?11
     const {vendor_metadata: metadata} = block as unknown as IBlockWithBranchingType
     const {UNIFIED} = OutputBranchingType
-    if (metadata.io_viamo.branchingType === UNIFIED) {
+    if (metadata.floip.ui_metadata.branching_type === UNIFIED) {
       dispatch('handleBranchingTypeChangedToUnified', {block})
     }
   },

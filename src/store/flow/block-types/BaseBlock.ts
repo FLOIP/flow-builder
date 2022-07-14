@@ -1,7 +1,7 @@
 import {ActionContext, Dispatch, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlockConfig, IBlock, IBlockExit} from '@floip/flow-runner'
-import {defaults} from 'lodash'
+import {IBlock, IBlockExit} from '@floip/flow-runner'
+import {defaultsDeep, last} from 'lodash'
 import {validateBlockWithJsonSchema} from '@/store/validation/validationHelpers'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IValidationStatus} from '@/store/validation'
@@ -17,16 +17,16 @@ export const actions = {
     {dispatch}: {dispatch: Dispatch},
     {props}: { props: { uuid: string } & Partial<IBlock> },
   ): Promise<IBlock> {
-    return defaults({
-      config: {
-        ...props?.config,
-        ...await dispatch('initiateExtraVendorConfig'),
-      },
-    }, props, {
+    return defaultsDeep(
+      {},
+      // Props from the block type createWith
+      props, {
+      // Default props if not provided yet
       type: '',
       name: '',
       label: '',
       semantic_label: '',
+      config: {},
       exits: props?.exits ?? [
         await dispatch('flow/block_createBlockDefaultExitWith', {
           props: ({
@@ -35,8 +35,19 @@ export const actions = {
         }, {root: true}),
       ],
       tags: [],
-      vendor_metadata: {},
-    })
+      vendor_metadata: {
+        floip: {
+          ui_metadata: {
+            branching_type: 'UNIFIED',
+            should_auto_update_name: true,
+          },
+        },
+      },
+    }, {
+      // Extra vendor_metadata from consumer side (eg: some configs under a new namespace)
+      vendor_metadata: await dispatch('initiateExtraVendorConfig'),
+    },
+    )
   },
 
   /**
@@ -53,10 +64,16 @@ export const actions = {
   },
 
   /**
-   * Override this in the consumer side to add extra config props to avoid the validation saying we have missing prop at the creation
-   * eg: {
-   *   prop1: undefined,
-   *   prop2: undefined,
+   * Override this method in the consumer side to add extra config attributes
+   * to avoid the validation saying we have missing prop at the creation.
+   *
+   * Remember to namespace the fields, e.g.:
+   *
+   * return {
+   *   org_example: {
+   *     foo: 1,
+   *     bar: 'baz',
+   *   },
    * }
    */
   async initiateExtraVendorConfig(_ctx: unknown): Promise<object> {
@@ -64,7 +81,7 @@ export const actions = {
   },
 
   /**
-   * Validate the vendor block (Consumer block)
+   * Validate the Consumer block
    * By overriding this action in the consumer side, we will be able to customize it using different json schema for eg.
    *
    * Important: This will be overridden in the consumer side, so DO NOT add generic validations here,
