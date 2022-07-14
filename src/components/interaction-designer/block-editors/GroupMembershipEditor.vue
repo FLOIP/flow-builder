@@ -1,154 +1,201 @@
 <template>
   <div class="group-membership-editor">
-    <hr>
     <div class="form-group">
-      <label class="text-primary">{{ 'flow-builder.action-label' | trans }}</label>
-      <p>{{ 'flow-builder.group-membership-action-hint' | trans }}</p>
+      <label class="text-primary">{{ trans('flow-builder.action-label') }}</label>
+      <p>{{ trans('flow-builder.group-membership-action-hint') }}</p>
+
       <div class="form-group">
-        <div class="custom-control custom-radio">
+        <div
+          v-for="action in availableMembershipActions"
+          :key="action.id"
+          class="custom-control custom-radio">
           <input
-            id="addGroup"
+            :id="action.id"
             v-model="membershipAction"
             type="radio"
             name="groupMembershipAction"
-            :value="MEMBERSHIP_ACTION.ADD"
+            :value="action.value"
             class="custom-control-input">
           <label
             class="custom-control-label font-weight-normal"
-            for="addGroup">
-            {{ 'flow-builder.set-group-membership' | trans }}
-          </label>
-        </div>
-        <div class="custom-control custom-radio">
-          <input
-            id="clearGroup"
-            v-model="membershipAction"
-            type="radio"
-            name="groupMembershipAction"
-            :value="MEMBERSHIP_ACTION.REMOVE"
-            class="custom-control-input">
-          <label
-            class="custom-control-label font-weight-normal"
-            for="clearGroup">
-            {{ 'flow-builder.clear-group-membership' | trans }}
-          </label>
-        </div>
-        <div class="custom-control custom-radio">
-          <input
-            id="setFromExpression"
-            v-model="membershipAction"
-            type="radio"
-            name="groupMembershipAction"
-            :value="MEMBERSHIP_ACTION.SET_FROM_EXPRESSION"
-            class="custom-control-input">
-          <label
-            class="custom-control-label font-weight-normal"
-            for="setFromExpression">
-            {{ 'flow-builder.set-group-membership-from-expression' | trans }}
+            :for="action.id">
+            {{ action.label }}
           </label>
         </div>
       </div>
 
-      <validation-message
-        #input-control="{ isValid }"
-        :message-key="`block/${block.uuid}/config/group_key`">
-        <div class="block-group-key">
-          <text-editor
-            v-model="groupKey"
-            :label="'flow-builder.group-label' | trans"
-            :label-class="'font-weight-bold'"
-            :placeholder="'flow-builder.enter-group-label' | trans"
-            :valid-state="isValid" />
-        </div>
-      </validation-message>
-
-      <validation-message
-        v-if="membershipAction === MEMBERSHIP_ACTION.SET_FROM_EXPRESSION"
-        #input-control="{ isValid }"
-        :message-key="`block/${block.uuid}/config/is_member`">
-        <expression-input
-          :label="'flow-builder.value-expression' | trans"
-          :placeholder="'flow-builder.enter-expression' | trans"
-          :label-class="'font-weight-bold'"
-          :current-expression="isMember"
-          :valid-state="isValid"
-          @commitExpressionChange="updateIsMemberExpression" />
-      </validation-message>
+      <ValidationMessage :message-key="`block/${block.uuid}/config/groups`">
+        <template #input-control="{isValid}">
+          <vue-multiselect
+            v-if="isGroupListVisible"
+            v-model="selectedGroups"
+            :class="{invalid: isValid === false}"
+            :is-loading="hasGroupsLoading"
+            :options="groupOptions"
+            :taggable="!availableGroups"
+            :multiple="true"
+            track-by="group_key"
+            label="group_name"
+            @seach-change="onSearchChange"
+            @tag="onGroupAdd" />
+        </template>
+      </ValidationMessage>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import {IBlock} from '@floip/flow-runner'
+import {IBlock, ISetGroupMembershipBlockConfig, IGroupMembership} from '@floip/flow-runner'
 import {Component, Prop} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
+import VueMultiselect from 'vue-multiselect'
 import Lang from '@/lib/filters/lang'
-import {get} from 'lodash'
 import {mixins} from 'vue-class-component'
+import ValidationMessage from '../../common/ValidationMessage.vue'
 
 const flowVuexNamespace = namespace('flow')
 
-const NULL_STRING_EXPRESSION = '@(null)'
-const TRUTHY_STRING_EXPRESSION = '@(true)'
-const EMPTY_STRING_EXPRESSION = ''
+type MembershipAction = {
+  id: string,
+  label: string,
+  value: string,
+}
 
-@Component({})
+enum MEMBERSHIP_ACTION {
+  ADD = 'add',
+  REMOVE = 'remove',
+  CLEAR = 'clear',
+}
+
+@Component({
+  components: {VueMultiselect},
+})
 export class GroupMembershipEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
-  MEMBERSHIP_ACTION = {
-    ADD: 'add',
-    SET_FROM_EXPRESSION: 'set_from_expression',
-    REMOVE: 'remove',
+  /*
+   * The following two props should be used together
+   * when a user is only be allowed to select groups
+   * from a pre-defined list.
+   *
+   * availableGroups = [
+   *  { group_key: 'gr1', group_name: 'Foo' },
+   *  { group_key: 'gr2', group_name: 'Bar' },
+   * ]
+   *
+   * hasGroupsLoading should be set when the availableGroups
+   * list is unknown yet, e.g., while an asynchronous request
+   * to fetch the list after the group-search event
+   * has not been resolved.
+   *
+   * TODO: VMO-6299 Document the use of these properties in stories
+   */
+  @Prop() readonly availableGroups?: IGroupMembership[]
+  @Prop({type: Boolean, default: false}) readonly hasGroupsLoading!: boolean
+
+  // User adds these  groups with vue-multiselect tagging interface
+  userAddedGroups: IGroupMembership[] = []
+
+  get groupOptions(): IGroupMembership[] {
+    return this.availableGroups ?? this.userAddedGroups
   }
 
-  get membershipAction(): string {
-    if (this.isMember === NULL_STRING_EXPRESSION) {
-      return this.MEMBERSHIP_ACTION.REMOVE
-    } else if (this.isMember === TRUTHY_STRING_EXPRESSION) {
-      return this.MEMBERSHIP_ACTION.ADD
+  get availableMembershipActions(): MembershipAction[] {
+    return [
+      {
+        id: 'addGroup',
+        label: this.trans('flow-builder.set-group-membership'),
+        value: MEMBERSHIP_ACTION.ADD,
+      },
+      {
+        id: 'removeGroup',
+        label: this.trans('flow-builder.remove-group-membership'),
+        value: MEMBERSHIP_ACTION.REMOVE,
+      },
+      {
+        id: 'clearGroup',
+        label: this.trans('flow-builder.clear-group-membership'),
+        value: MEMBERSHIP_ACTION.CLEAR,
+      },
+    ]
+  }
+
+  get membershipAction(): MEMBERSHIP_ACTION {
+    const {clear, is_member: isMember} = this.block.config
+
+    if (clear === true) {
+      return MEMBERSHIP_ACTION.CLEAR
     }
-    return this.MEMBERSHIP_ACTION.SET_FROM_EXPRESSION
+
+    return isMember === true
+      ? MEMBERSHIP_ACTION.ADD
+      : MEMBERSHIP_ACTION.REMOVE
   }
 
-  set membershipAction(value: string) {
-    if (value === this.MEMBERSHIP_ACTION.REMOVE) {
-      this.updateIsMemberExpression(NULL_STRING_EXPRESSION)
-    } else if (value === this.MEMBERSHIP_ACTION.ADD) {
-      this.updateIsMemberExpression(TRUTHY_STRING_EXPRESSION)
+  set membershipAction(value: MEMBERSHIP_ACTION) {
+    if (value === MEMBERSHIP_ACTION.CLEAR) {
+      this.updateBlockConfig({
+        clear: true,
+        is_member: undefined,
+      })
+    } else if (value === MEMBERSHIP_ACTION.ADD || value === MEMBERSHIP_ACTION.REMOVE) {
+      this.updateBlockConfig({
+        clear: false,
+        is_member: value === MEMBERSHIP_ACTION.ADD,
+      })
     } else {
-      this.updateIsMemberExpression(EMPTY_STRING_EXPRESSION)
+      throw new Error(`Unknown membership action ${value}`)
     }
   }
 
-  get groupKey(): string {
-    return get(this.block.config, 'group_key')
+  get isGroupListVisible(): boolean {
+    return this.membershipAction !== MEMBERSHIP_ACTION.CLEAR
   }
 
-  set groupKey(value: string) {
-    this.block_updateConfigByPath({
-      blockId: this.block.uuid,
-      path: 'group_key',
-      value,
+  get selectedGroups(): IGroupMembership[] {
+    return this.block.config?.groups ?? []
+  }
+
+  set selectedGroups(groups: IGroupMembership[]) {
+    this.updateBlockConfig({
+      groups,
     })
   }
 
-  get isMember(): string {
-    return get(this.block.config, 'is_member', EMPTY_STRING_EXPRESSION)
+  updateBlockConfig(config: Partial<ISetGroupMembershipBlockConfig>): void {
+    Object.entries(config).forEach(([key, value]) => {
+      this.block_updateConfigByPath({
+        blockId: this.block.uuid,
+        path: key,
+        value,
+      })
+    })
   }
 
-  updateIsMemberExpression(value: string): void {
-    this.block_updateConfigByPath({
-      blockId: this.block.uuid,
-      path: 'is_member',
-      value,
-    })
+  onSearchChange(e: Event): void {
+    this.$emit('group-search', e)
+  }
+
+  onGroupAdd(name: string): void {
+    const newGroup: IGroupMembership = {
+      group_key: name,
+      group_name: name,
+    }
+
+    this.userAddedGroups.push(newGroup)
+    this.selectedGroups = [...this.selectedGroups, newGroup]
   }
 
   @flowVuexNamespace.Mutation block_updateConfigByPath!: (
-    {blockId, path, value}: { blockId: string, path: string, value: string }
+    {blockId, path, value}: { blockId: string, path: string, value?: object | string | number | boolean | undefined }
   ) => void
 }
 
 export default GroupMembershipEditor
 </script>
+
+<style lang="css" scoped>
+.invalid >>> .multiselect__tags {
+  border-color: #dc3545;
+}
+</style>

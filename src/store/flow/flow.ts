@@ -18,7 +18,7 @@ import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {cloneDeep, defaults, every, forEach, get, has, includes, merge, omit, sortBy} from 'lodash'
 import {discoverContentTypesFor} from '@/store/flow/resource'
-import {computeBlockUiData, computeBlockVendorUiData} from '@/store/builder'
+import {computeBlockCanvasCoordinates, computeBlockVendorUiMetadata} from '@/store/builder'
 import {IFlowsState} from '.'
 import {mergeFlowContainer} from './utils/importHelpers'
 
@@ -150,7 +150,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     flowContainer = mergeFlowContainer(cloneDeep(getters.activeFlowContainer), flowContainer)
     return dispatch('flow_persist', {persistRoute, flowContainer})
   },
-  async flow_persist({getters, commit}, {persistRoute, flowContainer}): Promise<IContext | null> {
+  async flow_persist({getters, commit, dispatch}, {persistRoute, flowContainer}): Promise<IContext | null> {
     const restVerb = flowContainer.isCreated ? 'put' : 'post'
     const oldCreatedState = flowContainer.isCreated
     if (!persistRoute) {
@@ -162,6 +162,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       const {data} = await axios[restVerb](persistRoute, omit(flowContainer, ['isCreated']))
       commit('flow_setFlowContainer', data)
       commit('flow_updateCreatedState', true)
+      dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
       return getters.activeFlowContainer
     } catch (error) {
       commit('flow_updateCreatedState', oldCreatedState)
@@ -171,7 +172,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
   //TODO - In future there may be a use case for not blowing away all flows and resources but this isn't needed yet
   //see comment on flow_setFlowContainer
-  async flow_fetch({getters, commit}, {fetchRoute}): Promise<IFlow | null> {
+  async flow_fetch({getters, commit, dispatch}, {fetchRoute}): Promise<IFlow | null> {
     if (!fetchRoute) {
       console.info('Flow fetch route not configured correctly in builder.config.json. Falling back to vuex store')
       return getters.activeFlow
@@ -180,6 +181,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       const {data} = await axios.get(fetchRoute)
       commit('flow_setFlowContainer', data)
       commit('flow_updateCreatedState', true)
+      dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
       return data
     } catch (error) {
       console.info(`Server error fetching flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
@@ -368,13 +370,13 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     // Set UI positions
     merge(duplicatedBlock.vendor_metadata, {
-      io_viamo: {
-        uiData: computeBlockVendorUiData(block),
+      floip: {
+        ui_metadata: computeBlockVendorUiMetadata(block),
       },
     })
 
     merge(duplicatedBlock.ui_metadata, {
-      canvas_coordinates: computeBlockUiData(block),
+      canvas_coordinates: computeBlockCanvasCoordinates(block),
     })
 
     commit('flow_addBlock', {block: duplicatedBlock})

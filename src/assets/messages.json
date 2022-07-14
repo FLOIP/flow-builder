@@ -10,8 +10,9 @@
     "photo-response-prompt": "Photo response prompt",
     "include-photo-response-prompt": "Include photo response prompt",
     "group-membership-action-hint": "This action allows you to add the contact to a group, by adding a group value and expression",
-    "set-group-membership": "Add to group ",
-    "clear-group-membership": "Remove from group",
+    "set-group-membership": "Add to groups",
+    "remove-group-membership": "Remove from groups",
+    "clear-group-membership": "Clear from all groups",
     "tags-label": "Tags",
     "tags-selector-placeholder": "Select or add a tag",
     "ivr": "IVR",
@@ -1682,7 +1683,8 @@
     "include-photo-response-prompt": "Inclure une invite de réponse photo",
     "group-membership-action-hint": "Cette action vous permet d'ajouter le contact à un groupe, en ajoutant une valeur et une expression de groupe",
     "set-group-membership": "Ajouter au groupe",
-    "clear-group-membership": "Supprimer du groupe",
+    "remove-group-membership": "Supprimer des groupes",
+    "clear-group-membership": "Supprimer de tous les groupes",
     "tags-label": "Etiquettes",
     "tags-selector-placeholder": "Sélectionnez ou ajoutez une étiquette",
     "ivr": "IVR",
@@ -3359,7 +3361,8 @@
     "numeric-block-max-value-must-be-greater-than-min-value": "Maximum value (inclusive) must be greater than or equal to Minimum value (inclusive)",
     "numeric-block-missing-max-value-and-max-digits": "Either Maximum Response Digits or Maximum value (inclusive) must be set when IVR is enabled",
     "numeric-block-min-value-must-be-lower-than-implied-max-digits": "Minimum value (inclusive) must be lower than the number implied by Maximum Response Digits",
-    "numeric-block-max-value-must-be-lower-than-implied-max-digits": "Maximum value (inclusive) must be lower than the number implied by Maximum Response Digits"
+    "numeric-block-max-value-must-be-lower-than-implied-max-digits": "Maximum value (inclusive) must be lower than the number implied by Maximum Response Digits",
+    "set-group-membership-groups-required": "At least one group should be specified"
   },
   "fr.flow-builder-validation": {
     "floip-format": "L'expression FlOIP devrait être valide",
@@ -3381,7 +3384,8 @@
     "numeric-block-max-value-must-be-greater-than-min-value": "La valeur maximale (inclusive) doit être supérieure ou égale à une valeur minimale (inclusive)",
     "numeric-block-missing-max-value-and-max-digits": "Soit les chiffres de réponse maximale ou la valeur maximale (inclusive) doivent être définis lorsque IVR est activé",
     "numeric-block-min-value-must-be-lower-than-implied-max-digits": "La valeur minimale (inclusive) doit être inférieure au nombre impliqué par les chiffres de réponse maximum",
-    "numeric-block-max-value-must-be-lower-than-implied-max-digits": "La valeur maximale (inclusive) doit être inférieure au nombre impliqué par les chiffres de réponse maximum"
+    "numeric-block-max-value-must-be-lower-than-implied-max-digits": "La valeur maximale (inclusive) doit être inférieure au nombre impliqué par les chiffres de réponse maximum",
+    "set-group-membership-groups-required": "Au moins un groupe devrait être spécifié"
   }
 }
 

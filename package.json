@@ -1,6 +1,6 @@
 {
   "name": "@floip/flow-builder",
-  "version": "0.4.8",
+  "version": "0.4.11",
   "description": "flow-builder provides an open source frontend for authoring flow interoperability project specification compliant flows.",
   "main": "./dist/flow-builder.common.js",
   "files": [
@@ -11,6 +11,7 @@
     "serve": "vue-cli-service serve",
     "build-bundle": "vue-cli-service build --target lib --name flow-builder src/lib.ts",
     "build-bundle-and-commit": "yarn clean && yarn build-bundle && git add dist/ && git commit -m \"build-bundle\"",
+    "resolve-conflicting-builds": "git checkout --theirs dist/ && yarn build-bundle",
     "test:unit": "vue-cli-service test:unit",
     "test:regenerate-storyshots": "vue-cli-service test:unit --no-cache",
     "lint": "vue-cli-service lint",
@@ -27,7 +28,7 @@
     "@avcs/autosuggest": "^1.7.5",
     "@floip/expression-evaluator": "^2.1.0",
     "@floip/expression-parser": "^1.11.3",
-    "@floip/flow-runner": "~1.0.0-rc4.4",
+    "@floip/flow-runner": "1.0.0-rc4.8",
     "@flowjs/flow.js": "link:./src/lib/flow-2.0.0.js",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-regular-svg-icons": "^5.15.3",

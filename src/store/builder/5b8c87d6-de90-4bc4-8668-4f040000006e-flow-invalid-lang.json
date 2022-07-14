@@ -29,7 +29,7 @@
         }
       ],
       "vendor_metadata": {
-        "io_viamo": {
+        "floip": {
           "orgId": "1008107874829627392",
           "treeId": "116"
         }
@@ -39,8 +39,8 @@
           "uuid": "eb34ac1f-f27c-43f4-87c9-7f61309bc725",
           "ui_metadata": {"canvas_coordinates": {"x": 164, "y": 197}},
           "vendor_metadata": {
-            "io_viamo": {
-              "uiData": {
+            "floip": {
+              "ui_metadata": {
                 "xPosition": 164,
                 "yPosition": 197
               }

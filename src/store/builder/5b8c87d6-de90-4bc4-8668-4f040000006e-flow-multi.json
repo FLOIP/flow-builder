@@ -29,8 +29,8 @@
           "uuid": "eb34ac1f-f27c-43f4-87c9-7f61309bc725",
           "ui_metadata": {"canvas_coordinates": {"x": 164, "y": 197}},
           "vendor_metadata": {
-            "io_viamo": {
-              "uiData": {
+            "floip": {
+              "ui_metadata": {
                 "xPosition": 164,
                 "yPosition": 197
               }
@@ -56,8 +56,8 @@
           "uuid": "a5d6f811-7ba6-404d-890f-29d6c10e43b5",
           "ui_metadata": {"canvas_coordinates": {"x": 380, "y": 227}},
           "vendor_metadata": {
-            "io_viamo": {
-              "uiData": {
+            "floip": {
+              "ui_metadata": {
                 "xPosition": 380,
                 "yPosition": 227
               }
@@ -126,8 +126,8 @@
           "uuid": "eb34ac1f-f27c-43f4-87c9-7f61309bc725",
           "ui_metadata": {"canvas_coordinates": {"x": 164, "y": 197}},
           "vendor_metadata": {
-            "io_viamo": {
-              "uiData": {
+            "floip": {
+              "ui_metadata": {
                 "xPosition": 164,
                 "yPosition": 197
               }
@@ -153,8 +153,8 @@
           "uuid": "a5d6f811-7ba6-404d-890f-29d6c10e43b5",
           "ui_metadata": {"canvas_coordinates": {"x": 380, "y": 227}},
           "vendor_metadata": {
-            "io_viamo": {
-              "uiData": {
+            "floip": {
+              "ui_metadata": {
                 "xPosition": 380,
                 "yPosition": 227
               }

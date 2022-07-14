@@ -30,8 +30,8 @@
           "uuid": "31570470-cb83-436a-97d6-5a0ce471280e",
           "ui_metadata": {"canvas_coordinates": {"x": 390, "y": 275}},
           "vendor_metadata": {
-            "io_viamo": {
-              "uiData": {
+            "floip": {
+              "ui_metadata": {
                 "xPosition": 390,
                 "yPosition": 275
               }
@@ -60,8 +60,8 @@
           "uuid": "bc3da62c-f036-4ec6-b157-5c43ac44b3db",
           "ui_metadata": {"canvas_coordinates": {"x": 844, "y": 250}},
           "vendor_metadata": {
-            "io_viamo": {
-              "uiData": {
+            "floip": {
+              "ui_metadata": {
                 "xPosition": 844,
                 "yPosition": 250
               }

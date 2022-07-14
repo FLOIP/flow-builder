@@ -1,10 +1,11 @@
 import Vue from 'vue'
-import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext} from '@floip/flow-runner'
+import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IBlockUIMetadata, IContext} from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
- import {defaults, get, has, isArray, last, reduce, reject, snakeCase, toPath} from 'lodash'
+import {defaults, has, isArray, last, reject, snakeCase} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IFlowsState} from '.'
+import {removeBlockValueByPath, updateBlockValueByPath} from './utils/vuexBlockHelpers'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   // todo: do we do all bocks in all blocks, or all blocks in [!! active flow !!]  ?
@@ -71,17 +72,24 @@ export const mutations: MutationTree<IFlowsState> = {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config = {...currentConfig}
   },
   block_removeConfigByKey(state, {blockId, key}: { blockId: string, key: string}) {
-    Vue.delete(findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config, key)
+    removeBlockValueByPath(state, blockId, `config.${key}`)
   },
   /**
    * update config by path, and make nested assignment reactive for vue
    */
-  block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value: object | string | number | boolean}) {
-    const base = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config
+  block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value?: object | string | number | boolean}) {
+    updateBlockValueByPath(state, blockId, `config.${path}`, value)
+  },
+  block_updateUIMetadataByPath(state, {blockId, path, value}: {blockId: string, path: string, value?: object | string | number | boolean}) {
     const chunks = path.split('.')
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+
+    if (!block.ui_metadata) {
+      Vue.set(block, 'ui_metadata', {})
+    }
+    const base = block.ui_metadata!
 
     let pointer = base
-
     while (chunks.length !== 1) {
       const name = chunks.shift()!
 
@@ -102,19 +110,10 @@ export const mutations: MutationTree<IFlowsState> = {
       .destination_block = destinationBlockId
   },
   block_updateVendorMetadataByPath(state, {blockId, path, value}: { blockId: string, path: string, value: object | string }) {
-    // ensure reactivity
-    const metadata = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).vendor_metadata
-    const pathAsList = toPath(path)
-
-    // todo: I have no idea what TS is complaining about here --- "No matching method overload"
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // eslint-disable-next-line lodash/collection-method-value
-    reduce(pathAsList, (accumulator, pathKey, i): void => {
-      const nextValue = i === pathAsList.length - 1 ? value : get(accumulator, pathKey, {})
-      Vue.set(accumulator, pathKey, nextValue)
-      return nextValue
-    }, metadata!)
+    updateBlockValueByPath(state, blockId, `vendor_metadata.${path}`, value)
+  },
+  block_removeVendorMetadataByPath(state, {blockId, path}: { blockId: string, path: string }) {
+    removeBlockValueByPath(state, blockId, `vendor_metadata.${path}`)
   },
   block_exitClearDestinationBlockFor(_, {blockExit}) {
     blockExit.destination_block = undefined
@@ -122,9 +121,45 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-  block_setLabel({commit}, {blockId, value}) {
+  block_setLabel({commit, dispatch}, {blockId, value}) {
     commit('block_setLabel', {blockId, value})
-    commit('block_setName', {blockId, value: snakeCase(value)})
+    dispatch('block_setName', {blockId, value: snakeCase(value)})
+  },
+
+  /**
+   * Set block name
+   * @param blockId
+   * @param value
+   * @param lockAutoUpdate, true if user overrides auto-generated name
+   */
+  block_setName(
+    {commit, state},
+    {blockId, value, lockAutoUpdate = false}: {blockId: IBlock['uuid'], value: string, lockAutoUpdate: boolean},
+  ) {
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+
+    if (block.vendor_metadata?.floip.ui_metadata?.should_auto_update_name === true || lockAutoUpdate) {
+      commit('block_setName', {blockId, value})
+    }
+
+    if (lockAutoUpdate) {
+      commit('block_updateVendorMetadataByPath', {
+        blockId,
+        path: 'floip.ui_metadata.should_auto_update_name',
+        value: false,
+      })
+    }
+  },
+
+  block_resetName({commit, state}, {blockId}) {
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+
+    commit('block_setName', {blockId, value: snakeCase(block.label)})
+    commit('block_updateVendorMetadataByPath', {
+      blockId,
+      path: 'floip.ui_metadata.should_auto_update_name',
+      value: true,
+    })
   },
 
   async block_createBlockDefaultExitWith(

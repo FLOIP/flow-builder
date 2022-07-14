@@ -3,6 +3,7 @@ import {IRootState} from '@/store'
 import {IBlock, ISetGroupMembershipBlockConfig} from '@floip/flow-runner'
 import {cloneDeep} from 'lodash'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import {Core_SetGroupMembershipValidator} from '@/lib/validations'
 
 export interface IGroupOption {
   id: string,
@@ -20,9 +21,9 @@ const actions: ActionTree<IEmptyState, IRootState> = {
   async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ISetGroupMembershipBlockConfig> }) {
     props.type = BLOCK_TYPE
     props.config = {
-      group_key: '',
-      group_name: '',
-      is_member: null,
+      is_member: true,
+      groups: [],
+      clear: false,
     }
     return baseActions.createWith({dispatch}, {props})
   },
@@ -44,6 +45,10 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       path: 'is_member',
       value: isMember,
     }, {root: true})
+  },
+
+  async validate(_context, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
+    return Core_SetGroupMembershipValidator.runAllValidations(block, schemaVersion)
   },
 }
 
