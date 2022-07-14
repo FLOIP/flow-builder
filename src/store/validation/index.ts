@@ -106,31 +106,45 @@ export const actions: ActionTree<IValidationState, IRootState> = {
   },
 
   /**
-   * Validate blocks from backend SAVE action, pick info from from active flow's vendor_metadata:
+   * Validate blocks from backend SAVE action.
+   */
+  async validate_allBlocksFromBackend({dispatch}): Promise<void> {
+    await dispatch('validate_fromBackend', {type: 'block'})
+    await dispatch('validate_fromBackend', {type: 'resource'})
+  },
+
+  /**
+   * Validate block/resource form backend, pick info from active flow's vendor_metadata:
    * floip: {
-   *   validation_results: {
-   *      blocks: {
-   *         [`${block.uuid}`]: [
-   *             { message: 'validation error #1 from backend' },
-   *             { message: 'validation error #2 from backend' },
-   *         ]
-   *     }
+   *   ui_metadata:{
+   *      validation_results: {
+   *        blocks: {
+   *          [`${block.uuid}`]: [{ message: 'validation error #1 from backend' },{ message: 'validation error #2 from backend' },]
+   *        }
+   *        resources: {
+   *         [`${resource.uuid}`]: [{ message: 'validation error #1 from backend' },{ message: 'validation error #2 from backend' },]
+   *        }
+   *      }
    *   }
    * }
    */
-  async validate_allBlocksFromBackend({state, rootGetters}): Promise<void> {
-    const backendErrorsList = get(rootGetters['flow/activeFlow']?.vendor_metadata, 'floip.ui_metadata.validation_results.blocks', [])
+  async validate_fromBackend({state, rootGetters}, {type}: {type: 'block' | 'resource'}): Promise<void> {
+    const backendErrorsList = get(
+    rootGetters['flow/activeFlow']?.vendor_metadata?.floip?.ui_metadata?.validation_results,
+      `${type}s`,
+      {},
+    ) as Record<string, {message: string}[]>
 
-    Object.keys(backendErrorsList).forEach((currentBlockUuid: string) => {
-      const key = `backend/${currentBlockUuid}`
-      const currentBlockErrors = backendErrorsList[currentBlockUuid]
+    Object.keys(backendErrorsList).forEach((currentUuid) => {
+      const key = `backend/${type}/${currentUuid}`
+      const currentErrors = backendErrorsList[currentUuid]
 
       Vue.set(state.validationStatuses, key, {
-        isValid: currentBlockErrors === undefined || currentBlockErrors.length === 0,
-        ajvErrors: getLocalizedBackendErrors(key, currentBlockErrors),
+        isValid: currentErrors === undefined || currentErrors.length === 0,
+        ajvErrors: getLocalizedBackendErrors(key, currentErrors),
       })
 
-      debugValidationStatus(state.validationStatuses[key], 'block validation based on backend action')
+      debugValidationStatus(state.validationStatuses[key], `${type} validation based on backend action`)
     })
   },
 
