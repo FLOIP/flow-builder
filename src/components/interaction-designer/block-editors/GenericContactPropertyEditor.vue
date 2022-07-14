@@ -137,9 +137,9 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
     FROM_CURRENT_BLOCK_RESPONSE: 'fromCurrentBlockResponse',
   }
   propertyValueAction = ''
-  propertyKey = ''
-  // undefined on propertyValue will help us to enforce validation error on empty value
-  propertyValue: string | undefined = ''
+  // undefined will help us to enforce validation error on empty value
+  propertyKey?: string = undefined
+  propertyValue?: string = ''
 
   created(): void {
     this.shouldSetContactProperty = has(this.block.config, 'set_contact_property')

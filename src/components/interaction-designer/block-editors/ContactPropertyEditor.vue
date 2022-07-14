@@ -100,17 +100,12 @@ export class ContactPropertyEditor extends mixins(Lang) {
     }
   }
 
-  get propertyKey(): string {
-    return this.block.config?.set_contact_property?.[0].property_key
-  }
+  @flowVuexNamespace.Action block_setContactPropertyKeyOnIndex!: (
+    {index, blockId, propertyKey}: { index: number, blockId: string, propertyKey?: string },
+  ) => void
 
-  set propertyKey(value: string) {
-    this.block_setContactPropertyKeyOnIndex({
-      blockId: this.block.uuid,
-      // Consider the 1st element only
-      index: 0,
-      propertyKey: value,
-    })
+  get propertyKey(): string | undefined {
+    return this.block.config?.set_contact_property?.[0]?.property_key
   }
 
   get propertyValue(): string {
@@ -130,9 +125,14 @@ export class ContactPropertyEditor extends mixins(Lang) {
     {blockId, path, value}: { blockId: string, path: string, value: string }
   ) => void
 
-  @flowVuexNamespace.Action block_setContactPropertyKeyOnIndex!: (
-    {index, blockId, propertyKey}: { index: number, blockId: string, propertyKey: string },
-  ) => void
+  set propertyKey(value: string | undefined) {
+    this.block_setContactPropertyKeyOnIndex({
+      blockId: this.block.uuid,
+      // Consider the 1st element only
+      index: 0,
+      propertyKey: value,
+    })
+  }
   @flowVuexNamespace.Action block_setContactPropertyValueOnIndex!: (
     {index, blockId, propertyValue}: { index: number, blockId: string, propertyValue: string },
   ) => void
