@@ -149,7 +149,8 @@ export function getLocalizedAjvErrors(keyPrefix: string, ajvErrors?: ErrorObject
 }
 
 export function getLocalizedBackendErrors(keyPrefix: string, blockErrors: { message: string }[]): ErrorObject[] | null {
-  if (blockErrors === undefined || blockErrors === null) {
+  if (!Array.isArray(blockErrors)) {
+    console.debug('getLocalizedBackendErrors', 'returning null as blockErrors is not an array', blockErrors)
     return null
   }
 
