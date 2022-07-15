@@ -76,64 +76,64 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
    * Make sure we have Array set_contact_property,
    * if it's not an array, then the mutation will set an object like {set_contact_property: {0: object1, 1: object2}} instead
    */
-  block_makeSureSetContactPropertyExistsAsArray({commit, state}, {blockId}: { blockId: string }) {
-    const block = findBlock(blockId, state as unknown as IContext)
-    if (block.config?.set_contact_property === undefined) {
+     block_makeSureSetContactPropertyExistsAsArray({commit, state}, {blockId}: { blockId: string}) {
+      const block = findBlock(blockId, state as unknown as IContext)
+      if (block.config?.set_contact_property === undefined) {
+        commit('block_updateConfigByPath', {
+          blockId,
+          path: 'set_contact_property',
+          value: [],
+        })
+      }
+    },
+    /**
+     * Set contact property element on a given index
+     */
+    block_setContactPropertyOnIndex(
+      {commit, state, dispatch},
+      {blockId, index, propertyKey, propertyValue}: { blockId: string, index: number, propertyKey?: string, propertyValue?: string },
+    ) {
+      dispatch('block_makeSureSetContactPropertyExistsAsArray', {blockId})
+
       commit('block_updateConfigByPath', {
         blockId,
-        path: 'set_contact_property',
-        value: [],
+        path: `set_contact_property.[${index}]`,
+        value: {
+          property_key: propertyKey,
+          property_value: propertyValue,
+        },
       })
-    }
-  },
-  /**
-   * Set contact property element on a given index
-   */
-  block_setContactPropertyOnIndex(
-    {commit, state, dispatch},
-    {blockId, index, propertyKey, propertyValue}: { blockId: string, index: number, propertyKey?: string, propertyValue?: string },
-  ) {
-    dispatch('block_makeSureSetContactPropertyExistsAsArray', {blockId})
+    },
 
-    commit('block_updateConfigByPath', {
-      blockId,
-      path: `set_contact_property.[${index}]`,
-      value: {
-        property_key: propertyKey,
-        property_value: propertyValue,
-      },
-    })
-  },
+    /**
+     * Set contact property element's property_key on a given index
+     */
+    block_setContactPropertyKeyOnIndex(
+      {commit, state, dispatch},
+      {blockId, index, propertyKey}: { blockId: string, index: number, propertyKey?: string },
+    ) {
+      dispatch('block_makeSureSetContactPropertyExistsAsArray', {blockId})
+      commit('block_updateConfigByPath', {
+        blockId,
+        path: `set_contact_property.[${index}].property_key`,
+        value: propertyKey,
+      })
+    },
 
-  /**
-   * Set contact property element's property_key on a given index
-   */
-  block_setContactPropertyKeyOnIndex(
-    {commit, state, dispatch},
-    {blockId, index, propertyKey}: { blockId: string, index: number, propertyKey?: string },
-  ) {
-    dispatch('block_makeSureSetContactPropertyExistsAsArray', {blockId})
-    commit('block_updateConfigByPath', {
-      blockId,
-      path: `set_contact_property.[${index}].property_key`,
-      value: propertyKey,
-    })
-  },
-
-  /**
-   * Set contact property element's property_value on a given index
-   */
-  block_setContactPropertyValueOnIndex(
-    {commit, state, dispatch},
-    {blockId, index, propertyValue}: { blockId: string, index: number, propertyValue: string },
-  ) {
-    dispatch('block_makeSureSetContactPropertyExistsAsArray', {blockId})
-    commit('block_updateConfigByPath', {
-      blockId,
-      path: `set_contact_property.[${index}].property_value`,
-      value: propertyValue,
-    })
-  },
+    /**
+     * Set contact property element's property_value on a given index
+     */
+    block_setContactPropertyValueOnIndex(
+      {commit, state, dispatch},
+      {blockId, index, propertyValue}: { blockId: string, index: number, propertyValue: string },
+    ) {
+      dispatch('block_makeSureSetContactPropertyExistsAsArray', {blockId})
+      commit('block_updateConfigByPath', {
+        blockId,
+        path: `set_contact_property.[${index}].property_value`,
+        value: propertyValue,
+      })
+    },
 
   block_setContactPropertyByKey({commit, getters}, {blockId, key, value}: ISetContactPropertyBlockKeyWithValue): void {
     if (getters.block_getContactPropertyValueByKey({blockId, key}) === undefined) {
