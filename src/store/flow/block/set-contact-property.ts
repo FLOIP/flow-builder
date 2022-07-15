@@ -128,7 +128,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       return block.config?.set_contact_property?.[index]
     },
 
-  block_getContactPropertyByKey(state, {blockId, key}: ISetContactPropertyBlockKey): string | undefined {
+  block_getContactPropertyByKey({state}, {blockId, key}: ISetContactPropertyBlockKey): string | undefined {
     return findBlock(blockId, state as unknown as IContext)
       .config
       .set_contact_property
