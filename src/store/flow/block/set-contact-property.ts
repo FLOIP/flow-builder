@@ -135,8 +135,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
-  block_setContactPropertyByKey({commit, dispatch}, {blockId, key, value}: ISetContactPropertyBlockKeyWithValue): void {
-    if (dispatch('block_getContactPropertyByKey', {blockId, key}) === undefined) {
+  block_setContactPropertyByKey({commit, getters}, {blockId, key, value}: ISetContactPropertyBlockKeyWithValue): void {
+    if (getters.block_getContactPropertyValueByKey({blockId, key}) === undefined) {
       commit('block_addContactProperty', {blockId, key, value})
     } else {
       commit('block_changeContactProperty', {blockId, key, value})
