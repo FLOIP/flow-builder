@@ -37,6 +37,7 @@ import {mixins} from 'vue-class-component'
 import {RawLocation} from 'vue-router'
 
 const flowVuexNamespace = namespace('flow')
+const validationVuexNamespace = namespace('validation')
 
 @Component({})
 class FetchFlow extends mixins(Routes, Lang) {
@@ -51,6 +52,9 @@ class FetchFlow extends mixins(Routes, Lang) {
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Action flow_fetch!: ({fetchRoute}: { fetchRoute: string }) => Promise<IFlow>
   @flowVuexNamespace.Mutation flow_setActiveFlowId!: ({flowId}: { flowId: string }) => void
+
+  @validationVuexNamespace.Action validate_allBlocksFromBackend!: () => void
+
   @Mutation configure!: ({appConfig, builderConfig}: { appConfig: object, builderConfig: object }) => void
   @Getter isConfigured!: boolean
 
@@ -69,6 +73,8 @@ class FetchFlow extends mixins(Routes, Lang) {
         this.message = 'flow-builder.flow-found'
         this.flowLink = this.route('flows.editFlow', {flowId: this.activeFlow.uuid, component: 'designer', mode: 'edit'})
       }
+
+      this.validate_allBlocksFromBackend()
     } else {
       this.message = 'flow-builder.flow-not-found'
       this.showNewButton = true

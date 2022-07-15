@@ -44,8 +44,8 @@
 
       <template v-if="!isAudioLibraryEmpty">
         <a
-          v-for="(audio, i) in search(query).slice(offset * limit, (offset + 1) * limit)"
-          :key="i"
+          v-for="audio in search(query).slice(offset * limit, (offset + 1) * limit)"
+          :key="audio.audio_uuid"
           class="dropdown-item"
           href="#"
           @click.prevent="select(audio)">
@@ -112,20 +112,19 @@ import VueFocus from 'vue-focus'
 import {mixins} from 'vue-class-component'
 import {Component, Prop} from 'vue-property-decorator'
 import Lang from '@/lib/filters/lang'
-import {IAudioFile} from '../interaction-designer/resource-editors'
 import {IAudioFileSelection} from '@/lib/types'
-import FuseResult = Fuse.FuseResult;
+import {IAudioFile} from '../interaction-designer/resource-editors'
 
 @Component({})
 export class AudioLibrarySearchField extends mixins(Lang, VueFocus.mixin) {
   @Prop() readonly langId?: string
-  @Prop({ required: true }) readonly audioFiles!: IAudioFile[]
+  @Prop({required: true}) readonly audioFiles!: IAudioFile[]
 
   isActive = false
 
   // querying
   rawQuery = ''
-  cache: Record<string, FuseResult<IAudioFile>[]> = {}
+  cache: Record<string, IAudioFile[]> = {}
   isEntireLibraryModeEnabled = false
 
   // pagination
@@ -148,7 +147,7 @@ export class AudioLibrarySearchField extends mixins(Lang, VueFocus.mixin) {
     return this.offset > 0
   }
 
-  search(query: string): FuseResult<IAudioFile>[] | IAudioFile[] {
+  search(query: string): IAudioFile[] {
     if (this.isEntireLibraryModeEnabled) {
       return this.audioFiles ?? []
     }
@@ -167,7 +166,7 @@ export class AudioLibrarySearchField extends mixins(Lang, VueFocus.mixin) {
     console.debug('flow-builder.ResourceViewer.AudioLibrarySearchField', 'cache miss', query)
 
     const keys = ['uri', 'description']
-    this.cache[query] = new Fuse(this.audioFiles, {keys, fieldNormWeight: 1}).search(query)
+    this.cache[query] = new Fuse(this.audioFiles, {keys, fieldNormWeight: 1}).search(query).map(result => result.item)
     return this.cache[query]
   }
 
@@ -193,7 +192,7 @@ export class AudioLibrarySearchField extends mixins(Lang, VueFocus.mixin) {
     this.resetPagination()
   }
 
-  select(audio: unknown): void {
+  select(audio: IAudioFile): void {
     this.$emit('select', {value: audio, langId: this.langId} as IAudioFileSelection)
   }
 

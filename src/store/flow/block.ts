@@ -213,7 +213,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
    */
   block_setContactPropertyKeyOnIndex(
     {commit, state, dispatch},
-    {blockId, index, propertyKey}: { blockId: string, index: number, propertyKey: string },
+    {blockId, index, propertyKey}: { blockId: string, index: number, propertyKey?: string },
   ) {
     dispatch('block_makeSureSetContactPropertyExistsAsArray', {blockId})
     commit('block_updateConfigByPath', {
