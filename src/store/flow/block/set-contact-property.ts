@@ -29,15 +29,10 @@ export const mutations: MutationTree<IFlowsState> = {
       throw new Error(`set_contact_property[${key}] already exists`)
     }
 
-    block.config.set_contact_property = [
-      // Prepending because we currently display the foremost property only
-      // TODO VMO-6509 Push instead for better UX when we displayed all properties
-      {
-        property_key: key,
-        property_value: value,
-      },
-      ...block.config.set_contact_property ?? [],
-    ]
+    block.config.set_contact_property.push({
+      property_key: key,
+      property_value: value,
+    })
   },
 
   block_removeContactProperty(state, {blockId, key}: ISetContactPropertyBlockKey) {
