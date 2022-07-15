@@ -186,7 +186,15 @@
         "is_interactive": true,
         "is_branching": false,
         "category":  1,
-        "menu_category": 1
+        "menu_category": 1,
+        "exits": {
+          "first": {
+            "name": "Valid"
+          },
+          "default": {
+            "name": "Invalid"
+          }
+        }
       },
       "MobilePrimitives.OpenResponse": {
         "name": "MobilePrimitives.OpenResponse",
