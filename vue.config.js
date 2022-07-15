@@ -116,17 +116,69 @@ module.exports = {
           res.end("Flow not found")
         }
       })
-      //In the success case, just echo the flow back
+      // To persist new flow
+      // In the success case, just echo the flow back
       app.post('/backend/flows', bodyParser.json(), (req, res) => {
-        const flow = req.body
+        const container = req.body
         res.writeHead(200, { 'Content-Type': 'application/json' })
-        res.end(JSON.stringify(flow))
+        console.debug('Simulating flow creation ...')
+        res.end(JSON.stringify(container))
       })
-      //In the success case, just echo the flow back
+      /**
+       * To update existing flow
+       * In the success case, just echo the flow back, but the backend could send back a validation result to display. It's available in:
+       * vendor_metadata: {
+       *   floip: {
+       *     ui_metadata: {
+       *       validation_results: {
+       *         blocks: {block-uuid1: [{message: 'issue 1'}, {message: 'issue 2'}], ...},
+       *         resources: {resource-uuid1: [{message: 'issue 1'}, {message: 'issue 2'}], ...}
+       *       }
+       *     }
+       *   }
+       * }
+       */
       app.put('/backend/flows', bodyParser.json(), (req, res) => {
-        const flow = req.body
+        const container = req.body
         res.writeHead(200, { 'Content-Type': 'application/json' })
-        res.end(JSON.stringify(flow))
+        console.debug('Simulating flow update ...')
+        if (container.flows?.length && container.flows[0].blocks?.length > 0) {
+          console.debug('Simulating validation errors from backend on 1st flow\'s 1st block')
+          let blockWithValidationIssue = container.flows[0].blocks[0]
+          // Not all block type have resources, eg: Core.Case
+          let resourceWithValidationIssue = container.flows[0]?.resources
+          container.flows[0].vendor_metadata = {
+            floip: {
+              ui_metadata: {
+                validation_results: {
+                  blocks: {
+                    [`${blockWithValidationIssue.uuid}`]: [
+                      {
+                        message: 'dummy-block-backend-validation-error-#1'
+                      },
+                      {
+                        message: 'dummy-block-backend-validation-error-#2'
+                      },
+                    ]
+                  },
+                  resources: resourceWithValidationIssue.length ? {
+                    [`${resourceWithValidationIssue[0].uuid}`]: [
+                      {
+                        message: 'dummy-resource-backend-validation-error-#1'
+                      },
+                      {
+                        message: 'dummy-resource-backend-validation-error-#2'
+                      },
+                    ]
+                  }: []
+                }
+              }
+            }
+          }
+        } else {
+          console.debug('No block found to simulate backend validation, on this container:', container)
+        }
+        res.end(JSON.stringify(container))
       })
 
       //In the success case, just echo the language back

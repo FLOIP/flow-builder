@@ -313,10 +313,10 @@ import Routes from '@/lib/mixins/Routes'
 import {identity, isEmpty, isNil, pickBy as _pickBy, reduce, omit} from 'lodash'
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
-import {computeBlockUiData, computeBlockVendorUiData} from '@/store/builder'
+import {computeBlockCanvasCoordinates} from '@/store/builder'
 import Component, {mixins} from 'vue-class-component'
 import {Action, Getter, Mutation, namespace, State} from 'vuex-class'
-import {IBlock, IContext, IFlow, IResource, SupportedMode} from '@floip/flow-runner'
+import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
 import {RawLocation} from 'vue-router'
 import {Dictionary} from 'vue-router/types/router'
 import {Watch} from 'vue-property-decorator'
@@ -471,14 +471,8 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     const {uuid: blockId} = await this.flow_addBlankBlockByType({
       type,
       ui_metadata: {
-        canvas_coordinates: computeBlockUiData(this.activeBlock),
+        canvas_coordinates: computeBlockCanvasCoordinates(this.activeBlock),
       },
-      vendor_metadata: {
-        io_viamo: {
-          uiData: computeBlockVendorUiData(this.activeBlock),
-        },
-      },
-      // todo push out to intx-designer
     })
     this.activateBlock({blockId})
     await this.$router.push({

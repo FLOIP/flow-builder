@@ -51,13 +51,10 @@
             }
           },
           "vendor_metadata": {
-            "io_viamo": {
-              "uiData": {
-                "xPosition": 164,
-                "yPosition": 197
-              },
-              "branchingType": "UNIFIED",
-              "noValidResponse": "END_CALL"
+            "floip": {
+              "ui_metadata": {
+                "branching_type": "UNIFIED"
+              }
             }
           },
           "type": "Core.Log",
@@ -92,13 +89,10 @@
             }
           },
           "vendor_metadata": {
-            "io_viamo": {
-              "uiData": {
-                "xPosition": 380,
-                "yPosition": 227
+            "floip": {
+              "ui_metadata": {
+                "branching_type": "UNIFIED"
               },
-              "branchingType": "UNIFIED",
-              "noValidResponse": "END_CALL"
             }
           },
           "type": "MobilePrimitives.NumericResponse",
@@ -138,12 +132,10 @@
             }
           },
           "vendor_metadata": {
-            "io_viamo": {
-              "uiData": {
-                "isSelected": false
+            "floip": {
+              "ui_metadata": {
+                "branching_type": "UNIFIED"
               },
-              "branchingType": "UNIFIED",
-              "noValidResponse": "END_CALL"
             }
           },
           "type": "Core.SetGroupMembership",
