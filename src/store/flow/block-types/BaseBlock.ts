@@ -3,7 +3,6 @@ import {IRootState} from '@/store'
 import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {defaultsDeep, last} from 'lodash'
 import {validateBlockWithJsonSchema} from '@/store/validation/validationHelpers'
-import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IValidationStatus} from '@/store/validation'
 
 export interface IEmptyState {}
@@ -27,13 +26,9 @@ export const actions = {
       label: '',
       semantic_label: '',
       config: {},
-      exits: props?.exits ?? [
-        await dispatch('flow/block_createBlockDefaultExitWith', {
-          props: ({
-            uuid: await (new IdGeneratorUuidV4()).generate(),
-          }) as IBlockExit,
-        }, {root: true}),
-      ],
+      exits: props?.exits ?? await dispatch('flow/block_generateExitsBasedOnUiConfig', {
+        blockType: props.type,
+      }, {root: true}),
       tags: [],
       vendor_metadata: {
         floip: {
@@ -51,17 +46,22 @@ export const actions = {
   },
 
   /**
-   * This will be the default standard exit mode, but we can override it in the specific block store
+   * This will be the default standard exit mode,
+   * but we can override it in the specific block store (eg: for dynamic test generation in MCQ)
    */
   async handleBranchingTypeChangedToUnified(
-    {dispatch}: {dispatch: Dispatch},
+    {dispatch, rootGetters}: {dispatch: Dispatch, rootGetters: any},
     {block}: {block: IBlock},
   ): Promise<void> {
-    return dispatch('flow/block_resetBranchingExitsByCollapsingNonDefault', {
-      blockId: block.uuid,
-      test: 'block.value = true',
-      name: 'Valid',
-    }, {root: true})
+    if (rootGetters['flow/block_shouldHave2Exits'](block.type) === true) {
+      await dispatch('flow/block_resetBranchingExitsByCollapsingNonDefault', {
+        blockId: block.uuid,
+      }, {root: true})
+    } else {
+      await dispatch('flow/block_resetBranchingExitsToDefaultOnly', {
+        blockId: block.uuid,
+      }, {root: true})
+    }
   },
 
   /**

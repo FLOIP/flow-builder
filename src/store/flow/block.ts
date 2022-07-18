@@ -8,7 +8,7 @@ import {
 } from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, get, has, isArray, isNil, last, reject, snakeCase, toPath} from 'lodash'
+import {defaults, has, isArray, isNil, last, reject, snakeCase, toPath} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IFlowsState} from '.'
 import {removeBlockValueByPath, updateBlockValueByPath} from './utils/vuexBlockHelpers'
@@ -19,6 +19,17 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   // todo: do we do all bocks in all blocks, or all blocks in [!! active flow !!]  ?
   //       the interesting bit is that resources are _all_ resources... so we could follow suit here? :shrug:
   // blocksByUuid: ({flows}) => map(resources, 'uuid')
+  block_classesConfig(_state, _getters, rootState): Record<string, object> {
+    return rootState.trees.ui.blockClasses
+  },
+
+  block_shouldHave2Exits: (state, getters) => (blockType: string): boolean => {
+    const blockDefinition = getters.block_classesConfig[blockType]
+    const primaryExitName = blockDefinition?.exits?.primary?.name
+    const defaultExitName = blockDefinition?.exits?.default?.name
+
+    return primaryExitName !== undefined && defaultExitName !== undefined
+  },
 }
 
 export const mutations: MutationTree<IFlowsState> = {
@@ -203,6 +214,42 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       }),
     }
   },
+
+  async block_generateExitsBasedOnUiConfig({state, dispatch, getters}, {blockType}: {blockType: string}): Promise<IBlockExit[]> {
+    const blockDefinition = getters.block_classesConfig[blockType]
+    const primaryExitName = blockDefinition?.exits?.primary?.name
+    const defaultExitName = blockDefinition?.exits?.default?.name
+    let exits: IBlockExit[] = []
+
+    if (getters.block_shouldHave2Exits(blockType) === true) {
+      // Has 02 exits
+      exits = [
+        await dispatch('block_createBlockExitWith', {
+          props: ({
+            uuid: await (new IdGeneratorUuidV4()).generate(),
+            name: primaryExitName,
+            test: blockDefinition?.exits?.primary.test,
+          }) as IBlockExit,
+        }),
+        await dispatch('block_createBlockDefaultExitWith', {
+          props: ({
+            uuid: await (new IdGeneratorUuidV4()).generate(),
+            name: defaultExitName,
+          }) as IBlockExit,
+        }),
+      ]
+    } else {
+      // Has only one exit `Default` if the 02 exits are not clearly defined
+      exits = [await dispatch('block_createBlockDefaultExitWith', {
+        props: ({
+          uuid: await (new IdGeneratorUuidV4()).generate(),
+        }) as IBlockExit,
+      })]
+    }
+
+    return exits
+  },
+
   async block_updateBlockExitWith(
     {commit},
     {blockId, exitId, props: {test, name, semantic_label}}: { blockId: string, exitId: string, props: Partial<IBlockExit> },
@@ -267,14 +314,16 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
    * - Default exit would be the last exit (eg: Invalid, Failure)
    */
   async block_resetBranchingExitsByCollapsingNonDefault(
-    {state, dispatch},
-    {blockId, test, name}: {blockId: IBlock['uuid'], test: IBlockExit['test'], name: string},
+    {state, getters, dispatch},
+    {blockId}: {blockId: IBlock['uuid']},
   ) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+    const blockDefinition = getters.block_classesConfig[block.type]
+
     const primaryExitProps: Partial<IBlockExit> = {
       uuid: await (new IdGeneratorUuidV4()).generate(),
-      name,
-      test,
+      name: blockDefinition?.exits?.primary.name,
+      test: blockDefinition?.exits?.primary.test,
     }
 
     block.exits = [

@@ -30,12 +30,6 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     }
     return baseActions.createWith({dispatch}, {props})
   },
-
-  handleBranchingTypeChangedToUnified({dispatch}, {block}: { block: IBlock }) {
-    dispatch('flow/block_resetBranchingExitsToDefaultOnly', {
-      blockId: block.uuid,
-    }, {root: true})
-  },
 }
 
 const Core_RunFlowBlockStore: Module<IEmptyState, IRootState> = {

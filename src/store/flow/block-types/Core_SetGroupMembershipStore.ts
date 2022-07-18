@@ -28,12 +28,6 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     return baseActions.createWith({dispatch}, {props})
   },
 
-  handleBranchingTypeChangedToUnified({dispatch}, {block}: { block: IBlock }) {
-    dispatch('flow/block_resetBranchingExitsToDefaultOnly', {
-      blockId: block.uuid,
-    }, {root: true})
-  },
-
   async setIsMember({commit, rootGetters}, action) {
     const activeBlock = rootGetters['builder/activeBlock']
     let isMember = false
