@@ -1,11 +1,19 @@
 import Vue from 'vue'
-import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IBlockUIMetadata, IContext} from '@floip/flow-runner'
+import {
+  findBlockExitWith,
+  findBlockOnActiveFlowWith,
+  IBlock,
+  IBlockExit,
+  IContext,
+} from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, has, isArray, last, reject, snakeCase} from 'lodash'
+import {defaults, get, has, isArray, isNil, last, reject, snakeCase, toPath} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IFlowsState} from '.'
 import {removeBlockValueByPath, updateBlockValueByPath} from './utils/vuexBlockHelpers'
+
+import * as SetContactPropertyModule from './block/set-contact-property'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   // todo: do we do all bocks in all blocks, or all blocks in [!! active flow !!]  ?
@@ -14,6 +22,8 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 }
 
 export const mutations: MutationTree<IFlowsState> = {
+  ...SetContactPropertyModule.mutations,
+
   block_setName(state, {blockId, value}) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .name = value
@@ -102,7 +112,7 @@ export const mutations: MutationTree<IFlowsState> = {
     Vue.set(pointer, chunks[0], value)
   },
   block_setBlockExitDestinationBlockId(state, {blockId, exitId, destinationBlockId}) {
-    if (!destinationBlockId) {
+    if (isNil(destinationBlockId)) {
       destinationBlockId = undefined
     }
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
@@ -121,6 +131,8 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
+  ...SetContactPropertyModule.actions,
+
   block_setLabel({commit, dispatch}, {blockId, value}) {
     commit('block_setLabel', {blockId, value})
     dispatch('block_setName', {blockId, value: snakeCase(value)})
@@ -205,7 +217,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     {commit, state},
     {first, second}: { first: IDeepBlockExitIdWithinFlow, second: IDeepBlockExitIdWithinFlow },
   ) {
-    if (!first || !second) {
+    if (isNil(first) || isNil(second)) {
       console.warn(`Unable to swap destinationBlockId on null: ${JSON.stringify({first, second})}`)
       return
     }
