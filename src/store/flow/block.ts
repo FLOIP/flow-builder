@@ -4,16 +4,16 @@ import {
   findBlockOnActiveFlowWith,
   IBlock,
   IBlockExit,
-  IBlockUIMetadata,
   IContext,
-  SetContactProperty,
 } from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, has, isArray, last, reject, snakeCase} from 'lodash'
+import {defaults, get, has, isArray, isNil, last, reject, snakeCase, toPath} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IFlowsState} from '.'
 import {removeBlockValueByPath, updateBlockValueByPath} from './utils/vuexBlockHelpers'
+
+import * as SetContactPropertyModule from './block/set-contact-property'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   // todo: do we do all bocks in all blocks, or all blocks in [!! active flow !!]  ?
@@ -22,6 +22,8 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 }
 
 export const mutations: MutationTree<IFlowsState> = {
+  ...SetContactPropertyModule.mutations,
+
   block_setName(state, {blockId, value}) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .name = value
@@ -110,7 +112,7 @@ export const mutations: MutationTree<IFlowsState> = {
     Vue.set(pointer, chunks[0], value)
   },
   block_setBlockExitDestinationBlockId(state, {blockId, exitId, destinationBlockId}) {
-    if (!destinationBlockId) {
+    if (isNil(destinationBlockId)) {
       destinationBlockId = undefined
     }
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
@@ -129,6 +131,8 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
+  ...SetContactPropertyModule.actions,
+
   block_setLabel({commit, dispatch}, {blockId, value}) {
     commit('block_setLabel', {blockId, value})
     dispatch('block_setName', {blockId, value: snakeCase(value)})
@@ -168,80 +172,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       path: 'floip.ui_metadata.should_auto_update_name',
       value: true,
     })
-  },
-
-  /**
-   * Make sure we have Array set_contact_property,
-   * if it's not an array, then the mutation will set an object like {set_contact_property: {0: object1, 1: object2}} instead
-   */
-  block_makeSureSetContactPropertyExistsAsArray({commit, state}, {blockId}: { blockId: string}) {
-    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    if (block.config?.set_contact_property === undefined) {
-      commit('block_updateConfigByPath', {
-        blockId,
-        path: 'set_contact_property',
-        value: [],
-      })
-    }
-  },
-  /**
-   * Set contact property element on a given index
-   */
-  block_setContactPropertyOnIndex(
-    {commit, state, dispatch},
-    {blockId, index, propertyKey, propertyValue}: { blockId: string, index: number, propertyKey?: string, propertyValue?: string },
-  ) {
-    dispatch('block_makeSureSetContactPropertyExistsAsArray', {blockId})
-
-    commit('block_updateConfigByPath', {
-      blockId,
-      path: `set_contact_property.[${index}]`,
-      value: {
-        property_key: propertyKey,
-        property_value: propertyValue,
-      },
-    })
-  },
-
-  /**
-   * Set contact property element's property_key on a given index
-   */
-  block_setContactPropertyKeyOnIndex(
-    {commit, state, dispatch},
-    {blockId, index, propertyKey}: { blockId: string, index: number, propertyKey?: string },
-  ) {
-    dispatch('block_makeSureSetContactPropertyExistsAsArray', {blockId})
-    commit('block_updateConfigByPath', {
-      blockId,
-      path: `set_contact_property.[${index}].property_key`,
-      value: propertyKey,
-    })
-  },
-
-  /**
-   * Set contact property element's property_value on a given index
-   */
-  block_setContactPropertyValueOnIndex(
-    {commit, state, dispatch},
-    {blockId, index, propertyValue}: { blockId: string, index: number, propertyValue: string },
-  ) {
-    dispatch('block_makeSureSetContactPropertyExistsAsArray', {blockId})
-    commit('block_updateConfigByPath', {
-      blockId,
-      path: `set_contact_property.[${index}].property_value`,
-      value: propertyValue,
-    })
-  },
-
-  /**
-   * Get contact property element on a given index
-   */
-  block_getContactPropertyOnIndex(
-    {commit, state},
-    {blockId, index}: { blockId: string, index: number },
-  ): SetContactProperty | undefined {
-    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    return block.config?.set_contact_property?.[index]
   },
 
   async block_createBlockDefaultExitWith(
@@ -287,7 +217,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     {commit, state},
     {first, second}: { first: IDeepBlockExitIdWithinFlow, second: IDeepBlockExitIdWithinFlow },
   ) {
-    if (!first || !second) {
+    if (isNil(first) || isNil(second)) {
       console.warn(`Unable to swap destinationBlockId on null: ${JSON.stringify({first, second})}`)
       return
     }
