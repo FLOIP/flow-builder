@@ -32,7 +32,9 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     props.config = {
         set_contact_property: [
           {
-            property_key: '',
+            // do not accept empty key
+            property_key: undefined,
+            // but empty value is valid (eg: when we set a `comment` to empty)
             property_value: '',
           },
         ],
