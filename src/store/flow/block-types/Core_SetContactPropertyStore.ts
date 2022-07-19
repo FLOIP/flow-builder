@@ -1,6 +1,6 @@
 import {ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IBlockConfig} from '@floip/flow-runner'
+import {IBlockConfig} from '@floip/flow-runner'
 import {cloneDeep} from 'lodash'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 

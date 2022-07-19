@@ -3,11 +3,12 @@ import {IRootState} from '@/store'
 import {IBlock, IFlow} from '@floip/flow-runner'
 import {IRunFlowBlock} from '@floip/flow-runner/src/model/block/IRunFlowBlock'
 import {cloneDeep} from 'lodash'
-import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import BaseStore, {actions as baseActions, getters as baseGetters, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 
 export const BLOCK_TYPE = 'Core.RunFlow'
 
 const getters: GetterTree<IEmptyState, IRootState> = {
+  ...baseGetters,
   otherFlows: (
     state,
     _getters,

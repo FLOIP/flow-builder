@@ -1,9 +1,8 @@
 import {ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IBlockExit} from '@floip/flow-runner'
+import {IBlock} from '@floip/flow-runner'
 import {cloneDeep} from 'lodash'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
-import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 
 export const BLOCK_TYPE = 'SmartDevices.PhotoResponse'
 

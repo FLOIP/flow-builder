@@ -2,11 +2,12 @@ import {ActionTree, GetterTree, Module} from 'vuex'
 import {IRootState} from '@/store'
 import {IReadBlock} from '@floip/flow-runner'
 import {cloneDeep, split} from 'lodash'
-import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import BaseStore, {actions as baseActions, getters as baseGetters, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 
 export const BLOCK_TYPE = 'ConsoleIO.Read'
 
 const getters: GetterTree<IEmptyState, IRootState> = {
+  ...baseGetters,
   destinationVariablesFields: (state, _getters, _rootState, rootGetters): string[] => {
     const activeBlock = rootGetters['builder/activeBlock']
     // TODO: correct the destination variables array according to scanf library we're using
