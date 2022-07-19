@@ -18,12 +18,12 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     return message
   },
 
-  async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ILogBlock> }) {
+  async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<ILogBlock> }) {
     props.type = BLOCK_TYPE
     props.config = {
       message: '',
     }
-    return baseActions.createWith({dispatch}, {props})
+    return baseActions.createWith({getters, dispatch}, {props})
   },
 }
 

@@ -72,14 +72,14 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     exits.splice(0, exits.length - 1, ...exitsForChoices)
   },
 
-  async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ISelectOneResponseBlock> }) {
+  async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<ISelectOneResponseBlock> }) {
     props.type = BLOCK_TYPE
     const blankPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
     props.config = {
       prompt: blankPromptResource.uuid,
       choices: {},
     }
-    return baseActions.createWith({dispatch}, {props})
+    return baseActions.createWith({getters, dispatch}, {props})
   },
 
   handleBranchingTypeChangedToUnified({dispatch}, {block}: { block: IBlock }) {

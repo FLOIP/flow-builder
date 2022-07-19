@@ -18,14 +18,14 @@ export const BLOCK_TYPE = 'Core.SetGroupMembership'
 const actions: ActionTree<IEmptyState, IRootState> = {
   ...baseActions,
 
-  async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ISetGroupMembershipBlockConfig> }) {
+  async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<ISetGroupMembershipBlockConfig> }) {
     props.type = BLOCK_TYPE
     props.config = {
       is_member: true,
       groups: [],
       clear: false,
     }
-    return baseActions.createWith({dispatch}, {props})
+    return baseActions.createWith({getters, dispatch}, {props})
   },
 
   async setIsMember({commit, rootGetters}, action) {

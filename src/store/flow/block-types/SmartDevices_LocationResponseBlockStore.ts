@@ -28,7 +28,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     return value
   },
 
-  async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IBlock> }) {
+  async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<IBlock> }) {
     props.type = BLOCK_TYPE
     const blankMessageResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
     props.config = {
@@ -37,7 +37,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       accuracy_timeout_seconds: 120,
     }
 
-    return baseActions.createWith({dispatch}, {props})
+    return baseActions.createWith({getters, dispatch}, {props})
   },
 }
 

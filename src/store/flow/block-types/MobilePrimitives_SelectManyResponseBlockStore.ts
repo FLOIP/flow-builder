@@ -50,7 +50,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     }, {root: true})
   },
 
-  async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ISelectOneResponseBlock> }) {
+  async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<ISelectOneResponseBlock> }) {
     props.type = BLOCK_TYPE
     const blankPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
     props.config = {
@@ -59,7 +59,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       minimum_choices: undefined,
       maximum_choices: undefined,
     }
-    return baseActions.createWith({dispatch}, {props})
+    return baseActions.createWith({getters, dispatch}, {props})
   },
 }
 

@@ -7,16 +7,25 @@ import {IValidationStatus} from '@/store/validation'
 
 export interface IEmptyState {}
 
-export const getters: GetterTree<IEmptyState, IRootState> = {}
+export const getters: GetterTree<IEmptyState, IRootState> = {
+  /**
+   * Compute the primary exit test.
+   * We can override this from block type store, or from the consumer side. This has priority over test defined in builder.config.blockClasses
+   * If we have undefined, then we try to use what we defined in builder.config.blockClasses
+   *
+   * We're sending the blockProps because we might need them for customization
+   */
+  primaryExitTest: () => (_blockProps: Partial<IBlock>) => undefined,
+}
 
 export const mutations: MutationTree<IEmptyState> = {}
 
 export const actions = {
   async createWith(
-    {dispatch}: {dispatch: Dispatch},
+    {getters, dispatch}: {getters: any, dispatch: Dispatch},
     {props}: { props: { uuid: string } & Partial<IBlock> },
   ): Promise<IBlock> {
-    return defaultsDeep(
+    const mainProps = defaultsDeep(
       {},
       // Props from the block type createWith
       props, {
@@ -26,10 +35,6 @@ export const actions = {
       label: '',
       semantic_label: '',
       config: {},
-      exits: props?.exits ?? await dispatch('flow/block_generateExitsBasedOnUiConfig', {
-        blockType: props.type,
-        primaryExitTest: await dispatch('computePrimaryExitTestFunction'),
-      }, {root: true}),
       tags: [],
       vendor_metadata: {
         floip: {
@@ -44,15 +49,16 @@ export const actions = {
       vendor_metadata: await dispatch('initiateExtraVendorConfig'),
     },
     )
-  },
 
-  /**
-   * Compute the primary exit test.
-   * We can override this from block type store, or from the consumer side. This has priority over test defined in builder.config.blockClasses
-   * If we have undefined, then we try to use what we defined in builder.config.blockClasses
-   */
-  async computePrimaryExitTestFunction(_ctx: unknown): Promise<any> {
-    return undefined
+    // Define exits after we have the whole final props, this is important for dynamic test value
+    if (props?.exits === undefined) {
+      mainProps.exits = await dispatch('flow/block_generateExitsBasedOnUiConfig', {
+        blockType: props.type,
+        primaryExitTest: getters.primaryExitTest(mainProps),
+      }, {root: true})
+    }
+
+    return mainProps
   },
 
   /**
@@ -60,13 +66,13 @@ export const actions = {
    * but we can override it in the specific block store (eg: for dynamic test generation in MCQ)
    */
   async handleBranchingTypeChangedToUnified(
-    {dispatch, rootGetters}: {dispatch: Dispatch, rootGetters: any},
+    {dispatch, getters, rootGetters}: {dispatch: Dispatch, getters: any, rootGetters: any},
     {block}: {block: IBlock},
   ): Promise<void> {
     if (rootGetters['flow/block_shouldHave2Exits'](block.type) === true) {
       await dispatch('flow/block_resetBranchingExitsByCollapsingNonDefault', {
         blockId: block.uuid,
-        primaryExitTest: await dispatch('computePrimaryExitTestFunction'),
+        primaryExitTest: getters.primaryExitTest(block),
       }, {root: true})
     } else {
       await dispatch('flow/block_resetBranchingExitsToDefaultOnly', {

@@ -28,13 +28,13 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     }, {root: true})
   },
 
-  async createWith({dispatch, commit}, {props}: { props: { uuid: string } & Partial<IOpenResponseBlock> }) {
+  async createWith({getters, dispatch, commit}, {props}: { props: { uuid: string } & Partial<IOpenResponseBlock> }) {
     props.type = BLOCK_TYPE
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
     props.config = {
       prompt: blankResource.uuid,
     }
-    return baseActions.createWith({dispatch}, {props})
+    return baseActions.createWith({getters, dispatch}, {props})
   },
 }
 

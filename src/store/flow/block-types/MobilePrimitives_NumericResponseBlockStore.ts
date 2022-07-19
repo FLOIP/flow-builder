@@ -1,9 +1,9 @@
-import {ActionTree, Module} from 'vuex'
+import {ActionTree, GetterTree, Module} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IBlockExit, INumericBlockConfig} from '@floip/flow-runner'
+import {findBlockOnActiveFlowWith, findBlockWith, IBlock, IBlockExit, IContext, INumericBlockConfig} from '@floip/flow-runner'
 import {INumericResponseBlock} from '@floip/flow-runner/src/model/block/INumericResponseBlock'
 import {cloneDeep} from 'lodash'
-import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import BaseStore, {actions as baseActions, IEmptyState, getters as baseGetters} from '@/store/flow/block-types/BaseBlock'
 import {MobilePrimitives_NumericResponseBlockValidator} from '@/lib/validations'
 
 export const BLOCK_TYPE = 'MobilePrimitives.NumericResponse'
@@ -43,7 +43,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     return valueAsNumberOrUnset
   },
 
-  async createWith({dispatch, commit}, {props}: { props: { uuid: string } & Partial<INumericResponseBlock> }) {
+  async createWith({getters, dispatch, commit}, {props}: { props: { uuid: string } & Partial<INumericResponseBlock> }) {
     props.type = BLOCK_TYPE
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
     props.config = {
@@ -52,7 +52,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       validation_maximum: undefined,
     }
 
-    return baseActions.createWith({dispatch}, {props})
+    return baseActions.createWith({getters, dispatch}, {props})
   },
 
   /**

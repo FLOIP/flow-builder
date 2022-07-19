@@ -27,7 +27,7 @@ export const BLOCK_TYPE = 'Core.SetContactProperty'
 const actions: ActionTree<IEmptyState, IRootState> = {
   ...baseActions,
 
-  async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IBlockConfig> }) {
+  async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<IBlockConfig> }) {
     props.type = BLOCK_TYPE
     props.config = {
         set_contact_property: [
@@ -39,7 +39,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
           },
         ],
     }
-    return baseActions.createWith({dispatch}, {props})
+    return baseActions.createWith({getters, dispatch}, {props})
   },
 }
 

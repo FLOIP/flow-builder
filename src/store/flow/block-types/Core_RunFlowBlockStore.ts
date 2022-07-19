@@ -23,12 +23,12 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     commit('flow/block_updateConfig', {blockId, newConfig: {flow_id: newDestinationFlowId}}, {root: true})
     return newDestinationFlowId
   },
-  async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IRunFlowBlock> }) {
+  async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<IRunFlowBlock> }) {
     props.type = BLOCK_TYPE
     props.config = {
       flow_id: '',
     }
-    return baseActions.createWith({dispatch}, {props})
+    return baseActions.createWith({getters, dispatch}, {props})
   },
 }
 

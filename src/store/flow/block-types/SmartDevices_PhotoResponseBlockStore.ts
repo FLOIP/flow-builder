@@ -10,14 +10,14 @@ export const BLOCK_TYPE = 'SmartDevices.PhotoResponse'
 const actions: ActionTree<IEmptyState, IRootState> = {
   ...baseActions,
 
-  async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IBlock> }) {
+  async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<IBlock> }) {
     props.type = BLOCK_TYPE
     const blankMessageResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
     props.config = {
       prompt: blankMessageResource.uuid,
     }
 
-    return baseActions.createWith({dispatch}, {props})
+    return baseActions.createWith({getters, dispatch}, {props})
   },
 }
 

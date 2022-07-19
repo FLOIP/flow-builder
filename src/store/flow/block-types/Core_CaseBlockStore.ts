@@ -10,7 +10,7 @@ export const BLOCK_TYPE = 'Core.Case'
 const actions: ActionTree<IEmptyState, IRootState> = {
   ...baseActions,
 
-  async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ICaseBlock> }) {
+  async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<ICaseBlock> }) {
     props.type = BLOCK_TYPE
     props.vendor_metadata = {
       floip: {
@@ -19,7 +19,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
         },
       },
     }
-    return baseActions.createWith({dispatch}, {props})
+    return baseActions.createWith({getters, dispatch}, {props})
   },
 }
 

@@ -45,13 +45,13 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     return newDestinationVariables
   },
 
-  async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IReadBlock> }) {
+  async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<IReadBlock> }) {
     props.type = BLOCK_TYPE
     props.config = {
       format_string: '',
       destination_variables: [],
     }
-    return baseActions.createWith({dispatch}, {props})
+    return baseActions.createWith({getters, dispatch}, {props})
   },
 }
 

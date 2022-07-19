@@ -10,13 +10,13 @@ export const BLOCK_TYPE = 'MobilePrimitives.Message'
 const actions: ActionTree<IEmptyState, IRootState> = {
   ...baseActions,
 
-  async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IMessageBlock> }) {
+  async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<IMessageBlock> }) {
     props.type = BLOCK_TYPE
     const blankMessageResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
     props.config = {
       prompt: blankMessageResource.uuid,
     }
-    return baseActions.createWith({dispatch}, {props})
+    return baseActions.createWith({getters, dispatch}, {props})
   },
 }
 
