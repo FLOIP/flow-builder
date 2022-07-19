@@ -28,6 +28,7 @@ export const actions = {
       config: {},
       exits: props?.exits ?? await dispatch('flow/block_generateExitsBasedOnUiConfig', {
         blockType: props.type,
+        primaryExitTest: await dispatch('computePrimaryExitTestFunction'),
       }, {root: true}),
       tags: [],
       vendor_metadata: {
@@ -46,6 +47,15 @@ export const actions = {
   },
 
   /**
+   * Compute the primary exit test.
+   * We can override this from block type store, or from the consumer side. This has priority over test defined in builder.config.blockClasses
+   * If we have undefined, then we try to use what we defined in builder.config.blockClasses
+   */
+  async computePrimaryExitTestFunction(_ctx: unknown): Promise<any> {
+    return undefined
+  },
+
+  /**
    * This will be the default standard exit mode,
    * but we can override it in the specific block store (eg: for dynamic test generation in MCQ)
    */
@@ -56,6 +66,7 @@ export const actions = {
     if (rootGetters['flow/block_shouldHave2Exits'](block.type) === true) {
       await dispatch('flow/block_resetBranchingExitsByCollapsingNonDefault', {
         blockId: block.uuid,
+        primaryExitTest: await dispatch('computePrimaryExitTestFunction'),
       }, {root: true})
     } else {
       await dispatch('flow/block_resetBranchingExitsToDefaultOnly', {

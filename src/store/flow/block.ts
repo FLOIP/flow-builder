@@ -215,7 +215,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
   },
 
-  async block_generateExitsBasedOnUiConfig({state, dispatch, getters}, {blockType}: {blockType: string}): Promise<IBlockExit[]> {
+  async block_generateExitsBasedOnUiConfig(
+    {state, dispatch, getters},
+    {blockType, primaryExitTest}: {blockType: string, primaryExitTest?: string},
+  ): Promise<IBlockExit[]> {
     const blockDefinition = getters.block_classesConfig[blockType]
     const primaryExitName = blockDefinition?.exits?.primary?.name
     const defaultExitName = blockDefinition?.exits?.default?.name
@@ -228,7 +231,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
           props: ({
             uuid: await (new IdGeneratorUuidV4()).generate(),
             name: primaryExitName,
-            test: blockDefinition?.exits?.primary.test,
+            test: primaryExitTest ?? blockDefinition?.exits?.primary.test,
           }) as IBlockExit,
         }),
         await dispatch('block_createBlockDefaultExitWith', {
@@ -315,7 +318,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
    */
   async block_resetBranchingExitsByCollapsingNonDefault(
     {state, getters, dispatch},
-    {blockId}: {blockId: IBlock['uuid']},
+    {blockId, primaryExitTest}: {blockId: IBlock['uuid'], primaryExitTest: string},
   ) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     const blockDefinition = getters.block_classesConfig[block.type]
@@ -323,7 +326,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const primaryExitProps: Partial<IBlockExit> = {
       uuid: await (new IdGeneratorUuidV4()).generate(),
       name: blockDefinition?.exits?.primary.name,
-      test: blockDefinition?.exits?.primary.test,
+      test: primaryExitTest ?? blockDefinition?.exits?.primary.test,
     }
 
     block.exits = [
