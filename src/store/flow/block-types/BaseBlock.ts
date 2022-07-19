@@ -10,8 +10,7 @@ export interface IEmptyState {}
 export const getters: GetterTree<IEmptyState, IRootState> = {
   /**
    * Compute the primary exit test.
-   * We can override this from block type store, or from the consumer side. This has priority over test defined in builder.config.blockClasses
-   * If we have undefined, then we try to use what we defined in builder.config.blockClasses
+   * We can override this from block type store, or from the consumer side.
    *
    * We're sending the blockProps because we might need them for customization
    */

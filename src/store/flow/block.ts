@@ -215,6 +215,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
   },
 
+  /**
+   * primaryExitTest has priority over test defined in builder.config.blockClasses
+   * If we have undefined, then we try to use what we defined in builder.config.blockClasses
+   */
   async block_generateExitsBasedOnUiConfig(
     {state, dispatch, getters},
     {blockType, primaryExitTest}: {blockType: string, primaryExitTest?: string},
