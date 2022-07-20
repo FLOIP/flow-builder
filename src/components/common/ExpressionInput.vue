@@ -18,6 +18,7 @@
         :rows="rows"
         :placeholder="placeholder"
         @input="$emit('input', $event.target.value)" />
+      <div ref="suggest" class="cloned-auto-suggest-content"></div>
     </div>
     <slot />
   </div>
@@ -46,6 +47,7 @@ const defaultDateFields = [
 ]
 
 const flowNamespace = namespace('flow')
+const builderNamespace = namespace('builder')
 
 @Component({})
 export class ExpressionInput extends mixins(Lang) {
@@ -60,6 +62,10 @@ export class ExpressionInput extends mixins(Lang) {
 
   suggest = {}
 
+  get autoSuggestDropdown() {
+    return this.suggest?.dropdown?.dropdown
+  }
+
   get isInvalid(): boolean {
     return this.validState === false
   }
@@ -69,6 +75,7 @@ export class ExpressionInput extends mixins(Lang) {
   }
 
   set expression(value: string | undefined) {
+    this.portAutoSuggestContent() // TODO: use nextTick to fix the delay ?
     if (value === undefined) {
       return
     }
@@ -153,6 +160,18 @@ export class ExpressionInput extends mixins(Lang) {
       ...this.methodSuggestions,
       ...this.topLevelSuggestions,
     ]
+  }
+
+  portAutoSuggestContent() {
+    const suggestRef = this.$refs.suggest
+    const clonedAutoSuggestElement = this.autoSuggestDropdown.cloneNode(true)
+    clonedAutoSuggestElement.removeAttribute('style')
+    clonedAutoSuggestElement.style.zIndex = 25
+
+    // Remove existing child first
+    suggestRef.innerHTML = ''
+    suggestRef.appendChild(clonedAutoSuggestElement)
+    this.autoSuggestDropdown.remove()
   }
 
   mounted(): void {
