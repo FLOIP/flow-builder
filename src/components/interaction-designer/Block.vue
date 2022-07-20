@@ -10,7 +10,7 @@
     <plain-draggable
       v-if="hasLayout"
       ref="draggable"
-      class="block"
+      class="block-draggable"
       :class="{
         active: isBlockActivated,
         'has-toolbar': isBlockSelected || shouldShowBlockEditor,
@@ -574,7 +574,7 @@ export default Block
   pointer-events: none;
 }
 
-.block {
+.block-draggable {
   position: absolute;
   left: 0;
   top: 0;
