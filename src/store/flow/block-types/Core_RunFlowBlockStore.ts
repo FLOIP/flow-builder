@@ -1,4 +1,4 @@
-import {ActionTree, GetterTree, Module} from 'vuex'
+import {ActionContext, ActionTree, GetterTree, Module} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlock, IFlow} from '@floip/flow-runner'
 import {IRunFlowBlock} from '@floip/flow-runner/src/model/block/IRunFlowBlock'
@@ -29,7 +29,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     props.config = {
       flow_id: '',
     }
-    return baseActions.createWith({getters, dispatch}, {props})
+    return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
 }
 

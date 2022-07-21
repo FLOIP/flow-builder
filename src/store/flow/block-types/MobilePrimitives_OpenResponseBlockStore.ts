@@ -1,4 +1,4 @@
-import {ActionTree, Module} from 'vuex'
+import {ActionContext, ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
 import {IOpenResponseBlock} from '@floip/flow-runner/src/model/block/IOpenResponseBlock'
 import {cloneDeep} from 'lodash'
@@ -33,7 +33,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     props.config = {
       prompt: blankResource.uuid,
     }
-    return baseActions.createWith({getters, dispatch}, {props})
+    return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
 }
 

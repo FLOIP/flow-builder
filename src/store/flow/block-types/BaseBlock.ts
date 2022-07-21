@@ -21,7 +21,7 @@ export const mutations: MutationTree<IEmptyState> = {}
 
 export const actions = {
   async createWith(
-    {getters, dispatch}: {getters: any, dispatch: Dispatch},
+    {getters, dispatch}: ActionContext<IEmptyState, IRootState>,
     {props}: { props: { uuid: string } & Partial<IBlock> },
   ): Promise<IBlock> {
     const mainProps = defaultsDeep(
@@ -65,7 +65,7 @@ export const actions = {
    * but we can override it in the specific block store (eg: for dynamic test generation in MCQ)
    */
   async handleBranchingTypeChangedToUnified(
-    {dispatch, getters, rootGetters}: {dispatch: Dispatch, getters: any, rootGetters: any},
+    {dispatch, getters, rootGetters}: ActionContext<IEmptyState, IRootState>,
     {block}: {block: IBlock},
   ): Promise<void> {
     if (rootGetters['flow/block_shouldHave2Exits'](block.type) === true) {

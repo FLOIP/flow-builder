@@ -1,4 +1,4 @@
-import {ActionTree, Module} from 'vuex'
+import {ActionContext, ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlock} from '@floip/flow-runner'
 import {cloneDeep} from 'lodash'
@@ -36,7 +36,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       accuracy_timeout_seconds: 120,
     }
 
-    return baseActions.createWith({getters, dispatch}, {props})
+    return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
 }
 

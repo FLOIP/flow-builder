@@ -1,9 +1,9 @@
-import {ActionTree, Module} from 'vuex'
+import {ActionContext, ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlock} from '@floip/flow-runner'
 import {INumericResponseBlock} from '@floip/flow-runner/src/model/block/INumericResponseBlock'
 import {cloneDeep} from 'lodash'
-import BaseStore, {actions as baseActions, IEmptyState, getters as baseGetters} from '@/store/flow/block-types/BaseBlock'
+import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 import {MobilePrimitives_NumericResponseBlockValidator} from '@/lib/validations'
 
 export const BLOCK_TYPE = 'MobilePrimitives.NumericResponse'
@@ -52,7 +52,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       validation_maximum: undefined,
     }
 
-    return baseActions.createWith({getters, dispatch}, {props})
+    return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
 
   /**

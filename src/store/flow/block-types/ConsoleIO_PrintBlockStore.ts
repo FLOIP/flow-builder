@@ -1,4 +1,4 @@
-import {ActionTree, Module} from 'vuex'
+import {ActionContext, ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
 import {IPrintBlock} from '@floip/flow-runner/src/model/block/IPrintBlock'
 import {cloneDeep} from 'lodash'
@@ -23,7 +23,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     props.config = {
       message: '',
     }
-    return baseActions.createWith({getters, dispatch}, {props})
+    return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
 }
 

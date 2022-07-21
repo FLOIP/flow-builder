@@ -1,4 +1,4 @@
-import {ActionTree, Module} from 'vuex'
+import {ActionContext, ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
 import {ICaseBlock} from '@floip/flow-runner/src/model/block/ICaseBlock'
 import {cloneDeep} from 'lodash'
@@ -19,7 +19,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
         },
       },
     }
-    return baseActions.createWith({getters, dispatch}, {props})
+    return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
 }
 

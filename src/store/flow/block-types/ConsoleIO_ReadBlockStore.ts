@@ -1,4 +1,4 @@
-import {ActionTree, GetterTree, Module} from 'vuex'
+import {ActionContext, ActionTree, GetterTree, Module} from 'vuex'
 import {IRootState} from '@/store'
 import {IReadBlock} from '@floip/flow-runner'
 import {cloneDeep, split} from 'lodash'
@@ -52,7 +52,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       format_string: '',
       destination_variables: [],
     }
-    return baseActions.createWith({getters, dispatch}, {props})
+    return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
 }
 
