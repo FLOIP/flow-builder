@@ -28,7 +28,7 @@
 import AutoSuggest from '@avcs/autosuggest'
 import '@avcs/autosuggest/dropdown.css'
 import {mixins} from 'vue-class-component'
-import {Component, Prop} from 'vue-property-decorator'
+import {Component, Prop, Watch} from 'vue-property-decorator'
 import {Getter, namespace} from 'vuex-class'
 import {MethodNodeEvaluatorFactory} from '@floip/expression-evaluator/dist/Evaluator/NodeEvaluator/MethodNodeEvaluator/Factory'
 import Lang from '@/lib/filters/lang'
@@ -62,6 +62,14 @@ export class ExpressionInput extends mixins(Lang) {
 
   suggest = {}
 
+  // @Watch('autoSuggestDropdown')
+  // onCurrentExpressionUpdate(value: unknown): void {
+  //   console.log('test', value, this.autoSuggestDropdown)
+  //   if (value > '') {
+  //     this.$nextTick(() => this.portAutoSuggestContent())
+  //   }
+  // }
+
   get autoSuggestDropdown() {
     return this.suggest?.dropdown?.dropdown
   }
@@ -75,7 +83,7 @@ export class ExpressionInput extends mixins(Lang) {
   }
 
   set expression(value: string | undefined) {
-    this.portAutoSuggestContent() // TODO: use nextTick to fix the delay ?
+    // this.portAutoSuggestContent() // TODO: use nextTick to fix the delay ?
     if (value === undefined) {
       return
     }
@@ -164,14 +172,20 @@ export class ExpressionInput extends mixins(Lang) {
 
   portAutoSuggestContent() {
     const suggestRef = this.$refs.suggest
-    const clonedAutoSuggestElement = this.autoSuggestDropdown.cloneNode(true)
-    clonedAutoSuggestElement.removeAttribute('style')
-    clonedAutoSuggestElement.style.zIndex = 25
+    // const clonedAutoSuggestElement = this.autoSuggestDropdown.cloneNode(true)
+    // const clonedAutoSuggestElement = this.autoSuggestDropdown
+    this.autoSuggestDropdown.removeAttribute('style')
+    // clonedAutoSuggestElement.style.zIndex = 25
+    // delete clonedAutoSuggestElement.style.display
+    // delete clonedAutoSuggestElement.style.left
+    // delete clonedAutoSuggestElement.style.top
+    // clonedAutoSuggestElement.style.value = 'z-index: 25;'
 
     // Remove existing child first
-    suggestRef.innerHTML = ''
-    suggestRef.appendChild(clonedAutoSuggestElement)
-    this.autoSuggestDropdown.remove()
+    // suggestRef.innerHTML = ''
+    suggestRef.appendChild(this.autoSuggestDropdown)
+    // this.autoSuggestDropdown.remove()
+    // this.suggest.dropdown.dropdown = clonedAutoSuggestElement
   }
 
   mounted(): void {
@@ -181,7 +195,14 @@ export class ExpressionInput extends mixins(Lang) {
       suggestions: this.suggestions,
       onChange: () => (input as HTMLInputElement)!.dispatchEvent(new Event('input')),
     }, input)
+
+    this.$nextTick(() => this.portAutoSuggestContent())
   }
+
+  // updated(): void {
+  //   console.debug('test xxxx')
+  //   this.$nextTick(() => this.portAutoSuggestContent())
+  // }
 
   @flowNamespace.Getter activeFlow?: IFlow
   @Getter subscriberPropertyFields!: ISubscriberPropertyField[]
