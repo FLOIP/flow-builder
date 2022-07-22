@@ -1,14 +1,8 @@
 import Vue from 'vue'
-import {
-  findBlockExitWith,
-  findBlockOnActiveFlowWith,
-  IBlock,
-  IBlockExit,
-  IContext,
-} from '@floip/flow-runner'
+import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext} from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, get, has, isArray, isNil, last, reject, snakeCase, toPath} from 'lodash'
+import {defaults, has, isArray, isNil, last, reject, snakeCase} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IFlowsState} from '.'
 import {removeBlockValueByPath, updateBlockValueByPath} from './utils/vuexBlockHelpers'
@@ -97,9 +91,8 @@ export const mutations: MutationTree<IFlowsState> = {
     if (!block.ui_metadata) {
       Vue.set(block, 'ui_metadata', {})
     }
-    const base = block.ui_metadata!
 
-    let pointer = base
+    let pointer = block.ui_metadata!
     while (chunks.length !== 1) {
       const name = chunks.shift()!
 
@@ -119,7 +112,10 @@ export const mutations: MutationTree<IFlowsState> = {
     findBlockExitWith(exitId, block)
       .destination_block = destinationBlockId
   },
-  block_updateVendorMetadataByPath(state, {blockId, path, value}: { blockId: string, path: string, value: object | string }) {
+  block_updateVendorMetadataByPath(
+    state,
+    {blockId, path, value}: {blockId: string, path: string, value: boolean | number | string | object | null | undefined},
+  ) {
     updateBlockValueByPath(state, blockId, `vendor_metadata.${path}`, value)
   },
   block_removeVendorMetadataByPath(state, {blockId, path}: { blockId: string, path: string }) {
@@ -266,7 +262,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
    * - Valid
    * - Invalid
    */
-  async block_updateBranchingExitsWithInvalidScenario({state, dispatch}, {blockId, test}: {blockId: IBlock['uuid'], test: IBlockExit['test']}) {
+  async block_updateBranchingExitsWithInvalidScenario(
+    {state, dispatch},
+    {blockId, test}: {blockId: IBlock['uuid'], test: IBlockExit['test']},
+  ) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     const primaryExitProps: Partial<IBlockExit> = {
       uuid: await (new IdGeneratorUuidV4()).generate(),
