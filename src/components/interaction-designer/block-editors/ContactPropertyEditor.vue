@@ -130,7 +130,7 @@ export class ContactPropertyEditor extends mixins(Lang) {
       blockId: this.block.uuid,
       // Consider the 1st element only
       index: 0,
-      propertyKey: value,
+      propertyKey: value === '' || value === undefined ? undefined : value,
     })
   }
   @flowVuexNamespace.Action block_setContactPropertyValueOnIndex!: (
