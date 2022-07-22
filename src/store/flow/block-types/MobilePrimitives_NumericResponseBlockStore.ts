@@ -60,8 +60,8 @@ const actions: ActionTree<IEmptyState, IRootState> = {
    * - the consumer validateBlockWithCustomJsonSchema
    * - any custom validation logic in the community version
    */
-  async validate({rootGetters, dispatch}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-    return MobilePrimitives_NumericResponseBlockValidator.runAllValidations(block, schemaVersion, {
+  async validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
+    return MobilePrimitives_NumericResponseBlockValidator.runAllValidations(block, schemaVersion, undefined, {
       hasVoiceMode: rootGetters['flow/hasVoiceMode'],
     })
   },

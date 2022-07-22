@@ -30,14 +30,8 @@ const actions: ActionTree<IEmptyState, IRootState> = {
   async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<IBlockConfig> }) {
     props.type = BLOCK_TYPE
     props.config = {
-        set_contact_property: [
-          {
-            // do not accept empty key
-            property_key: undefined,
-            // but empty value is valid (eg: when we set a `comment` to empty)
-            property_value: '',
-          },
-        ],
+      // Important, set_contact_property should be empty by default, to avoid weird validation behaviour in consumer side
+      set_contact_property: [],
     }
     return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },

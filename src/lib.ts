@@ -46,6 +46,8 @@ export * from '@/router/helpers'
 export * from '@/store/validation'
 export * from '@/store/validation/validationHelpers'
 
+export * from './lib/validations/ExtendedValidatorBase'
+
 const Components = registerCustomComponents({
   InteractionDesigner: InteractionDesignerComponent,
   FetchFlow: FetchFlowComponent,

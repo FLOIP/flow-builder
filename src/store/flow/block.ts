@@ -8,7 +8,7 @@ import {
 } from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, has, isArray, isNil, last, reject, snakeCase, toPath} from 'lodash'
+import {defaults, has, isArray, isNil, last, reject, snakeCase} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IFlowsState} from '.'
 import {removeBlockValueByPath, updateBlockValueByPath} from './utils/vuexBlockHelpers'
@@ -16,6 +16,8 @@ import {removeBlockValueByPath, updateBlockValueByPath} from './utils/vuexBlockH
 import * as SetContactPropertyModule from './block/set-contact-property'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
+  ...SetContactPropertyModule.getters,
+
   // todo: do we do all bocks in all blocks, or all blocks in [!! active flow !!]  ?
   //       the interesting bit is that resources are _all_ resources... so we could follow suit here? :shrug:
   // blocksByUuid: ({flows}) => map(resources, 'uuid')

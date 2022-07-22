@@ -51,9 +51,9 @@ export interface ISuggestion {
 }
 
 export interface ISubscriberPropertyField {
-  'id': string,
-  'name': string,
-  'display_label': string,
+  id: string,
+  name: string,
+  display_label: string,
 }
 
 export interface IPositionLeftTop {
