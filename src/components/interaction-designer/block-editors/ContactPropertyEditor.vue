@@ -64,7 +64,7 @@
 </template>
 
 <script lang="ts">
-import {IBlock} from '@floip/flow-runner'
+import {IBlock, SetContactProperty} from '@floip/flow-runner'
 import {Component, Prop} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
@@ -104,8 +104,8 @@ export class ContactPropertyEditor extends mixins(Lang) {
     {index, blockId, propertyKey}: { index: number, blockId: string, propertyKey?: string },
   ) => void
 
-  get firstProperty() {
-    return first(this.block.config?.set_contact_property)
+  get firstProperty(): SetContactProperty | undefined {
+    return first(this.block.config.set_contact_property)
   }
 
   get propertyKey(): string | undefined {
