@@ -2,6 +2,7 @@ import {IValidationStatus, validateBlockWithJsonSchema} from '@/lib'
 import {IBlock} from '@floip/flow-runner'
 import {ErrorObject} from 'ajv'
 import Lang from '@/lib/filters/lang'
+import {JSONSchema7} from 'json-schema'
 
 const lang = new Lang()
 
@@ -27,10 +28,11 @@ export class ExtendedValidatorBase {
    * - jsonSchema based
    * - programmatic logic
    */
-  static runAllValidations(block: IBlock, schemaVersion: string, options?: unknown): IValidationStatus {
+  static runAllValidations(block: IBlock, schemaVersion: string, customSchema?: JSONSchema7, options?: unknown): IValidationStatus {
     const validationStatus = validateBlockWithJsonSchema({
       block,
       schemaVersion,
+      customBlockJsonSchema: customSchema,
     })
 
     const dataPaths = new Set(validationStatus.ajvErrors?.map(error => error.dataPath))
