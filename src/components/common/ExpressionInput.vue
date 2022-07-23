@@ -17,7 +17,8 @@
         :class="['form-control', {'is-invalid': isInvalid}]"
         :rows="rows"
         :placeholder="placeholder"
-        @input="$emit('input', $event.target.value)" />
+        @click="debounce_portAutoSuggestContent()"
+        @input="$emit('input', $event.target.value)"/>
       <div ref="suggest" class="cloned-auto-suggest-content"></div>
     </div>
     <slot />
@@ -164,10 +165,12 @@ export class ExpressionInput extends mixins(Lang) {
    * Making sure we port the auto-suggest under desired dom
    */
   portAutoSuggestContent() {
-    const suggestRef = this.$refs.suggest
+    // override position which came from AutoSuggest original code
     this.autoSuggestDropdown.style.left = 0
-    this.autoSuggestDropdown.style.top = 0
-    suggestRef.appendChild(this.autoSuggestDropdown)
+    this.autoSuggestDropdown.style.top = `${this.$refs.input.clientHeight}px`
+
+    // move the created dropdown suggest inside the desired dom
+    this.$refs.suggest.appendChild(this.autoSuggestDropdown)
   }
 
   /**
