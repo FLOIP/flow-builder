@@ -47,7 +47,6 @@ const defaultDateFields = [
 ]
 
 const flowNamespace = namespace('flow')
-const builderNamespace = namespace('builder')
 
 @Component({})
 export class ExpressionInput extends mixins(Lang) {
@@ -62,14 +61,6 @@ export class ExpressionInput extends mixins(Lang) {
 
   suggest = {}
 
-  // @Watch('autoSuggestDropdown')
-  // onCurrentExpressionUpdate(value: unknown): void {
-  //   console.log('test', value, this.autoSuggestDropdown)
-  //   if (value > '') {
-  //     this.$nextTick(() => this.portAutoSuggestContent())
-  //   }
-  // }
-
   get autoSuggestDropdown() {
     return this.suggest?.dropdown?.dropdown
   }
@@ -83,7 +74,6 @@ export class ExpressionInput extends mixins(Lang) {
   }
 
   set expression(value: string | undefined) {
-    // this.portAutoSuggestContent() // TODO: use nextTick to fix the delay ?
     if (value === undefined) {
       return
     }
@@ -170,22 +160,25 @@ export class ExpressionInput extends mixins(Lang) {
     ]
   }
 
+  /**
+   * Making sure we port the auto-suggest under desired dom
+   */
   portAutoSuggestContent() {
     const suggestRef = this.$refs.suggest
-    // const clonedAutoSuggestElement = this.autoSuggestDropdown.cloneNode(true)
-    // const clonedAutoSuggestElement = this.autoSuggestDropdown
-    this.autoSuggestDropdown.removeAttribute('style')
-    // clonedAutoSuggestElement.style.zIndex = 25
-    // delete clonedAutoSuggestElement.style.display
-    // delete clonedAutoSuggestElement.style.left
-    // delete clonedAutoSuggestElement.style.top
-    // clonedAutoSuggestElement.style.value = 'z-index: 25;'
-
-    // Remove existing child first
-    // suggestRef.innerHTML = ''
+    this.autoSuggestDropdown.style.left = 0
+    this.autoSuggestDropdown.style.top = 0
     suggestRef.appendChild(this.autoSuggestDropdown)
-    // this.autoSuggestDropdown.remove()
-    // this.suggest.dropdown.dropdown = clonedAutoSuggestElement
+  }
+
+  /**
+   * Delay the portal to make sure AutoSuggest has finished the update.
+   */
+  debounce_portAutoSuggestContent() {
+    this.$nextTick(() => {
+      setTimeout(() => {
+        this.portAutoSuggestContent()
+      }, 500)
+    })
   }
 
   mounted(): void {
@@ -196,13 +189,14 @@ export class ExpressionInput extends mixins(Lang) {
       onChange: () => (input as HTMLInputElement)!.dispatchEvent(new Event('input')),
     }, input)
 
-    this.$nextTick(() => this.portAutoSuggestContent())
+    // Unfortunately there is no `updated()` hook in AutoSuggest, so we will wait a bit
+    this.debounce_portAutoSuggestContent()
   }
 
-  // updated(): void {
-  //   console.debug('test xxxx')
-  //   this.$nextTick(() => this.portAutoSuggestContent())
-  // }
+  updated(): void {
+    // Unfortunately there is no `updated()` hook in AutoSuggest, so we will wait a bit
+    this.debounce_portAutoSuggestContent()
+  }
 
   @flowNamespace.Getter activeFlow?: IFlow
   @Getter subscriberPropertyFields!: ISubscriberPropertyField[]
