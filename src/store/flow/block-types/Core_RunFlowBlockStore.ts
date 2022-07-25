@@ -1,9 +1,10 @@
 import {ActionTree, GetterTree, Module} from 'vuex'
 import {IRootState} from '@/store'
-import {IFlow} from '@floip/flow-runner'
+import {IBlock, IFlow} from '@floip/flow-runner'
 import {IRunFlowBlock} from '@floip/flow-runner/src/model/block/IRunFlowBlock'
 import {cloneDeep} from 'lodash'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import {Core_RunFlowBlockValidator} from '@/lib/validations'
 
 export const BLOCK_TYPE = 'Core.RunFlow'
 
@@ -29,6 +30,10 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       flow_id: '',
     }
     return baseActions.createWith({dispatch}, {props})
+  },
+
+  async validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
+    return Core_RunFlowBlockValidator.runAllValidations(block, schemaVersion)
   },
 }
 
