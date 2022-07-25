@@ -19,7 +19,9 @@
         :placeholder="placeholder"
         @click="handleClick()"
         @input="$emit('input', $event.target.value)" />
-      <div ref="suggest" class="cloned-auto-suggest-content"></div>
+      <div
+        ref="suggest"
+        class="cloned-auto-suggest-content" />
     </div>
     <slot />
   </div>
@@ -49,8 +51,8 @@ const defaultDateFields = [
 
 interface IAutoSuggest {
   dropdown: {
-    dropdown: HTMLElement
-  }
+    dropdown: HTMLElement,
+  },
 }
 
 const flowNamespace = namespace('flow')
