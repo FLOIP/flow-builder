@@ -18,7 +18,7 @@
         :rows="rows"
         :placeholder="placeholder"
         @click="handleClick()"
-        @input="$emit('input', $event.target.value)"/>
+        @input="$emit('input', $event.target.value)" />
       <div ref="suggest" class="cloned-auto-suggest-content"></div>
     </div>
     <slot />
@@ -183,7 +183,7 @@ export class ExpressionInput extends mixins(Lang) {
     this.autoSuggestDropdown.style.left = '0px'
     this.autoSuggestDropdown.style.top = `${this.refInputElement.clientHeight}px`
 
-    // move the created dropdown suggest inside the desired dom
+    // move the created autoSuggestDropdown inside the desired dom
     this.refAutoSuggestElement.appendChild(this.autoSuggestDropdown)
   }
 
