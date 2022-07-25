@@ -3355,6 +3355,7 @@
     "block-config-accuracy_timeout_seconds-type": "Accuracy timeout in seconds should be a number",
     "block-config-value-type": "Output expression should be a string",
     "block-config-is_member-type": "Value/Expression should be a string",
+    "block-config-set_contact_property-x-required": "Contact property should not be empty",
     "block-config-flow-id": "Target flow should be selected",
     "resource-values-x-value-pattern": "Content should only contain basic Latin script, digits, or punctuation",
     "ivr-audio-should-be-selected": "An audio file should be selected",
@@ -3363,7 +3364,10 @@
     "numeric-block-missing-max-value-and-max-digits": "Either Maximum Response Digits or Maximum value (inclusive) must be set when IVR is enabled",
     "numeric-block-min-value-must-be-lower-than-implied-max-digits": "Minimum value (inclusive) must be lower than the number implied by Maximum Response Digits",
     "numeric-block-max-value-must-be-lower-than-implied-max-digits": "Maximum value (inclusive) must be lower than the number implied by Maximum Response Digits",
-    "set-group-membership-groups-required": "At least one group should be specified"
+    "set-group-membership-groups-required": "At least one group should be specified",
+    "date-must-be-selected": "A specific date must be selected",
+    "input-must-be-a-number": "Input must be a number",
+    "numeric-block-must-be-selected": "A block must be selected"
   },
   "fr.flow-builder-validation": {
     "floip-format": "L'expression FlOIP devrait être valide",
@@ -3379,6 +3383,7 @@
     "block-config-accuracy_timeout_seconds-type": "Le délai d'attente de précision en quelques secondes devrait être un nombre",
     "block-config-value-type": "L'expression de sortie devrait être une chaîne",
     "block-config-is_member-type": "La valeur / l'expression devrait être une chaîne",
+    "block-config-set_contact_property-x-required": "La propriété de contact ne doit pas être vide",
     "block-config-flow-id": "Le flux cible doit être sélectionné",
     "resource-values-x-value-pattern": "Le contenu ne doit contenir que le script, les chiffres et la ponctuation de base",
     "ivr-audio-should-be-selected": "Un fichier audio doit être sélectionné",
@@ -3387,7 +3392,10 @@
     "numeric-block-missing-max-value-and-max-digits": "Soit les chiffres de réponse maximale ou la valeur maximale (inclusive) doivent être définis lorsque IVR est activé",
     "numeric-block-min-value-must-be-lower-than-implied-max-digits": "La valeur minimale (inclusive) doit être inférieure au nombre impliqué par les chiffres de réponse maximum",
     "numeric-block-max-value-must-be-lower-than-implied-max-digits": "La valeur maximale (inclusive) doit être inférieure au nombre impliqué par les chiffres de réponse maximum",
-    "set-group-membership-groups-required": "Au moins un groupe devrait être spécifié"
+    "set-group-membership-groups-required": "Au moins un groupe devrait être spécifié",
+    "date-must-be-selected": "Une date spécifique doit être sélectionnée",
+    "input-must-be-a-number": "L'entrée doit être un nombre",
+    "numeric-block-must-be-selected": "Un bloc doit être sélectionné"
   }
 }
 

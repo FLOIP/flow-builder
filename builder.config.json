@@ -186,7 +186,16 @@
         "is_interactive": true,
         "is_branching": false,
         "category":  1,
-        "menu_category": 1
+        "menu_category": 1,
+        "exits": {
+          "primary": {
+            "name": "Valid",
+            "test": "@ISNUMBER(block.value)"
+          },
+          "default": {
+            "name": "Invalid"
+          }
+        }
       },
       "MobilePrimitives.OpenResponse": {
         "name": "MobilePrimitives.OpenResponse",
@@ -203,7 +212,16 @@
         "is_branching": false,
         "category":  1,
         "menu_category": 1,
-        "divider_before": true
+        "divider_before": true,
+        "exits": {
+          "primary": {
+            "name": "Valid",
+            "test": "NOT(block.value = false)"
+          },
+          "default": {
+            "name": "Invalid"
+          }
+        }
       },
       "SmartDevices.PhotoResponse": {
         "name": "SmartDevices.PhotoResponse",
@@ -211,7 +229,16 @@
         "is_interactive": true,
         "is_branching": false,
         "category":  1,
-        "menu_category": 1
+        "menu_category": 1,
+        "exits": {
+          "primary": {
+            "name": "Valid",
+            "test": "NOT(block.value = false)"
+          },
+          "default": {
+            "name": "Invalid"
+          }
+        }
       }
     },
     "blockTags": [],

@@ -1,6 +1,6 @@
 import {IRootState} from '@/store'
 import {findBlockOnActiveFlowWith as findBlock, IBlock, IContext, SetContactProperty} from '@floip/flow-runner'
-import {ActionTree, MutationTree} from 'vuex'
+import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IFlowsState} from '../index'
 
 export interface ISetContactPropertyBlockKey {
@@ -10,6 +10,24 @@ export interface ISetContactPropertyBlockKey {
 
 export interface ISetContactPropertyBlockKeyWithValue extends ISetContactPropertyBlockKey {
   value: SetContactProperty['property_value'],
+}
+
+export const getters: GetterTree<IFlowsState, IRootState> = {
+  /**
+   * Get contact property element on a given index
+   */
+  block_getContactPropertyOnIndex: state => ({blockId, index}: {blockId: string, index: number}): SetContactProperty | undefined =>
+    findBlock(blockId, state as unknown as IContext)
+      .config
+      ?.set_contact_property
+      ?.[index],
+
+  block_getContactPropertyValueByKey: state => ({blockId, key}: ISetContactPropertyBlockKey): string | undefined =>
+    findBlock(blockId, state as unknown as IContext)
+      .config
+      .set_contact_property
+      ?.find(({property_key}) => property_key === key)
+      ?.property_value,
 }
 
 export const mutations: MutationTree<IFlowsState> = {
@@ -54,7 +72,7 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-    /**
+  /**
    * Make sure we have Array set_contact_property,
    * if it's not an array, then the mutation will set an object like {set_contact_property: {0: object1, 1: object2}} instead
    */
@@ -117,27 +135,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       })
     },
 
-    /**
-     * Get contact property element on a given index
-     */
-    block_getContactPropertyOnIndex(
-      {commit, state},
-      {blockId, index}: { blockId: string, index: number },
-    ): SetContactProperty | undefined {
-      const block = findBlock(blockId, state as unknown as IContext)
-      return block.config?.set_contact_property?.[index]
-    },
-
-  block_getContactPropertyByKey(state, {blockId, key}: ISetContactPropertyBlockKey): string | undefined {
-    return findBlock(blockId, state as unknown as IContext)
-      .config
-      .set_contact_property
-      ?.find(({property_key}) => property_key === key)
-      ?.property_value
-  },
-
-  block_setContactPropertyByKey({commit, dispatch}, {blockId, key, value}: ISetContactPropertyBlockKeyWithValue): void {
-    if (dispatch('block_getContactPropertyByKey', {blockId, key}) === undefined) {
+  block_setContactPropertyByKey({commit, getters}, {blockId, key, value}: ISetContactPropertyBlockKeyWithValue): void {
+    if (getters.block_getContactPropertyValueByKey({blockId, key}) === undefined) {
       commit('block_addContactProperty', {blockId, key, value})
     } else {
       commit('block_changeContactProperty', {blockId, key, value})

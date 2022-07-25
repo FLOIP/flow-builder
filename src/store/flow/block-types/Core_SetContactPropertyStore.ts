@@ -1,4 +1,4 @@
-import {ActionTree, Module} from 'vuex'
+import {ActionContext, ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlockConfig} from '@floip/flow-runner'
 import {cloneDeep} from 'lodash'
@@ -27,19 +27,13 @@ export const BLOCK_TYPE = 'Core.SetContactProperty'
 const actions: ActionTree<IEmptyState, IRootState> = {
   ...baseActions,
 
-  async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IBlockConfig> }) {
+  async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<IBlockConfig> }) {
     props.type = BLOCK_TYPE
     props.config = {
-        set_contact_property: [
-          {
-            // do not accept empty key
-            property_key: undefined,
-            // but empty value is valid (eg: when we set a `comment` to empty)
-            property_value: '',
-          },
-        ],
+      // Important, set_contact_property should be empty by default, to avoid weird validation behaviour in consumer side
+      set_contact_property: [],
     }
-    return baseActions.createWith({dispatch}, {props})
+    return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
 }
 
