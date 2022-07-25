@@ -29,7 +29,7 @@
 import AutoSuggest from '@avcs/autosuggest'
 import '@avcs/autosuggest/dropdown.css'
 import {mixins} from 'vue-class-component'
-import {Component, Prop, Watch} from 'vue-property-decorator'
+import {Component, Prop} from 'vue-property-decorator'
 import {Getter, namespace} from 'vuex-class'
 import {MethodNodeEvaluatorFactory} from '@floip/expression-evaluator/dist/Evaluator/NodeEvaluator/MethodNodeEvaluator/Factory'
 import Lang from '@/lib/filters/lang'
@@ -47,6 +47,12 @@ const defaultDateFields = [
   'tomorrow',
 ]
 
+interface IAutoSuggest {
+  dropdown: {
+    dropdown: HTMLElement
+  }
+}
+
 const flowNamespace = namespace('flow')
 
 @Component({})
@@ -60,10 +66,18 @@ export class ExpressionInput extends mixins(Lang) {
   @Prop({type: Boolean, default: null}) readonly validState!: boolean|null
   @Prop({type: String, default: ''}) readonly prependText!: string
 
-  suggest = {}
+  suggest: IAutoSuggest = {} as IAutoSuggest
 
-  get autoSuggestDropdown() {
-    return this.suggest?.dropdown?.dropdown
+  get autoSuggestDropdown(): HTMLElement {
+    return this.suggest.dropdown?.dropdown
+  }
+
+  get refAutoSuggestElement(): HTMLElement {
+    return this.$refs.suggest as HTMLElement
+  }
+
+  get refInputElement(): HTMLInputElement {
+    return this.$refs.input as HTMLInputElement
   }
 
   get isInvalid(): boolean {
@@ -164,19 +178,19 @@ export class ExpressionInput extends mixins(Lang) {
   /**
    * Making sure we port the auto-suggest under desired dom
    */
-  portAutoSuggestContent() {
+  portAutoSuggestContent(): void {
     // override position which came from AutoSuggest original code
-    this.autoSuggestDropdown.style.left = 0
-    this.autoSuggestDropdown.style.top = `${this.$refs.input.clientHeight}px`
+    this.autoSuggestDropdown.style.left = '0px'
+    this.autoSuggestDropdown.style.top = `${this.refInputElement.clientHeight}px`
 
     // move the created dropdown suggest inside the desired dom
-    this.$refs.suggest.appendChild(this.autoSuggestDropdown)
+    this.refAutoSuggestElement.appendChild(this.autoSuggestDropdown)
   }
 
   /**
    * Delay the portal to make sure AutoSuggest has finished the update.
    */
-  debounce_portAutoSuggestContent() {
+  debounce_portAutoSuggestContent(): void {
     this.$nextTick(() => {
       setTimeout(() => {
         this.portAutoSuggestContent()
@@ -185,11 +199,11 @@ export class ExpressionInput extends mixins(Lang) {
   }
 
   mounted(): void {
-    const input = this.$refs.input
+    const input = this.refInputElement
     this.suggest = new AutoSuggest({
       caseSensitive: false,
       suggestions: this.suggestions,
-      onChange: () => (input as HTMLInputElement)!.dispatchEvent(new Event('input')),
+      onChange: () => input.dispatchEvent(new Event('input')),
     }, input)
 
     // Unfortunately there is no `updated()` hook in AutoSuggest, so we will wait a bit
