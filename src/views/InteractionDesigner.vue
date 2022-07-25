@@ -4,7 +4,9 @@
     ref="interaction-designer-contents"
     class="interaction-designer interaction-designer-contents">
     <header class="interaction-designer-header">
-      <tree-builder-toolbar />
+      <slot name="toolbar">
+        <tree-builder-toolbar />
+      </slot>
     </header>
 
     <aside
