@@ -1,6 +1,5 @@
-import {ActionTree, Module} from 'vuex'
+import {ActionContext, ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock} from '@floip/flow-runner'
 import {IOpenResponseBlock} from '@floip/flow-runner/src/model/block/IOpenResponseBlock'
 import {cloneDeep} from 'lodash'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
@@ -28,19 +27,13 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     }, {root: true})
   },
 
-  async createWith({dispatch, commit}, {props}: { props: { uuid: string } & Partial<IOpenResponseBlock> }) {
+  async createWith({getters, dispatch, commit}, {props}: { props: { uuid: string } & Partial<IOpenResponseBlock> }) {
     props.type = BLOCK_TYPE
     const blankResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
     props.config = {
       prompt: blankResource.uuid,
     }
-    return baseActions.createWith({dispatch}, {props})
-  },
-
-  handleBranchingTypeChangedToUnified({dispatch}, {block}: { block: IBlock }) {
-    dispatch('flow/block_updateBranchingExitsToDefaultOnly', {
-      blockId: block.uuid,
-    }, {root: true})
+    return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
 }
 
