@@ -17,7 +17,7 @@
         :class="['form-control', {'is-invalid': isInvalid}]"
         :rows="rows"
         :placeholder="placeholder"
-        @click="debounce_portAutoSuggestContent()"
+        @click="handleClick()"
         @input="$emit('input', $event.target.value)"/>
       <div ref="suggest" class="cloned-auto-suggest-content"></div>
     </div>
@@ -196,6 +196,11 @@ export class ExpressionInput extends mixins(Lang) {
         this.portAutoSuggestContent()
       }, 500)
     })
+  }
+
+  handleClick(): void {
+    // this is required in case the user re-clicks at the input without updating the expression
+    this.debounce_portAutoSuggestContent()
   }
 
   mounted(): void {
