@@ -141,7 +141,7 @@ export default BlockToolbar
 </script>
 
 <style lang="scss">
-.block {
+.block-draggable {
   .block-toolbar {
     transition: opacity 100ms ease-in-out;
     background: white;

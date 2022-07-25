@@ -1,4 +1,4 @@
-import {ActionTree, Module} from 'vuex'
+import {ActionContext, ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
 import {ILogBlock} from '@floip/flow-runner/src/model/block/ILogBlock'
 import {cloneDeep} from 'lodash'
@@ -18,12 +18,12 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     return message
   },
 
-  async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ILogBlock> }) {
+  async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<ILogBlock> }) {
     props.type = BLOCK_TYPE
     props.config = {
       message: '',
     }
-    return baseActions.createWith({dispatch}, {props})
+    return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
 }
 

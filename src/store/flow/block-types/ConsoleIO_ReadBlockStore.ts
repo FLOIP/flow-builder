@@ -1,12 +1,13 @@
-import {ActionTree, GetterTree, Module} from 'vuex'
+import {ActionContext, ActionTree, GetterTree, Module} from 'vuex'
 import {IRootState} from '@/store'
 import {IReadBlock} from '@floip/flow-runner'
 import {cloneDeep, split} from 'lodash'
-import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import BaseStore, {actions as baseActions, getters as baseGetters, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 
 export const BLOCK_TYPE = 'ConsoleIO.Read'
 
 const getters: GetterTree<IEmptyState, IRootState> = {
+  ...baseGetters,
   destinationVariablesFields: (state, _getters, _rootState, rootGetters): string[] => {
     const activeBlock = rootGetters['builder/activeBlock']
     // TODO: correct the destination variables array according to scanf library we're using
@@ -45,13 +46,13 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     return newDestinationVariables
   },
 
-  async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IReadBlock> }) {
+  async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<IReadBlock> }) {
     props.type = BLOCK_TYPE
     props.config = {
       format_string: '',
       destination_variables: [],
     }
-    return baseActions.createWith({dispatch}, {props})
+    return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
 }
 

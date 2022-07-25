@@ -1,23 +1,30 @@
 import {ActionContext, Dispatch, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IBlockExit} from '@floip/flow-runner'
-import {defaultsDeep, last} from 'lodash'
+import {IBlock} from '@floip/flow-runner'
+import {defaultsDeep} from 'lodash'
 import {validateBlockWithJsonSchema} from '@/store/validation/validationHelpers'
-import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IValidationStatus} from '@/store/validation'
 
 export interface IEmptyState {}
 
-export const getters: GetterTree<IEmptyState, IRootState> = {}
+export const getters: GetterTree<IEmptyState, IRootState> = {
+  /**
+   * Compute the primary exit test.
+   * We can override this from block type store, or from the consumer side.
+   *
+   * We're sending the blockProps because we might need them for customization
+   */
+  primaryExitTest: () => (_blockProps: Partial<IBlock>) => undefined,
+}
 
 export const mutations: MutationTree<IEmptyState> = {}
 
 export const actions = {
   async createWith(
-    {dispatch}: {dispatch: Dispatch},
+    {getters, dispatch}: ActionContext<IEmptyState, IRootState>,
     {props}: { props: { uuid: string } & Partial<IBlock> },
   ): Promise<IBlock> {
-    return defaultsDeep(
+    const mainProps = defaultsDeep(
       {},
       // Props from the block type createWith
       props, {
@@ -27,13 +34,6 @@ export const actions = {
       label: '',
       semantic_label: '',
       config: {},
-      exits: props?.exits ?? [
-        await dispatch('flow/block_createBlockDefaultExitWith', {
-          props: ({
-            uuid: await (new IdGeneratorUuidV4()).generate(),
-          }) as IBlockExit,
-        }, {root: true}),
-      ],
       tags: [],
       vendor_metadata: {
         floip: {
@@ -48,19 +48,36 @@ export const actions = {
       vendor_metadata: await dispatch('initiateExtraVendorConfig'),
     },
     )
+
+    // Define exits after we have the whole final props, this is important for dynamic test value
+    if (props?.exits === undefined) {
+      mainProps.exits = await dispatch('flow/block_generateExitsBasedOnUiConfig', {
+        blockType: props.type,
+        primaryExitTest: getters.primaryExitTest(mainProps),
+      }, {root: true})
+    }
+
+    return mainProps
   },
 
   /**
-   * This will be the default standard exit mode, but we can override it in the specific block store
+   * This will be the default standard exit mode,
+   * but we can override it in the specific block store (eg: for dynamic test generation in MCQ)
    */
   async handleBranchingTypeChangedToUnified(
-    {dispatch}: {dispatch: Dispatch},
+    {dispatch, getters, rootGetters}: ActionContext<IEmptyState, IRootState>,
     {block}: {block: IBlock},
   ): Promise<void> {
-    return dispatch('flow/block_updateBranchingExitsWithInvalidScenario', {
-      blockId: block.uuid,
-      test: 'block.value = true',
-    }, {root: true})
+    if (rootGetters['flow/block_shouldHave2Exits'](block.type) === true) {
+      await dispatch('flow/block_resetBranchingExitsByCollapsingNonDefault', {
+        blockId: block.uuid,
+        primaryExitTest: getters.primaryExitTest(block),
+      }, {root: true})
+    } else {
+      await dispatch('flow/block_resetBranchingExitsToDefaultOnly', {
+        blockId: block.uuid,
+      }, {root: true})
+    }
   },
 
   /**

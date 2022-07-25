@@ -1,6 +1,5 @@
-import {ActionTree, Module} from 'vuex'
+import {ActionContext, ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock} from '@floip/flow-runner'
 import {IOutputBlock} from '@floip/flow-runner/src/model/block/IOutputBlock'
 import {cloneDeep} from 'lodash'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
@@ -19,22 +18,12 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     return value
   },
 
-  async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IOutputBlock> }) {
+  async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<IOutputBlock> }) {
     props.type = BLOCK_TYPE
     props.config = {
       value: '@',
     }
-    return baseActions.createWith({dispatch}, {props})
-  },
-
-  handleBranchingTypeChangedToUnified({dispatch}, {block}: { block: IBlock }) {
-    // TODO in VMO-6022: replace block_convertExitFormationToUnified usage with:
-    // - block_updateBranchingExitsWithInvalidScenario
-    // - or block_updateBranchingExitsToDefaultOnly
-    dispatch('flow/block_convertExitFormationToUnified', {
-      blockId: block.uuid,
-      test: 'block.value > 0',
-    }, {root: true})
+    return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
 }
 
