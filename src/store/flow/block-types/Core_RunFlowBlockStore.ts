@@ -1,7 +1,6 @@
 import {ActionContext, ActionTree, GetterTree, Module} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlock, IFlow} from '@floip/flow-runner'
-import {IRunFlowBlock} from '@floip/flow-runner/src/model/block/IRunFlowBlock'
 import {cloneDeep} from 'lodash'
 import BaseStore, {actions as baseActions, getters as baseGetters, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 
@@ -24,10 +23,10 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     commit('flow/block_updateConfig', {blockId, newConfig: {flow_id: newDestinationFlowId}}, {root: true})
     return newDestinationFlowId
   },
-  async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<IRunFlowBlock> }) {
+  async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<IBlock> }) {
     props.type = BLOCK_TYPE
     props.config = {
-      flow_id: '',
+      flow_id: null,
     }
     return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
