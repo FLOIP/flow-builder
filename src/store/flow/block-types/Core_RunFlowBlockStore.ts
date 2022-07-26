@@ -19,14 +19,14 @@ const getters: GetterTree<IEmptyState, IRootState> = {
 const actions: ActionTree<IEmptyState, IRootState> = {
   ...baseActions,
 
-  async setDestinationFlowId({commit}, {blockId, newDestinationFlowId}: { blockId: string, newDestinationFlowId: string }) {
+  async setDestinationFlowId({commit}, {blockId, newDestinationFlowId}: { blockId: string, newDestinationFlowId: string | undefined }) {
     commit('flow/block_updateConfig', {blockId, newConfig: {flow_id: newDestinationFlowId}}, {root: true})
     return newDestinationFlowId
   },
   async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<IBlock> }) {
     props.type = BLOCK_TYPE
     props.config = {
-      flow_id: null,
+      flow_id: undefined,
     }
     return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
