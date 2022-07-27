@@ -1769,7 +1769,7 @@
     "Core.Log": "Journal",
     "Core.Output": "Production",
     "Core.RunFlow": "Exécuter flux",
-    "Core.SetContactProperty": "Set Contact Propriété",
+    "Core.SetContactProperty": "Définir la propriété du contact",
     "Core.SetGroupMembership": "Set appartenance à un groupe",
     "CreateSubscriberBlock": "Créer un contact",
     "CurrentTimeBranchBlock": "Direction via Heure actuelle",
