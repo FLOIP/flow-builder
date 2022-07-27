@@ -1,13 +1,13 @@
-import {ActionTree, GetterTree, Module} from 'vuex'
+import {ActionContext, ActionTree, GetterTree, Module} from 'vuex'
 import {IRootState} from '@/store'
-import {IFlow} from '@floip/flow-runner'
-import {IRunFlowBlock} from '@floip/flow-runner/src/model/block/IRunFlowBlock'
+import {IBlock, IFlow} from '@floip/flow-runner'
 import {cloneDeep} from 'lodash'
-import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import BaseStore, {actions as baseActions, getters as baseGetters, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 
 export const BLOCK_TYPE = 'Core.RunFlow'
 
 const getters: GetterTree<IEmptyState, IRootState> = {
+  ...baseGetters,
   otherFlows: (
     state,
     _getters,
@@ -19,16 +19,16 @@ const getters: GetterTree<IEmptyState, IRootState> = {
 const actions: ActionTree<IEmptyState, IRootState> = {
   ...baseActions,
 
-  async setDestinationFlowId({commit}, {blockId, newDestinationFlowId}: { blockId: string, newDestinationFlowId: string }) {
+  async setDestinationFlowId({commit}, {blockId, newDestinationFlowId}: { blockId: string, newDestinationFlowId: string | undefined }) {
     commit('flow/block_updateConfig', {blockId, newConfig: {flow_id: newDestinationFlowId}}, {root: true})
     return newDestinationFlowId
   },
-  async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<IRunFlowBlock> }) {
+  async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<IBlock> }) {
     props.type = BLOCK_TYPE
     props.config = {
-      flow_id: '',
+      flow_id: undefined,
     }
-    return baseActions.createWith({dispatch}, {props})
+    return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
 }
 

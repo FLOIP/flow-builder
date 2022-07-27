@@ -3366,7 +3366,8 @@
     "set-group-membership-groups-required": "At least one group should be specified",
     "date-must-be-selected": "A specific date must be selected",
     "input-must-be-a-number": "Input must be a number",
-    "numeric-block-must-be-selected": "A block must be selected"
+    "numeric-block-must-be-selected": "A block must be selected",
+    "block-config-flow_id-required": "Destination flow is required"
   },
   "fr.flow-builder-validation": {
     "floip-format": "L'expression FlOIP devrait être valide",
@@ -3393,7 +3394,8 @@
     "set-group-membership-groups-required": "Au moins un groupe devrait être spécifié",
     "date-must-be-selected": "Une date spécifique doit être sélectionnée",
     "input-must-be-a-number": "L'entrée doit être un nombre",
-    "numeric-block-must-be-selected": "Un bloc doit être sélectionné"
+    "numeric-block-must-be-selected": "Un bloc doit être sélectionné",
+    "block-config-flow_id-required": "Le flux de destination est requis"
   }
 }
 

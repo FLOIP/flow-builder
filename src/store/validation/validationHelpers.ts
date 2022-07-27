@@ -91,8 +91,14 @@ export function debugValidationStatus(status: IValidationStatus, customMessage: 
 
 function getErrorMessageLocalizationKeyForProperty(keyPrefix: string, ajvErrorObject: ErrorObject) : string {
   const [entity] = keyPrefix.split('/')
-  const property = ajvErrorObject.dataPath
-    .replaceAll('/', '-')
+  let property
+  if (ajvErrorObject.params?.missingProperty !== undefined) {
+    property = `${ajvErrorObject.dataPath}-${ajvErrorObject.params?.missingProperty}`
+  } else {
+    property = ajvErrorObject.dataPath
+  }
+
+  property = property.replaceAll('/', '-')
     // Replacing digits to eliminate resource indexes
     .replaceAll(/\d/g, 'x')
 
