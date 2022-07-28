@@ -81,22 +81,6 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     }
     return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
-
-  handleBranchingTypeChangedToUnified({dispatch}, {block}: { block: IBlock }) {
-    dispatch('flow/block_convertExitFormationToUnified', {
-      blockId: block.uuid,
-      test: formatTestValueForUnifiedBranchingType(block as ISelectOneResponseBlock),
-    }, {root: true})
-  },
-}
-
-function formatTestValueForUnifiedBranchingType(block: ISelectOneResponseBlock): string {
-  const blockChoicesKey = Object.keys(block.config.choices)
-  if (blockChoicesKey.length === 0) {
-    console.warn('Choices are empty for SelectOneBlock, providing `true` by default')
-    return 'true'
-  }
-  return `OR(${map(blockChoicesKey, (choice) => `block.value = "${choice}"`).join(',')})`
 }
 
 const MobilePrimitives_SelectOneResponseBlockStore: Module<IEmptyState, IRootState> = {

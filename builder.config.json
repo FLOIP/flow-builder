@@ -170,7 +170,16 @@
         "is_branching": true,
         "category":  2,
         "menu_category": 1,
-        "divider_before": true
+        "divider_before": true,
+        "exits": {
+          "primary": {
+            "name": "1",
+            "test": "@block.value != null"
+          },
+          "default": {
+            "name": "Default"
+          }
+        }
       },
       "MobilePrimitives.SelectManyResponse": {
         "name": "MobilePrimitives.SelectManyResponse",
@@ -178,7 +187,15 @@
         "is_interactive": true,
         "is_branching": true,
         "category":  2,
-        "menu_category": 1
+        "menu_category": 1,
+        "exits": {
+          "primary": {
+            "name": "1"
+          },
+          "default": {
+            "name": "Default"
+          }
+        }
       },
       "MobilePrimitives.NumericResponse": {
         "name": "MobilePrimitives.NumericResponse",
