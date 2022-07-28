@@ -57,10 +57,11 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     const {config: {choices}, exits}: ISelectOneResponseBlock = block
 
     // non-default exits; default should always be last
-    const exitsForChoices: IBlockExit[] = exits.slice(0, -1)
+    let exitsForChoices: IBlockExit[] = exits.slice(0, -1)
 
     // reflow exits based on choices
     await Promise.all(choices.map(async (choice, i) => {
+      // create new exit if it doesn't exist yet
       if (exitsForChoices[i] == null) {
         const uuid = await (new IdGeneratorUuidV4()).generate()
         const exit = await dispatch('flow/block_createBlockExitWith', {props: {uuid} as IBlockExit}, {root: true})
@@ -72,6 +73,9 @@ const actions: ActionTree<IEmptyState, IRootState> = {
         test: `@block.value = '${choice.name}'`,
       })
     }))
+
+    // delete exits if not present in choices
+    exitsForChoices = reject(exitsForChoices, exit => find(choices, c => c.name === exit.name) === undefined)
 
     exits.splice(0, exits.length - 1, ...exitsForChoices)
   },
