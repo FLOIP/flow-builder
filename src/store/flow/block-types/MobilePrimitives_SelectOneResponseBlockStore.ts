@@ -1,6 +1,6 @@
 import {ActionContext, ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
-import {Choice, findBlockWith, IBlock, IBlockExit, IResource, ValidationException} from '@floip/flow-runner'
+import {IChoice, findBlockWith, IBlock, IBlockExit, IResource, ValidationException} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
 import Vue from 'vue'
@@ -39,7 +39,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       const allChoices = block.config.choices
       allChoices.push({
         prompt: resource.uuid,
-      } as Choice)
+      } as IChoice)
       Vue.set(block.config, 'choices', allChoices)
     }
   },
