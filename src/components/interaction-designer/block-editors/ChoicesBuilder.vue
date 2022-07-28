@@ -123,7 +123,7 @@ export class ChoicesBuilder extends mixins(Lang) {
     const hasEmptyValue = isEmpty(variant.value)
 
     if (isLast && hasEmptyValue) {
-      // todo: clean up resource, but should we first check for references?
+      // TODO in VMO-6643: clean up resource, but should we first check for references?
       // this.resource_delete({resourceId: resource.uuid})
       this.deleteChoiceByResourceIdFrom({blockId: this.block.uuid, resourceId})
       this.focusInputElFor(this.$refs.draftChoice as Vue)
