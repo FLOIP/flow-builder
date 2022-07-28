@@ -76,8 +76,11 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
   SupportedMode = SupportedMode
   findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
 
-  get promptResource(): IResource {
-    return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
+  get promptResource(): IResource | undefined {
+    if (this.block.config.prompt !== undefined) {
+      return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
+    }
+    return undefined
   }
 
   handleChoiceChanged(): void {

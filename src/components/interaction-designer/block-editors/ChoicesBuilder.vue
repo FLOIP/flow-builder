@@ -70,9 +70,8 @@ export class ChoicesBuilder extends mixins(Lang) {
   findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
 
   get choiceResourcesOrderedByResourcesList(): IResource[] {
-    const choiceResourceIds = Object.values(this.block.config.choices)
-    return intersectionWith(this.activeFlow.resources, choiceResourceIds,
-      (resource, choiceResourceId) => resource.uuid === choiceResourceId)
+    return intersectionWith(this.activeFlow.resources, this.block.config.choices,
+      (resource, choice) => resource.uuid === choice?.prompt)
   }
 
   created(): void {

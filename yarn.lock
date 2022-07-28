@@ -1676,10 +1676,9 @@
   resolved "https://registry.yarnpkg.com/@floip/expression-parser/-/expression-parser-1.11.3.tgz#da32541845ec482b60daabe963ccb6200870781c"
   integrity sha512-r8433SL1ZjOZKcgIkLMci9LUAYM7aJQGIdE9+37/op5H0DOhB8qh6HvQe7wDhpoOyrCiMYUx/6FBruOf9HT91w==
 
-"@floip/flow-runner@1.0.0-rc4.9":
-  version "1.0.0-rc4.9"
-  resolved "https://registry.yarnpkg.com/@floip/flow-runner/-/flow-runner-1.0.0-rc4.9.tgz#84b7612c38969e001885ddfe76939135f8b69522"
-  integrity sha512-NRvUMKagng1l0ediGkyuAVedrDYQ/LdcGNjfZKV9JByEEB7+zJrBw/7S3H3UZLpNhdrUh1dAbxEvqkGXSrv5zw==
+"@floip/flow-runner@git+ssh://git@github.com/FLOIP/flow-runner.git#feature/VMO-6300/update-mcq-config-and-fix-json-generation":
+  version "1.0.0-rc4.10"
+  resolved "git+ssh://git@github.com/FLOIP/flow-runner.git#04a4c87fabf2aaa94aca1463a3ab6eef5facacb3"
   dependencies:
     "@floip/expression-evaluator" "^2.1.3"
     ajv "^7.2.1"

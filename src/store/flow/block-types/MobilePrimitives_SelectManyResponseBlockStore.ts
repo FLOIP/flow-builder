@@ -56,7 +56,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     const blankPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
     props.config = {
       prompt: blankPromptResource.uuid,
-      choices: {},
+      choices: [],
       minimum_choices: undefined,
       maximum_choices: undefined,
     }
