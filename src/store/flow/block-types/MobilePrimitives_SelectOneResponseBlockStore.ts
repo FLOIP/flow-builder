@@ -4,7 +4,7 @@ import {Choice, findBlockWith, IBlock, IBlockExit, IResource, ValidationExceptio
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
 import Vue from 'vue'
-import {cloneDeep, find, get, snakeCase} from 'lodash'
+import {cloneDeep, find, findKey, get, snakeCase} from 'lodash'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
@@ -33,17 +33,15 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       throw new ValidationException(`Unable to find resource for choice: ${resourceId}`)
     }
 
-    // TODO: think about the previous implementation and assess if we need to check duplicates
-    // defaulted to `resourceId` to mitigate empty keys and associated error handling altogether
-    // const desiredChoiceKey = snakeCase(get(resource.values[0], 'value')) || resource.uuid
-    // const doesChoiceKeyAlreadyExist = desiredChoiceKey in block.config.choices
-    // // apply suffix as resourceId when duplicated to prevent overwriting as input is received
-    // const suffix = doesChoiceKeyAlreadyExist ? `-${resource.uuid}` : ''
-    const allChoices = block.config.choices
-    allChoices.push({
-      prompt: resource.uuid,
-    } as Choice)
-    Vue.set(block.config, 'choices', allChoices)
+    // Do not attribute the resource if it has been done already
+    const existingChoiceByResource = find(block.config.choices, {prompt: resource.uuid})
+    if (existingChoiceByResource === undefined) {
+      const allChoices = block.config.choices
+      allChoices.push({
+        prompt: resource.uuid,
+      } as Choice)
+      Vue.set(block.config, 'choices', allChoices)
+    }
   },
 
   deleteChoiceByResourceIdFrom({rootGetters}, {blockId, resourceId}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'] }) {
