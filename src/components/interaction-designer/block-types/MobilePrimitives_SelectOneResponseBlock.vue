@@ -94,9 +94,7 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
     if (branching_type === UNIFIED) {
       this.handleBranchingTypeChangedToUnified({block: this.block})
     } else if (branching_type === ADVANCED) {
-      // No-op
-      // TODO: double check if we still need to do something here once the schema is using an array of choices
-      // I suspect there is a vue udpate issue
+      this.reflowExitsFromChoices({blockId})
     } else if (branching_type === EXIT_PER_CHOICE) {
       this.reflowExitsFromChoices({blockId})
     } else {
