@@ -1,10 +1,10 @@
 import {ActionContext, ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
-import {IChoice, findBlockWith, IBlock, IBlockExit, IResource, ValidationException} from '@floip/flow-runner'
+import {IChoice, findBlockWith, IBlock, IBlockExit, IResource, ValidationException, IResourceValue} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
 import Vue from 'vue'
-import {cloneDeep, find, findKey, get, snakeCase} from 'lodash'
+import {cloneDeep, find, reject, get, snakeCase} from 'lodash'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
@@ -12,7 +12,10 @@ export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
 const actions: ActionTree<IEmptyState, IRootState> = {
   ...baseActions,
 
-  rewriteChoiceKeyFor({rootGetters, dispatch}, {resourceId, blockId}: { resourceId: IResource['uuid'], blockId: IBlock['uuid'] }) {
+  updateChoiceName(
+    {rootGetters, dispatch},
+    {blockId, resourceId, resourceValue}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], resourceValue: IResourceValue},
+  ) {
     const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
     const resource: IResource = rootGetters['flow/resourcesByUuidOnActiveFlow'][resourceId]
 
@@ -20,9 +23,8 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       throw new ValidationException(`Unable to find resource for choice: ${resourceId}`)
     }
 
-    const choiceKey = String(find(block.config.choices, (v) => v.prompt === resourceId))
-    Vue.delete(block.config.choices, choiceKey)
-    dispatch('addChoiceByResourceIdTo', {blockId, resourceId})
+    const choice = find(block.config.choices, (v) => v.prompt === resourceId) as IChoice
+    choice.name = resourceValue.value
   },
 
   addChoiceByResourceIdTo({rootGetters}, {blockId, resourceId}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'] }) {
@@ -46,8 +48,8 @@ const actions: ActionTree<IEmptyState, IRootState> = {
 
   deleteChoiceByResourceIdFrom({rootGetters}, {blockId, resourceId}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'] }) {
     const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
-    const choiceKey = String(find(block.config.choices, (v) => v.prompt === resourceId))
-    Vue.delete(block.config.choices, choiceKey)
+    const newChoices = reject(block.config.choices, v => v.prompt === resourceId)
+    Vue.set(block.config, 'choices', newChoices)
   },
 
   async reflowExitsFromChoices({dispatch, rootGetters}, {blockId}: { blockId: IBlock['uuid'] }) {
