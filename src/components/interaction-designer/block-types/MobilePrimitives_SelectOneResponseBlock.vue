@@ -81,18 +81,24 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
   }
 
   handleChoiceChanged(): void {
-    const {uuid: blockId, vendor_metadata: metadata} = this.block as unknown as IBlockWithBranchingType
-    const {EXIT_PER_CHOICE, UNIFIED} = OutputBranchingType
+    const {
+      uuid: blockId,
+      vendor_metadata: {floip: {ui_metadata: {branching_type}}},
+    } = this.block as unknown as IBlockWithBranchingType
 
-    if (metadata.floip.ui_metadata.branching_type === UNIFIED) {
+    const {EXIT_PER_CHOICE, UNIFIED, ADVANCED} = OutputBranchingType
+
+    if (branching_type === UNIFIED) {
       this.handleBranchingTypeChangedToUnified({block: this.block})
+    } else if (branching_type === ADVANCED) {
+      // No-op
+      // TODO: double check if we still need to do something here once the schema is using an array of choices
+      // I suspect there is a vue udpate issue
+    } else if (branching_type === EXIT_PER_CHOICE) {
+      this.reflowExitsFromChoices({blockId})
+    } else {
+      console.error('handleChoiceChanged', `cannot handle branching type ${branching_type}`)
     }
-
-    if (metadata.floip.ui_metadata.branching_type !== EXIT_PER_CHOICE) {
-      return
-    }
-
-    this.reflowExitsFromChoices({blockId})
   }
 
   reflowExitsWhenSwitchingToBranchingTypeNotUnified(): void {
