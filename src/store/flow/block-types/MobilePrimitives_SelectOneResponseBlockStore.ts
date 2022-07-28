@@ -55,12 +55,12 @@ const actions: ActionTree<IEmptyState, IRootState> = {
   async reflowExitsFromChoices({dispatch, rootGetters}, {blockId}: { blockId: IBlock['uuid'] }) {
     const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
     const {config: {choices}, exits}: ISelectOneResponseBlock = block
-    const choiceKeys = Object.keys(choices)
+
     // non-default exits; default should always be last
     const exitsForChoices: IBlockExit[] = exits.slice(0, -1)
 
     // reflow exits based on choices
-    await Promise.all(choiceKeys.map(async (choiceKey, i) => {
+    await Promise.all(choices.map(async (choice, i) => {
       if (exitsForChoices[i] == null) {
         const uuid = await (new IdGeneratorUuidV4()).generate()
         const exit = await dispatch('flow/block_createBlockExitWith', {props: {uuid} as IBlockExit}, {root: true})
@@ -68,8 +68,8 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       }
 
       Object.assign(exitsForChoices[i], {
-        name: choiceKey,
-        test: `block.value = "${choiceKey}"`,
+        name: choice.name,
+        test: `@block.value = '${choice.name}'`,
       })
     }))
 
