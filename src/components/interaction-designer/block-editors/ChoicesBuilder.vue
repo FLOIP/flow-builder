@@ -48,7 +48,7 @@ import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
 import {Component, Prop} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
-import {IBlock, IFlow, IResource, IResourceValue, SupportedContentType, SupportedMode} from '@floip/flow-runner'
+import {IBlock, IChoice, IFlow, IResource, IResourceValue, SupportedContentType, SupportedMode} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
@@ -126,12 +126,23 @@ export class ChoicesBuilder extends mixins(Lang) {
       // TODO in VMO-6643: clean up resource, but should we first check for references?
       // this.resource_delete({resourceId: resource.uuid})
       this.deleteChoiceByResourceIdFrom({blockId: this.block.uuid, resourceId})
+      let previousIndex = choiceIndex - 1
+      let previousLastChoice: IChoice = this.block.config.choices[previousIndex]
+      while (previousIndex >= 0 && previousLastChoice.name === '') {
+        console.debug('delete previous empty choice at index', previousIndex)
+        // TODO in VMO-6643: clean up resource, but should we first check for references?
+        // this.resource_delete({resourceId: resource.uuid})
+        this.deleteChoiceByResourceIdFrom({blockId: this.block.uuid, resourceId: previousLastChoice.prompt})
+        previousIndex -= 1
+        previousLastChoice = this.block.config.choices[previousIndex]
+      }
       this.focusInputElFor(this.$refs.draftChoice as Vue)
+      this.$emit('choiceChanged', {resourceId})
       return
     }
 
     this.updateChoiceName({blockId: this.block.uuid, resourceId, resourceValue: variant})
-    this.$emit('choiceChanged', {resourceId, choiceIndex})
+    this.$emit('choiceChanged', {resourceId})
   }
 
   @validationVuexNamespace.Getter choiceMimeType!: string

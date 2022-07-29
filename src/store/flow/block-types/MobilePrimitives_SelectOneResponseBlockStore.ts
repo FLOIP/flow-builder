@@ -75,7 +75,15 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     }))
 
     // delete exits if not present in choices
-    exitsForChoices = reject(exitsForChoices, exit => find(choices, c => c.name === exit.name) === undefined)
+    exitsForChoices = reject(exitsForChoices, exit => {
+      const checkExist = find(choices, c => c.name === exit.name) === undefined
+
+      if (checkExist === true) {
+        console.debug('removing exit named', exit.name)
+      }
+
+      return checkExist
+    })
 
     exits.splice(0, exits.length - 1, ...exitsForChoices)
   },
