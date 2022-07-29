@@ -342,7 +342,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Saving State 1`] = `
                             type="button"
                           >
                             
-              Save
+              Saved
               
                             <!---->
                           </button>
@@ -823,7 +823,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                             type="button"
                           >
                             
-              Save
+              Saved
               
                             <!---->
                           </button>
@@ -1305,7 +1305,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                             type="button"
                           >
                             
-              Save
+              Saved
               
                             <!---->
                           </button>

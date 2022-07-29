@@ -362,6 +362,31 @@ const flowBuilderRoutes [
 - Default styles for the flow-builder are available in @floip/flow-builder/dist/flow-builder.css and can be included on the page serving the flow-builder.
 - All components have a top level element with a css class corresponding to the component name kebab-cases. For example FetchFlow is fetch-flow, InteractionDesigner interaction-designer etc. This can be used as a hook for custom styling.
 
+## Making use of toolbar slots
+
+The `TreeBuilderToolbar` component has several slots that allow customization
+of its appearance, such as `extra-buttons` and `right-grouped-buttons`.
+
+`InteractionDesigner` has default `toolbar` slot defined as follows:
+
+```
+<template slot="toolbar">
+  <TreeBuilderToolbar />
+</template>
+```
+
+Therefore, it is possible to customize toolbar using its slots:
+
+```
+<InteractionDesigner>
+  <TreeBuilderToolbar slot="toolbar">
+    <template slot="right-grouped-buttons">
+      <input type="button" value="test" />
+    </template>
+  </TreeBuilderToolbar>
+</InteractionDesigner>
+```
+
 # Full example routes/index.js. See `src/lib.ts` for exports - The full file described above in the snippets
 
 ```
