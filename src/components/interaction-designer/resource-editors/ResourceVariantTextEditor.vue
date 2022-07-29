@@ -6,6 +6,7 @@
         <expression-input
           ref="input"
           :label="label"
+          :prepend-text="prependText"
           :placeholder="placeholder || `flow-builder.enter-${resourceVariant.modes[0].replace('_', '-').toLowerCase()}-content` | trans"
           :current-expression="content"
           :rows="rows"
@@ -34,6 +35,7 @@ export class ResourceVariantTextEditor extends mixins(Lang) {
   @Prop({default: null}) readonly index!: number
   @Prop() readonly resourceId!: IResource['uuid']
   @Prop({default: ''}) readonly label!: string
+  @Prop({type: String, default: ''}) readonly prependText!: string
   @Prop() readonly placeholder!: string
   @Prop() readonly resourceVariant!: IResourceValue
   @Prop() readonly mode!: SupportedMode
