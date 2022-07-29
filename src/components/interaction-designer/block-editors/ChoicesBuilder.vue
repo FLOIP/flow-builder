@@ -4,12 +4,15 @@
 
     <!-- Show non-empty choices -->
     <template v-for="(resource, i) in choiceResourcesOrderedByResourcesList">
+      <!--the index for resource-variant-text-editor will always be `0` because we have only 01 text resource.
+      This will make sure we have the right validation message displayed -->
       <resource-variant-text-editor
         ref="choices"
         :key="resource.uuid"
-        :index="i"
+        :index="0"
         class="choices-builder-item"
         :label="(i + 1).toString()"
+        :title="resource.uuid"
         :rows="1"
         :placeholder="'Enter choice...'"
         :resource-id="resource.uuid"

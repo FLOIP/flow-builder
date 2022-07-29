@@ -4,7 +4,7 @@ import {IChoice, findBlockWith, IBlock, IBlockExit, IResource, ValidationExcepti
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
 import Vue from 'vue'
-import {cloneDeep, find, reject, get, snakeCase} from 'lodash'
+import {cloneDeep, find, reject} from 'lodash'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
