@@ -6,6 +6,7 @@ import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISele
 import Vue from 'vue'
 import {cloneDeep, find, reject} from 'lodash'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
 
@@ -93,6 +94,13 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     props.config = {
       prompt: blankPromptResource.uuid,
       choices: [],
+    }
+    props.vendor_metadata = {
+      floip: {
+        ui_metadata: {
+          branching_type: OutputBranchingType.EXIT_PER_CHOICE,
+        },
+      },
     }
     return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
