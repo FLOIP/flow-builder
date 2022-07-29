@@ -4,21 +4,24 @@
 
     <!-- Show non-empty choices -->
     <template v-for="(resource, i) in choiceResourcesOrderedByResourcesList">
+      <!--the index for resource-variant-text-editor will always be `0` because we have only 01 text resource.
+      This will make sure we have the right validation message displayed -->
       <resource-variant-text-editor
         ref="choices"
         :key="resource.uuid"
-        :index="i"
+        :index="0"
         class="choices-builder-item"
         :label="(i + 1).toString()"
+        :title="resource.uuid"
         :rows="1"
         :placeholder="'Enter choice...'"
         :resource-id="resource.uuid"
         :resource-variant="resource.values[0]"
         :mode="SupportedMode.TEXT"
         @afterResourceVariantChanged="handleExistingResourceVariantChangedFor(
-          resource.uuid,
-          i,
-          resource)" />
+          {choiceIndex: i},
+          $event
+          )" />
     </template>
 
     <!--Show empty choice-->
@@ -38,7 +41,7 @@
          modes: [SupportedMode.TEXT]})"
       :mode="SupportedMode.TEXT"
       @beforeResourceVariantChanged="addDraftResourceToChoices"
-      @afterResourceVariantChanged="rewriteChoiceKeyFor({resourceId: draftResource.uuid, blockId: block.uuid})" />
+      @afterResourceVariantChanged="handleNewChoiceChange" />
   </div>
 </template>
 
@@ -48,7 +51,7 @@ import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
 import {Component, Prop} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
-import {IBlock, IFlow, IResource, SupportedContentType, SupportedMode} from '@floip/flow-runner'
+import {IBlock, IChoice, IFlow, IResource, IResourceValue, SupportedContentType, SupportedMode} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
@@ -70,9 +73,8 @@ export class ChoicesBuilder extends mixins(Lang) {
   findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
 
   get choiceResourcesOrderedByResourcesList(): IResource[] {
-    const choiceResourceIds = Object.values(this.block.config.choices)
-    return intersectionWith(this.activeFlow.resources, choiceResourceIds,
-      (resource, choiceResourceId) => resource.uuid === choiceResourceId)
+    return intersectionWith(this.activeFlow.resources, this.block.config.choices,
+      (resource, choice) => resource.uuid === choice?.prompt)
   }
 
   created(): void {
@@ -112,20 +114,38 @@ export class ChoicesBuilder extends mixins(Lang) {
     }
   }
 
-  handleExistingResourceVariantChangedFor(resourceId: IResource['uuid'], choiceIndex: number, resource: IResource): void {
+  @blockVuexNamespace.Action updateChoiceName!: (
+    {blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], resourceValue: IResourceValue},
+  ) => void
+
+  handleExistingResourceVariantChangedFor(
+    {choiceIndex}: {choiceIndex: number},
+    {resourceId, variant}: {resourceId: IResource['uuid'], variant: IResourceValue},
+  ): void {
     const isLast = choiceIndex === this.choiceResourcesOrderedByResourcesList.length - 1
-    const hasEmptyValue = isEmpty(get(resource.values[0], 'value'))
+    const hasEmptyValue = isEmpty(variant.value)
 
     if (isLast && hasEmptyValue) {
-      // todo: clean up resource, but should we first check for references?
+      // TODO in VMO-6643: clean up resource, but should we first check for references?
       // this.resource_delete({resourceId: resource.uuid})
       this.deleteChoiceByResourceIdFrom({blockId: this.block.uuid, resourceId})
+      let previousIndex = choiceIndex - 1
+      let previousLastChoice: IChoice = this.block.config.choices[previousIndex]
+      while (previousIndex >= 0 && previousLastChoice.name === '') {
+        console.debug('delete previous empty choice at index', previousIndex)
+        // TODO in VMO-6643: clean up resource, but should we first check for references?
+        // this.resource_delete({resourceId: resource.uuid})
+        this.deleteChoiceByResourceIdFrom({blockId: this.block.uuid, resourceId: previousLastChoice.prompt})
+        previousIndex -= 1
+        previousLastChoice = this.block.config.choices[previousIndex]
+      }
       this.focusInputElFor(this.$refs.draftChoice as Vue)
+      this.$emit('choiceChanged', {resourceId})
       return
     }
 
-    this.rewriteChoiceKeyFor({resourceId, blockId: this.block.uuid})
-    this.$emit('choiceChanged', {resourceId, choiceIndex, resource})
+    this.updateChoiceName({blockId: this.block.uuid, resourceId, resourceValue: variant})
+    this.$emit('choiceChanged', {resourceId})
   }
 
   @validationVuexNamespace.Getter choiceMimeType!: string
@@ -136,8 +156,10 @@ export class ChoicesBuilder extends mixins(Lang) {
   @flowVuexNamespace.Action resource_createWith!: ({props}: { props: { uuid: string } & Partial<IResource> }) => Promise<IResource>
   @blockVuexNamespace.Action deleteChoiceByResourceIdFrom!:
     ({blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) => void
-  @blockVuexNamespace.Action rewriteChoiceKeyFor!:
-    ({blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) => void
+
+  handleNewChoiceChange({resourceId, variant}: {resourceId: IResource['uuid'], variant: IResourceValue}) {
+    this.updateChoiceName({blockId: this.block.uuid, resourceId, resourceValue: variant})
+  }
   @blockVuexNamespace.Action addChoiceByResourceIdTo!:
     ({blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) => void
 }

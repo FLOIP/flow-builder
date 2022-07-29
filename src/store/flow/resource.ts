@@ -39,8 +39,8 @@ export const mutations: MutationTree<IFlowsState> = {
   },
 
   /*
-   * TODO We need an action that can clean resources and then call this to actual remove.
-   * TODO We need logic to truly check resources are unused
+   * TODO in VMO-6643 We need an action that can clean resources and then call this to actual remove.
+   * TODO in VMO-6643 We need logic to truly check resources are unused
    *
    * resource_delete({resources}, {resourceId}: { resourceId: string }) {
    *   const resourceIndex = findIndex(resources, (resource) => resource.uuid === resourceId)

@@ -76,23 +76,30 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
   SupportedMode = SupportedMode
   findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
 
-  get promptResource(): IResource {
-    return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
+  get promptResource(): IResource | undefined {
+    if (this.block.config.prompt !== undefined) {
+      return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
+    }
+    return undefined
   }
 
   handleChoiceChanged(): void {
-    const {uuid: blockId, vendor_metadata: metadata} = this.block as unknown as IBlockWithBranchingType
-    const {EXIT_PER_CHOICE, UNIFIED} = OutputBranchingType
+    const {
+      uuid: blockId,
+      vendor_metadata: {floip: {ui_metadata: {branching_type}}},
+    } = this.block as unknown as IBlockWithBranchingType
 
-    if (metadata.floip.ui_metadata.branching_type === UNIFIED) {
+    const {EXIT_PER_CHOICE, UNIFIED, ADVANCED} = OutputBranchingType
+
+    if (branching_type === UNIFIED) {
       this.handleBranchingTypeChangedToUnified({block: this.block})
+    } else if (branching_type === ADVANCED) {
+      this.reflowExitsFromChoices({blockId})
+    } else if (branching_type === EXIT_PER_CHOICE) {
+      this.reflowExitsFromChoices({blockId})
+    } else {
+      console.error('handleChoiceChanged', `cannot handle branching type ${branching_type}`)
     }
-
-    if (metadata.floip.ui_metadata.branching_type !== EXIT_PER_CHOICE) {
-      return
-    }
-
-    this.reflowExitsFromChoices({blockId})
   }
 
   reflowExitsWhenSwitchingToBranchingTypeNotUnified(): void {

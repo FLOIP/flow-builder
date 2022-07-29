@@ -301,21 +301,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
-  // TODO in VMO-6181: update the name & definition to correspond for MCQ context, no more block is using this apart from MCQ
-  async block_convertExitFormationToUnified({state, dispatch}, {blockId, test}: {blockId: IBlock['uuid'], test: IBlockExit['test']}) {
-    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    const primaryExitProps: Partial<IBlockExit> = {
-      uuid: await (new IdGeneratorUuidV4()).generate(),
-      name: '1',
-      test,
-    }
-
-    block.exits = [
-      await dispatch('block_createBlockExitWith', {props: primaryExitProps}),
-      last(block.exits),
-    ]
-  },
-
   /**
    * Update exits after the block creation.
    * Standard exit where the end user can make an error. We have 02 exits:
