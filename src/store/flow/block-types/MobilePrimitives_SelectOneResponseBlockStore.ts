@@ -42,7 +42,6 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       allChoices.push({
         prompt: resource.uuid,
       } as IChoice)
-      Vue.set(block.config, 'choices', allChoices)
     }
   },
 
