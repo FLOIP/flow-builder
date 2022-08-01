@@ -60,6 +60,13 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       minimum_choices: undefined,
       maximum_choices: undefined,
     }
+    props.vendor_metadata = {
+      floip: {
+        ui_metadata: {
+          branching_type: OutputBranchingType.EXIT_PER_CHOICE,
+        },
+      },
+    }
     return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
 }

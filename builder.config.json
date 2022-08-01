@@ -172,6 +172,7 @@
         "menu_category": 1,
         "divider_before": true,
         "exits": {
+          "default_branching_type": "EXIT_PER_CHOICE",
           "primary": {
             "name": "1",
             "test": "@block.value != null"
@@ -189,6 +190,7 @@
         "category":  2,
         "menu_category": 1,
         "exits": {
+          "default_branching_type": "EXIT_PER_CHOICE",
           "primary": {
             "name": "1"
           },
