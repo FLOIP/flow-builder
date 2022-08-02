@@ -43,13 +43,7 @@
       @beforeResourceVariantChanged="addDraftResourceToChoices"
       @afterResourceVariantChanged="handleNewChoiceChange" />
 
-    <!-- Choices mapping-->
-<!--    <BlockSetChoiceOptionsModal-->
-<!--      :is-choice-options-modal-visible="isChoiceOptionsModalVisible"-->
-<!--      :is-localization-configuration-mode-enabled="true"-->
-<!--      @hide="hideSetChoiceOptionsModal"/>-->
-
-    <choice-mapping-modal/>
+    <choice-mapping-modal :block="block"/>
   </div>
 </template>
 
