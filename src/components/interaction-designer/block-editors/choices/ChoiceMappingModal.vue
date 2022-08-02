@@ -1,7 +1,6 @@
 <template>
    <div class="choice-mapping-modal">
      <div class="form-group">
-       <label>{{ trans('flow-builder.choice-options') }}</label><br>
        <button class="btn btn-primary btn-sm" @click="showModal">
          {{ trans('flow-builder.set-choice-options') }}
        </button>

@@ -1,6 +1,6 @@
 <template>
   <div class="choices-builder form-group">
-    <h4>{{ 'flow-builder.choices' | trans }}</h4>
+    <label class="text-primary">{{ 'flow-builder.choices' | trans }}</label>
 
     <!-- Show non-empty choices -->
     <template v-for="(resource, i) in choiceResourcesOrderedByResourcesList">
