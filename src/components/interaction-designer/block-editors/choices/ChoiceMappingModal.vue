@@ -1,5 +1,5 @@
 <template>
-   <div class="mcq-choice-mapping-modal">
+   <div class="choice-mapping-modal">
      <div class="form-group">
        <label>{{ trans('flow-builder.choice-options') }}</label><br>
        <button class="btn btn-primary btn-sm" @click="showModal">
@@ -13,7 +13,7 @@
        size="lg"
        :title="trans('flow-builder.choice-options')"
        ok-only>
-       <div>
+       <div class="choice-mapping-navs">
          <nav>
            <div id="choice-options-nav-tab" class="nav nav-tabs" role="tablist">
              <a
@@ -114,6 +114,21 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "../../../../scss/custom_variables";
 
+/*override bootstrap style to match with design*/
+.choice-mapping-navs .nav-link.active {
+  background-color: transparent;
+  border-bottom: 2px solid;
+  color: $primary-900;
+}
+
+.choice-mapping-navs .nav-item {
+  border-color: transparent;
+}
+
+.choice-mapping-navs .nav-tabs {
+  border-bottom: none;
+}
 </style>
