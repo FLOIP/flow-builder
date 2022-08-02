@@ -65,7 +65,7 @@ const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const validationVuexNamespace = namespace('validation')
 
-@Component({
+@Component<any>({
   components: {
     ChoiceMappingModal,
   },
