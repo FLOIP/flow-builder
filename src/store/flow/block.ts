@@ -14,6 +14,7 @@ import {IFlowsState} from '.'
 import {removeBlockValueByPath, updateBlockValueByPath} from './utils/vuexBlockHelpers'
 
 import * as SetContactPropertyModule from './block/set-contact-property'
+import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   ...SetContactPropertyModule.getters,
@@ -228,9 +229,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const blockDefinition = getters.block_classesConfig[blockType]
     const primaryExitName = blockDefinition?.exits?.primary?.name
     const defaultExitName = blockDefinition?.exits?.default?.name
+    const defaultBranchingType = blockDefinition?.exits?.default_branching_type
     let exits: IBlockExit[] = []
 
-    if (getters.block_shouldHave2Exits(blockType) === true) {
+    if (defaultBranchingType === undefined && getters.block_shouldHave2Exits(blockType) === true) {
       // Has 02 exits
       exits = [
         await dispatch('block_createBlockExitWith', {
@@ -248,12 +250,21 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         }),
       ]
     } else {
-      // Has only one exit `Default` if the 02 exits are not clearly defined
+      // Has only one exit `Default` if
+      // - the default_branching_type is mentioned (eg: EXIT_PER_CHOICE)
+      // - OR the 02 exits are not clearly defined
       exits = [await dispatch('block_createBlockDefaultExitWith', {
         props: ({
           uuid: await (new IdGeneratorUuidV4()).generate(),
         }) as IBlockExit,
       })]
+
+      if (![OutputBranchingType.EXIT_PER_CHOICE, OutputBranchingType.ADVANCED, undefined].includes(defaultBranchingType)) {
+        console.warn(
+          'block_generateExitsBasedOnUiConfig',
+          `the default_branching_type ${defaultBranchingType} is not recognized, this might cause an error.`,
+        )
+      }
     }
 
     return exits
@@ -299,21 +310,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       exitId: first.exitId,
       destinationBlockId: secondDestinationBlockId,
     })
-  },
-
-  // TODO in VMO-6181: update the name & definition to correspond for MCQ context, no more block is using this apart from MCQ
-  async block_convertExitFormationToUnified({state, dispatch}, {blockId, test}: {blockId: IBlock['uuid'], test: IBlockExit['test']}) {
-    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    const primaryExitProps: Partial<IBlockExit> = {
-      uuid: await (new IdGeneratorUuidV4()).generate(),
-      name: '1',
-      test,
-    }
-
-    block.exits = [
-      await dispatch('block_createBlockExitWith', {props: primaryExitProps}),
-      last(block.exits),
-    ]
   },
 
   /**

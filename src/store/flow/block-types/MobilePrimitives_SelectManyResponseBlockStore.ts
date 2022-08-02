@@ -1,13 +1,21 @@
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
 import {findBlockWith, IBlock, ISelectManyResponseBlock} from '@floip/flow-runner'
 import {cloneDeep, isNumber} from 'lodash'
-import {ActionContext, ActionTree, Module} from 'vuex'
+import {ActionContext, ActionTree, GetterTree, Module} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlockWithBranchingType, OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
-import {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import {actions as baseActions, getters as baseGetters, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 import MobilePrimitives_SelectOneResponseBlockStore from './MobilePrimitives_SelectOneResponseBlockStore'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectManyResponse'
+
+export const getters: GetterTree<IEmptyState, IRootState> = {
+  ...baseGetters,
+  /**
+   * TODO: customize selectMany's tests here in the future
+   */
+  primaryExitTest: () => (_blockProps: Partial<IBlock>) => undefined,
+}
 
 const actions: ActionTree<IEmptyState, IRootState> = {
   ...baseActions,
@@ -43,58 +51,30 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     }
   },
 
-  handleBranchingTypeChangedToUnified({dispatch}, {block}: { block: ISelectManyResponseBlock }) {
-    dispatch('flow/block_convertExitFormationToUnified', {
-      blockId: block.uuid,
-      test: formatTestValueForUnifiedBranchingType(block),
-    }, {root: true})
-  },
-
   async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<ISelectOneResponseBlock> }) {
     props.type = BLOCK_TYPE
     const blankPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
     props.config = {
       prompt: blankPromptResource.uuid,
-      choices: {},
+      choices: [],
       minimum_choices: undefined,
       maximum_choices: undefined,
+    }
+    props.vendor_metadata = {
+      floip: {
+        ui_metadata: {
+          branching_type: OutputBranchingType.EXIT_PER_CHOICE,
+        },
+      },
     }
     return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
 }
 
-function formatTestValueForUnifiedBranchingType(block: ISelectManyResponseBlock): string {
-  const {choices, minimum_choices: min, maximum_choices: max} = block.config
-  const choiceKeys = Object.keys(choices)
-
-  if (choiceKeys.length === 0) {
-    console.warn('Choices are empty for SelectManyBlock, providing `true` by default')
-    return 'true'
-  }
-
-  const validMinCount = `COUNT(block.value) >= ${min}`
-  const validMaxCount = `COUNT(block.value) <= ${max}`
-  const validChoices = `OR(${choiceKeys.map((choice) =>
-    `IN("${choice}", block.value)`).join(', ')})`
-
-  if (isNumber(min) && isNumber(max)) {
-    return `AND(${[validMinCount, validMaxCount, validChoices].join(', ')})`
-  }
-
-  if (isNumber(min)) {
-    return `AND(${[validMinCount, validChoices].join(', ')})`
-  }
-
-  if (isNumber(max)) {
-    return `AND(${[validMaxCount, validChoices].join(', ')})`
-  }
-
-  return validChoices
-}
-
 const MobilePrimitives_SelectManyResponseBlockStore: Module<IEmptyState, IRootState> = {
   ...cloneDeep(MobilePrimitives_SelectOneResponseBlockStore),
   actions,
+  getters,
 }
 
 export default MobilePrimitives_SelectManyResponseBlockStore
