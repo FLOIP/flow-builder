@@ -49,6 +49,7 @@ export interface IPosition {
 export interface IBuilderState {
   activeBlockId: IBlock['uuid'] | null,
   isEditable: boolean,
+  hasFlowChanges: boolean,
   activeConnectionsContext: IConnectionContext[],
   operations: {
     [OperationKind.CONNECTION_SOURCE_RELOCATE]: IConnectionSourceRelocateOperation,
@@ -63,6 +64,7 @@ export interface IBuilderState {
 export const stateFactory = (): IBuilderState => ({
   activeBlockId: null,
   isEditable: true,
+  hasFlowChanges: false,
   activeConnectionsContext: [],
   operations: {
     [OperationKind.CONNECTION_SOURCE_RELOCATE]: {
@@ -96,6 +98,8 @@ export const getters: GetterTree<IBuilderState, IRootState> = {
 
   isEditable: (state) => state.isEditable,
 
+  hasFlowChanges: (state) => state.hasFlowChanges,
+
   interactionDesignerBoundingClientRect: (state) => state.interactionDesignerBoundingClientRect,
 }
 
@@ -126,6 +130,10 @@ export const mutations: MutationTree<IBuilderState> = {
 
   setIsEditable(state, value) {
     state.isEditable = value
+  },
+
+  setHasFlowChanges(state, value) {
+    state.hasFlowChanges = value
   },
 
   initDraggableForExitsByUuid(state) {
@@ -296,6 +304,10 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
   setIsEditable({commit}, value) {
     const boolVal = Boolean(value)
     commit('setIsEditable', boolVal)
+  },
+
+  setHasFlowChanges({commit}, value) {
+    commit('setHasFlowChanges', Boolean(value))
   },
 }
 

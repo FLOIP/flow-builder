@@ -4,7 +4,9 @@
     ref="interaction-designer-contents"
     class="interaction-designer interaction-designer-contents">
     <header class="interaction-designer-header">
-      <tree-builder-toolbar />
+      <slot name="toolbar">
+        <tree-builder-toolbar />
+      </slot>
     </header>
 
     <aside
@@ -52,6 +54,7 @@ import ClipboardRoot from '@/components/interaction-designer/clipboard/Clipboard
 import {Route} from 'vue-router'
 import {IBlock, IFlow} from '@floip/flow-runner'
 import {ErrorObject} from 'ajv'
+import {MutationPayload} from 'vuex'
 
 Component.registerHooks(['beforeRouteUpdate'])
 
@@ -128,6 +131,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   @flowNamespace.Getter activeFlow?: IFlow
   @builderNamespace.Getter activeBlock?: IBlock
   @builderNamespace.Getter isEditable!: boolean
+  @builderNamespace.Getter hasFlowChanges!: boolean
   @builderNamespace.Getter interactionDesignerBoundingClientRect!: DOMRect
   @clipboardNamespace.Getter isSimulatorActive!: boolean
 
@@ -160,6 +164,9 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     // Initialize global reference for legacy + debugging
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (global as any).builder = this
+
+    // Listen to Flow updates to maintain "hasFlowChanges" state
+    this.$store.subscribe(this.handleFlowChanges.bind(this))
 
     this.initializeTreeModel()
     // `this.mode` comes from captured param in js-routes
@@ -229,6 +236,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   @builderNamespace.Mutation setIsBlockEditorOpen!: (value: boolean) => void
   @builderNamespace.Mutation setInteractionDesignerBoundingClientRect!: (value: DOMRect) => void
   @builderNamespace.Action setIsEditable!: (arg0: boolean) => void
+  @builderNamespace.Action setHasFlowChanges!: (arg0: boolean) => void
   @flowNamespace.Mutation flow_setActiveFlowId!: ({flowId}: {flowId: string | null}) => void
   @Action attemptSaveTree!: () => void
   @Action discoverTallestBlockForDesignerWorkspaceHeight!: ({buffer, aboveTallest}: {buffer?: number, aboveTallest: boolean}) => void
@@ -304,6 +312,25 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     (this.$router as any).history.replace({
       name,
     })
+  }
+
+  handleFlowChanges({type}: MutationPayload): void {
+    if (type.startsWith('flow/') === false) {
+      return
+    }
+
+    if (type === 'flow/flow_setFlowContainer') {
+      this.setHasFlowChanges(false)
+      return
+    }
+
+    // Mutations that does not change flow data
+    if (![
+      'flow/flow_updateCreatedState',
+      'flow/flow_setActiveFlowId',
+    ].includes(type)) {
+      this.setHasFlowChanges(true)
+    }
   }
 }
 
