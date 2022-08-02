@@ -49,8 +49,10 @@
              aria-labelledby="nav-voice-tab"
              class="tab-pane fade show active"
              role="tabpanel">
-            <!--TODO: VMO-6653-->
-             content voice
+             <div class="mt-3">
+               <!--TODO: VMO-6653-->
+               voice content
+             </div>
            </div>
            <template v-if="hasTextMode">
              <div
@@ -60,8 +62,11 @@
                aria-labelledby="nav-lang-tab"
                class="tab-pane fade"
                role="tabpanel">
-               <!--TODO: VMO-6654-->
-               content {{ language }}
+               <div class="mt-3">
+                 <!--TODO: VMO-6654-->
+                 content {{ language }}
+               </div>
+
              </div>
            </template>
          </div>
