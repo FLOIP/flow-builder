@@ -42,6 +42,14 @@
       :mode="SupportedMode.TEXT"
       @beforeResourceVariantChanged="addDraftResourceToChoices"
       @afterResourceVariantChanged="handleNewChoiceChange" />
+
+    <!-- Choices mapping-->
+<!--    <BlockSetChoiceOptionsModal-->
+<!--      :is-choice-options-modal-visible="isChoiceOptionsModalVisible"-->
+<!--      :is-localization-configuration-mode-enabled="true"-->
+<!--      @hide="hideSetChoiceOptionsModal"/>-->
+
+    <choice-mapping-modal/>
   </div>
 </template>
 
@@ -56,18 +64,22 @@ import {namespace} from 'vuex-class'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import ChoiceMappingModal from '@/components/interaction-designer/block-editors/choices/ChoiceMappingModal.vue'
 import Vue from 'vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const validationVuexNamespace = namespace('validation')
 
-@Component({})
+@Component({
+  components: {
+    ChoiceMappingModal,
+  },
+})
 export class ChoicesBuilder extends mixins(Lang) {
   @Prop() readonly block!: ISelectOneResponseBlock
 
   draftResource: IResource | null = null
-
   SupportedContentType = SupportedContentType
   SupportedMode = SupportedMode
   findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
