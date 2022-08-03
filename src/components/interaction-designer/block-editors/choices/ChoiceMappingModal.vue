@@ -49,8 +49,7 @@
              class="tab-pane fade show active"
              role="tabpanel">
              <div class="mt-3">
-               <!--TODO: VMO-6653-->
-               voice content
+               <voice-mapping-table :block="block"/>
              </div>
            </div>
            <template v-if="hasTextMode">
@@ -79,10 +78,12 @@ import {BModal} from 'bootstrap-vue'
 import Lang from '@/lib/filters/lang'
 import {mapGetters} from 'vuex'
 import {IBlock} from '@floip/flow-runner'
+import VoiceMappingTable from './VoiceMappingTable.vue'
 
 export default {
   components: {
     BModal,
+    VoiceMappingTable,
   },
   mixins: [Lang],
 
