@@ -167,6 +167,8 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
 
   // for checkbox ######################
   toggleSetContactProperty(): void {
+    this.$emit('toggleSetContactProperty', !this.shouldSetContactProperty)
+
     this.shouldSetContactProperty = !this.shouldSetContactProperty
     if (!this.shouldSetContactProperty) {
       this.block_removeConfigByKey({blockId: this.block.uuid, key: 'set_contact_property'})
