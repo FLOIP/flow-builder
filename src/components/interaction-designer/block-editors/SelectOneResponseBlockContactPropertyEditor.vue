@@ -2,7 +2,8 @@
   <div class="select-one-response-block-contact-property-editor">
     <generic-contact-property-editor
       :block="block"
-      @toggleSetContactProperty="toggleSetContactProperty">
+      @toggleSetContactProperty="onSetContactPropertyToggle"
+      @changeContactPropertyType="onContactPropertyTypeChange">
       <template slot="entry-from-this-block">
         <div class="mt-2 mb-2">
           <div
@@ -115,7 +116,7 @@ export class SelectOneResponseBlockContactPropertyEditor extends mixins(Lang) {
     this.setChoiceValue(choiceValueOption.value, choiceKey)
   }
 
-  toggleSetContactProperty(shouldSetContactProperty: boolean): void {
+  onSetContactPropertyToggle(shouldSetContactProperty: boolean): void {
     if (shouldSetContactProperty) {
       this.block_updateVendorMetadataByPath({
         blockId: this.block.uuid,
@@ -128,6 +129,14 @@ export class SelectOneResponseBlockContactPropertyEditor extends mixins(Lang) {
         path: 'floip.ui_metadata.set_contact_property',
       })
     }
+  }
+
+  onContactPropertyTypeChange(): void {
+    this.block_updateVendorMetadataByPath({
+      blockId: this.block.uuid,
+      path: 'floip.ui_metadata.set_contact_property[0].property_value_mapping',
+      value: {},
+    })
   }
 
   @Getter subscriberPropertyFields!: IContactPropertyOption[]

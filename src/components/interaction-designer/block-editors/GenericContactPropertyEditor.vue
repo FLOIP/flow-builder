@@ -238,11 +238,13 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
       this.subscriberPropertyFields,
       (option: IContactPropertyOption) => option.name === this.firstContactPropertyKey,
     )
-
     return selectedOption ?? null
   }
 
   set flowSelectedContactPropertyField(option: IContactPropertyOption | null) {
+    if (this.flowSelectedContactPropertyField?.data_type !== option?.data_type) {
+      this.$emit('changeContactPropertyType')
+    }
     this.updateFirstContactPropertyKey(option?.name as string)
   }
 
