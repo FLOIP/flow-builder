@@ -1,5 +1,5 @@
 <template>
-  <div class="multiple-choice-contact-property-editor">
+  <div class="select-one-response-block-contact-property-editor">
     <generic-contact-property-editor
       :block="block"
       @toggleSetContactProperty="toggleSetContactProperty">
@@ -71,7 +71,7 @@ const flowVuexNamespace = namespace('flow')
     ExpressionInput,
   },
 })
-export class MultipleChoiceContactPropertyEditor extends mixins(Lang) {
+export class SelectOneResponseBlockContactPropertyEditor extends mixins(Lang) {
   @Prop() readonly block!: ISelectOneResponseBlock
 
   get contactPropertyName(): string | undefined {
@@ -135,5 +135,5 @@ export class MultipleChoiceContactPropertyEditor extends mixins(Lang) {
   @flowVuexNamespace.Mutation block_removeVendorMetadataByPath!: (args: {blockId: string, path: string}) => void
 }
 
-export default MultipleChoiceContactPropertyEditor
+export default SelectOneResponseBlockContactPropertyEditor
 </script>

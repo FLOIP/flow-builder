@@ -39,7 +39,7 @@
       <slot
         slot="contact-props"
         name="contact-props">
-        <multiple-choice-contact-property-editor :block="block" />
+        <select-one-response-block-contact-property-editor :block="block" />
       </slot>
       <slot
         slot="vendor"
