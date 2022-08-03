@@ -347,7 +347,21 @@
         "id": "14",
         "name": "favourite_fruits",
         "display_label": "Favourite fruits (multiple_choice)",
-        "data_type": "multiple_choice"
+        "data_type": "multiple_choice",
+        "choices": [
+          {
+            "description": "Apple",
+            "value": "apple"
+          },
+          {
+            "description": "Banana",
+            "value": "banana"
+          },
+          {
+            "description": "Mango",
+            "value": "mango"
+          }
+        ]
       },
       {
         "id": "15",
