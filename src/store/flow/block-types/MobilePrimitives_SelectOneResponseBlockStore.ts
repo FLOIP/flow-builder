@@ -88,6 +88,20 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     exits.splice(0, exits.length - 1, ...exitsForChoices)
   },
 
+  /**
+   * Set choice's ivr expression on a given index
+   */
+  block_setChoiceIvrExpressionOnIndex(
+    {commit, state, dispatch},
+    {blockId, index, value}: { blockId: string, index: number, value: string },
+  ) {
+    commit('flow/block_updateConfigByPath', {
+      blockId,
+      path: `choices.[${index}].ivr_tests.test_expression`,
+      value,
+    }, {root: true})
+  },
+
   async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<ISelectOneResponseBlock> }) {
     props.type = BLOCK_TYPE
     const blankPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})

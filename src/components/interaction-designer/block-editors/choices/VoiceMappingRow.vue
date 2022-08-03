@@ -25,7 +25,6 @@
     </td>
     <td>
       <validation-message
-        v-if="shouldUseExpression"
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/choices/${index}/ivr_tests/test_expression`">
         <expression-input
@@ -34,6 +33,7 @@
           :placeholder="trans('flow-builder.enter-expression')"
           :valid-state="isValid"
           class="mb-1"
+          :disabled="!shouldUseExpression"
           @commitExpressionChange="updateCurrentExpression" />
       </validation-message>
     </td>
@@ -43,6 +43,8 @@
 <script>
 import Lang from '@/lib/filters/lang'
 import {IChoice, ISelectOneResponseBlock} from '@floip/flow-runner'
+import {mapActions, mapGetters} from 'vuex'
+import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 
 export default {
   mixins: [Lang],
@@ -61,26 +63,50 @@ export default {
     },
   },
 
+  data() {
+    return {
+      // TODO: remove this is we load for vendor_metadata
+      isUsingExpression: false,
+    }
+  },
+
+  created() {
+    if (this.currentChoice?.ivr_test?.test_expression === undefined) {
+      this.isUsingExpression = false
+    } else {
+      this.isUsingExpression = true
+    }
+  },
+
   computed: {
+    currentChoice() {
+      return this.block.config.choices?.[this.index]
+    },
+    // For checkbox v-model
     shouldUseExpression: {
       get() {
-        return true
+        return this.isUsingExpression
       },
       set(value) {
-        // TODO
-        this.$emit('shouldUseExpressionChanged')
+        this.isUsingExpression = value
       },
     },
     currentExpression() {
-      return '@fdsf'
+      return this.currentChoice?.ivr_test?.test_expression
     },
   },
 
   methods: {
+    ...mapActions(`flow/${BLOCK_TYPE}`, ['block_setChoiceIvrExpressionOnIndex']),
     updateCurrentExpression(value) {
-      // TODO
+      console.debug('test', 'updateCurrentExpression', value)
+      this.block_setChoiceIvrExpressionOnIndex({
+        blockId: this.block.uuid,
+        index: this.index,
+        value,
+      })
     },
-  }
+  },
 }
 </script>
 
