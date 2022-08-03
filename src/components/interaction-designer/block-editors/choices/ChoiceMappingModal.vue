@@ -8,7 +8,7 @@
 
      <b-modal
        ref="edit-choice-mapping-modal"
-       :ok-title="trans('flow-builder.confirm')"
+       :ok-title="trans('flow-builder.close')"
        size="lg"
        :title="trans('flow-builder.choice-options')"
        ok-only>
@@ -81,7 +81,7 @@ import {mapGetters} from 'vuex'
 import {IBlock} from '@floip/flow-runner'
 
 export default {
-  comments: {
+  components: {
     BModal,
   },
   mixins: [Lang],
