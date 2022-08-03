@@ -97,7 +97,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
   ) {
     commit('flow/block_updateConfigByPath', {
       blockId,
-      path: `choices.[${index}].ivr_tests.test_expression`,
+      path: `choices.[${index}].ivr_test.test_expression`,
       value,
     }, {root: true})
   },

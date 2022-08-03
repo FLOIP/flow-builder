@@ -43,7 +43,7 @@
 <script>
 import Lang from '@/lib/filters/lang'
 import {IChoice, ISelectOneResponseBlock} from '@floip/flow-runner'
-import {mapActions, mapGetters} from 'vuex'
+import {mapActions} from 'vuex'
 import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 
 export default {
@@ -63,36 +63,29 @@ export default {
     },
   },
 
-  data() {
-    return {
-      // TODO: remove this is we load for vendor_metadata
-      isUsingExpression: false,
-    }
-  },
-
-  created() {
-    if (this.currentChoice?.ivr_test?.test_expression === undefined) {
-      this.isUsingExpression = false
-    } else {
-      this.isUsingExpression = true
-    }
-  },
-
   computed: {
     currentChoice() {
-      return this.block.config.choices?.[this.index]
-    },
-    // For checkbox v-model
-    shouldUseExpression: {
-      get() {
-        return this.isUsingExpression
-      },
-      set(value) {
-        this.isUsingExpression = value
-      },
+      return this.block.config.choices[this.index]
     },
     currentExpression() {
       return this.currentChoice?.ivr_test?.test_expression
+    },
+    /**
+     * For checkbox v-model:
+     * - if test_expression is undefined, this mean we don't use expression
+     * - if test_expression is defined (even an empty string), we're using expression
+     */
+    shouldUseExpression: {
+      get() {
+        if (this.currentExpression === undefined) {
+          return false
+        } else {
+          return true
+        }
+      },
+      set(value) {
+        this.updateCurrentExpression(value === true ? '' : undefined)
+      },
     },
   },
 
