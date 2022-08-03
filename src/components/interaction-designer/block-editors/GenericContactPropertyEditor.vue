@@ -194,8 +194,10 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
   updatePropertyValueAction({target: {value}}: {target: {value: string}}): void {
     this.propertyValueAction = value
     if (value === this.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE) {
+      this.$emit('updateShouldUseCurrentBlockResponse', true)
       this.updateFirstContactPropertyValue(BLOCK_RESPONSE_EXPRESSION)
     } else {
+      this.$emit('updateShouldUseCurrentBlockResponse', false)
       this.updateFirstContactPropertyValue(EMPTY_STRING_EXPRESSION)
     }
   }

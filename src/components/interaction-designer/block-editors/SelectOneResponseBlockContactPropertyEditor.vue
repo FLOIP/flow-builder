@@ -3,7 +3,8 @@
     <generic-contact-property-editor
       :block="block"
       @toggleSetContactProperty="onSetContactPropertyToggle"
-      @changeContactPropertyType="onContactPropertyTypeChange">
+      @changeContactPropertyType="resetMapping"
+      @updateShouldUseCurrentBlockResponse="onShouldUseCurrentBlockResponseUpdate">
       <template slot="entry-from-this-block">
         <div class="mt-2 mb-2">
           <div
@@ -34,16 +35,24 @@
                 :value="getChoiceValueOption(choiceKey)"
                 :options="choiceValueOptions"
                 :show-labels="false"
+                :placeholder="trans('flow-builder.select-a-value')"
                 track-by="value"
                 label="description"
                 @input="setChoiceValueOption($event, choiceKey)" />
               <input
-                v-else
+                v-if="isTextProperty"
                 :value="getChoiceValue(choiceKey)"
                 type="text"
                 class="form-control"
                 :placeholder="trans('flow-builder.enter-value')"
                 @input="setChoiceValue($event.target.value, choiceKey)">
+              <input
+                v-if="isNumberProperty"
+                :value="getChoiceValue(choiceKey)"
+                type="number"
+                class="form-control"
+                :placeholder="trans('flow-builder.enter-value')"
+                @input="setChoiceValue(Number($event.target.value), choiceKey)">
             </div>
           </template>
         </div>
@@ -87,6 +96,14 @@ export class SelectOneResponseBlockContactPropertyEditor extends mixins(Lang) {
     return this.contactProperty?.data_type === 'multiple_choice'
   }
 
+  get isTextProperty(): boolean {
+    return this.contactProperty?.data_type === 'text'
+  }
+
+  get isNumberProperty(): boolean {
+    return this.contactProperty?.data_type === 'number'
+  }
+
   get choiceKeys(): string[] {
     return this.block.config.choices.map(choice => choice.name)
   }
@@ -95,7 +112,7 @@ export class SelectOneResponseBlockContactPropertyEditor extends mixins(Lang) {
     return this.contactProperty?.choices ?? []
   }
 
-  getChoiceValue(choiceKey: string): string | undefined {
+  getChoiceValue(choiceKey: string): string | number | undefined {
     return this.block.vendor_metadata?.floip?.ui_metadata?.set_contact_property[0].property_value_mapping?.[choiceKey]
   }
 
@@ -104,7 +121,7 @@ export class SelectOneResponseBlockContactPropertyEditor extends mixins(Lang) {
     return this.choiceValueOptions.find(option => option.value === choiceValue)
   }
 
-  setChoiceValue(value: string, choiceKey: string): void {
+  setChoiceValue(value: string | number, choiceKey: string): void {
     this.block_updateVendorMetadataByPath({
       blockId: this.block.uuid,
       path: `floip.ui_metadata.set_contact_property[0].property_value_mapping.${choiceKey}`,
@@ -118,24 +135,32 @@ export class SelectOneResponseBlockContactPropertyEditor extends mixins(Lang) {
 
   onSetContactPropertyToggle(shouldSetContactProperty: boolean): void {
     if (shouldSetContactProperty) {
-      this.block_updateVendorMetadataByPath({
-        blockId: this.block.uuid,
-        path: 'floip.ui_metadata.set_contact_property[0].property_value_mapping',
-        value: {},
-      })
+      this.resetMapping()
     } else {
-      this.block_removeVendorMetadataByPath({
-        blockId: this.block.uuid,
-        path: 'floip.ui_metadata.set_contact_property',
-      })
+      this.removeMapping()
     }
   }
 
-  onContactPropertyTypeChange(): void {
+  onShouldUseCurrentBlockResponseUpdate(shouldUseCurrentBlockResponse: boolean): void {
+    if (shouldUseCurrentBlockResponse) {
+      this.resetMapping()
+    } else {
+      this.removeMapping()
+    }
+  }
+
+  resetMapping(): void {
     this.block_updateVendorMetadataByPath({
       blockId: this.block.uuid,
       path: 'floip.ui_metadata.set_contact_property[0].property_value_mapping',
       value: {},
+    })
+  }
+
+  removeMapping(): void {
+    this.block_removeVendorMetadataByPath({
+      blockId: this.block.uuid,
+      path: 'floip.ui_metadata.set_contact_property',
     })
   }
 
