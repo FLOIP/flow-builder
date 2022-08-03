@@ -71,6 +71,9 @@
             {{ 'flow-builder.entry-from-this-block' | trans }}
           </label>
         </div>
+        <slot
+          v-if="propertyValueAction === PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
+          name="entry-from-this-block" />
         <div class="custom-control custom-radio">
           <input
             id="clearProp"
