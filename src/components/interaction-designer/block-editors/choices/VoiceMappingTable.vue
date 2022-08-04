@@ -2,9 +2,12 @@
   <table class="voice-mapping-table table table-striped">
     <thead>
     <tr>
-      <th>Choice name</th>
-      <th>Voice key press</th>
-      <th>Expression</th>
+      <th class="col-5 align-top">{{ trans('flow-builder.choice-name') }}</th>
+      <th class="align-top">{{ trans('flow-builder.voice-key-press') }}</th>
+      <th class="col-5 align-top">
+        {{ trans('flow-builder.expression') }}
+        <h5 class="small">{{ trans('flow-builder.voice-choice-mapping-expression')}}</h5>
+      </th>
     </tr>
     </thead>
     <tbody>
