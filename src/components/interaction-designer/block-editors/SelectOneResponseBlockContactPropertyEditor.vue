@@ -8,12 +8,7 @@
       <template slot="entry-from-this-block">
         <div class="mt-2 mb-2">
           <div
-            v-if="contactProperty === null"
-            class="mt-2 mb-2 text-danger">
-            {{ trans('flow-builder.select-contact-property-to-set') }}
-          </div>
-          <div
-            v-else-if="choiceKeys.length === 0"
+            v-if="choiceKeys.length === 0"
             class="mt-2 mb-2 text-danger">
             {{ trans('flow-builder.enter-at-least-one-choice-above') }}
           </div>
@@ -71,14 +66,12 @@ import {IContactPropertyOption} from '@/store/flow/block-types'
 import {Getter, namespace} from 'vuex-class'
 import {find} from 'lodash'
 import {IContactPropertyMultipleChoice} from '@/store/flow/block-types/Core_SetContactPropertyStore'
-import ExpressionInput from '../../common/ExpressionInput.vue'
 
 const flowVuexNamespace = namespace('flow')
 
 @Component({
   components: {
     VueMultiselect,
-    ExpressionInput,
   },
 })
 export class SelectOneResponseBlockContactPropertyEditor extends mixins(Lang) {

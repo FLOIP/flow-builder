@@ -52,60 +52,62 @@
       </validation-message>
 
       <!--Contact property value editor with actions-->
-      <label>{{ 'flow-builder.value' | trans }}</label>
-      <div
-        v-if="isBlockInteractive(block)"
-        class="form-group">
-        <div class="custom-control custom-radio">
-          <input
-            id="setProp"
-            type="radio"
-            name="contactPropAction"
-            :checked="propertyValueAction === PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
-            :value="PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
-            class="custom-control-input"
-            @change="updatePropertyValueAction">
-          <label
-            class="custom-control-label font-weight-normal"
-            for="setProp">
-            {{ 'flow-builder.entry-from-this-block' | trans }}
-          </label>
+      <template v-if="flowSelectedContactPropertyField !== null">
+        <label>{{ 'flow-builder.value' | trans }}</label>
+        <div
+          v-if="isBlockInteractive(block)"
+          class="form-group">
+          <div class="custom-control custom-radio">
+            <input
+              id="setProp"
+              type="radio"
+              name="contactPropAction"
+              :checked="propertyValueAction === PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
+              :value="PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
+              class="custom-control-input"
+              @change="updatePropertyValueAction">
+            <label
+              class="custom-control-label font-weight-normal"
+              for="setProp">
+              {{ 'flow-builder.entry-from-this-block' | trans }}
+            </label>
+          </div>
+          <slot
+            v-if="propertyValueAction === PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
+            name="entry-from-this-block" />
+          <div class="custom-control custom-radio">
+            <input
+              id="clearProp"
+              type="radio"
+              name="contactPropAction"
+              :checked="propertyValueAction === PROPERTY_VALUE_ACTION.OPEN_EXPRESSION"
+              :value="PROPERTY_VALUE_ACTION.OPEN_EXPRESSION"
+              class="custom-control-input"
+              @change="updatePropertyValueAction">
+            <label
+              class="custom-control-label font-weight-normal"
+              for="clearProp">
+              {{ 'flow-builder.expression' | trans }}
+            </label>
+          </div>
         </div>
-        <slot
-          v-if="propertyValueAction === PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
-          name="entry-from-this-block" />
-        <div class="custom-control custom-radio">
-          <input
-            id="clearProp"
-            type="radio"
-            name="contactPropAction"
-            :checked="propertyValueAction === PROPERTY_VALUE_ACTION.OPEN_EXPRESSION"
-            :value="PROPERTY_VALUE_ACTION.OPEN_EXPRESSION"
-            class="custom-control-input"
-            @change="updatePropertyValueAction">
-          <label
-            class="custom-control-label font-weight-normal"
-            for="clearProp">
-            {{ 'flow-builder.expression' | trans }}
-          </label>
-        </div>
-      </div>
 
-      <validation-message
-        v-if="shouldUseOpenExpression"
-        #input-control="{ isValid }"
-        :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
-        <expression-input
-          class="mb-1"
-          :label="''"
-          :placeholder="'flow-builder.enter-expression' | trans"
-          :current-expression="propertyValue"
-          :valid-state="isValid"
-          @commitExpressionChange="updateFirstContactPropertyValue" />
-        <div class="small">
-          {{ trans('flow-builder.hint-to-set-contact-prop-by-expression') }}
-        </div>
-      </validation-message>
+        <validation-message
+          v-if="shouldUseOpenExpression"
+          #input-control="{ isValid }"
+          :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
+          <expression-input
+            class="mb-1"
+            :label="''"
+            :placeholder="'flow-builder.enter-expression' | trans"
+            :current-expression="propertyValue"
+            :valid-state="isValid"
+            @commitExpressionChange="updateFirstContactPropertyValue" />
+          <div class="small">
+            {{ trans('flow-builder.hint-to-set-contact-prop-by-expression') }}
+          </div>
+        </validation-message>
+      </template>
     </div>
   </div>
 </template>
