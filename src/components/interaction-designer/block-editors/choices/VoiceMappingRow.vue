@@ -24,7 +24,7 @@
     <td>
       <validation-message
         #input-control="{ isValid }"
-        :message-key="`block/${block.uuid}/config/choices/${index}/ivr_tests/test_expression`">
+        :message-key="`block/${block.uuid}/config/choices/${index}/ivr_test/test_expression`">
         <expression-input
           :current-expression="currentExpression"
           :label="''"
