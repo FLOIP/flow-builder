@@ -1,3 +1,5 @@
+export * from './choices'
+
 export * from './AdvancedExitEditor.vue'
 export * from './AdvancedExitsBuilder.vue'
 export * from './BlockEditor.vue'
@@ -19,7 +21,6 @@ export * from './MaximumChoicesEditor.vue'
 export * from './MaximumNumericEditor.vue'
 export * from './MinimumChoicesEditor.vue'
 export * from './MinimumNumericEditor.vue'
-export * from './SelectOneResponseBlockContactPropertyEditor.vue'
 export * from './NameEditor.vue'
 export * from './PhoneRecorder.vue'
 export * from './PhoneRecordingRecorderSelector.vue'

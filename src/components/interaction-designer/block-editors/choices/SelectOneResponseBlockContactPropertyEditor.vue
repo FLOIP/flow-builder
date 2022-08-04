@@ -66,6 +66,7 @@ import {IContactPropertyOption} from '@/store/flow/block-types'
 import {Getter, namespace} from 'vuex-class'
 import {find} from 'lodash'
 import {IContactPropertyMultipleChoice} from '@/store/flow/block-types/Core_SetContactPropertyStore'
+import {choicesToExpression} from './expressionTransformers'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -124,7 +125,7 @@ export class SelectOneResponseBlockContactPropertyEditor extends mixins(Lang) {
     this.block_updateConfigByPath({
       blockId: this.block.uuid,
       path: 'set_contact_property[0].property_value',
-      value: generatedBlockValueExpression(this.block.vendor_metadata?.floip?.ui_metadata?.set_contact_property[0].property_value_mapping),
+      value: choicesToExpression(this.block.vendor_metadata?.floip?.ui_metadata?.set_contact_property[0].property_value_mapping),
     })
   }
 
@@ -171,15 +172,6 @@ export class SelectOneResponseBlockContactPropertyEditor extends mixins(Lang) {
   @flowVuexNamespace.Mutation block_updateConfigByPath!: (
     args: {blockId: string, path: string, value?: object | string | number | boolean | undefined}
   ) => void
-}
-
-export function generatedBlockValueExpression(propertyValueMapping: Record<string, string | number>): string {
-  const individualLines = Object.entries(propertyValueMapping).map(([choiceKey, choiceValue]) =>
-    (typeof choiceValue === 'string'
-      ? `IF(block.value = '${choiceKey}', '${choiceValue}', '')`
-      : `IF(block.value = '${choiceKey}', ${choiceValue}, '')`))
-
-  return `@CONCATENATE(\n${individualLines.join(',\n')}\n)`
 }
 
 export default SelectOneResponseBlockContactPropertyEditor
