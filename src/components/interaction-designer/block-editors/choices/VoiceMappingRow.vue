@@ -43,14 +43,14 @@
 <script>
 import Lang from '@/lib/filters/lang'
 import KeyPressSelector from './VoiceKeyPressSelector.vue'
-import ConfigBlockPerChoice from './mixins/CommonVoiceChoiceConfig.vue'
+import CommonVoiceChoiceConfig from './mixins/CommonVoiceChoiceConfig.vue'
 import {mapGetters} from 'vuex'
 
 export default {
   components: {
     KeyPressSelector,
   },
-  extends: ConfigBlockPerChoice,
+  extends: CommonVoiceChoiceConfig,
   mixins: [Lang],
 
   created() {

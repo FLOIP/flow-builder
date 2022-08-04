@@ -1,7 +1,7 @@
 <template>
   <select
     v-model="keypress"
-    class="key-press-selector">
+    class="voice-key-press-selector">
     <option v-for="value in options" :key="value" :disabled="disabled" :value="value">
       {{ value }}
     </option>
@@ -9,10 +9,10 @@
 </template>
 
 <script>
-import ConfigBlockPerChoice from './mixins/CommonVoiceChoiceConfig.vue'
+import CommonVoiceChoiceConfig from './mixins/CommonVoiceChoiceConfig.vue'
 
 export default {
-  extends: ConfigBlockPerChoice,
+  extends: CommonVoiceChoiceConfig,
   props: {
     disabled: {
       type: Boolean,

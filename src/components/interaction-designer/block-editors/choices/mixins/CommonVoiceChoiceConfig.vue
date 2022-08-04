@@ -44,8 +44,8 @@ export default {
         && (this.currentExpressionWithoutSpaces?.startsWith(`${BLOCK_RESPONSE_EXPRESSION}='`) === true
         || this.currentExpressionWithoutSpaces?.startsWith(`@${BLOCK_RESPONSE_EXPRESSION}='`) === true)
       ) {
-        const estimatedKeyPress = this.currentExpressionWithoutSpaces.split('\'')?.[1]
-        if (this.options.includes(String(estimatedKeyPress)) === true) {
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        if (this.options.includes(this.estimatedKeyPress) === true) {
           return true
         }
       }
@@ -53,12 +53,12 @@ export default {
       return false
     },
     estimatedKeyPress() {
-      return this.currentExpressionWithoutSpaces?.split('\'')?.[1]
+      return String(this.currentExpressionWithoutSpaces?.split('\'')?.[1])
     },
     keypress: {
       get() {
         if (this.isKeyPressIdentifiable === true) {
-          return String(this.estimatedKeyPress)
+          return this.estimatedKeyPress
         }
 
         // Provide an incremental value based on existing choices

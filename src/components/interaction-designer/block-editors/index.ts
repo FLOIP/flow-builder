@@ -1,3 +1,4 @@
+export * from './choices'
 export * from './AdvancedExitEditor.vue'
 export * from './AdvancedExitsBuilder.vue'
 export * from './BlockEditor.vue'
