@@ -24,8 +24,12 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       throw new ValidationException(`Unable to find resource for choice: ${resourceId}`)
     }
 
-    const choice = find(block.config.choices, (v) => v.prompt === resourceId) as IChoice
-    choice.name = resourceValue.value
+    // reactive way of editing choice.name
+    block.config.choices = block.config.choices.map(choice =>
+      (choice.prompt === resourceId
+        ? ({...choice, name: resourceValue.value})
+        : choice
+      ))
   },
 
   addChoiceByResourceIdTo({rootGetters}, {blockId, resourceId}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'] }) {
