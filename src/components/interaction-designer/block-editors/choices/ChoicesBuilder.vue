@@ -1,6 +1,6 @@
 <template>
   <div class="choices-builder form-group">
-    <h4>{{ 'flow-builder.choices' | trans }}</h4>
+    <label class="text-primary">{{ 'flow-builder.choices' | trans }}</label>
 
     <!-- Show non-empty choices -->
     <template v-for="(resource, i) in choiceResourcesOrderedByResourcesList">
@@ -42,6 +42,8 @@
       :mode="SupportedMode.TEXT"
       @beforeResourceVariantChanged="addDraftResourceToChoices"
       @afterResourceVariantChanged="handleNewChoiceChange" />
+
+    <choice-mapping-modal :block="block"/>
   </div>
 </template>
 
@@ -56,18 +58,22 @@ import {namespace} from 'vuex-class'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import ChoiceMappingModal from '@/components/interaction-designer/block-editors/choices/ChoiceMappingModal.vue'
 import Vue from 'vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const validationVuexNamespace = namespace('validation')
 
-@Component({})
+@Component<any>({
+  components: {
+    ChoiceMappingModal,
+  },
+})
 export class ChoicesBuilder extends mixins(Lang) {
   @Prop() readonly block!: ISelectOneResponseBlock
 
   draftResource: IResource | null = null
-
   SupportedContentType = SupportedContentType
   SupportedMode = SupportedMode
   findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
