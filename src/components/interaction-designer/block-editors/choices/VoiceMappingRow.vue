@@ -9,18 +9,16 @@
           :name="`useExpression-${index}`"
           class="custom-control-input"
           type="checkbox">
-        <label :for="`useExpression-${index}`" class="custom-control-label">Use expression</label>
+        <label :for="`useExpression-${index}`" class="custom-control-label font-weight-normal">Use expression</label>
       </div>
     </td>
     <td>
       <div class="d-flex justify-content-center">
-        <select name="press-key">
-          <option name="one" value="1">1</option>
-          <option name="two" value="2">2</option>
-          <option name="three" value="3">3</option>
-          <option name="four" value="4">4</option>
-          <option name="star" value="*">*</option>
-        </select>
+        <key-press-selector
+          :block="block"
+          :choice="choice"
+          :disabled="shouldUseExpression"
+          :index="index"/>
       </div>
     </td>
     <td>
@@ -42,62 +40,28 @@
 
 <script>
 import Lang from '@/lib/filters/lang'
-import {IChoice, ISelectOneResponseBlock} from '@floip/flow-runner'
-import {mapActions} from 'vuex'
-import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
+import KeyPressSelector from './VoiceKeyPressSelector.vue'
+import ConfigBlockPerChoice from './mixins/CommonVoiceChoiceConfig.vue'
 
 export default {
-  mixins: [Lang],
-  props: {
-    block: {
-      type: ISelectOneResponseBlock,
-      required: true,
-    },
-    choice: {
-      type: IChoice,
-      required: true,
-    },
-    index: {
-      type: Number,
-      required: true,
-    },
+  components: {
+    KeyPressSelector,
   },
+  extends: ConfigBlockPerChoice,
+  mixins: [Lang],
 
   computed: {
-    currentChoice() {
-      return this.block.config.choices[this.index]
-    },
-    currentExpression() {
-      return this.currentChoice?.ivr_test?.test_expression
-    },
-    /**
-     * For checkbox v-model:
-     * - if test_expression is undefined, this mean we don't use expression
-     * - if test_expression is defined (even an empty string), we're using expression
-     */
     shouldUseExpression: {
       get() {
-        if (this.currentExpression === undefined) {
-          return false
-        } else {
-          return true
-        }
+        return !(this.isKeyPressIdentifiable === true)
       },
       set(value) {
-        this.updateCurrentExpression(value === true ? '' : undefined)
+        if (value === true) {
+          this.updateCurrentExpression('')
+        } else {
+          this.updateCurrentExpression(`${this.blockResponseExpression} = '${this.keypress}'`)
+        }
       },
-    },
-  },
-
-  methods: {
-    ...mapActions(`flow/${BLOCK_TYPE}`, ['block_setChoiceIvrExpressionOnIndex']),
-    updateCurrentExpression(value) {
-      console.debug('test', 'updateCurrentExpression', value)
-      this.block_setChoiceIvrExpressionOnIndex({
-        blockId: this.block.uuid,
-        index: this.index,
-        value,
-      })
     },
   },
 }
