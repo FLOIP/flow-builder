@@ -1,7 +1,7 @@
 <template>
    <div class="choice-mapping-modal">
      <div class="form-group">
-       <button class="btn btn-primary btn-sm" @click="showModal">
+       <button :disabled="block.config.choices.length === 0" class="btn btn-primary btn-sm" @click="showModal">
          {{ trans('flow-builder.set-choice-options') }}
        </button>
      </div>
@@ -49,8 +49,7 @@
              class="tab-pane fade show active"
              role="tabpanel">
              <div class="mt-3">
-               <!--TODO: VMO-6653-->
-               voice content
+               <voice-mapping-table :block="block"/>
              </div>
            </div>
            <template v-if="hasTextMode">
@@ -81,16 +80,21 @@
 import {BModal} from 'bootstrap-vue'
 import Lang from '@/lib/filters/lang'
 import {mapGetters} from 'vuex'
-import {IBlock} from '@floip/flow-runner'
+import {ISelectOneResponseBlock} from '@floip/flow-runner'
+import VoiceMappingTable from './VoiceMappingTable.vue'
 
 export default {
   components: {
     BModal,
+    VoiceMappingTable,
   },
   mixins: [Lang],
 
   props: {
-    block: {type: IBlock, required: true},
+    block: {
+      type: ISelectOneResponseBlock,
+      required: true,
+    },
   },
 
   computed: {

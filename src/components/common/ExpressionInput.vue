@@ -15,6 +15,7 @@
         ref="input"
         v-model="expression"
         :class="['form-control', {'is-invalid': isInvalid}]"
+        :disabled="disabled"
         :rows="rows"
         :placeholder="placeholder"
         @click="handleClick()"
@@ -67,6 +68,7 @@ export class ExpressionInput extends mixins(Lang) {
   @Prop({type: Number, default: 1}) readonly rows!: number
   @Prop({type: Boolean, default: null}) readonly validState!: boolean|null
   @Prop({type: String, default: ''}) readonly prependText!: string
+  @Prop({type: Boolean, default: false}) readonly disabled!: boolean
 
   suggest: IAutoSuggest = {} as IAutoSuggest
 
