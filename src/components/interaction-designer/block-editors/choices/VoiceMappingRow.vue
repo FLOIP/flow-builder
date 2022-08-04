@@ -42,6 +42,7 @@
 import Lang from '@/lib/filters/lang'
 import KeyPressSelector from './VoiceKeyPressSelector.vue'
 import ConfigBlockPerChoice from './mixins/CommonVoiceChoiceConfig.vue'
+import {mapGetters} from "vuex"
 
 export default {
   components: {
@@ -50,7 +51,15 @@ export default {
   extends: ConfigBlockPerChoice,
   mixins: [Lang],
 
+  created() {
+    // make sure we have ivr_test.test_expression because we want to use key_press by default
+    if (this.hasVoiceMode === true && this.choice?.ivr_test?.test_expression === undefined) {
+      this.updateCurrentExpression(`${this.blockResponseExpression} = '${this.keypress}'`)
+    }
+  },
+
   computed: {
+    ...mapGetters('flow', ['hasVoiceMode']),
     shouldUseExpression: {
       get() {
         return !(this.isKeyPressIdentifiable === true)
