@@ -39,8 +39,11 @@ export default {
      * - and if the estimated key_press is part of the options' elements
      */
     isKeyPressIdentifiable() {
-      if (this.currentExpressionWithoutSpaces?.startsWith(`${BLOCK_RESPONSE_EXPRESSION}='`) === true
-        || this.currentExpressionWithoutSpaces?.startsWith(`@${BLOCK_RESPONSE_EXPRESSION}='`) === true) {
+      if (
+        this.currentExpressionWithoutSpaces.endsWith('\'') === true
+        && (this.currentExpressionWithoutSpaces?.startsWith(`${BLOCK_RESPONSE_EXPRESSION}='`) === true
+        || this.currentExpressionWithoutSpaces?.startsWith(`@${BLOCK_RESPONSE_EXPRESSION}='`) === true)
+      ) {
         const estimatedKeyPress = this.currentExpressionWithoutSpaces.split('\'')?.[1]
         if (this.options.includes(String(estimatedKeyPress)) === true) {
           return true
