@@ -12,7 +12,7 @@
        size="lg"
        :title="trans('flow-builder.choice-options')"
        ok-only>
-       <div class="choice-mapping-navs">
+       <div v-if="shouldHaveTabs" class="choice-mapping-navs">
          <nav>
            <div id="choice-options-nav-tab" class="nav nav-tabs" role="tablist">
              <a
@@ -70,6 +70,9 @@
            </template>
          </div>
        </div>
+       <div v-else>
+         {{ trans('flow-builder.cannot-map-choices-hint')}}
+       </div>
      </b-modal>
    </div>
 </template>
@@ -94,6 +97,9 @@ export default {
     ...mapGetters('flow', ['activeFlow', 'hasTextMode', 'hasVoiceMode']),
     languages() {
       return this.hasTextMode === true ? this.activeFlow.languages : []
+    },
+    shouldHaveTabs() {
+      return this.hasVoiceMode === true || (this.hasTextMode === true && this.languages.length > 0)
     },
   },
   methods: {
