@@ -1,7 +1,7 @@
 <template>
    <div class="choice-mapping-modal">
      <div class="form-group">
-       <button class="btn btn-primary btn-sm" @click="showModal">
+       <button :disabled="block.config.choices.length === 0" class="btn btn-primary btn-sm" @click="showModal">
          {{ trans('flow-builder.set-choice-options') }}
        </button>
      </div>
@@ -77,7 +77,7 @@
 import {BModal} from 'bootstrap-vue'
 import Lang from '@/lib/filters/lang'
 import {mapGetters} from 'vuex'
-import {IBlock} from '@floip/flow-runner'
+import {ISelectOneResponseBlock} from '@floip/flow-runner'
 import VoiceMappingTable from './VoiceMappingTable.vue'
 
 export default {
@@ -88,7 +88,10 @@ export default {
   mixins: [Lang],
 
   props: {
-    block: {type: IBlock, required: true},
+    block: {
+      type: ISelectOneResponseBlock,
+      required: true,
+    },
   },
 
   computed: {

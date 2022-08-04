@@ -5,7 +5,7 @@
       <th class="col-5 align-top">{{ trans('flow-builder.choice-name') }}</th>
       <th class="align-top">{{ trans('flow-builder.voice-key-press') }}</th>
       <th class="col-5 align-top">
-        {{ trans('flow-builder.expression') }}
+        {{ trans('flow-builder.expressions') }}
         <h5 class="small">{{ trans('flow-builder.voice-choice-mapping-expression')}}</h5>
       </th>
     </tr>

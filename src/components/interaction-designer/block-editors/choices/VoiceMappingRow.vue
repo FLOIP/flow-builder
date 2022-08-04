@@ -9,7 +9,9 @@
           :name="`useExpression-${index}`"
           class="custom-control-input"
           type="checkbox">
-        <label :for="`useExpression-${index}`" class="custom-control-label font-weight-normal">Use expression</label>
+        <label :for="`useExpression-${index}`" class="custom-control-label font-weight-normal">
+          {{ trans('flow-builder.use-expressions') }}
+        </label>
       </div>
     </td>
     <td>
@@ -42,7 +44,7 @@
 import Lang from '@/lib/filters/lang'
 import KeyPressSelector from './VoiceKeyPressSelector.vue'
 import ConfigBlockPerChoice from './mixins/CommonVoiceChoiceConfig.vue'
-import {mapGetters} from "vuex"
+import {mapGetters} from 'vuex'
 
 export default {
   components: {
