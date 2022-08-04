@@ -56,13 +56,11 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import {mapGetters, mapMutations} from 'vuex'
 import VueMultiselect from 'vue-multiselect'
 import {find} from 'lodash'
 import {lang} from '@/lib/filters/lang'
-import {IContactPropertyOption} from '@/store/flow/block-types'
-import {IContactPropertyMultipleChoice} from '@/store/flow/block-types/Core_SetContactPropertyStore'
 import {choicesToExpression} from './expressionTransformers'
 
 export const SelectOneResponseBlockContactPropertyEditor = {
@@ -84,31 +82,31 @@ export const SelectOneResponseBlockContactPropertyEditor = {
       'subscriberPropertyFields',
     ]),
 
-    contactPropertyName(): string | undefined {
+    contactPropertyName() {
       return this.block.config.set_contact_property?.[0].property_key
     },
 
-    contactProperty(): IContactPropertyOption | null {
+    contactProperty() {
       return find(this.subscriberPropertyFields, contactProperty => contactProperty.name === this.contactPropertyName) ?? null
     },
 
-    isMultipleChoiceProperty(): boolean {
+    isMultipleChoiceProperty() {
       return this.contactProperty?.data_type === 'multiple_choice'
     },
 
-    isTextProperty(): boolean {
+    isTextProperty() {
       return this.contactProperty?.data_type === 'text'
     },
 
-    isNumberProperty(): boolean {
+    isNumberProperty() {
       return this.contactProperty?.data_type === 'number'
     },
 
-    choiceKeys(): string[] {
+    choiceKeys() {
       return this.block.config.choices.map(choice => choice.name)
     },
 
-    choiceValueOptions(): IContactPropertyMultipleChoice[] {
+    choiceValueOptions() {
       return this.contactProperty?.choices ?? []
     },
   },
@@ -120,16 +118,16 @@ export const SelectOneResponseBlockContactPropertyEditor = {
       'block_updateConfigByPath',
     ]),
 
-    getChoiceValue(choiceKey: string): string | number | undefined {
+    getChoiceValue(choiceKey) {
       return this.block.vendor_metadata?.floip?.ui_metadata?.set_contact_property[0].property_value_mapping?.[choiceKey]
     },
 
-    getChoiceValueOption(choiceKey: string): IContactPropertyMultipleChoice | undefined {
+    getChoiceValueOption(choiceKey) {
       const choiceValue = this.getChoiceValue(choiceKey)
       return this.choiceValueOptions.find(option => option.value === choiceValue)
     },
 
-    setChoiceValue(value: string | number, choiceKey: string): void {
+    setChoiceValue(value, choiceKey) {
       this.block_updateVendorMetadataByPath({
         blockId: this.block.uuid,
         path: `floip.ui_metadata.set_contact_property[0].property_value_mapping.${choiceKey}`,
@@ -143,11 +141,11 @@ export const SelectOneResponseBlockContactPropertyEditor = {
       })
     },
 
-    setChoiceValueOption(choiceValueOption: IContactPropertyMultipleChoice, choiceKey: string): void {
+    setChoiceValueOption(choiceValueOption, choiceKey) {
       this.setChoiceValue(choiceValueOption.value, choiceKey)
     },
 
-    onSetContactPropertyToggle(shouldSetContactProperty: boolean): void {
+    onSetContactPropertyToggle(shouldSetContactProperty) {
       if (shouldSetContactProperty) {
         this.resetMapping()
       } else {
@@ -155,7 +153,7 @@ export const SelectOneResponseBlockContactPropertyEditor = {
       }
     },
 
-    onShouldUseCurrentBlockResponseUpdate(shouldUseCurrentBlockResponse: boolean): void {
+    onShouldUseCurrentBlockResponseUpdate(shouldUseCurrentBlockResponse) {
       if (shouldUseCurrentBlockResponse) {
         this.resetMapping()
       } else {
@@ -163,7 +161,7 @@ export const SelectOneResponseBlockContactPropertyEditor = {
       }
     },
 
-    resetMapping(): void {
+    resetMapping() {
       this.block_updateVendorMetadataByPath({
         blockId: this.block.uuid,
         path: 'floip.ui_metadata.set_contact_property[0].property_value_mapping',
@@ -171,7 +169,7 @@ export const SelectOneResponseBlockContactPropertyEditor = {
       })
     },
 
-    removeMapping(): void {
+    removeMapping() {
       this.block_removeVendorMetadataByPath({
         blockId: this.block.uuid,
         path: 'floip.ui_metadata.set_contact_property',
