@@ -56,7 +56,10 @@ export default {
           return String(this.estimatedKeyPress)
         }
 
-        return '1'
+        // Provide an incremental value based on existing choices
+        // For now, just a simple incremental logic without considering the choice's ivr_test value
+        const nextIndex = Number(this.index) + 1
+        return nextIndex <= 9 ? String(nextIndex) : '*'
       },
       set(value) {
         this.updateCurrentExpression(`${this.blockResponseExpression} = '${value}'`)
