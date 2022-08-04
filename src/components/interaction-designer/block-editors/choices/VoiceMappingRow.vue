@@ -54,9 +54,11 @@ export default {
   mixins: [Lang],
 
   created() {
-    // make sure we have ivr_test.test_expression because we want to use key_press by default
+    // We already provide a default value for ivr_test.test_expression during choice creation
+    // But, there might be a scenario where we still have it undefined, eg: for imported blocks
+    // Therefore, we set it here to make sure we use key_press selector by default
     if (this.hasVoiceMode === true && this.choice?.ivr_test?.test_expression === undefined) {
-      this.updateCurrentExpression(`${this.blockResponseExpression} = '${this.keypress}'`)
+      this.updateCurrentExpression(`${this.BLOCK_RESPONSE_EXPRESSION} = '${this.keypress}'`)
     }
   },
 
@@ -70,7 +72,7 @@ export default {
         if (value === true) {
           this.updateCurrentExpression('')
         } else {
-          this.updateCurrentExpression(`${this.blockResponseExpression} = '${this.keypress}'`)
+          this.updateCurrentExpression(`${this.BLOCK_RESPONSE_EXPRESSION} = '${this.keypress}'`)
         }
       },
     },

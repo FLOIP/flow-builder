@@ -3,6 +3,8 @@ import {mapActions} from 'vuex'
 import {IChoice, ISelectOneResponseBlock} from '@floip/flow-runner'
 import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 
+export const BLOCK_RESPONSE_EXPRESSION = 'block.response'
+
 export default {
   props: {
     block: {
@@ -21,7 +23,7 @@ export default {
   data() {
     return {
       options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '*'],
-      blockResponseExpression: 'block.response',
+      BLOCK_RESPONSE_EXPRESSION,
     }
   },
   computed: {
@@ -37,8 +39,8 @@ export default {
      * - and if the estimated key_press is part of the options' elements
      */
     isKeyPressIdentifiable() {
-      if (this.currentExpressionWithoutSpaces?.startsWith(`${this.blockResponseExpression}='`) === true
-        || this.currentExpressionWithoutSpaces?.startsWith(`@${this.blockResponseExpression}='`) === true) {
+      if (this.currentExpressionWithoutSpaces?.startsWith(`${BLOCK_RESPONSE_EXPRESSION}='`) === true
+        || this.currentExpressionWithoutSpaces?.startsWith(`@${BLOCK_RESPONSE_EXPRESSION}='`) === true) {
         const estimatedKeyPress = this.currentExpressionWithoutSpaces.split('\'')?.[1]
         if (this.options.includes(String(estimatedKeyPress)) === true) {
           return true
@@ -62,7 +64,7 @@ export default {
         return nextIndex <= 9 ? String(nextIndex) : '*'
       },
       set(value) {
-        this.updateCurrentExpression(`${this.blockResponseExpression} = '${value}'`)
+        this.updateCurrentExpression(`${BLOCK_RESPONSE_EXPRESSION} = '${value}'`)
       },
     },
   },

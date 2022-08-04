@@ -1,6 +1,6 @@
 import {ActionContext, ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
-import {IChoice, findBlockWith, IBlock, IBlockExit, IResource, ValidationException, IResourceValue} from '@floip/flow-runner'
+import {IChoice, findBlockWith, IBlock, IBlockExit, IResource, ValidationException} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
 import Vue from 'vue'
@@ -15,7 +15,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
 
   updateChoiceName(
     {rootGetters, dispatch},
-    {blockId, resourceId, resourceValue}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], resourceValue: IResourceValue},
+    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
   ) {
     const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
     const resource: IResource = rootGetters['flow/resourcesByUuidOnActiveFlow'][resourceId]
@@ -25,7 +25,23 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     }
 
     const choice = find(block.config.choices, (v) => v.prompt === resourceId) as IChoice
-    choice.name = resourceValue.value
+    choice.name = value
+  },
+
+  updateIvrTestExpression(
+    {rootGetters, dispatch},
+    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
+  ) {
+    const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
+    const resource: IResource = rootGetters['flow/resourcesByUuidOnActiveFlow'][resourceId]
+
+    if (resource == null) {
+      throw new ValidationException(`Unable to find resource for choice: ${resourceId}`)
+    }
+
+    const choice = find(block.config.choices, (v) => v.prompt === resourceId) as IChoice
+    Vue.set(choice, 'ivr_test', {})
+    Vue.set(choice.ivr_test as object, 'test_expression', value)
   },
 
   addChoiceByResourceIdTo({rootGetters}, {blockId, resourceId}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'] }) {
