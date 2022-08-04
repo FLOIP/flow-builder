@@ -121,25 +121,6 @@ export class ChoicesBuilder extends mixins(Lang) {
     }
   }
 
-  @blockVuexNamespace.Action updateChoiceName!: (
-    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: IResourceValue['value']},
-  ) => void
-  @blockVuexNamespace.Action updateIvrTestExpression!: (
-    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
-  ) => void
-
-  @validationVuexNamespace.Getter choiceMimeType!: string
-
-  @flowVuexNamespace.Getter activeFlow!: IFlow
-  @flowVuexNamespace.Action resource_add!: ({resource}: {resource: IResource}) => void
-  // @flowVuexNamespace.Action flow_createBlankResourceForEnabledModesAndLangs!: () => Promise<IResource>
-  @flowVuexNamespace.Action resource_createWith!: ({props}: { props: { uuid: string } & Partial<IResource> }) => Promise<IResource>
-
-  @blockVuexNamespace.Action deleteChoiceByResourceIdFrom!:
-    ({blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) => void
-  @blockVuexNamespace.Action block_setChoiceIvrExpressionOnIndex!:
-    ({blockId, index, value}: { blockId: string, index: number, value: string }) => void
-
   handleExistingResourceVariantChangedFor(
     {choiceIndex}: {choiceIndex: number},
     {resourceId, value}: {resourceId: IResource['uuid'], value: IResourceValue['value']},
@@ -169,8 +150,6 @@ export class ChoicesBuilder extends mixins(Lang) {
     this.updateChoiceName({blockId: this.block.uuid, resourceId, value})
     this.$emit('choiceChanged', {resourceId})
   }
-  @blockVuexNamespace.Action addChoiceByResourceIdTo!:
-    ({blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) => void
 
   handleNewChoiceChange({resourceId, value}: {resourceId: IResource['uuid'], value: string}) {
     this.updateChoiceName({blockId: this.block.uuid, resourceId, value})
@@ -182,6 +161,28 @@ export class ChoicesBuilder extends mixins(Lang) {
       value: `${BLOCK_RESPONSE_EXPRESSION} = '${this.block.config.choices.length}'`,
     })
   }
+
+  @blockVuexNamespace.Action updateChoiceName!: (
+    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: IResourceValue['value']},
+  ) => void
+  @blockVuexNamespace.Action updateIvrTestExpression!: (
+    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
+  ) => void
+
+  @validationVuexNamespace.Getter choiceMimeType!: string
+
+  @flowVuexNamespace.Getter activeFlow!: IFlow
+  @flowVuexNamespace.Action resource_add!: ({resource}: {resource: IResource}) => void
+  // @flowVuexNamespace.Action flow_createBlankResourceForEnabledModesAndLangs!: () => Promise<IResource>
+  @flowVuexNamespace.Action resource_createWith!: ({props}: { props: { uuid: string } & Partial<IResource> }) => Promise<IResource>
+
+  @blockVuexNamespace.Action deleteChoiceByResourceIdFrom!:
+    ({blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) => void
+  @blockVuexNamespace.Action block_setChoiceIvrExpressionOnIndex!:
+    ({blockId, index, value}: { blockId: string, index: number, value: string }) => void
+  @blockVuexNamespace.Action addChoiceByResourceIdTo!:
+    ({blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) => void
+
 }
 export default ChoicesBuilder
 </script>
