@@ -57,121 +57,127 @@
 </template>
 
 <script lang="ts">
+import {mapGetters, mapMutations} from 'vuex'
 import VueMultiselect from 'vue-multiselect'
-import Component, {mixins} from 'vue-class-component'
-import {Prop} from 'vue-property-decorator'
-import Lang from '@/lib/filters/lang'
-import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
-import {IContactPropertyOption} from '@/store/flow/block-types'
-import {Getter, namespace} from 'vuex-class'
 import {find} from 'lodash'
+import {lang} from '@/lib/filters/lang'
+import {IContactPropertyOption} from '@/store/flow/block-types'
 import {IContactPropertyMultipleChoice} from '@/store/flow/block-types/Core_SetContactPropertyStore'
 import {choicesToExpression} from './expressionTransformers'
 
-const flowVuexNamespace = namespace('flow')
-
-@Component({
+export const SelectOneResponseBlockContactPropertyEditor = {
   components: {
     VueMultiselect,
   },
-})
-export class SelectOneResponseBlockContactPropertyEditor extends mixins(Lang) {
-  @Prop() readonly block!: ISelectOneResponseBlock
 
-  get contactPropertyName(): string | undefined {
-    return this.block.config.set_contact_property?.[0].property_key
-  }
+  mixins: [lang],
 
-  get contactProperty(): IContactPropertyOption | null {
-    return find(this.subscriberPropertyFields, contactProperty => contactProperty.name === this.contactPropertyName) ?? null
-  }
+  props: {
+    block: {
+      type: Object,
+      required: true,
+    },
+  },
 
-  get isMultipleChoiceProperty(): boolean {
-    return this.contactProperty?.data_type === 'multiple_choice'
-  }
+  computed: {
+    ...mapGetters([
+      'subscriberPropertyFields',
+    ]),
 
-  get isTextProperty(): boolean {
-    return this.contactProperty?.data_type === 'text'
-  }
+    contactPropertyName(): string | undefined {
+      return this.block.config.set_contact_property?.[0].property_key
+    },
 
-  get isNumberProperty(): boolean {
-    return this.contactProperty?.data_type === 'number'
-  }
+    contactProperty(): IContactPropertyOption | null {
+      return find(this.subscriberPropertyFields, contactProperty => contactProperty.name === this.contactPropertyName) ?? null
+    },
 
-  get choiceKeys(): string[] {
-    return this.block.config.choices.map(choice => choice.name)
-  }
+    isMultipleChoiceProperty(): boolean {
+      return this.contactProperty?.data_type === 'multiple_choice'
+    },
 
-  get choiceValueOptions(): IContactPropertyMultipleChoice[] {
-    return this.contactProperty?.choices ?? []
-  }
+    isTextProperty(): boolean {
+      return this.contactProperty?.data_type === 'text'
+    },
 
-  getChoiceValue(choiceKey: string): string | number | undefined {
-    return this.block.vendor_metadata?.floip?.ui_metadata?.set_contact_property[0].property_value_mapping?.[choiceKey]
-  }
+    isNumberProperty(): boolean {
+      return this.contactProperty?.data_type === 'number'
+    },
 
-  getChoiceValueOption(choiceKey: string): IContactPropertyMultipleChoice | undefined {
-    const choiceValue = this.getChoiceValue(choiceKey)
-    return this.choiceValueOptions.find(option => option.value === choiceValue)
-  }
+    choiceKeys(): string[] {
+      return this.block.config.choices.map(choice => choice.name)
+    },
 
-  setChoiceValue(value: string | number, choiceKey: string): void {
-    this.block_updateVendorMetadataByPath({
-      blockId: this.block.uuid,
-      path: `floip.ui_metadata.set_contact_property[0].property_value_mapping.${choiceKey}`,
-      value,
-    })
+    choiceValueOptions(): IContactPropertyMultipleChoice[] {
+      return this.contactProperty?.choices ?? []
+    },
+  },
 
-    this.block_updateConfigByPath({
-      blockId: this.block.uuid,
-      path: 'set_contact_property[0].property_value',
-      value: choicesToExpression(this.block.vendor_metadata?.floip?.ui_metadata?.set_contact_property[0].property_value_mapping),
-    })
-  }
+  methods: {
+    ...mapMutations('flow', [
+      'block_updateVendorMetadataByPath',
+      'block_removeVendorMetadataByPath',
+      'block_updateConfigByPath',
+    ]),
 
-  setChoiceValueOption(choiceValueOption: IContactPropertyMultipleChoice, choiceKey: string): void {
-    this.setChoiceValue(choiceValueOption.value, choiceKey)
-  }
+    getChoiceValue(choiceKey: string): string | number | undefined {
+      return this.block.vendor_metadata?.floip?.ui_metadata?.set_contact_property[0].property_value_mapping?.[choiceKey]
+    },
 
-  onSetContactPropertyToggle(shouldSetContactProperty: boolean): void {
-    if (shouldSetContactProperty) {
-      this.resetMapping()
-    } else {
-      this.removeMapping()
-    }
-  }
+    getChoiceValueOption(choiceKey: string): IContactPropertyMultipleChoice | undefined {
+      const choiceValue = this.getChoiceValue(choiceKey)
+      return this.choiceValueOptions.find(option => option.value === choiceValue)
+    },
 
-  onShouldUseCurrentBlockResponseUpdate(shouldUseCurrentBlockResponse: boolean): void {
-    if (shouldUseCurrentBlockResponse) {
-      this.resetMapping()
-    } else {
-      this.removeMapping()
-    }
-  }
+    setChoiceValue(value: string | number, choiceKey: string): void {
+      this.block_updateVendorMetadataByPath({
+        blockId: this.block.uuid,
+        path: `floip.ui_metadata.set_contact_property[0].property_value_mapping.${choiceKey}`,
+        value,
+      })
 
-  resetMapping(): void {
-    this.block_updateVendorMetadataByPath({
-      blockId: this.block.uuid,
-      path: 'floip.ui_metadata.set_contact_property[0].property_value_mapping',
-      value: {},
-    })
-  }
+      this.block_updateConfigByPath({
+        blockId: this.block.uuid,
+        path: 'set_contact_property[0].property_value',
+        value: choicesToExpression(this.block.vendor_metadata?.floip?.ui_metadata?.set_contact_property[0].property_value_mapping),
+      })
+    },
 
-  removeMapping(): void {
-    this.block_removeVendorMetadataByPath({
-      blockId: this.block.uuid,
-      path: 'floip.ui_metadata.set_contact_property',
-    })
-  }
+    setChoiceValueOption(choiceValueOption: IContactPropertyMultipleChoice, choiceKey: string): void {
+      this.setChoiceValue(choiceValueOption.value, choiceKey)
+    },
 
-  @Getter subscriberPropertyFields!: IContactPropertyOption[]
-  @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!: (
-    args: {blockId: string, path: string, value: boolean | number | string | object | null | undefined}
-  ) => void
-  @flowVuexNamespace.Mutation block_removeVendorMetadataByPath!: (args: {blockId: string, path: string}) => void
-  @flowVuexNamespace.Mutation block_updateConfigByPath!: (
-    args: {blockId: string, path: string, value?: object | string | number | boolean | undefined}
-  ) => void
+    onSetContactPropertyToggle(shouldSetContactProperty: boolean): void {
+      if (shouldSetContactProperty) {
+        this.resetMapping()
+      } else {
+        this.removeMapping()
+      }
+    },
+
+    onShouldUseCurrentBlockResponseUpdate(shouldUseCurrentBlockResponse: boolean): void {
+      if (shouldUseCurrentBlockResponse) {
+        this.resetMapping()
+      } else {
+        this.removeMapping()
+      }
+    },
+
+    resetMapping(): void {
+      this.block_updateVendorMetadataByPath({
+        blockId: this.block.uuid,
+        path: 'floip.ui_metadata.set_contact_property[0].property_value_mapping',
+        value: {},
+      })
+    },
+
+    removeMapping(): void {
+      this.block_removeVendorMetadataByPath({
+        blockId: this.block.uuid,
+        path: 'floip.ui_metadata.set_contact_property',
+      })
+    },
+  },
 }
 
 export default SelectOneResponseBlockContactPropertyEditor
