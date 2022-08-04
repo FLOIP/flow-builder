@@ -120,6 +120,12 @@ export class SelectOneResponseBlockContactPropertyEditor extends mixins(Lang) {
       path: `floip.ui_metadata.set_contact_property[0].property_value_mapping.${choiceKey}`,
       value,
     })
+
+    this.block_updateConfigByPath({
+      blockId: this.block.uuid,
+      path: 'set_contact_property[0].property_value',
+      value: generatedBlockValueExpression(this.block.vendor_metadata?.floip?.ui_metadata?.set_contact_property[0].property_value_mapping),
+    })
   }
 
   setChoiceValueOption(choiceValueOption: IContactPropertyMultipleChoice, choiceKey: string): void {
@@ -158,8 +164,22 @@ export class SelectOneResponseBlockContactPropertyEditor extends mixins(Lang) {
   }
 
   @Getter subscriberPropertyFields!: IContactPropertyOption[]
-  @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!: (args: {blockId: string, path: string, value: object | string}) => void
+  @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!: (
+    args: {blockId: string, path: string, value: boolean | number | string | object | null | undefined}
+  ) => void
   @flowVuexNamespace.Mutation block_removeVendorMetadataByPath!: (args: {blockId: string, path: string}) => void
+  @flowVuexNamespace.Mutation block_updateConfigByPath!: (
+    args: {blockId: string, path: string, value?: object | string | number | boolean | undefined}
+  ) => void
+}
+
+export function generatedBlockValueExpression(propertyValueMapping: Record<string, string | number>): string {
+  const individualLines = Object.entries(propertyValueMapping).map(([choiceKey, choiceValue]) =>
+    (typeof choiceValue === 'string'
+      ? `IF(block.value = '${choiceKey}', '${choiceValue}', '')`
+      : `IF(block.value = '${choiceKey}', ${choiceValue}, '')`))
+
+  return `@CONCATENATE(\n${individualLines.join(',\n')}\n)`
 }
 
 export default SelectOneResponseBlockContactPropertyEditor
