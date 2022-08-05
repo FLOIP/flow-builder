@@ -11,7 +11,7 @@ class MobilePrimitives_SelectOneResponseBlockValidator extends ExtendedValidator
       (item, index) => item !== undefined && allIvrTestExpressions.indexOf(item) !== index,
     )
     if (duplicates.length > 0) {
-      errors.push(['/config/choices/', 'duplicate-ivr-test-test_expression'])
+      errors.push(['/config/choices', 'duplicate-ivr-test-test_expression'])
     }
 
     return errors

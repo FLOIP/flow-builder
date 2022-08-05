@@ -3380,7 +3380,8 @@
     "input-must-be-a-number": "Input must be a number",
     "numeric-block-must-be-selected": "A block must be selected",
     "block-config-flow_id-required": "Destination flow is required",
-    "duplicate-ivr-test-test_expression": "Duplicapte IVR test expressions is not allowed, please fix it under choices mapping."
+    "duplicate-ivr-test-test_expression": "Duplicapte IVR test expressions is not allowed, please fix it under choices mapping.",
+    "block-config-choices-minItems": "Choices should not be empty"
   },
   "fr.flow-builder-validation": {
     "floip-format": "L'expression FlOIP devrait être valide",
@@ -3409,7 +3410,8 @@
     "input-must-be-a-number": "L'entrée doit être un nombre",
     "numeric-block-must-be-selected": "Un bloc doit être sélectionné",
     "block-config-flow_id-required": "Le flux de destination est requis",
-    "duplicate-ivr-test-test_expression": "Les expressions de test IVR en double ne sont pas autorisées, veuillez le corriger sous le mappage des choix."
+    "duplicate-ivr-test-test_expression": "Les expressions de test IVR en double ne sont pas autorisées, veuillez le corriger sous le mappage des choix.",
+    "block-config-choices-minItems": "Les choix ne doivent pas être vides"
   }
 }
 

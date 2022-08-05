@@ -43,6 +43,12 @@
       @beforeResourceVariantChanged="addDraftResourceToChoices"
       @afterResourceVariantChanged="handleNewChoiceChange" />
 
+    <validation-message
+      #input-control="{ isValid }"
+      :message-key="`block/${block.uuid}/config/choices`">
+      <!--Display programmatic validation & AJV validation related to /config/choices -->
+    </validation-message>
+
     <choice-mapping-modal :block="block"/>
   </div>
 </template>
