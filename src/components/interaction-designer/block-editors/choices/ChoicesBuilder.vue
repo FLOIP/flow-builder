@@ -157,7 +157,7 @@ export class ChoicesBuilder extends mixins(Lang) {
     this.$emit('choiceChanged', {resourceId})
   }
 
-  @blockVuexNamespace.Action choice_updateTextTestsExpressionOn!: (
+  @blockVuexNamespace.Action block_updateChoiceTextTestsExpressionOn!: (
     {blockId, resourceId, testIndex, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string, testIndex: number},
   ) => void
 
@@ -179,7 +179,7 @@ export class ChoicesBuilder extends mixins(Lang) {
     })
 
     // Initiate the 1st text_tests
-    this.choice_updateTextTestsExpressionOn({
+    this.block_updateChoiceTextTestsExpressionOn({
       blockId: this.block.uuid,
       resourceId,
       testIndex: 0,

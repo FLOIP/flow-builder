@@ -1,26 +1,29 @@
-import {ActionContext, ActionTree, Module, MutationTree} from 'vuex'
+import {ActionContext, ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IChoice, findBlockWith, IBlock, IBlockExit, IResource, ValidationException} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
 import Vue from 'vue'
 import {cloneDeep, find, reject} from 'lodash'
-import BaseStore, {actions as baseActions, mutations as baseMutations, IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import BaseStore, {actions as baseActions, mutations as baseMutations, getters as baseGetters, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 import {MobilePrimitives_SelectOneResponseBlockValidator} from '@/lib/validations'
 import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
-import {updateChoiceValueByPath} from '@/store/flow/utils/vuexBlockHelpers'
-
+import * as ChoiceModule from '@/store/flow/block/choice'
 export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
+
+export const getters: GetterTree<IEmptyState, IRootState> = {
+  ...baseGetters,
+  ...ChoiceModule.getters,
+}
 
 export const mutations: MutationTree<IEmptyState> = {
   ...baseMutations,
-  updateChoiceByPath(state, {choice, path, value}: {choice: IChoice, path: string, value?: object | string | number | boolean}) {
-    updateChoiceValueByPath(state, choice, `${path}`, value)
-  },
+  ...ChoiceModule.mutations,
 }
 
 const actions: ActionTree<IEmptyState, IRootState> = {
   ...baseActions,
+  ...ChoiceModule.actions,
 
   updateChoiceName(
     {rootGetters, dispatch},
@@ -53,7 +56,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     Vue.set(choice.ivr_test as object, 'test_expression', value)
   },
 
-  choice_updateTextTestsExpressionOn(
+  block_updateChoiceTextTestsExpressionOn(
     {rootGetters, dispatch, commit},
     {blockId, resourceId, value, testIndex}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string, testIndex: number},
   ) {
@@ -65,7 +68,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     }
 
     const choice = find(block.config.choices, (v) => v.prompt === resourceId) as IChoice
-    commit('updateChoiceByPath', {
+    commit('choice_updateByPath', {
       choice,
       path: `text_tests.[${testIndex}].test_expression`,
       value,
@@ -146,20 +149,6 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     }, {root: true})
   },
 
-  /**
-   * Set choice's text tests expression on a given index
-   */
-  block_setChoiceTextTestsExpressionOnIndex(
-    {commit, state, dispatch},
-    {blockId, choiceIndex, testIndex, value}: { blockId: string, choiceIndex: number, testIndex: number, value: string },
-  ) {
-    commit('flow/block_updateConfigByPath', {
-      blockId,
-      path: `choices.[${choiceIndex}].text_tests.[${testIndex}].test_expression`,
-      value,
-    }, {root: true})
-  },
-
   async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<ISelectOneResponseBlock> }) {
     props.type = BLOCK_TYPE
     const blankPromptResource = await dispatch('flow/flow_addBlankResourceForEnabledModesAndLangs', null, {root: true})
@@ -184,6 +173,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
 
 const MobilePrimitives_SelectOneResponseBlockStore: Module<IEmptyState, IRootState> = {
   ...cloneDeep(BaseStore),
+  getters,
   mutations,
   actions,
 }
