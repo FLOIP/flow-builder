@@ -68,6 +68,12 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     }
 
     const choice = find(block.config.choices, (v) => v.prompt === resourceId) as IChoice
+
+    // Making sure we have array on text_tests
+    if (choice?.text_tests === undefined) {
+      choice.text_tests = []
+    }
+
     commit('choice_updateByPath', {
       choice,
       path: `text_tests.[${testIndex}].test_expression`,
