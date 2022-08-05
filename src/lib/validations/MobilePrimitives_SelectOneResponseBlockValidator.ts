@@ -3,7 +3,6 @@ import {ExtendedValidatorBase, ValidationResults} from './ExtendedValidatorBase'
 
 class MobilePrimitives_SelectOneResponseBlockValidator extends ExtendedValidatorBase {
   static runProgrammaticValidations(block: IBlock<ISelectManyResponseBlockConfig>, _options: unknown): ValidationResults | null {
-    console.debug('test', 'child', 'runProgrammaticValidations')
     const errors: ValidationResults = []
 
     // validationMax must be greater than validationMin

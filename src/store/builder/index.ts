@@ -326,11 +326,14 @@ export function createDefaultBlockTypeInstallerFor(
   storeForBlockType: Module<any, IRootState>,
 ) {
   return (builder: Vue) => {
-    const a = builder.$store.hasModule(['flow', blockType])
-    console.debug('test has module', a, blockType, storeForBlockType)
-    const b = builder.$store.registerModule(['flow', blockType], storeForBlockType)
-    console.debug('test register', b)
-    return a || b
+    if (storeForBlockType === undefined || blockType === undefined) {
+      // If this error happens, try to not import function from '@/lib' but directly from the file (see eg: in ExtendedValidatorBase.ts)
+      console.error('createDefaultBlockTypeInstallerFor',
+        'something weird is happening: the store is undefined',
+        'which might cause',
+        '"TypeError: rawModule is undefined"')
+    }
+    return builder.$store.hasModule(['flow', blockType]) || builder.$store.registerModule(['flow', blockType], storeForBlockType)
   }
 }
 
