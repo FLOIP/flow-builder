@@ -1,14 +1,9 @@
 <template>
    <div class="choice-mapping-modal">
      <div class="form-group">
-       <validation-message
-         #input-control="{ isValid }"
-         :message-key="`block/${block.uuid}/config/choices/`">
-         <button :disabled="block.config.choices.length === 0" class="btn btn-primary btn-sm" @click="showModal">
-           {{ trans('flow-builder.set-choice-options') }}
-         </button>
-         <br>
-       </validation-message>
+       <button :disabled="block.config.choices.length === 0" class="btn btn-primary btn-sm" @click="showModal">
+         {{ trans('flow-builder.set-choice-options') }}
+       </button>
      </div>
 
      <b-modal
