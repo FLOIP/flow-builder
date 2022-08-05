@@ -6,6 +6,7 @@ import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISele
 import Vue from 'vue'
 import {cloneDeep, find, reject} from 'lodash'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import {MobilePrimitives_SelectOneResponseBlockValidator} from '@/lib/validations'
 import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
@@ -133,6 +134,10 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       },
     }
     return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
+  },
+
+  async validate(_context, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
+    return MobilePrimitives_SelectOneResponseBlockValidator.runAllValidations(block, schemaVersion)
   },
 }
 

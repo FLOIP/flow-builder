@@ -1,4 +1,7 @@
-import {IValidationStatus, validateBlockWithJsonSchema} from '@/lib'
+import {IValidationStatus} from '@/lib'
+// Very strange: for some reason, we need to load validateBlockWithJsonSchema directly, not from '@/lib', otherwise we got this
+// error >> "TypeError: rawModule is undefined". Because selectOne module becomes undefined
+import {validateBlockWithJsonSchema} from '@/store/validation/validationHelpers'
 import {IBlock} from '@floip/flow-runner'
 import {ErrorObject} from 'ajv'
 import Lang from '@/lib/filters/lang'
@@ -14,7 +17,7 @@ export type ValidationResults = ValidationResult[]
  * This class encapsulates JSON schema validation logic
  * and also runs user-defined programmatic checks from within subclasses.
  */
-export class ExtendedValidatorBase {
+class ExtendedValidatorBase {
   /**
    * Run programmatic validations, which are validations that are not handled by the AJV (jsonSchema)
    * We can override this in each block type validator for block specific validation.
@@ -53,3 +56,6 @@ export class ExtendedValidatorBase {
     return validationStatus
   }
 }
+
+export {ExtendedValidatorBase}
+export default ExtendedValidatorBase
