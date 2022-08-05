@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import {toPath} from 'lodash'
-import {IContext, findBlockOnActiveFlowWith, IBlock} from '@floip/flow-runner'
+import {IContext, findBlockOnActiveFlowWith, IBlock, IChoice} from '@floip/flow-runner'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function makePath(block: any, rawPath: string): [object, string] {
@@ -27,6 +27,17 @@ export function updateBlockValueByPath(
   value: boolean | number | string | object | null | undefined,
 ): void {
   const base = findBlockOnActiveFlowWith(blockId, state as IContext)
+  const [pointer, key] = makePath(base, path)
+  Vue.set(pointer, key, value)
+}
+
+export function updateChoiceValueByPath(
+  state: unknown,
+  choice: IChoice,
+  path: string,
+  value: boolean | number | string | object | null | undefined,
+): void {
+  const base = choice
   const [pointer, key] = makePath(base, path)
   Vue.set(pointer, key, value)
 }

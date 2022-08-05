@@ -61,8 +61,7 @@
                class="tab-pane fade"
                role="tabpanel">
                <div class="mt-3">
-                 <!--TODO: VMO-6654-->
-                 content {{ language }}
+                 <text-mapping-table :block="block"/>
                </div>
 
              </div>
@@ -82,11 +81,13 @@ import Lang from '@/lib/filters/lang'
 import {mapGetters} from 'vuex'
 import {ISelectOneResponseBlock} from '@floip/flow-runner'
 import VoiceMappingTable from './VoiceMappingTable.vue'
+import TextMappingTable from './TextMappingTable.vue'
 
 export default {
   components: {
     BModal,
     VoiceMappingTable,
+    TextMappingTable,
   },
   mixins: [Lang],
 

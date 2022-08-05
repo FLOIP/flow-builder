@@ -157,6 +157,17 @@ export class ChoicesBuilder extends mixins(Lang) {
     this.$emit('choiceChanged', {resourceId})
   }
 
+  @blockVuexNamespace.Action choice_updateTextTestsExpressionOn!: (
+    {blockId, resourceId, testIndex, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string, testIndex: number},
+  ) => void
+
+  @blockVuexNamespace.Action updateChoiceName!: (
+    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: IResourceValue['value']},
+  ) => void
+  @blockVuexNamespace.Action updateIvrTestExpression!: (
+    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
+  ) => void
+
   handleNewChoiceChange({resourceId, value}: {resourceId: IResource['uuid'], value: string}) {
     this.updateChoiceName({blockId: this.block.uuid, resourceId, value})
     // Make sure to update the ivr_test expression to provide a default value,
@@ -166,14 +177,15 @@ export class ChoicesBuilder extends mixins(Lang) {
       resourceId,
       value: `${BLOCK_RESPONSE_EXPRESSION} = '${this.block.config.choices.length}'`,
     })
-  }
 
-  @blockVuexNamespace.Action updateChoiceName!: (
-    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: IResourceValue['value']},
-  ) => void
-  @blockVuexNamespace.Action updateIvrTestExpression!: (
-    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
-  ) => void
+    // Initiate the 1st text_tests
+    this.choice_updateTextTestsExpressionOn({
+      blockId: this.block.uuid,
+      resourceId,
+      testIndex: 0,
+      value,
+    })
+  }
 
   @validationVuexNamespace.Getter choiceMimeType!: string
 
