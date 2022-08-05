@@ -1676,9 +1676,10 @@
   resolved "https://registry.yarnpkg.com/@floip/expression-parser/-/expression-parser-1.11.3.tgz#da32541845ec482b60daabe963ccb6200870781c"
   integrity sha512-r8433SL1ZjOZKcgIkLMci9LUAYM7aJQGIdE9+37/op5H0DOhB8qh6HvQe7wDhpoOyrCiMYUx/6FBruOf9HT91w==
 
-"@floip/flow-runner@https://github.com/FLOIP/flow-runner.git#feature/VMO-6702/do-not-allow-empty-choices-mcq":
+"@floip/flow-runner@1.0.0-rc4.12":
   version "1.0.0-rc4.12"
-  resolved "https://github.com/FLOIP/flow-runner.git#f941a8411d251a6e806fdacf21a80113603d913c"
+  resolved "https://registry.yarnpkg.com/@floip/flow-runner/-/flow-runner-1.0.0-rc4.12.tgz#5ee595ea5c1a610793a1b175ef9565d9405ff1ec"
+  integrity sha512-e4n7zSL/78Xz0jCLGvbma6x3q16LRb8ySVJeaLtIVBcyCzOCXpz0nVySAiIWRqoQa338TQy6PVsgyxksIE6u1w==
   dependencies:
     "@floip/expression-evaluator" "^2.1.3"
     ajv "^7.2.1"
