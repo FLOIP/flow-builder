@@ -325,8 +325,13 @@ export function createDefaultBlockTypeInstallerFor(
   blockType: IBlock['type'],
   storeForBlockType: Module<any, IRootState>,
 ) {
-  return (builder: Vue) => builder.$store.hasModule(['flow', blockType])
-    || builder.$store.registerModule(['flow', blockType], storeForBlockType)
+  return (builder: Vue) => {
+    const a = builder.$store.hasModule(['flow', blockType])
+    console.debug('test has module', a, blockType, storeForBlockType)
+    const b = builder.$store.registerModule(['flow', blockType], storeForBlockType)
+    console.debug('test register', b)
+    return a || b
+  }
 }
 
 export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): ConnectionLayout {
