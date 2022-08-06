@@ -15,6 +15,14 @@
           @commitExpressionChange="updateCurrentExpression(testIndex, $event)" />
       </validation-message>
     </template>
+
+    <!--empty input to add new synonyms-->
+    <expression-input
+      :current-expression="draftExpression"
+      :label="''"
+      :placeholder="trans('flow-builder.enter-expression')"
+      class="mb-1"
+      @commitExpressionChange="addNewExpression" />
   </div>
 </template>
 
@@ -41,6 +49,12 @@ export default {
   },
   mixins: [Lang],
 
+  data() {
+    return {
+      draftExpression: '',
+    }
+  },
+
   created() {
     // We already provide a default value for text_tests[0].test_expression during choice creation
     // But, there might be a scenario where we still have it undefined, eg: for imported blocks
@@ -59,12 +73,27 @@ export default {
 
   methods: {
     ...mapActions(`flow/${BLOCK_TYPE}`, ['choice_setTextTestsExpressionOnIndex']),
+
     updateCurrentExpression(testIndex, value) {
       this.choice_setTextTestsExpressionOnIndex({
         choice: this.choice,
         choiceIndex: this.index,
         testIndex,
         value,
+      })
+    },
+    addNewExpression(value) {
+      this.draftExpression = value
+      this.choice_setTextTestsExpressionOnIndex({
+        choice: this.choice,
+        choiceIndex: this.index,
+        testIndex: Number(this.currentTextTestList.length),
+        value,
+      })
+
+      // Wait the dom to be ready before resetting back
+      this.$nextTick(() => {
+        this.draftExpression = ''
       })
     },
   },

@@ -26,7 +26,7 @@
              </a>
              <template v-if="hasTextMode">
                <a
-                 v-for="({id: languageId, label: language}) in languages"
+                 v-for="({id: languageId, label: language}) in textLanguages"
                  :id="`nav-lang-tab-${languageId}`"
                  :key="languageId"
                  :href="`#nav-lang-${languageId}`"
@@ -54,7 +54,7 @@
            </div>
            <template v-if="hasTextMode">
              <div
-               v-for="({id: languageId, label: language}) in languages"
+               v-for="({id: languageId, label: language}) in textLanguages"
                :id="`nav-lang-${languageId}`"
                :key="languageId"
                aria-labelledby="nav-lang-tab"
@@ -100,11 +100,11 @@ export default {
 
   computed: {
     ...mapGetters('flow', ['activeFlow', 'hasTextMode', 'hasVoiceMode']),
-    languages() {
+    textLanguages() {
       return this.hasTextMode === true ? this.activeFlow.languages : []
     },
     shouldHaveTabs() {
-      return this.hasVoiceMode === true || (this.hasTextMode === true && this.languages.length > 0)
+      return this.hasVoiceMode === true || (this.hasTextMode === true && this.activeFlow.languages.length > 0)
     },
   },
   methods: {
