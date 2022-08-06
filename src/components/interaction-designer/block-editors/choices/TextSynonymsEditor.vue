@@ -72,15 +72,29 @@ export default {
   },
 
   methods: {
-    ...mapActions(`flow/${BLOCK_TYPE}`, ['choice_setTextTestsExpressionOnIndex']),
+    ...mapActions(`flow/${BLOCK_TYPE}`, ['choice_setTextTestsExpressionOnIndex', 'choice_removeTextTestsExpressionOnIndex']),
 
     updateCurrentExpression(testIndex, value) {
-      this.choice_setTextTestsExpressionOnIndex({
-        choice: this.choice,
-        choiceIndex: this.index,
-        testIndex,
-        value,
-      })
+      if (value > '') {
+        // ADD
+        this.choice_setTextTestsExpressionOnIndex({
+          choice: this.choice,
+          testIndex,
+          value,
+        })
+      } else {
+        // DELETION
+        this.choice_removeTextTestsExpressionOnIndex({
+          choice: this.choice,
+          testIndex,
+        })
+
+        // Hack the dom rendering to make sure we update the UI
+        this.draftExpression = undefined
+        this.$nextTick(() => {
+          this.draftExpression = ''
+        })
+      }
     },
     addNewExpression(value) {
       this.draftExpression = value

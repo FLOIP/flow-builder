@@ -37,9 +37,17 @@ export function updateChoiceValueByPath(
   path: string,
   value: boolean | number | string | object | null | undefined,
 ): void {
-  const base = choice
-  const [pointer, key] = makePath(base, path)
+  const [pointer, key] = makePath(choice, path)
   Vue.set(pointer, key, value)
+}
+
+export function deleteChoiceValueByPath(
+  state: unknown,
+  choice: IChoice,
+  path: string,
+): void {
+  const [pointer, key] = makePath(choice, path)
+  Vue.delete(pointer, key)
 }
 
 export function removeBlockValueByPath(
