@@ -98,20 +98,20 @@ export const SelectOneResponseBlockContactPropertyEditor = {
     ]),
 
     getChoiceValue(choiceKey) {
-      return this.block.vendor_metadata?.floip?.ui_metadata?.set_contact_property[0].property_value_mapping?.[choiceKey]
+      return this.block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping?.[choiceKey]
     },
 
     setChoiceValue(value, choiceKey) {
       this.block_updateVendorMetadataByPath({
         blockId: this.block.uuid,
-        path: `floip.ui_metadata.set_contact_property[0].property_value_mapping.${choiceKey}`,
+        path: `floip.ui_metadata.set_contact_property.property_value_mapping.${choiceKey}`,
         value,
       })
 
       this.block_updateConfigByPath({
         blockId: this.block.uuid,
         path: 'set_contact_property[0].property_value',
-        value: choicesToExpression(this.block.vendor_metadata?.floip?.ui_metadata?.set_contact_property[0].property_value_mapping),
+        value: choicesToExpression(this.block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping),
       })
     },
 
@@ -134,7 +134,7 @@ export const SelectOneResponseBlockContactPropertyEditor = {
     resetMapping() {
       this.block_updateVendorMetadataByPath({
         blockId: this.block.uuid,
-        path: 'floip.ui_metadata.set_contact_property[0].property_value_mapping',
+        path: 'floip.ui_metadata.set_contact_property.property_value_mapping',
         value: {},
       })
     },
