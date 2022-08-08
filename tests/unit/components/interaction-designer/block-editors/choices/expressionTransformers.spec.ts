@@ -7,7 +7,7 @@ describe('choicesToExpression', () => {
       two: 'banana',
     }
     expect(choicesToExpression(propertyValueMapping))
-      .toBe("@CONCATENATE(\\nIF(block.value = 'one', 'apple', ''),\\nIF(block.value = 'two', 'banana', '')\\n)")
+      .toBe("@CONCATENATE(\nIF(block.value = 'one', 'apple', ''),\nIF(block.value = 'two', 'banana', '')\n)")
   })
 
   it('should return a valid expression for NUMERIC choices', () => {
@@ -16,6 +16,6 @@ describe('choicesToExpression', () => {
       two: 2,
     }
     expect(choicesToExpression(propertyValueMapping))
-      .toBe("@CONCATENATE(\\nIF(block.value = 'one', 1, ''),\\nIF(block.value = 'two', 2, '')\\n)")
+      .toBe("@CONCATENATE(\nIF(block.value = 'one', 1, ''),\nIF(block.value = 'two', 2, '')\n)")
   })
 })
