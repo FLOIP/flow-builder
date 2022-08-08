@@ -154,6 +154,15 @@ export class ChoicesBuilder extends mixins(Lang) {
     }
 
     this.updateChoiceName({blockId: this.block.uuid, resourceId, value})
+
+    // TODO VMO-6651 Do not update when test_expression has been updated by the user
+    this.block_updateChoiceTextTestsExpressionOn({
+      blockId: this.block.uuid,
+      resourceId,
+      testIndex: 0,
+      value,
+    })
+
     this.$emit('choiceChanged', {resourceId})
   }
 
