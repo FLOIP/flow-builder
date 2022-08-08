@@ -1,11 +1,12 @@
 <template>
   <div class="text-synonyms-editor">
-    <template v-for="({
-      test_expression, _language,
-    }, testIndex) in currentTextTestList">
-      <validation-message
-        #input-control="{ isValid }"
-        :message-key="`block/${block.uuid}/config/choices/${index}/text_tests/${testIndex}/test_expression`">
+    <validation-message
+      v-for="({
+        test_expression, _language,
+      }, testIndex) in currentTextTestList"
+      :key="testIndex"
+      :message-key="`block/${block.uuid}/config/choices/${index}/text_tests/${testIndex}/test_expression`">
+      <template #input-control="{ isValid }">
         <expression-input
           ref="expressionInputs"
           :current-expression="test_expression"
@@ -14,8 +15,8 @@
           :valid-state="isValid"
           class="mb-1"
           @commitExpressionChange="updateCurrentExpression(testIndex, $event)" />
-      </validation-message>
-    </template>
+      </template>
+    </validation-message>
 
     <!--empty input to add new synonyms-->
     <expression-input
@@ -34,6 +35,7 @@ import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneRes
 import Lang from '@/lib/filters/lang'
 
 export default {
+  mixins: [Lang],
   props: {
     block: {
       type: ISelectOneResponseBlock,
@@ -48,12 +50,17 @@ export default {
       required: true,
     },
   },
-  mixins: [Lang],
 
   data() {
     return {
       draftExpression: '',
     }
+  },
+
+  computed: {
+    currentTextTestList() {
+      return this.choice.text_tests
+    },
   },
 
   created() {
@@ -64,12 +71,6 @@ export default {
     if (this.choice?.text_tests?.[testIndex]?.test_expression === undefined) {
       this.updateCurrentExpression(testIndex, {value: this.choice.name})
     }
-  },
-
-  computed: {
-    currentTextTestList() {
-      return this.choice.text_tests
-    },
   },
 
   methods: {
