@@ -25,63 +25,6 @@ const actions: ActionTree<IEmptyState, IRootState> = {
   ...baseActions,
   ...ChoiceModule.actions,
 
-  updateChoiceName(
-    {rootGetters, dispatch},
-    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
-  ) {
-    const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
-    const resource: IResource = rootGetters['flow/resourcesByUuidOnActiveFlow'][resourceId]
-
-    if (resource == null) {
-      throw new ValidationException(`Unable to find resource for choice: ${resourceId}`)
-    }
-
-    const choice = find(block.config.choices, (v) => v.prompt === resourceId) as IChoice
-    choice.name = value
-  },
-
-  updateIvrTestExpression(
-    {rootGetters, dispatch},
-    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
-  ) {
-    const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
-    const resource: IResource = rootGetters['flow/resourcesByUuidOnActiveFlow'][resourceId]
-
-    if (resource == null) {
-      throw new ValidationException(`Unable to find resource for choice: ${resourceId}`)
-    }
-
-    const choice = find(block.config.choices, (v) => v.prompt === resourceId) as IChoice
-    Vue.set(choice, 'ivr_test', {})
-    Vue.set(choice.ivr_test as object, 'test_expression', value)
-  },
-
-  block_updateChoiceTextTestsExpressionOn(
-    {rootGetters, dispatch, commit},
-    {blockId, resourceId, value, testIndex}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string, testIndex: number},
-  ) {
-    const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
-    const resource: IResource = rootGetters['flow/resourcesByUuidOnActiveFlow'][resourceId]
-
-    if (resource == null) {
-      throw new ValidationException(`Unable to find resource for choice: ${resourceId}`)
-    }
-
-    const choice = find(block.config.choices, (v) => v.prompt === resourceId) as IChoice
-
-    // Making sure we have array on text_tests
-    if (choice?.text_tests === undefined) {
-      choice.text_tests = []
-    }
-
-    // TODO VMO-6654 Update test_expression for for all languages
-    commit('choice_updateByPath', {
-      choice,
-      path: `text_tests.[${testIndex}].test_expression`,
-      value,
-    })
-  },
-
   addChoiceByResourceIdTo({rootGetters}, {blockId, resourceId}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'] }) {
     const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
     const resource: IResource = rootGetters['flow/resourcesByUuidOnActiveFlow'][resourceId]

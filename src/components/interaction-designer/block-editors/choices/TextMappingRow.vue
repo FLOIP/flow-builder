@@ -4,7 +4,7 @@
       {{ choice.name }}
     </td>
     <td>
-      <text-synonyms-editor :block="block" :choice="choice" :index="index" />
+      <text-synonyms-editor :block="block" :choice="choice" :index="index" :lang-id="langId"/>
     </td>
   </tr>
 </template>
@@ -30,6 +30,10 @@ export default {
     },
     index: {
       type: Number,
+      required: true,
+    },
+    langId: {
+      type: String,
       required: true,
     },
   },
