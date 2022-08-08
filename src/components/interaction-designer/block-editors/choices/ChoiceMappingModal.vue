@@ -84,6 +84,7 @@ import VoiceMappingTable from './VoiceMappingTable.vue'
 import TextMappingTable from './TextMappingTable.vue'
 
 export default {
+  name: 'ChoiceMappingModal',
   components: {
     BModal,
     VoiceMappingTable,
