@@ -25,6 +25,7 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
     {commit, state, dispatch},
     {choice, testIndex, value}: { choice: IChoice, testIndex: number, value: string },
   ) {
+    // TODO VMO-6654 Consider language
     commit('choice_updateByPath', {
       choice,
       path: `text_tests.[${testIndex}].test_expression`,

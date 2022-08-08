@@ -74,6 +74,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       choice.text_tests = []
     }
 
+    // TODO VMO-6654 Update test_expression for for all languages
     commit('choice_updateByPath', {
       choice,
       path: `text_tests.[${testIndex}].test_expression`,

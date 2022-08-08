@@ -15,6 +15,7 @@ import {IChoice, ISelectOneResponseBlock} from '@floip/flow-runner'
 import TextSynonymsEditor from './TextSynonymsEditor.vue'
 
 export default {
+  name: 'TextMappingRow',
   components: {
     TextSynonymsEditor,
   },

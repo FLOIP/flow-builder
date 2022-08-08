@@ -35,6 +35,7 @@ import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneRes
 import Lang from '@/lib/filters/lang'
 
 export default {
+  name: 'TextSynonymsEditor',
   mixins: [Lang],
   props: {
     block: {
@@ -82,6 +83,7 @@ export default {
         this.choice_setTextTestsExpressionOnIndex({
           choice: this.choice,
           testIndex,
+          languageId: undefined,
           value,
         })
       } else {
@@ -104,6 +106,7 @@ export default {
         choice: this.choice,
         choiceIndex: this.index,
         testIndex: Number(this.currentTextTestList.length),
+        languageId: undefined,
         value,
       })
 

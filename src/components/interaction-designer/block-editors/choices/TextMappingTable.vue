@@ -23,6 +23,7 @@ import {ISelectOneResponseBlock} from '@floip/flow-runner'
 import TextMappingRow from './TextMappingRow.vue'
 
 export default {
+  name: 'TextMappingTable',
   components: {
     TextMappingRow,
   },
