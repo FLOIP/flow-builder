@@ -21,7 +21,7 @@
         @afterResourceVariantChanged="handleExistingResourceVariantChangedFor(
           {choiceIndex: i},
           $event
-          )" />
+        )" />
     </template>
 
     <!--Show empty choice-->
@@ -49,7 +49,7 @@
       <!--Display programmatic validation & AJV validation related to /config/choices -->
     </validation-message>
 
-    <choice-mapping-modal :block="block"/>
+    <choice-mapping-modal :block="block" />
   </div>
 </template>
 
@@ -66,6 +66,7 @@ import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneRes
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import ChoiceMappingModal from '@/components/interaction-designer/block-editors/choices/ChoiceMappingModal.vue'
 import Vue from 'vue'
+import {IChoiceChange} from '@/store/flow/block/choice'
 import {BLOCK_RESPONSE_EXPRESSION} from './mixins/CommonVoiceChoiceConfig.vue'
 
 const flowVuexNamespace = namespace('flow')
@@ -194,7 +195,14 @@ export class ChoicesBuilder extends mixins(Lang) {
       testIndex: 0,
       value,
     })
+
+    this.choice_addChoice({
+      blockId: this.block.uuid,
+      prompt: resourceId,
+    })
   }
+
+  @blockVuexNamespace.Action choice_addChoice!: (data: IChoiceChange) => void
 
   @validationVuexNamespace.Getter choiceMimeType!: string
 
@@ -209,7 +217,6 @@ export class ChoicesBuilder extends mixins(Lang) {
     ({blockId, index, value}: { blockId: string, index: number, value: string }) => void
   @blockVuexNamespace.Action addChoiceByResourceIdTo!:
     ({blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) => void
-
 }
 export default ChoicesBuilder
 </script>

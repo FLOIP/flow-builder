@@ -167,6 +167,9 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       floip: {
         ui_metadata: {
           branching_type: OutputBranchingType.EXIT_PER_CHOICE,
+          choices: {
+            // Prompt UUID -> ISelectOneResponseFloipUiMetadataChoice
+          },
         },
       },
     }
