@@ -224,6 +224,10 @@ export class ExpressionInput extends mixins(Lang) {
     this.debounce_portAutoSuggestContent()
   }
 
+  focus(): void {
+    this.refInputElement.focus()
+  }
+
   @flowNamespace.Getter activeFlow?: IFlow
   @Getter subscriberPropertyFields!: ISubscriberPropertyField[]
 }

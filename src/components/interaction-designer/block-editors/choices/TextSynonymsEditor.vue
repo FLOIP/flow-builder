@@ -7,6 +7,7 @@
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/choices/${index}/text_tests/${testIndex}/test_expression`">
         <expression-input
+          ref="expressionInputs"
           :current-expression="test_expression"
           :label="''"
           :placeholder="trans('flow-builder.enter-expression')"
@@ -108,6 +109,7 @@ export default {
       // Wait the dom to be ready before resetting back
       this.$nextTick(() => {
         this.draftExpression = ''
+        this.$refs.expressionInputs.at(-1).focus()
       })
     },
   },
