@@ -61,9 +61,8 @@
                class="tab-pane fade"
                role="tabpanel">
                <div class="mt-3">
-                 <text-mapping-table :block="block"/>
+                 <text-mapping-table :block="block" :lang-id="languageId"/>
                </div>
-
              </div>
            </template>
          </div>

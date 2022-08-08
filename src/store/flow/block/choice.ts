@@ -1,16 +1,17 @@
 import {IRootState} from '@/store'
 import {
-  findBlockWith,
+  findBlockWith, IBlock,
   IChoice,
-  IFlow,
+  IFlow, ILanguage, IResource,
   ISelectOneResponseBlock,
   ISelectOneResponseFloipUiMetadataChoice,
   SelectOneResponseFloipUiMetadataChoiceByPrompt,
-  TextTest,
+  TextTest, ValidationException,
 } from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {updateChoiceValueByPath, deleteChoiceValueByPath, updateBlockValueByPath} from '@/store/flow/utils/vuexBlockHelpers'
 import {IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import Vue from 'vue'
 import {findResourceWith} from '../resource'
 
 export interface IChoiceChange {
@@ -32,6 +33,25 @@ export const getters: GetterTree<IEmptyState, IRootState> = {
       return block.vendor_metadata?.floip?.ui_metadata.choices[prompt]
     }
   },
+
+  /**
+   * I think this would be the safest way to find a choice, not from vendor_metadata
+   * TODO, once both of us agree:
+   * - remove this comment
+   * - rename this to choice_findChoice
+   * - remove old choice_findChoice
+   * - update all choice_findChoice_v2 ref in the code base
+   */
+  choice_findChoice_v2: (state, getters, rootState, rootGetters) => (blockId: string, prompt: string): IChoice | undefined => {
+    const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
+    const resource: IResource = rootGetters['flow/resourcesByUuidOnActiveFlow'][prompt]
+
+    if (resource == null) {
+      throw new ValidationException(`Unable to find resource for choice: ${prompt}`)
+    }
+
+    return block.config.choices.find((choice: IChoice) => choice.prompt === prompt)
+  },
 }
 
 export const mutations: MutationTree<IEmptyState> = {
@@ -44,14 +64,83 @@ export const mutations: MutationTree<IEmptyState> = {
 }
 
 export const actions: ActionTree<IEmptyState, IRootState> = {
+  choice_updateName(
+    {getters, rootGetters, dispatch},
+    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
+  ) {
+    const choice = getters.choice_findChoice_v2(blockId, resourceId)
+    choice.name = value
+  },
+
+  choice_updateIvrTestExpression(
+    {getters, rootGetters, dispatch},
+    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
+  ) {
+    const choice = getters.choice_findChoice_v2(blockId, resourceId)
+    Vue.set(choice, 'ivr_test', {})
+    Vue.set(choice.ivr_test as object, 'test_expression', value)
+  },
+
+  // TODO: rename this to init ...
+  choice_updateTextTestsOn(
+    {getters, rootGetters, dispatch, commit},
+    {blockId, resourceId, value, langId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string, langId: ILanguage['id']},
+  ) {
+    const choice = getters.choice_findChoice_v2(blockId, resourceId)
+
+    // Making sure we have array on text_tests
+    if (choice?.text_tests === undefined) {
+      console.warn('choice_setTextTestsExpressionOn', 'choice.text_tests was not set')
+      choice.text_tests = []
+    }
+
+    const test: TextTest | undefined = choice.text_tests.find((currentTest: TextTest) => currentTest.language === langId)
+    if (test !== undefined) {
+      // Update existing element
+      test.test_expression = value
+    } else {
+      // Insert new element
+      const testIndex = choice.text_tests.length
+      commit('choice_updateByPath', {
+        choice,
+        path: `text_tests.[${testIndex}]`,
+        value: {
+          language: langId,
+          test_expression: value,
+        },
+      })
+    }
+  },
+
+  choice_updateTextTestsForActiveLanguages(
+    {getters, rootGetters, dispatch, commit},
+    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
+  ) {
+    const languages = rootGetters['flow/activeFlow'].languages
+    languages.every((lang: ILanguage) => dispatch('choice_updateTextTestsOn', {
+      blockId,
+      resourceId,
+      langId: lang.id,
+      value,
+    }))
+  },
+
   /**
    * Set choice's text tests expression on a given index
    */
   choice_setTextTestsExpressionOnIndex(
     {commit, state, dispatch},
-    {choice, testIndex, value}: { choice: IChoice, testIndex: number, value: string },
+    {choice, testIndex, langId, value}: { choice: IChoice, testIndex: number, langId?: ILanguage['id'], value: string },
   ) {
-    // TODO VMO-6654 Consider language
+    console.debug('test', 'choice_setTextTestsExpressionOnIndex', {choice, testIndex, langId, value})
+    if (langId !== undefined) {
+      commit('choice_updateByPath', {
+        choice,
+        path: `text_tests.[${testIndex}].language`,
+        value: langId,
+      })
+    }
+
     commit('choice_updateByPath', {
       choice,
       path: `text_tests.[${testIndex}].test_expression`,

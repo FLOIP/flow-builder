@@ -12,7 +12,8 @@
         :key="index"
         :block="block"
         :choice="choice"
-        :index="index" />
+        :index="index"
+        :lang-id="langId" />
     </tbody>
   </table>
 </template>
@@ -29,7 +30,14 @@ export default {
   },
   mixins: [Lang],
   props: {
-    block: {type: ISelectOneResponseBlock, required: true},
+    block: {
+      type: ISelectOneResponseBlock,
+      required: true,
+    },
+    langId: {
+      type: String,
+      required: true,
+    },
   },
 }
 </script>

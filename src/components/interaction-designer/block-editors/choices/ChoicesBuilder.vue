@@ -59,7 +59,7 @@ import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
 import {Component, Prop} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
-import {IBlock, IChoice, IFlow, IResource, IResourceValue, SupportedContentType, SupportedMode} from '@floip/flow-runner'
+import {IBlock, IChoice, IFlow, IResource, IResourceValue, SupportedContentType, SupportedMode, TextTest} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
@@ -128,9 +128,19 @@ export class ChoicesBuilder extends mixins(Lang) {
     }
   }
 
+  @blockVuexNamespace.Action choice_updateTextTestsForActiveLanguages!: (
+    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
+  ) => void
+  @blockVuexNamespace.Action choice_updateName!: (
+    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: IResourceValue['value']},
+  ) => void
+  @blockVuexNamespace.Action choice_updateIvrTestExpression!: (
+    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
+  ) => void
+
   handleExistingResourceVariantChangedFor(
     {choiceIndex}: {choiceIndex: number},
-    {resourceId, value}: {resourceId: IResource['uuid'], value: IResourceValue['value']},
+    {variant, resourceId, value}: {variant: IResourceValue, resourceId: IResource['uuid'], value: IResourceValue['value']},
   ): void {
     const isLast = choiceIndex === this.choiceResourcesOrderedByResourcesList.length - 1
     const hasEmptyValue = isEmpty(value)
@@ -154,52 +164,38 @@ export class ChoicesBuilder extends mixins(Lang) {
       return
     }
 
-    this.updateChoiceName({blockId: this.block.uuid, resourceId, value})
+    this.choice_updateName({blockId: this.block.uuid, resourceId, value})
 
     // TODO VMO-6651 Do not update when test_expression has been updated by the user
-    this.block_updateChoiceTextTestsExpressionOn({
+    this.choice_updateTextTestsForActiveLanguages({
       blockId: this.block.uuid,
       resourceId,
-      testIndex: 0,
       value,
     })
 
     this.$emit('choiceChanged', {resourceId})
   }
 
-  @blockVuexNamespace.Action block_updateChoiceTextTestsExpressionOn!: (
-    {blockId, resourceId, testIndex, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string, testIndex: number},
-  ) => void
-
-  @blockVuexNamespace.Action updateChoiceName!: (
-    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: IResourceValue['value']},
-  ) => void
-  @blockVuexNamespace.Action updateIvrTestExpression!: (
-    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
-  ) => void
-
-  handleNewChoiceChange({resourceId, value}: {resourceId: IResource['uuid'], value: string}) {
-    this.updateChoiceName({blockId: this.block.uuid, resourceId, value})
+  handleNewChoiceChange({variant, resourceId, value}: {variant: IResourceValue, resourceId: IResource['uuid'], value: string}) {
+    this.choice_updateName({blockId: this.block.uuid, resourceId, value})
     // Make sure to update the ivr_test expression to provide a default value,
     // which is associated with using key_press selector by default
-    this.updateIvrTestExpression({
+    this.choice_updateIvrTestExpression({
       blockId: this.block.uuid,
       resourceId,
       value: `${BLOCK_RESPONSE_EXPRESSION} = '${this.block.config.choices.length}'`,
     })
 
-    // Initiate the 1st text_tests
-    this.block_updateChoiceTextTestsExpressionOn({
+    this.choice_updateTextTestsForActiveLanguages({
       blockId: this.block.uuid,
       resourceId,
-      testIndex: 0,
       value,
     })
 
-    this.choice_addChoice({
-      blockId: this.block.uuid,
-      prompt: resourceId,
-    })
+    // this.choice_addChoice({
+    //   blockId: this.block.uuid,
+    //   prompt: resourceId,
+    // })
   }
 
   @blockVuexNamespace.Action choice_addChoice!: (data: IChoiceChange) => void

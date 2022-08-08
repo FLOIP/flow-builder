@@ -1,22 +1,24 @@
 <template>
   <div class="text-synonyms-editor">
-    <validation-message
-      v-for="({
-        test_expression, _language,
-      }, testIndex) in currentTextTestList"
-      :key="testIndex"
-      :message-key="`block/${block.uuid}/config/choices/${index}/text_tests/${testIndex}/test_expression`">
-      <template #input-control="{ isValid }">
-        <expression-input
-          ref="expressionInputs"
-          :current-expression="test_expression"
-          :label="''"
-          :placeholder="trans('flow-builder.enter-expression')"
-          :valid-state="isValid"
-          class="mb-1"
-          @commitExpressionChange="updateCurrentExpression(testIndex, $event)" />
-      </template>
-    </validation-message>
+    <template v-for="({
+        test_expression, language
+      }, testIndex) in currentTextTestList">
+      <validation-message
+        v-if="language === langId"
+        :key="testIndex"
+        :message-key="`block/${block.uuid}/config/choices/${index}/text_tests/${testIndex}/test_expression`">
+        <template #input-control="{ isValid }">
+          <expression-input
+            ref="expressionInputs"
+            :current-expression="test_expression"
+            :label="''"
+            :placeholder="trans('flow-builder.enter-expression')"
+            :valid-state="isValid"
+            class="mb-1"
+            @commitExpressionChange="updateCurrentExpression(testIndex, $event)" />
+        </template>
+      </validation-message>
+    </template>
 
     <!--empty input to add new synonyms-->
     <expression-input
@@ -48,6 +50,10 @@ export default {
     },
     index: {
       type: Number,
+      required: true,
+    },
+    langId: {
+      type: String,
       required: true,
     },
   },
@@ -83,7 +89,7 @@ export default {
         this.choice_setTextTestsExpressionOnIndex({
           choice: this.choice,
           testIndex,
-          languageId: undefined,
+          langId: this.langId,
           value,
         })
       } else {
@@ -94,7 +100,7 @@ export default {
         })
 
         // Hack the dom rendering to make sure we update the UI
-        this.draftExpression = undefined
+        this.draftExpression = value
         this.$nextTick(() => {
           this.draftExpression = ''
         })
@@ -104,9 +110,8 @@ export default {
       this.draftExpression = value
       this.choice_setTextTestsExpressionOnIndex({
         choice: this.choice,
-        choiceIndex: this.index,
         testIndex: Number(this.currentTextTestList.length),
-        languageId: undefined,
+        langId: this.langId,
         value,
       })
 
