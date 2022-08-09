@@ -54,7 +54,7 @@
 </template>
 
 <script lang="ts">
-import {get, intersectionWith, isEmpty, last} from 'lodash'
+import {intersectionWith, isEmpty, last} from 'lodash'
 import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
 import {Component, Prop} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
