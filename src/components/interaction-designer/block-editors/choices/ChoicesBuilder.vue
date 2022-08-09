@@ -191,11 +191,6 @@ export class ChoicesBuilder extends mixins(Lang) {
       resourceId,
       value,
     })
-
-    // this.choice_addChoice({
-    //   blockId: this.block.uuid,
-    //   prompt: resourceId,
-    // })
   }
 
   @blockVuexNamespace.Action choice_addChoice!: (data: IChoiceChange) => void

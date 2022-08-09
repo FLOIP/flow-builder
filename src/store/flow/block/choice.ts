@@ -4,8 +4,6 @@ import {
   IChoice,
   IFlow, ILanguage, IResource,
   ISelectOneResponseBlock,
-  ISelectOneResponseFloipUiMetadataChoice,
-  SelectOneResponseFloipUiMetadataChoiceByPrompt,
   TextTest, ValidationException,
 } from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
@@ -14,35 +12,8 @@ import {IEmptyState} from '@/store/flow/block-types/BaseBlock'
 import Vue from 'vue'
 import {findResourceWith} from '../resource'
 
-export interface IChoiceChange {
-  blockId: string,
-  prompt: string,
-}
-
-export interface IChoiceSynonymChange extends IChoiceChange {
-  language: string,
-  index: string,
-  synonym?: string,
-}
-
 export const getters: GetterTree<IEmptyState, IRootState> = {
-  choice_findChoice(state, getters, rootState, rootGetters):
-    (blockId: string, prompt: string) => ISelectOneResponseFloipUiMetadataChoice | undefined {
-    return (blockId: string, prompt: string) => {
-      const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
-      return block.vendor_metadata?.floip?.ui_metadata.choices[prompt]
-    }
-  },
-
-  /**
-   * I think this would be the safest way to find a choice, not from vendor_metadata
-   * TODO, once both of us agree:
-   * - remove this comment
-   * - rename this to choice_findChoice
-   * - remove old choice_findChoice
-   * - update all choice_findChoice_v2 ref in the code base
-   */
-  choice_findChoice_v2: (state, getters, rootState, rootGetters) => (blockId: string, prompt: string): IChoice | undefined => {
+  choice_findChoice: (state, getters, rootState, rootGetters) => (blockId: string, prompt: string): IChoice | undefined => {
     const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
     const resource: IResource = rootGetters['flow/resourcesByUuidOnActiveFlow'][prompt]
 
@@ -68,7 +39,7 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
     {getters, rootGetters, dispatch},
     {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
   ) {
-    const choice = getters.choice_findChoice_v2(blockId, resourceId)
+    const choice = getters.choice_findChoice(blockId, resourceId)
     choice.name = value
   },
 
@@ -76,7 +47,7 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
     {getters, rootGetters, dispatch},
     {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
   ) {
-    const choice = getters.choice_findChoice_v2(blockId, resourceId)
+    const choice = getters.choice_findChoice(blockId, resourceId)
     Vue.set(choice, 'ivr_test', {})
     Vue.set(choice.ivr_test as object, 'test_expression', value)
   },
@@ -86,7 +57,7 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
     {getters, rootGetters, dispatch, commit},
     {blockId, resourceId, value, langId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string, langId: ILanguage['id']},
   ) {
-    const choice = getters.choice_findChoice_v2(blockId, resourceId)
+    const choice = getters.choice_findChoice(blockId, resourceId)
 
     // Making sure we have array on text_tests
     if (choice?.text_tests === undefined) {
@@ -156,86 +127,4 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
       value,
     })
   },
-
-  choice_addChoice({getters, rootGetters, commit, dispatch}, data: IChoiceChange) {
-    const choice: ISelectOneResponseFloipUiMetadataChoice = getters.choice_findChoice(data.blockId, data.prompt)
-    const activeFlow = rootGetters['flow/activeFlow'] as IFlow
-    const resource = findResourceWith(data.prompt, activeFlow)
-    const value = resource.values.find(value => value.mime_type === 'text/plain;choice=true')?.value
-    const languages = activeFlow.languages.map(language => language.id)
-
-    if (choice !== undefined) {
-      console.warn('choice_addChoice', 'choice already exists')
-      return
-    }
-
-    commit('flow/block_updateVendorMetadataByPath', {
-      blockId: data.blockId,
-      path: `floip.ui_metadata.choices[${data.prompt}]`,
-      value: {
-        text_options: languages.reduce((acc, language) => ({
-          ...acc,
-          [language]: [value],
-        }), {}),
-      },
-    }, {root: true})
-
-    dispatch('choice_updateConfigFromUiMetadata', data.blockId)
-  },
-
-  choice_updateConfigFromUiMetadata({rootGetters, commit}, blockId: string) {
-    const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
-    const choices = block.vendor_metadata?.floip.ui_metadata.choices
-
-    if (choices === undefined) {
-      console.warn('choice_updateConfigFromUiMetadata', 'no metadata')
-      return
-    }
-
-    uiMetadataChoicesToConfigChanges(choices)
-      .forEach(({prompt, text_tests}) => {
-        console.info('update config from choices', prompt, text_tests)
-        const choiceIndex = block.config.choices.findIndex(choice => choice.prompt === prompt)
-
-        commit('flow/block_updateConfigByPath', {
-          blockId,
-          path: `choices[${choiceIndex}].text_tests`,
-          value: text_tests,
-        }, {root: true})
-      })
-  },
-
-  choice_updateUiMetadataFromConfig(context) { },
-}
-
-export interface IChoiceConfigChange {
-  prompt: string,
-  text_tests: TextTest[],
-}
-
-export function uiMetadataChoicesToConfigChanges(choices: SelectOneResponseFloipUiMetadataChoiceByPrompt): IChoiceConfigChange[] {
-  const configChanges: IChoiceConfigChange[] = []
-
-  Object.entries(choices).forEach(([prompt, choice]) => {
-    const configChange: IChoiceConfigChange = {
-      prompt,
-      text_tests: [],
-    }
-
-    Object.entries(choice.text_options).forEach(([language, synonyms]) => {
-      synonyms.forEach((synonym, index) => {
-        configChange.text_tests.push({
-          language,
-          test_expression: synonym.startsWith('@') === true
-            ? synonym
-            : `block.response = '${synonym}'`,
-        })
-        // TODO VMO-5463 Handle voice config as well
-      })
-    })
-
-    configChanges.push(configChange)
-  })
-
-  return configChanges
 }
