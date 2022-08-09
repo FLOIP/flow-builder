@@ -66,7 +66,6 @@ import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneRes
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import ChoiceMappingModal from '@/components/interaction-designer/block-editors/choices/ChoiceMappingModal.vue'
 import Vue from 'vue'
-import {BLOCK_RESPONSE_EXPRESSION} from './mixins/CommonVoiceChoiceConfig.vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -127,14 +126,11 @@ export class ChoicesBuilder extends mixins(Lang) {
     }
   }
 
-  @blockVuexNamespace.Action choice_updateFirstSynonymForActiveLanguages!: (
+  @blockVuexNamespace.Action choice_create!: (
     {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
   ) => void
-  @blockVuexNamespace.Action choice_updateName!: (
+  @blockVuexNamespace.Action choice_change!: (
     {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: IResourceValue['value']},
-  ) => void
-  @blockVuexNamespace.Action choice_updateIvrTestExpression!: (
-    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
   ) => void
 
   handleExistingResourceVariantChangedFor(
@@ -163,29 +159,13 @@ export class ChoicesBuilder extends mixins(Lang) {
       return
     }
 
-    this.choice_updateName({blockId: this.block.uuid, resourceId, value})
-
-    // TODO VMO-6651 Do not update when test_expression has been updated by the user
-    this.choice_updateFirstSynonymForActiveLanguages({
-      blockId: this.block.uuid,
-      resourceId,
-      value,
-    })
+    this.choice_change({blockId: this.block.uuid, resourceId, value})
 
     this.$emit('choiceChanged', {resourceId})
   }
 
   handleNewChoiceChange({variant, resourceId, value}: {variant: IResourceValue, resourceId: IResource['uuid'], value: string}) {
-    this.choice_updateName({blockId: this.block.uuid, resourceId, value})
-    // Make sure to update the ivr_test expression to provide a default value,
-    // which is associated with using key_press selector by default
-    this.choice_updateIvrTestExpression({
-      blockId: this.block.uuid,
-      resourceId,
-      value: `${BLOCK_RESPONSE_EXPRESSION} = '${this.block.config.choices.length}'`,
-    })
-
-    this.choice_updateFirstSynonymForActiveLanguages({
+    this.choice_create({
       blockId: this.block.uuid,
       resourceId,
       value,

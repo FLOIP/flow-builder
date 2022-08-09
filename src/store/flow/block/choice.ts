@@ -14,7 +14,10 @@ import {IEmptyState} from '@/store/flow/block-types/BaseBlock'
 import Vue from 'vue'
 import {findResourceWith} from '../resource'
 
+export const BLOCK_RESPONSE_EXPRESSION = 'block.response'
+
 export function textValueToExpression(value: string): string {
+  // TODO Escape single quote in the value
   return value.startsWith('@') === true
     ? value
     : `@block.response = '${value}'`
@@ -48,12 +51,47 @@ export const mutations: MutationTree<IEmptyState> = {
 }
 
 export const actions: ActionTree<IEmptyState, IRootState> = {
+  choice_create(
+    {rootGetters, dispatch},
+    params: { blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string },
+  ) {
+    const block: ISelectOneResponseBlock = findBlockWith(params.blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
+
+    dispatch('choice_updateName', params)
+    dispatch('choice_updateFirstSynonymForActiveLanguages', params)
+
+    // Make sure to update the ivr_test expression to provide a default value,
+    // which is associated with using key_press selector by default
+    dispatch('choice_updateIvrTestExpression', {
+      ...params,
+      value: `${BLOCK_RESPONSE_EXPRESSION} = '${
+        block.config.choices.length < 10
+          ? block.config.choices.length
+          : '*'
+      }'`,
+    })
+  },
+
+  choice_change(
+    {dispatch},
+    params: { blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string },
+  ) {
+    dispatch('choice_updateName', params)
+    dispatch('choice_updateFirstSynonymForActiveLanguages', params)
+  },
+
   choice_updateName(
-    {getters, rootGetters, dispatch},
+    {getters, dispatch},
     {blockId, resourceId, value}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string },
   ) {
     const choice = getters.choice_findChoice(blockId, resourceId)
     choice.name = value
+
+    dispatch('choice_updateFirstSynonymForActiveLanguages', {
+      blockId,
+      resourceId,
+      value,
+    })
   },
 
   /**
@@ -80,15 +118,15 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
     const languages = flow.languages
 
     languages.forEach(({id: language}) => {
-        // TODO Don't replace if existing value was changed by the user
-        dispatch('choice_setSymonymForLanguage', {
-          blockId,
-          resourceId,
-          language,
-          index: 0,
-          value,
-        })
+      // TODO Don't replace if existing value was changed by the user
+      dispatch('choice_setSymonymForLanguage', {
+        blockId,
+        resourceId,
+        language,
+        index: 0,
+        value,
       })
+    })
   },
 
   /**
@@ -131,8 +169,8 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
 
     if (languageIndex < index) {
       choice.text_tests.push({
-          language,
-          test_expression: expressionValue,
+        language,
+        test_expression: expressionValue,
       })
     }
   },
