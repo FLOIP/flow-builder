@@ -66,7 +66,6 @@ import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneRes
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import ChoiceMappingModal from '@/components/interaction-designer/block-editors/choices/ChoiceMappingModal.vue'
 import Vue from 'vue'
-import {IChoiceChange} from '@/store/flow/block/choice'
 import {BLOCK_RESPONSE_EXPRESSION} from './mixins/CommonVoiceChoiceConfig.vue'
 
 const flowVuexNamespace = namespace('flow')
@@ -128,7 +127,7 @@ export class ChoicesBuilder extends mixins(Lang) {
     }
   }
 
-  @blockVuexNamespace.Action choice_updateTextTestsForActiveLanguages!: (
+  @blockVuexNamespace.Action choice_updateFirstSynonymForActiveLanguages!: (
     {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
   ) => void
   @blockVuexNamespace.Action choice_updateName!: (
@@ -167,7 +166,7 @@ export class ChoicesBuilder extends mixins(Lang) {
     this.choice_updateName({blockId: this.block.uuid, resourceId, value})
 
     // TODO VMO-6651 Do not update when test_expression has been updated by the user
-    this.choice_updateTextTestsForActiveLanguages({
+    this.choice_updateFirstSynonymForActiveLanguages({
       blockId: this.block.uuid,
       resourceId,
       value,
@@ -186,14 +185,12 @@ export class ChoicesBuilder extends mixins(Lang) {
       value: `${BLOCK_RESPONSE_EXPRESSION} = '${this.block.config.choices.length}'`,
     })
 
-    this.choice_updateTextTestsForActiveLanguages({
+    this.choice_updateFirstSynonymForActiveLanguages({
       blockId: this.block.uuid,
       resourceId,
       value,
     })
   }
-
-  @blockVuexNamespace.Action choice_addChoice!: (data: IChoiceChange) => void
 
   @validationVuexNamespace.Getter choiceMimeType!: string
 

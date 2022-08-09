@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+
 import {IRootState} from '@/store'
 import {
   findBlockWith, IBlock,
@@ -12,12 +14,18 @@ import {IEmptyState} from '@/store/flow/block-types/BaseBlock'
 import Vue from 'vue'
 import {findResourceWith} from '../resource'
 
+export function textValueToExpression(value: string): string {
+  return value.startsWith('@') === true
+    ? value
+    : `@block.response = '${value}'`
+}
+
 export const getters: GetterTree<IEmptyState, IRootState> = {
   choice_findChoice: (state, getters, rootState, rootGetters) =>
     /**
      * Finds a block.config.choices[] by given blockId and prompt.
      */
-     (blockId: IBlock['uuid'], prompt: IResource['uuid']): IChoice | undefined => {
+    (blockId: IBlock['uuid'], prompt: IResource['uuid']): IChoice | undefined => {
       const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
       const resource: IResource = rootGetters['flow/resourcesByUuidOnActiveFlow'][prompt]
 
@@ -42,7 +50,7 @@ export const mutations: MutationTree<IEmptyState> = {
 export const actions: ActionTree<IEmptyState, IRootState> = {
   choice_updateName(
     {getters, rootGetters, dispatch},
-    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
+    {blockId, resourceId, value}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string },
   ) {
     const choice = getters.choice_findChoice(blockId, resourceId)
     choice.name = value
@@ -54,7 +62,7 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
    */
   choice_updateIvrTestExpression(
     {getters, rootGetters, dispatch},
-    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
+    {blockId, resourceId, value}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string },
   ) {
     const choice = getters.choice_findChoice(blockId, resourceId)
     Vue.set(choice, 'ivr_test', {})
@@ -62,51 +70,71 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
   },
 
   /**
-   * Adds or updates the 1st element of text_tests[] matching a given language.
+   * Replaces 1st item of text_tests[] for all languages in a choice.
    */
-  choice_updateTextTestsOn(
+  choice_updateFirstSynonymForActiveLanguages(
     {getters, rootGetters, dispatch, commit},
-    {blockId, resourceId, value, langId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string, langId: ILanguage['id']},
+    {blockId, resourceId, value}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string },
+  ) {
+    const flow: IFlow = rootGetters['flow/activeFlow']
+    const languages = flow.languages
+
+    languages.forEach(({id: language}) => {
+        // TODO Don't replace if existing value was changed by the user
+        dispatch('choice_setSymonymForLanguage', {
+          blockId,
+          resourceId,
+          language,
+          index: 0,
+          value,
+        })
+      })
+  },
+
+  /**
+   * Replaces a synonym by given index for a specific language.
+   *
+   * @param param0 vuex context
+   * @param param1 action parameters
+   * @returns
+   */
+  choice_setSymonymForLanguage(
+    {getters, rootGetters, dispatch, commit},
+    {blockId, resourceId, language, index, value}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'], language: ILanguage['id'], index: number, value: string },
   ) {
     const choice = getters.choice_findChoice(blockId, resourceId)
+    const expressionValue = textValueToExpression(value)
 
-    // Making sure we have array on text_tests
     if (choice?.text_tests === undefined) {
       choice.text_tests = []
     }
 
-    const test: TextTest | undefined = choice.text_tests.find((currentTest: TextTest) => currentTest.language === langId)
-    if (test !== undefined) {
-      // Update existing element
-      test.test_expression = value
-    } else {
-      // Insert new element
-      const testIndex = choice.text_tests.length
-      commit('choice_updateByPath', {
-        choice,
-        path: `text_tests.[${testIndex}]`,
-        value: {
-          language: langId,
-          test_expression: value,
-        },
+    let testIndex = 0
+    let languageIndex = -1
+
+    for (; testIndex < choice.text_tests.length; testIndex += 1) {
+      const text_test = choice.text_tests[testIndex]
+
+      if (text_test.language === language) {
+        languageIndex += 1
+
+        if (languageIndex === index) {
+          commit('choice_updateByPath', {
+            choice,
+            path: `text_tests.[${testIndex}].test_expression`,
+            value: expressionValue,
+          })
+          return
+        }
+      }
+    }
+
+    if (languageIndex < index) {
+      choice.text_tests.push({
+          language,
+          test_expression: expressionValue,
       })
     }
-  },
-
-  /**
-   * Replaces 1st item of text_tests[] for all languages in a choice.
-   */
-  choice_updateTextTestsForActiveLanguages(
-    {getters, rootGetters, dispatch, commit},
-    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
-  ) {
-    const languages = rootGetters['flow/activeFlow'].languages
-    languages.every((lang: ILanguage) => dispatch('choice_updateTextTestsOn', {
-      blockId,
-      resourceId,
-      langId: lang.id,
-      value,
-    }))
   },
 
   /**
