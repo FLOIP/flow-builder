@@ -1,24 +1,20 @@
 <template>
   <div class="text-synonyms-editor">
-    <template v-for="({
-        test_expression, language
-      }, testIndex) in currentTextTestList">
-      <validation-message
-        v-if="language === langId"
-        :key="testIndex"
-        :message-key="`block/${block.uuid}/config/choices/${index}/text_tests/${testIndex}/test_expression`">
-        <template #input-control="{ isValid }">
-          <expression-input
-            ref="expressionInputs"
-            :current-expression="test_expression"
-            :label="''"
-            :placeholder="trans('flow-builder.enter-expression')"
-            :valid-state="isValid"
-            class="mb-1"
-            @commitExpressionChange="updateCurrentExpression(testIndex, $event)" />
-        </template>
-      </validation-message>
-    </template>
+    <validation-message
+      v-for="({ test_expression, globalIndex }, synonymIndex) in synonymsForLanguage"
+      :key="synonymIndex"
+      :message-key="`block/${block.uuid}/config/choices/${index}/text_tests/${globalIndex}/test_expression`">
+      <template #input-control="{ isValid }">
+        <expression-input
+          ref="expressionInputs"
+          :current-expression="test_expression"
+          :label="''"
+          :placeholder="trans('flow-builder.enter-expression')"
+          :valid-state="isValid"
+          class="mb-1"
+          @commitExpressionChange="updateCurrentExpression(synonymIndex, $event)" />
+      </template>
+    </validation-message>
 
     <!--empty input to add new synonyms-->
     <expression-input
@@ -65,8 +61,13 @@ export default {
   },
 
   computed: {
-    currentTextTestList() {
+    synonymsForLanguage() {
       return this.choice.text_tests
+        .map((text_test, globalIndex) => ({
+          ...text_test,
+          globalIndex,
+        }))
+        .filter(({language}) => language === this.langId)
     },
   },
 
@@ -81,15 +82,19 @@ export default {
   },
 
   methods: {
-    ...mapActions(`flow/${BLOCK_TYPE}`, ['choice_setTextTestsExpressionOnIndex', 'choice_removeTextTestsExpressionOnIndex']),
+    ...mapActions(`flow/${BLOCK_TYPE}`, [
+      'choice_setSymonymForLanguage',
+      'choice_removeTextTestsExpressionOnIndex',
+    ]),
 
     updateCurrentExpression(testIndex, value) {
       if (value > '') {
         // ADD
-        this.choice_setTextTestsExpressionOnIndex({
-          choice: this.choice,
-          testIndex,
-          langId: this.langId,
+        this.choice_setSymonymForLanguage({
+          blockId: this.block.uuid,
+          resourceId: this.choice.prompt,
+          language: this.langId,
+          index: testIndex,
           value,
         })
       } else {
@@ -108,10 +113,11 @@ export default {
     },
     addNewExpression(value) {
       this.draftExpression = value
-      this.choice_setTextTestsExpressionOnIndex({
-        choice: this.choice,
-        testIndex: Number(this.currentTextTestList.length),
-        langId: this.langId,
+
+      this.choice_setSymonymForLanguage({
+        blockId: this.block.uuid,
+        resourceId: this.choice.prompt,
+        language: this.langId,
         value,
       })
 

@@ -50,6 +50,10 @@
     </validation-message>
 
     <choice-mapping-modal :block="block" />
+
+    <small>
+      {{ JSON.stringify(block.config.choices, null, 2) }}
+    </small>
   </div>
 </template>
 

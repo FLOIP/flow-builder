@@ -6,13 +6,12 @@ import {
   IChoice,
   IFlow, ILanguage, IResource,
   ISelectOneResponseBlock,
-  TextTest, ValidationException,
+  ValidationException,
 } from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
-import {updateChoiceValueByPath, deleteChoiceValueByPath, updateBlockValueByPath} from '@/store/flow/utils/vuexBlockHelpers'
+import {deleteChoiceValueByPath} from '@/store/flow/utils/vuexBlockHelpers'
 import {IEmptyState} from '@/store/flow/block-types/BaseBlock'
 import Vue from 'vue'
-import {findResourceWith} from '../resource'
 
 export const BLOCK_RESPONSE_EXPRESSION = 'block.response'
 
@@ -42,9 +41,6 @@ export const getters: GetterTree<IEmptyState, IRootState> = {
 }
 
 export const mutations: MutationTree<IEmptyState> = {
-  choice_updateByPath(state, {choice, path, value}: { choice: IChoice, path: string, value?: object | string | number | boolean }) {
-    updateChoiceValueByPath(state, choice, `${path}`, value)
-  },
   choice_deleteByPath(state, {choice, path}: { choice: IChoice, path: string }) {
     deleteChoiceValueByPath(state, choice, `${path}`)
   },
@@ -64,11 +60,10 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
     // which is associated with using key_press selector by default
     dispatch('choice_updateIvrTestExpression', {
       ...params,
-      value: `${BLOCK_RESPONSE_EXPRESSION} = '${
-        block.config.choices.length < 10
+      value: `${BLOCK_RESPONSE_EXPRESSION} = '${block.config.choices.length < 10
           ? block.config.choices.length
           : '*'
-      }'`,
+        }'`,
     })
   },
 
@@ -81,11 +76,15 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
   },
 
   choice_updateName(
-    {getters, dispatch},
+    {dispatch},
     {blockId, resourceId, value}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string },
   ) {
-    const choice = getters.choice_findChoice(blockId, resourceId)
-    choice.name = value
+    dispatch('choice_updateByPath', {
+      blockId,
+      resourceId,
+      path: 'name',
+      value,
+    })
 
     dispatch('choice_updateFirstSynonymForActiveLanguages', {
       blockId,
@@ -137,8 +136,8 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
    * @returns
    */
   choice_setSymonymForLanguage(
-    {getters, rootGetters, dispatch, commit},
-    {blockId, resourceId, language, index, value}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'], language: ILanguage['id'], index: number, value: string },
+    {getters, dispatch},
+    {blockId, resourceId, language, index = Number.POSITIVE_INFINITY, value}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'], language: ILanguage['id'], index: number, value: string },
   ) {
     const choice = getters.choice_findChoice(blockId, resourceId)
     const expressionValue = textValueToExpression(value)
@@ -157,8 +156,9 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
         languageIndex += 1
 
         if (languageIndex === index) {
-          commit('choice_updateByPath', {
-            choice,
+          dispatch('choice_updateByPath', {
+            blockId,
+            resourceId: choice.prompt,
             path: `text_tests.[${testIndex}].test_expression`,
             value: expressionValue,
           })
@@ -168,37 +168,20 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
     }
 
     if (languageIndex < index) {
-      choice.text_tests.push({
-        language,
-        test_expression: expressionValue,
+      dispatch('choice_updateByPath', {
+        blockId,
+        resourceId: choice.prompt,
+        path: `text_tests.[${choice.text_tests.length}]`,
+        value: {
+          language,
+          test_expression: expressionValue,
+        },
       })
     }
-  },
-
-  /**
-   * Set choice's text tests expression on a given index
-   */
-  choice_setTextTestsExpressionOnIndex(
-    {commit, state, dispatch},
-    {choice, testIndex, langId, value}: { choice: IChoice, testIndex: number, langId?: ILanguage['id'], value: string },
-  ) {
-    if (langId !== undefined) {
-      commit('choice_updateByPath', {
-        choice,
-        path: `text_tests.[${testIndex}].language`,
-        value: langId,
-      })
-    }
-
-    commit('choice_updateByPath', {
-      choice,
-      path: `text_tests.[${testIndex}].test_expression`,
-      value,
-    })
   },
 
   choice_removeTextTestsExpressionOnIndex(
-    {commit, state, dispatch},
+    {commit},
     {choice, testIndex, value}: { choice: IChoice, testIndex: number, value: string },
   ) {
     commit('choice_deleteByPath', {
@@ -206,5 +189,20 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
       path: `text_tests.[${testIndex}]`,
       value,
     })
+  },
+
+  choice_updateByPath(
+    {commit, rootGetters},
+    {blockId, resourceId, path, value}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'], path: string, value?: object | string | number | boolean },
+  ) {
+    const block = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
+    const choices = block.config.choices
+    const choiceIndex = choices.findIndex((choice: IChoice) => choice.prompt === resourceId)
+
+    commit('flow/block_updateConfigByPath', {
+      blockId,
+      path: `choices.[${choiceIndex}].${path}`,
+      value,
+    }, {root: true})
   },
 }
