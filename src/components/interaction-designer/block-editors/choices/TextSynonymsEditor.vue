@@ -62,12 +62,15 @@ export default {
 
   computed: {
     synonymsForLanguage() {
-      return this.choice.text_tests
+      return this.choiceTests
         .map((text_test, globalIndex) => ({
           ...text_test,
           globalIndex,
         }))
         .filter(({language}) => language === this.langId)
+    },
+    choiceTests() {
+      return this.choice.text_tests
     },
   },
 
@@ -83,14 +86,14 @@ export default {
 
   methods: {
     ...mapActions(`flow/${BLOCK_TYPE}`, [
-      'choice_setSymonymForLanguage',
+      'choice_setSynonymForLanguage',
       'choice_removeTextTestsExpressionOnIndex',
     ]),
 
     updateCurrentExpression(testIndex, value) {
       if (value > '') {
         // ADD
-        this.choice_setSymonymForLanguage({
+        this.choice_setSynonymForLanguage({
           blockId: this.block.uuid,
           resourceId: this.choice.prompt,
           language: this.langId,
@@ -114,7 +117,7 @@ export default {
     addNewExpression(value) {
       this.draftExpression = value
 
-      this.choice_setSymonymForLanguage({
+      this.choice_setSynonymForLanguage({
         blockId: this.block.uuid,
         resourceId: this.choice.prompt,
         language: this.langId,

@@ -118,7 +118,7 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
 
     languages.forEach(({id: language}) => {
       // TODO Don't replace if existing value was changed by the user
-      dispatch('choice_setSymonymForLanguage', {
+      dispatch('choice_setSynonymForLanguage', {
         blockId,
         resourceId,
         language,
@@ -135,7 +135,7 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
    * @param param1 action parameters
    * @returns
    */
-  choice_setSymonymForLanguage(
+  choice_setSynonymForLanguage(
     {getters, dispatch},
     {blockId, resourceId, language, index = Number.POSITIVE_INFINITY, value}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'], language: ILanguage['id'], index: number, value: string },
   ) {
@@ -143,7 +143,7 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
     const expressionValue = textValueToExpression(value)
 
     if (choice?.text_tests === undefined) {
-      choice.text_tests = []
+      Vue.set(choice, 'text_tests', [])
     }
 
     let testIndex = 0
