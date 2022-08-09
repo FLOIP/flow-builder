@@ -7,6 +7,7 @@ import Vue from 'vue'
 import {cloneDeep, find, reject} from 'lodash'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
+import {choicesToExpression} from '@/components/interaction-designer/block-editors/choices/expressionTransformers'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
 
@@ -54,6 +55,13 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
     const newChoices = reject(block.config.choices, v => v.prompt === resourceId)
     Vue.set(block.config, 'choices', newChoices)
+
+    Vue.delete(block.vendor_metadata?.floip.ui_metadata.set_contact_property.property_value_mapping, resourceId)
+    Vue.set(
+      block.config.set_contact_property?.[0] ?? {},
+      'property_value',
+      choicesToExpression(block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping),
+    )
   },
 
   async reflowExitsFromChoices({dispatch, rootGetters}, {blockId}: { blockId: IBlock['uuid'] }) {
