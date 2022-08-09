@@ -8,7 +8,7 @@
       <template slot="entry-from-this-block">
         <div class="mt-2 mb-2">
           <div
-            v-if="choiceKeys.length === 0"
+            v-if="choices.length === 0"
             class="mt-2 mb-2 text-danger">
             {{ trans('flow-builder.enter-at-least-one-choice-above') }}
           </div>
@@ -17,10 +17,10 @@
               {{ trans('flow-builder.enter-value-for-choices-for-selected-property') }}
             </div>
             <div
-              v-for="choiceKey in choiceKeys"
+              v-for="{prompt: choiceKey, name: choiceName} in choices"
               :key="choiceKey"
               class="mt-2">
-              <label>{{ trans('flow-builder.choice') }}: {{ choiceKey }}</label>
+              <label>{{ trans('flow-builder.choice') }}: {{ choiceName }}</label>
               <input
                 v-if="isTextProperty"
                 :value="getChoiceValue(choiceKey)"
@@ -85,8 +85,8 @@ export const SelectOneResponseBlockContactPropertyEditor = {
       return this.contactProperty?.data_type === 'number'
     },
 
-    choiceKeys() {
-      return this.block.config.choices.map(choice => choice.name)
+    choices() {
+      return this.block.config.choices
     },
   },
 
@@ -101,11 +101,11 @@ export const SelectOneResponseBlockContactPropertyEditor = {
       return this.block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping?.[choiceKey]
     },
 
-    setChoiceValue(value, choiceKey) {
+    setChoiceValue(choiceValue, choiceKey) {
       this.block_updateVendorMetadataByPath({
         blockId: this.block.uuid,
         path: `floip.ui_metadata.set_contact_property.property_value_mapping.${choiceKey}`,
-        value,
+        value: choiceValue,
       })
 
       this.block_updateConfigByPath({
