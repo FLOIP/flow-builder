@@ -111,7 +111,10 @@ export const SelectOneResponseBlockContactPropertyEditor = {
       this.block_updateConfigByPath({
         blockId: this.block.uuid,
         path: 'set_contact_property[0].property_value',
-        value: choicesToExpression(this.block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping),
+        value: choicesToExpression(
+          this.block.config.choices,
+          this.block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping,
+        ),
       })
     },
 

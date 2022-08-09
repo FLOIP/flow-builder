@@ -1,21 +1,27 @@
 import {choicesToExpression} from '@/components/interaction-designer/block-editors/choices/expressionTransformers'
+import {IChoice} from '@floip/flow-runner'
+
+const choices: IChoice[] = [
+  {prompt: 'b86fc9fd-1511-4690-87c4-2cf79e02da3f', name: 'one'},
+  {prompt: '69ea35af-4d04-4c69-ad60-146006df45b3', name: 'two'},
+]
 
 describe('choicesToExpression', () => {
   it('should return a valid expression for STRING choices', () => {
-    const propertyValueMapping = {
-      one: 'apple',
-      two: 'banana',
+    const propertyValueMapping_string = {
+      'b86fc9fd-1511-4690-87c4-2cf79e02da3f': 'apple',
+      '69ea35af-4d04-4c69-ad60-146006df45b3': 'banana',
     }
-    expect(choicesToExpression(propertyValueMapping))
+    expect(choicesToExpression(choices, propertyValueMapping_string))
       .toBe("@CONCATENATE(\nIF(block.value = 'one', 'apple', ''),\nIF(block.value = 'two', 'banana', '')\n)")
   })
 
   it('should return a valid expression for NUMERIC choices', () => {
-    const propertyValueMapping = {
-      one: 1,
-      two: 2,
+    const propertyValueMapping_number = {
+      'b86fc9fd-1511-4690-87c4-2cf79e02da3f': 1,
+      '69ea35af-4d04-4c69-ad60-146006df45b3': 2,
     }
-    expect(choicesToExpression(propertyValueMapping))
+    expect(choicesToExpression(choices, propertyValueMapping_number))
       .toBe("@CONCATENATE(\nIF(block.value = 'one', 1, ''),\nIF(block.value = 'two', 2, '')\n)")
   })
 })

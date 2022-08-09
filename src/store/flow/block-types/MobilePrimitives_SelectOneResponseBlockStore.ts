@@ -60,7 +60,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     Vue.set(
       block.config.set_contact_property?.[0] ?? {},
       'property_value',
-      choicesToExpression(block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping),
+      choicesToExpression(newChoices, block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping),
     )
   },
 
