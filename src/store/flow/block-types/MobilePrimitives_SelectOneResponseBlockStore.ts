@@ -31,6 +31,15 @@ const actions: ActionTree<IEmptyState, IRootState> = {
         ? ({...choice, name: resourceValue.value})
         : choice
       ))
+
+    const propertyValueMapping = block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping
+    if (propertyValueMapping !== undefined) {
+      Vue.set(
+        block.config.set_contact_property?.[0] ?? {},
+        'property_value',
+        choicesToExpression(block.config.choices, propertyValueMapping),
+      )
+    }
   },
 
   addChoiceByResourceIdTo({rootGetters}, {blockId, resourceId}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'] }) {
@@ -57,11 +66,15 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     Vue.set(block.config, 'choices', newChoices)
 
     Vue.delete(block.vendor_metadata?.floip.ui_metadata.set_contact_property.property_value_mapping, resourceId)
-    Vue.set(
-      block.config.set_contact_property?.[0] ?? {},
-      'property_value',
-      choicesToExpression(newChoices, block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping),
-    )
+
+    const propertyValueMapping = block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping
+    if (propertyValueMapping !== undefined) {
+      Vue.set(
+        block.config.set_contact_property?.[0] ?? {},
+        'property_value',
+        choicesToExpression(block.config.choices, propertyValueMapping),
+      )
+    }
   },
 
   async reflowExitsFromChoices({dispatch, rootGetters}, {blockId}: { blockId: IBlock['uuid'] }) {
