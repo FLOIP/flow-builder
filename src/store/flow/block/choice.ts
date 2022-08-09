@@ -81,7 +81,7 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
     Vue.set(choice.ivr_test as object, 'test_expression', value)
   },
 
-  // TODO: rename this to init ...
+  // TODO: rename this to init because it's called to init text_test only
   choice_updateTextTestsOn(
     {getters, rootGetters, dispatch, commit},
     {blockId, resourceId, value, langId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string, langId: ILanguage['id']},
@@ -90,7 +90,6 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
 
     // Making sure we have array on text_tests
     if (choice?.text_tests === undefined) {
-      console.warn('choice_setTextTestsExpressionOn', 'choice.text_tests was not set')
       choice.text_tests = []
     }
 
@@ -132,7 +131,6 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
     {commit, state, dispatch},
     {choice, testIndex, langId, value}: { choice: IChoice, testIndex: number, langId?: ILanguage['id'], value: string },
   ) {
-    console.debug('test', 'choice_setTextTestsExpressionOnIndex', {choice, testIndex, langId, value})
     if (langId !== undefined) {
       commit('choice_updateByPath', {
         choice,
