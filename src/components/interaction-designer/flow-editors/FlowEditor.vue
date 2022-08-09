@@ -110,10 +110,7 @@ export class FlowEditor extends mixins(Lang) {
   }
 
   @flowVuexNamespace.Action block_updateAllBlocksAfterAddingFlowLanguage!: ({language}: {language: ILanguage}) => void
-
-  handleFlowLanguagesAdded(value): Promise<void> {
-    this.block_updateAllBlocksAfterAddingFlowLanguage({language: value})
-  }
+  @flowVuexNamespace.Action block_updateAllBlocksAfterDeletingFlowLanguage!: ({language}: {language: ILanguage}) => void
 
   async updateFlowModes(value: SupportedMode[] | SupportedMode): Promise<void> {
     this.flow_setSupportedMode({flowId: this.flow.uuid, value})
@@ -133,9 +130,14 @@ export class FlowEditor extends mixins(Lang) {
   @flowVuexNamespace.Mutation flow_setLanguages!: ({flowId, value}: {flowId: string, value: ILanguage | ILanguage[]}) => void
   @flowVuexNamespace.Mutation flow_setSupportedMode!: any
 
-  handleFlowLanguagesRemoved(value) {
-    console.debug('test', 'handleFlowLanguagesRemoved', value[0])
+  handleFlowLanguagesAdded(value): void {
+    this.block_updateAllBlocksAfterAddingFlowLanguage({language: value})
   }
+
+  handleFlowLanguagesRemoved(value): void {
+    this.block_updateAllBlocksAfterDeletingFlowLanguage({language: value})
+  }
+
   @builderVuexNamespace.Getter isEditable!: boolean
 
   @validationVuexNamespace.Action validate_allBlocksWithinFlow!: () => Promise<void>

@@ -382,8 +382,22 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       return currentBlock
     })
   },
-  async block_updateAllBlocksAfterDeletingFlowLanguages({state}, {blockId}: { blockId: IBlock['uuid'] }) {
 
+  block_updateAllBlocksAfterDeletingFlowLanguage({rootGetters, dispatch}, {language}: {language: ILanguage}): void {
+    rootGetters['flow/activeFlow'].blocks.map((currentBlock: IBlock) => {
+      if (currentBlock.type === SelectOneBlockType || currentBlock.type === SelectManyBlockType) {
+        const hasTextMode = rootGetters['flow/hasTextMode']
+        if (hasTextMode === true) {
+          (currentBlock as ISelectOneResponseBlock).config.choices.map((choice) => {
+            choice.text_tests = choice.text_tests?.filter((test) => test.language !== language.id)
+
+            return choice
+          })
+        }
+      }
+
+      return currentBlock
+    })
   },
 }
 
