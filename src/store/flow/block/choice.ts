@@ -17,6 +17,7 @@ export const BLOCK_RESPONSE_EXPRESSION = 'block.response'
 
 export function textValueToExpression(value: string): string {
   // TODO Escape single quote in the value
+  // TODO Handle scenario where the @ is in the middle of expression
   return value.startsWith('@') === true
     ? value
     : `@block.response = '${value}'`
