@@ -17,24 +17,24 @@
               {{ trans('flow-builder.enter-value-for-choices-for-selected-property') }}
             </div>
             <div
-              v-for="{prompt: choiceKey, name: choiceName} in choices"
-              :key="choiceKey"
+              v-for="{prompt: choicePrompt, name: choiceName} in choices"
+              :key="choicePrompt"
               class="mt-2">
               <label>{{ trans('flow-builder.choice') }}: {{ choiceName }}</label>
               <input
                 v-if="isTextProperty"
-                :value="getChoiceValue(choiceKey)"
+                :value="getChoiceValue(choicePrompt)"
                 type="text"
                 class="form-control"
                 :placeholder="trans('flow-builder.enter-value')"
-                @input="setChoiceValue($event.target.value, choiceKey)">
+                @input="setChoiceValue($event.target.value, choicePrompt)">
               <input
                 v-if="isNumberProperty"
-                :value="getChoiceValue(choiceKey)"
+                :value="getChoiceValue(choicePrompt)"
                 type="number"
                 class="form-control"
                 :placeholder="trans('flow-builder.enter-value')"
-                @input="setChoiceValue(Number($event.target.value), choiceKey)">
+                @input="setChoiceValue(Number($event.target.value), choicePrompt)">
             </div>
           </template>
         </div>
@@ -97,14 +97,14 @@ export const SelectOneResponseBlockContactPropertyEditor = {
       'block_updateConfigByPath',
     ]),
 
-    getChoiceValue(choiceKey) {
-      return this.block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping?.[choiceKey]
+    getChoiceValue(choicePrompt) {
+      return this.block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping?.[choicePrompt]
     },
 
-    setChoiceValue(choiceValue, choiceKey) {
+    setChoiceValue(choiceValue, choicePrompt) {
       this.block_updateVendorMetadataByPath({
         blockId: this.block.uuid,
-        path: `floip.ui_metadata.set_contact_property.property_value_mapping.${choiceKey}`,
+        path: `floip.ui_metadata.set_contact_property.property_value_mapping.${choicePrompt}`,
         value: choiceValue,
       })
 
