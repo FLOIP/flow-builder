@@ -13,16 +13,21 @@ import Vue from 'vue'
 import {findResourceWith} from '../resource'
 
 export const getters: GetterTree<IEmptyState, IRootState> = {
-  choice_findChoice: (state, getters, rootState, rootGetters) => (blockId: string, prompt: string): IChoice | undefined => {
-    const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
-    const resource: IResource = rootGetters['flow/resourcesByUuidOnActiveFlow'][prompt]
+  choice_findChoice: (state, getters, rootState, rootGetters) =>
+    /**
+     * Finds a block.config.choices[] by given blockId and prompt.
+     */
+     (blockId: IBlock['uuid'], prompt: IResource['uuid']): IChoice | undefined => {
+      const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
+      const resource: IResource = rootGetters['flow/resourcesByUuidOnActiveFlow'][prompt]
 
-    if (resource == null) {
-      throw new ValidationException(`Unable to find resource for choice: ${prompt}`)
+      if (resource == null) {
+        throw new ValidationException(`Unable to find resource for choice: ${prompt}`)
+      }
+
+      return block.config.choices.find((choice: IChoice) => choice.prompt === prompt)
     }
-
-    return block.config.choices.find((choice: IChoice) => choice.prompt === prompt)
-  },
+  ,
 }
 
 export const mutations: MutationTree<IEmptyState> = {
@@ -43,6 +48,10 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
     choice.name = value
   },
 
+  /**
+   * Replaces ivr_test.test_expression with a given value;
+   * An element of block.config.choices[] is found by blockId and prompt = resourceId.
+   */
   choice_updateIvrTestExpression(
     {getters, rootGetters, dispatch},
     {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
@@ -52,7 +61,9 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
     Vue.set(choice.ivr_test as object, 'test_expression', value)
   },
 
-  // TODO: rename this to init because it's called to init text_test only
+  /**
+   * Adds or updates the 1st element of text_tests[] matching a given language.
+   */
   choice_updateTextTestsOn(
     {getters, rootGetters, dispatch, commit},
     {blockId, resourceId, value, langId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string, langId: ILanguage['id']},
@@ -82,6 +93,9 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
     }
   },
 
+  /**
+   * Replaces 1st item of text_tests[] for all languages in a choice.
+   */
   choice_updateTextTestsForActiveLanguages(
     {getters, rootGetters, dispatch, commit},
     {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
