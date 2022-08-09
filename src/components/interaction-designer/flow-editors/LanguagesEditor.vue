@@ -32,7 +32,7 @@ export class LanguagesEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
 
   @Watch('flowSelectedLanguages')
-  onLanguagesChange(newValue, oldValue) {
+  onLanguagesChange(newValue: ILanguage[], oldValue: ILanguage[]) {
     if (newValue.length > oldValue.length) {
       const newAddedLanguage = difference(newValue, oldValue)
       this.$emit('flowLanguagesAdded', newAddedLanguage[0])

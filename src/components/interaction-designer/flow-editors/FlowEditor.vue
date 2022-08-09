@@ -130,11 +130,11 @@ export class FlowEditor extends mixins(Lang) {
   @flowVuexNamespace.Mutation flow_setLanguages!: ({flowId, value}: {flowId: string, value: ILanguage | ILanguage[]}) => void
   @flowVuexNamespace.Mutation flow_setSupportedMode!: any
 
-  handleFlowLanguagesAdded(value): void {
+  handleFlowLanguagesAdded(value: ILanguage): void {
     this.block_updateAllBlocksAfterAddingFlowLanguage({language: value})
   }
 
-  handleFlowLanguagesRemoved(value): void {
+  handleFlowLanguagesRemoved(value: ILanguage): void {
     this.block_updateAllBlocksAfterDeletingFlowLanguage({language: value})
   }
 
