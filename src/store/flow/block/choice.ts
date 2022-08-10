@@ -88,6 +88,10 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
       value,
     })
 
+    dispatch('flow/block_updateContactPropertyAfterChoicesChange', {
+      blockId,
+    }, {root: true})
+
     dispatch('choice_updateFirstSynonymForActiveLanguages', {
       blockId,
       resourceId,
