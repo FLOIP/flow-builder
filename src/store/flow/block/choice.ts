@@ -66,6 +66,11 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
         : '*'
       }'`,
     })
+
+    dispatch('flow/block_updateContactPropertyMetadataAfterNewChoiceAdded', {
+      blockId: params.blockId,
+      prompt: params.resourceId,
+    }, {root: true})
   },
 
   choice_change(

@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import {mapGetters, mapMutations} from 'vuex'
+import {mapGetters, mapMutations, mapActions} from 'vuex'
 import VueMultiselect from 'vue-multiselect'
 import {find} from 'lodash'
 import {lang} from '@/lib/filters/lang'
@@ -96,6 +96,9 @@ export const SelectOneResponseBlockContactPropertyEditor = {
       'block_removeVendorMetadataByPath',
       'block_updateConfigByPath',
     ]),
+    ...mapActions('flow', [
+      'block_resetContactPropertyMetadata',
+    ]),
 
     getChoiceValue(choicePrompt) {
       return this.block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping?.[choicePrompt]
@@ -135,11 +138,12 @@ export const SelectOneResponseBlockContactPropertyEditor = {
     },
 
     resetMapping() {
-      this.block_updateVendorMetadataByPath({
-        blockId: this.block.uuid,
-        path: 'floip.ui_metadata.set_contact_property.property_value_mapping',
-        value: {},
-      })
+      this.block_resetContactPropertyMetadata({blockId: this.block.uuid})
+      // this.block_updateVendorMetadataByPath({
+      //   blockId: this.block.uuid,
+      //   path: 'floip.ui_metadata.set_contact_property.property_value_mapping',
+      //   value: {},
+      // })
     },
 
     removeMapping() {
