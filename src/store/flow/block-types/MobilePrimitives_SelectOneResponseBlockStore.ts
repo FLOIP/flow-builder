@@ -32,6 +32,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
         : choice
       ))
 
+    // update expression in property_value if a choice is renamed (and if set-contact-property is turned on)
     const propertyValueMapping = block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping
     if (propertyValueMapping !== undefined) {
       Vue.set(
@@ -67,6 +68,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
 
     Vue.delete(block.vendor_metadata?.floip.ui_metadata.set_contact_property.property_value_mapping, resourceId)
 
+    // update expression in property_value if a choice is deleted (and if set-contact-property is turned on)
     const propertyValueMapping = block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping
     if (propertyValueMapping !== undefined) {
       Vue.set(
