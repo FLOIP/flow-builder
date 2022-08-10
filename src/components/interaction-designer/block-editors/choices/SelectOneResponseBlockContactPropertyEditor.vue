@@ -139,11 +139,6 @@ export const SelectOneResponseBlockContactPropertyEditor = {
 
     resetMapping() {
       this.block_resetContactPropertyMetadata({blockId: this.block.uuid})
-      // this.block_updateVendorMetadataByPath({
-      //   blockId: this.block.uuid,
-      //   path: 'floip.ui_metadata.set_contact_property.property_value_mapping',
-      //   value: {},
-      // })
     },
 
     removeMapping() {
