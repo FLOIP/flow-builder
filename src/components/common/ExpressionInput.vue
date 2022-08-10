@@ -69,6 +69,7 @@ export class ExpressionInput extends mixins(Lang) {
   @Prop({type: Boolean, default: null}) readonly validState!: boolean|null
   @Prop({type: String, default: ''}) readonly prependText!: string
   @Prop({type: Boolean, default: false}) readonly disabled!: boolean
+  @Prop({type: Boolean, default: false}) readonly disabledAutoComplete!: boolean
 
   suggest: IAutoSuggest = {} as IAutoSuggest
 
@@ -203,25 +204,37 @@ export class ExpressionInput extends mixins(Lang) {
   }
 
   handleClick(): void {
-    // this is required in case the user re-clicks at the input without updating the expression
-    this.debounce_portAutoSuggestContent()
+    if (this.disabledAutoComplete === false) {
+      // this is required in case the user re-clicks at the input without updating the expression
+      this.debounce_portAutoSuggestContent()
+    } else {
+      console.debug('ExpressionInput', 'handleClick', 'disabledAutoComplete is false')
+    }
   }
 
   mounted(): void {
-    const input = this.refInputElement
-    this.suggest = new AutoSuggest({
-      caseSensitive: false,
-      suggestions: this.suggestions,
-      onChange: () => input.dispatchEvent(new Event('input')),
-    }, input)
+    if (this.disabledAutoComplete === false) {
+      const input = this.refInputElement;
+      this.suggest = new AutoSuggest({
+        caseSensitive: false,
+        suggestions: this.suggestions,
+        onChange: () => input.dispatchEvent(new Event('input')),
+      }, input)
 
-    // Unfortunately there is no `updated()` hook in AutoSuggest, so we will wait a bit
-    this.debounce_portAutoSuggestContent()
+      // Unfortunately there is no `updated()` hook in AutoSuggest, so we will wait a bit
+      this.debounce_portAutoSuggestContent()
+    } else {
+      console.debug('ExpressionInput', 'mounted', 'disabledAutoComplete is false')
+    }
   }
 
   updated(): void {
-    // Unfortunately there is no `updated()` hook in AutoSuggest, so we will wait a bit
-    this.debounce_portAutoSuggestContent()
+    if (this.disabledAutoComplete === false) {
+      // Unfortunately there is no `updated()` hook in AutoSuggest, so we will wait a bit
+      this.debounce_portAutoSuggestContent()
+    } else {
+      console.debug('ExpressionInput', 'updated', 'disabledAutoComplete is false')
+    }
   }
 
   focus(): void {

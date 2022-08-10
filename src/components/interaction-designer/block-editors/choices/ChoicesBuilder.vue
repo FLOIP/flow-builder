@@ -18,6 +18,7 @@
         :resource-id="resource.uuid"
         :resource-variant="resource.values[0]"
         :mode="SupportedMode.TEXT"
+        :disabled-auto-complete="true"
         @afterResourceVariantChanged="handleExistingResourceVariantChangedFor(
           {choiceIndex: i},
           $event
@@ -40,6 +41,7 @@
          mime_type: choiceMimeType,
          modes: [SupportedMode.TEXT]})"
       :mode="SupportedMode.TEXT"
+      :disabled-auto-complete="true"
       @beforeResourceVariantChanged="addDraftResourceToChoices"
       @afterResourceVariantChanged="handleNewChoiceChange" />
 
