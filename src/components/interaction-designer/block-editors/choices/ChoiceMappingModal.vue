@@ -1,83 +1,83 @@
 <template>
-   <div class="choice-mapping-modal">
-     <div class="form-group">
-       <button :disabled="block.config.choices.length === 0" class="btn btn-primary btn-sm" @click="showModal">
-         {{ trans('flow-builder.set-choice-options') }}
-       </button>
-     </div>
+  <div class="choice-mapping-modal">
+    <div class="form-group">
+      <button :disabled="block.config.choices.length === 0" class="btn btn-primary btn-sm" @click="showModal">
+        {{ trans('flow-builder.set-choice-options') }}
+      </button>
+    </div>
 
-     <b-modal
-       ref="edit-choice-mapping-modal"
-       :ok-title="trans('flow-builder.close')"
-       size="lg"
-       :title="trans('flow-builder.choice-options')"
-       ok-only>
-       <div v-if="shouldHaveTabs" class="choice-mapping-navs">
-         <nav>
-           <div id="choice-options-nav-tab" class="nav nav-tabs" role="tablist">
-             <a
-               v-if="hasVoiceMode"
-               id="nav-voice-tab"
-               :class="{'active': hasVoiceMode}"
-               aria-controls="nav-home"
-               aria-selected="true"
-               class="nav-item nav-link"
-               data-toggle="tab"
-               href="#nav-voice"
-               role="tab">
-               {{ trans('flow-builder.voice') }} ({{ trans('flow-builder.all-languages') }})
-             </a>
-             <template v-if="hasTextMode">
-               <a
-                 v-for="({id: languageId, label: language}, index) in textLanguages"
-                 :id="`nav-lang-tab-${languageId}`"
-                 :key="languageId"
-                 :href="`#nav-lang-${languageId}`"
-                 :title="language || trans('flow-builder.unknown-language')"
-                 aria-controls="nav-profile"
-                 aria-selected="false"
-                 class="nav-item nav-link"
-                 :class="{'active': !hasVoiceMode && hasTextMode && index === 0}"
-                 data-toggle="tab"
-                 role="tab">
-                 {{ trans('flow-builder.data-type-text')}} ({{ language || trans('flow-builder.unknown-language') }})
-               </a>
-             </template>
-           </div>
-         </nav>
-         <div id="choice-options-nav-tab-content" class="tab-content">
-           <div
-             v-if="hasVoiceMode"
-             id="nav-voice"
-             aria-labelledby="nav-voice-tab"
-             :class="{'show active': hasVoiceMode}"
-             class="tab-pane fade"
-             role="tabpanel">
-             <div class="mt-3">
-               <voice-mapping-table :block="block"/>
-             </div>
-           </div>
-           <template v-if="hasTextMode">
-             <div
-               v-for="({id: languageId, label: language}, index) in textLanguages"
-               :id="`nav-lang-${languageId}`"
-               :key="languageId"
-               aria-labelledby="nav-lang-tab"
-               class="tab-pane fade"
-               :class="{'show active': !hasVoiceMode && hasTextMode && index === 0}"
-               role="tabpanel">
-               <div class="mt-3">
-                 <text-mapping-table :block="block" :lang-id="languageId"/>
-               </div>
-             </div>
-           </template>
-         </div>
-       </div>
-       <div v-else>
-         {{ trans('flow-builder.cannot-map-choices-hint')}}
-       </div>
-     </b-modal>
-   </div>
+    <b-modal
+      ref="edit-choice-mapping-modal"
+      :ok-title="trans('flow-builder.close')"
+      :title="trans('flow-builder.choice-options')"
+      ok-only
+      size="lg">
+      <div v-if="shouldHaveTabs" class="choice-mapping-navs">
+        <nav>
+          <div id="choice-options-nav-tab" class="nav nav-tabs" role="tablist">
+            <a
+              v-if="hasVoiceMode"
+              id="nav-voice-tab"
+              :class="{'active': hasVoiceMode}"
+              aria-controls="nav-home"
+              aria-selected="true"
+              class="nav-item nav-link"
+              data-toggle="tab"
+              href="#nav-voice"
+              role="tab">
+              {{ trans('flow-builder.voice') }} ({{ trans('flow-builder.all-languages') }})
+            </a>
+            <template v-if="hasTextMode">
+              <a
+                v-for="({id: languageId, label: language}, index) in textLanguages"
+                :id="`nav-lang-tab-${languageId}`"
+                :key="languageId"
+                :class="{'active': !hasVoiceMode && hasTextMode && index === 0}"
+                :href="`#nav-lang-${languageId}`"
+                :title="language || trans('flow-builder.unknown-language')"
+                aria-controls="nav-profile"
+                aria-selected="false"
+                class="nav-item nav-link"
+                data-toggle="tab"
+                role="tab">
+                {{ trans('flow-builder.data-type-text') }} ({{ language || trans('flow-builder.unknown-language') }})
+              </a>
+            </template>
+          </div>
+        </nav>
+        <div id="choice-options-nav-tab-content" class="tab-content">
+          <div
+            v-if="hasVoiceMode"
+            id="nav-voice"
+            :class="{'show active': hasVoiceMode}"
+            aria-labelledby="nav-voice-tab"
+            class="tab-pane fade"
+            role="tabpanel">
+            <div class="mt-3">
+              <voice-mapping-table :block="block"/>
+            </div>
+          </div>
+          <template v-if="hasTextMode">
+            <div
+              v-for="({id: languageId, label: language}, index) in textLanguages"
+              :id="`nav-lang-${languageId}`"
+              :key="languageId"
+              :class="{'show active': !hasVoiceMode && hasTextMode && index === 0}"
+              aria-labelledby="nav-lang-tab"
+              class="tab-pane fade"
+              role="tabpanel">
+              <div class="mt-3">
+                <text-mapping-table :block="block" :lang-id="languageId"/>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+      <div v-else>
+        {{ trans('flow-builder.cannot-map-choices-hint') }}
+      </div>
+    </b-modal>
+  </div>
 </template>
 
 <script>

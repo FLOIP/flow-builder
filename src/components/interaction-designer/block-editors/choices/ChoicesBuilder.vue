@@ -166,7 +166,7 @@ export class ChoicesBuilder extends mixins(Lang) {
     this.$emit('choiceChanged', {resourceId})
   }
 
-  handleNewChoiceChange({variant, resourceId, value}: {variant: IResourceValue, resourceId: IResource['uuid'], value: string}) {
+  handleNewChoiceChange({variant, resourceId, value}: {variant: IResourceValue, resourceId: IResource['uuid'], value: string}): void {
     this.choice_create({
       blockId: this.block.uuid,
       resourceId,
