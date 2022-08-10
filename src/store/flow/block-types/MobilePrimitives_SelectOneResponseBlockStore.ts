@@ -9,6 +9,7 @@ import BaseStore, {actions as baseActions, mutations as baseMutations, getters a
 import {MobilePrimitives_SelectOneResponseBlockValidator} from '@/lib/validations'
 import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import * as ChoiceModule from '@/store/flow/block/choice'
+
 export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
 
 export const getters: GetterTree<IEmptyState, IRootState> = {
@@ -47,6 +48,18 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
     const newChoices = reject(block.config.choices, v => v.prompt === resourceId)
     Vue.set(block.config, 'choices', newChoices)
+
+    Vue.delete(block.vendor_metadata?.floip.ui_metadata.set_contact_property.property_value_mapping, resourceId)
+
+    // update expression in property_value if a choice is deleted (and if set-contact-property is turned on)
+    const propertyValueMapping = block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping
+    if (propertyValueMapping !== undefined) {
+      Vue.set(
+        block.config.set_contact_property?.[0] ?? {},
+        'property_value',
+        choicesToExpression(block.config.choices, propertyValueMapping),
+      )
+    }
   },
 
   async reflowExitsFromChoices({dispatch, rootGetters}, {blockId}: { blockId: IBlock['uuid'] }) {
