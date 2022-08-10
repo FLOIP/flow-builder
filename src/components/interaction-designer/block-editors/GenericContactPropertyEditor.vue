@@ -52,62 +52,57 @@
       </validation-message>
 
       <!--Contact property value editor with actions-->
-      <template v-if="flowSelectedContactPropertyField !== null">
-        <label>{{ 'flow-builder.value' | trans }}</label>
-        <div
-          v-if="isBlockInteractive(block)"
-          class="form-group">
-          <div class="custom-control custom-radio">
-            <input
-              id="setProp"
-              type="radio"
-              name="contactPropAction"
-              :checked="propertyValueAction === PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
-              :value="PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
-              class="custom-control-input"
-              @change="updatePropertyValueAction">
-            <label
-              class="custom-control-label font-weight-normal"
-              for="setProp">
-              {{ 'flow-builder.entry-from-this-block' | trans }}
-            </label>
-          </div>
-          <slot
-            v-if="propertyValueAction === PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
-            name="entry-from-this-block" />
-          <div class="custom-control custom-radio">
-            <input
-              id="clearProp"
-              type="radio"
-              name="contactPropAction"
-              :checked="propertyValueAction === PROPERTY_VALUE_ACTION.OPEN_EXPRESSION"
-              :value="PROPERTY_VALUE_ACTION.OPEN_EXPRESSION"
-              class="custom-control-input"
-              @change="updatePropertyValueAction">
-            <label
-              class="custom-control-label font-weight-normal"
-              for="clearProp">
-              {{ 'flow-builder.expression' | trans }}
-            </label>
-          </div>
+      <label>{{ 'flow-builder.value' | trans }}</label>
+      <div
+        v-if="isBlockInteractive(block)"
+        class="form-group">
+        <div class="custom-control custom-radio">
+          <input
+            id="setProp"
+            type="radio"
+            name="contactPropAction"
+            :checked="propertyValueAction === PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
+            :value="PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
+            class="custom-control-input"
+            @change="updatePropertyValueAction">
+          <label
+            class="custom-control-label font-weight-normal"
+            for="setProp">
+            {{ 'flow-builder.entry-from-this-block' | trans }}
+          </label>
         </div>
+        <div class="custom-control custom-radio">
+          <input
+            id="clearProp"
+            type="radio"
+            name="contactPropAction"
+            :checked="propertyValueAction === PROPERTY_VALUE_ACTION.OPEN_EXPRESSION"
+            :value="PROPERTY_VALUE_ACTION.OPEN_EXPRESSION"
+            class="custom-control-input"
+            @change="updatePropertyValueAction">
+          <label
+            class="custom-control-label font-weight-normal"
+            for="clearProp">
+            {{ 'flow-builder.expression' | trans }}
+          </label>
+        </div>
+      </div>
 
-        <validation-message
-          v-if="shouldUseOpenExpression"
-          #input-control="{ isValid }"
-          :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
-          <expression-input
-            class="mb-1"
-            :label="''"
-            :placeholder="'flow-builder.enter-expression' | trans"
-            :current-expression="propertyValue"
-            :valid-state="isValid"
-            @commitExpressionChange="updateFirstContactPropertyValue" />
-          <div class="small">
-            {{ trans('flow-builder.hint-to-set-contact-prop-by-expression') }}
-          </div>
-        </validation-message>
-      </template>
+      <validation-message
+        v-if="shouldUseOpenExpression"
+        #input-control="{ isValid }"
+        :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
+        <expression-input
+          class="mb-1"
+          :label="''"
+          :placeholder="'flow-builder.enter-expression' | trans"
+          :current-expression="propertyValue"
+          :valid-state="isValid"
+          @commitExpressionChange="updateFirstContactPropertyValue" />
+        <div class="small">
+          {{ trans('flow-builder.hint-to-set-contact-prop-by-expression') }}
+        </div>
+      </validation-message>
     </div>
   </div>
 </template>
@@ -169,8 +164,6 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
 
   // for checkbox ######################
   toggleSetContactProperty(): void {
-    this.$emit('toggleSetContactProperty', !this.shouldSetContactProperty)
-
     this.shouldSetContactProperty = !this.shouldSetContactProperty
     if (!this.shouldSetContactProperty) {
       this.block_removeConfigByKey({blockId: this.block.uuid, key: 'set_contact_property'})
@@ -196,10 +189,8 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
   updatePropertyValueAction({target: {value}}: {target: {value: string}}): void {
     this.propertyValueAction = value
     if (value === this.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE) {
-      this.$emit('updateShouldUseCurrentBlockResponse', true)
       this.updateFirstContactPropertyValue(BLOCK_RESPONSE_EXPRESSION)
     } else {
-      this.$emit('updateShouldUseCurrentBlockResponse', false)
       this.updateFirstContactPropertyValue(EMPTY_STRING_EXPRESSION)
     }
   }
@@ -242,13 +233,11 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
       this.subscriberPropertyFields,
       (option: IContactPropertyOption) => option.name === this.firstContactPropertyKey,
     )
+
     return selectedOption ?? null
   }
 
   set flowSelectedContactPropertyField(option: IContactPropertyOption | null) {
-    if (this.flowSelectedContactPropertyField?.data_type !== option?.data_type) {
-      this.$emit('changeContactPropertyType')
-    }
     this.updateFirstContactPropertyKey(option?.name as string)
   }
 

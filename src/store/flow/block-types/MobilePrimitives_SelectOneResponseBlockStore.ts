@@ -7,7 +7,6 @@ import Vue from 'vue'
 import {cloneDeep, find, reject} from 'lodash'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
-import {choicesToExpression} from '@/components/interaction-designer/block-editors/choices/expressionTransformers'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
 
@@ -25,22 +24,8 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       throw new ValidationException(`Unable to find resource for choice: ${resourceId}`)
     }
 
-    // reactive way of editing choice.name
-    block.config.choices = block.config.choices.map(choice =>
-      (choice.prompt === resourceId
-        ? ({...choice, name: resourceValue.value})
-        : choice
-      ))
-
-    // update expression in property_value if a choice is renamed (and if set-contact-property is turned on)
-    const propertyValueMapping = block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping
-    if (propertyValueMapping !== undefined) {
-      Vue.set(
-        block.config.set_contact_property?.[0] ?? {},
-        'property_value',
-        choicesToExpression(block.config.choices, propertyValueMapping),
-      )
-    }
+    const choice = find(block.config.choices, (v) => v.prompt === resourceId) as IChoice
+    choice.name = resourceValue.value
   },
 
   addChoiceByResourceIdTo({rootGetters}, {blockId, resourceId}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'] }) {
@@ -65,18 +50,6 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
     const newChoices = reject(block.config.choices, v => v.prompt === resourceId)
     Vue.set(block.config, 'choices', newChoices)
-
-    Vue.delete(block.vendor_metadata?.floip.ui_metadata.set_contact_property.property_value_mapping, resourceId)
-
-    // update expression in property_value if a choice is deleted (and if set-contact-property is turned on)
-    const propertyValueMapping = block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping
-    if (propertyValueMapping !== undefined) {
-      Vue.set(
-        block.config.set_contact_property?.[0] ?? {},
-        'property_value',
-        choicesToExpression(block.config.choices, propertyValueMapping),
-      )
-    }
   },
 
   async reflowExitsFromChoices({dispatch, rootGetters}, {blockId}: { blockId: IBlock['uuid'] }) {

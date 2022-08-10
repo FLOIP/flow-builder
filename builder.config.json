@@ -347,21 +347,7 @@
         "id": "14",
         "name": "favourite_fruits",
         "display_label": "Favourite fruits (multiple_choice)",
-        "data_type": "multiple_choice",
-        "choices": [
-          {
-            "description": "Apple",
-            "value": "apple"
-          },
-          {
-            "description": "Banana",
-            "value": "banana"
-          },
-          {
-            "description": "Mango",
-            "value": "mango"
-          }
-        ]
+        "data_type": "multiple_choice"
       },
       {
         "id": "15",
@@ -379,9 +365,9 @@
     "subscriberPropertyFieldDataTypesMapping": {
       "text": ["MobilePrimitives.OpenResponse", "SmartDevices.LocationResponse", "MobilePrimitives.NumericResponse", "MobilePrimitives.SelectOneResponse", "MobilePrimitives.SelectManyResponse"],
       "location": ["SmartDevices.LocationResponse"],
-      "number": ["MobilePrimitives.NumericResponse", "MobilePrimitives.OpenResponse", "MobilePrimitives.SelectOneResponse"],
+      "number": ["MobilePrimitives.NumericResponse", "MobilePrimitives.OpenResponse"],
       "phone": ["MobilePrimitives.NumericResponse"],
-      "multiple_choice": ["MobilePrimitives.SelectManyResponse"],
+      "multiple_choice": ["MobilePrimitives.SelectOneResponse", "MobilePrimitives.SelectManyResponse"],
       "media": ["SmartDevices.PhotoResponse"]
     },
     "treeTitles": {},

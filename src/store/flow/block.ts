@@ -133,10 +133,7 @@ export const mutations: MutationTree<IFlowsState> = {
     findBlockExitWith(exitId, block)
       .destination_block = destinationBlockId
   },
-  block_updateVendorMetadataByPath(
-    state,
-    {blockId, path, value}: {blockId: string, path: string, value: boolean | number | string | object | null | undefined},
-  ) {
+  block_updateVendorMetadataByPath(state, {blockId, path, value}: { blockId: string, path: string, value: object | string }) {
     updateBlockValueByPath(state, blockId, `vendor_metadata.${path}`, value)
   },
   block_removeVendorMetadataByPath(state, {blockId, path}: { blockId: string, path: string }) {
