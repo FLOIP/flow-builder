@@ -1,13 +1,14 @@
 <template>
   <div class="text-synonyms-editor">
     <validation-message
-      v-for="({ test_expression, globalIndex }, synonymIndex) in synonymsForLanguage"
+      v-for="({ test_expression, visible_expression, globalIndex }, synonymIndex) in synonymsForLanguage"
       :key="synonymIndex"
       :message-key="`block/${block.uuid}/config/choices/${index}/text_tests/${globalIndex}/test_expression`">
       <template #input-control="{ isValid }">
         <expression-input
           ref="expressionInputs"
-          :current-expression="test_expression"
+          :current-expression="visible_expression"
+          :title="test_expression"
           :label="''"
           :placeholder="trans('flow-builder.enter-expression')"
           :valid-state="isValid"
@@ -31,6 +32,7 @@ import {IChoice, ISelectOneResponseBlock} from '@floip/flow-runner'
 import {mapActions} from 'vuex'
 import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import Lang from '@/lib/filters/lang'
+import {BLOCK_RESPONSE_EXPRESSION} from '@/store/flow/block/choice'
 
 export default {
   name: 'TextSynonymsEditor',
@@ -62,12 +64,16 @@ export default {
 
   computed: {
     synonymsForLanguage() {
-      return this.choice.text_tests
+      return this.choiceTests
         .map((text_test, globalIndex) => ({
           ...text_test,
+          visible_expression: this.computeSynonymVisibleExpression(text_test.test_expression),
           globalIndex,
         }))
         .filter(({language}) => language === this.langId)
+    },
+    choiceTests() {
+      return this.choice.text_tests
     },
   },
 
@@ -83,14 +89,14 @@ export default {
 
   methods: {
     ...mapActions(`flow/${BLOCK_TYPE}`, [
-      'choice_setSymonymForLanguage',
+      'choice_setSynonymForLanguage',
       'choice_removeTextTestsExpressionOnIndex',
     ]),
 
     updateCurrentExpression(testIndex, value) {
       if (value > '') {
         // ADD
-        this.choice_setSymonymForLanguage({
+        this.choice_setSynonymForLanguage({
           blockId: this.block.uuid,
           resourceId: this.choice.prompt,
           language: this.langId,
@@ -114,7 +120,7 @@ export default {
     addNewExpression(value) {
       this.draftExpression = value
 
-      this.choice_setSymonymForLanguage({
+      this.choice_setSynonymForLanguage({
         blockId: this.block.uuid,
         resourceId: this.choice.prompt,
         language: this.langId,
@@ -126,6 +132,22 @@ export default {
         this.draftExpression = ''
         this.$refs.expressionInputs.at(-1).focus()
       })
+    },
+
+    computeSynonymVisibleExpression(synonymExpression) {
+      const expressionWithoutSpaces = synonymExpression !== undefined ? synonymExpression.replace(/\s/g, '') : undefined
+      const estimatedVisibleExpression = String(expressionWithoutSpaces?.split('\'')?.[1])
+      if (
+        expressionWithoutSpaces.endsWith('\'') === true
+        && (expressionWithoutSpaces?.startsWith(`${BLOCK_RESPONSE_EXPRESSION}='`) === true
+          || expressionWithoutSpaces?.startsWith(`@${BLOCK_RESPONSE_EXPRESSION}='`) === true)
+      ) {
+        if (estimatedVisibleExpression > '') {
+          return estimatedVisibleExpression
+        }
+      }
+
+      return synonymExpression
     },
   },
 }
