@@ -56,16 +56,15 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
     const block: ISelectOneResponseBlock = findBlockWith(params.blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
 
     dispatch('choice_updateName', params)
-    dispatch('choice_updateFirstSynonymForActiveLanguages', params)
 
     // Make sure to update the ivr_test expression to provide a default value,
     // which is associated with using key_press selector by default
     dispatch('choice_updateIvrTestExpression', {
       ...params,
       value: `${BLOCK_RESPONSE_EXPRESSION} = '${block.config.choices.length < 10
-          ? block.config.choices.length
-          : '*'
-        }'`,
+        ? block.config.choices.length
+        : '*'
+      }'`,
     })
   },
 
@@ -74,13 +73,14 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
     params: { blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string },
   ) {
     dispatch('choice_updateName', params)
-    dispatch('choice_updateFirstSynonymForActiveLanguages', params)
   },
 
   choice_updateName(
-    {dispatch},
+    {dispatch, getters},
     {blockId, resourceId, value}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string },
   ) {
+    const previousName = getters.choice_findChoice(blockId, resourceId)?.name
+
     dispatch('choice_updateByPath', {
       blockId,
       resourceId,
@@ -91,6 +91,7 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
     dispatch('choice_updateFirstSynonymForActiveLanguages', {
       blockId,
       resourceId,
+      oldValue: previousName,
       value,
     })
   },
@@ -113,20 +114,30 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
    */
   choice_updateFirstSynonymForActiveLanguages(
     {getters, rootGetters, dispatch, commit},
-    {blockId, resourceId, value}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string },
+    {blockId, resourceId, value, oldValue}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string, oldValue: string },
   ) {
     const flow: IFlow = rootGetters['flow/activeFlow']
     const languages = flow.languages
 
     languages.forEach(({id: language}) => {
-      // TODO Don't replace if existing value was changed by the user
-      dispatch('choice_setSynonymForLanguage', {
-        blockId,
-        resourceId,
-        language,
-        index: 0,
-        value,
-      })
+      const choice = getters.choice_findChoice(blockId, resourceId) as IChoice
+      const existingValue = choice.text_tests?.find(synonym => synonym.language === language)?.test_expression
+
+      const isNew = existingValue === undefined
+      const hasValueToMatch = oldValue !== undefined
+      const hasMatchingValues = hasValueToMatch && existingValue === textValueToExpression(oldValue)
+      const shouldUpdateValue = isNew || !hasValueToMatch || hasMatchingValues
+
+      // Make sure the 1st synonym has not been changed by the user
+      if (shouldUpdateValue) {
+        dispatch('choice_setSynonymForLanguage', {
+          blockId,
+          resourceId,
+          language,
+          index: 0,
+          value,
+        })
+      }
     })
   },
 
