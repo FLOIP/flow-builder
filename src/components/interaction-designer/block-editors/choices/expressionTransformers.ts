@@ -12,5 +12,5 @@ export function choicesToExpression(choices: IChoice[], propertyValueMapping: Re
       }
     })
 
-  return `@CONCATENATE(\n${individualLines.join(',\n')}\n)`
+  return `@CONCATENATE(${individualLines.join(',')})`
 }

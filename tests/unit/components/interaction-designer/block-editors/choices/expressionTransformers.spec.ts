@@ -13,7 +13,7 @@ describe('choicesToExpression', () => {
       '69ea35af-4d04-4c69-ad60-146006df45b3': 'banana',
     }
     expect(choicesToExpression(choices, propertyValueMapping_string))
-      .toBe("@CONCATENATE(\nIF(block.value = 'one', 'apple', ''),\nIF(block.value = 'two', 'banana', '')\n)")
+      .toBe("@CONCATENATE(IF(block.value = 'one', 'apple', ''),IF(block.value = 'two', 'banana', ''))")
   })
 
   it('should return a valid expression for NUMERIC choices', () => {
@@ -22,6 +22,6 @@ describe('choicesToExpression', () => {
       '69ea35af-4d04-4c69-ad60-146006df45b3': 2,
     }
     expect(choicesToExpression(choices, propertyValueMapping_number))
-      .toBe("@CONCATENATE(\nIF(block.value = 'one', 1, ''),\nIF(block.value = 'two', 2, '')\n)")
+      .toBe("@CONCATENATE(IF(block.value = 'one', 1, ''),IF(block.value = 'two', 2, ''))")
   })
 })
