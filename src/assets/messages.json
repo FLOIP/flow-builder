@@ -1,5 +1,7 @@
 {
   "en.flow-builder": {
+    "synonyms": "Synonyms",
+    "text-expression": "Text expression",
     "flow-builder": "Flow Builder",
     "bcp-47-label": "BCP 47 - Generated from ISO 639 3, Locale, and Variant",
     "iso-639-3-label": "ISO 639 3 Code",
@@ -1681,6 +1683,8 @@
     "show-less":  "Show less…"
   },
   "fr.flow-builder": {
+    "synonyms": "Synonymes",
+    "text-expression": "Expression textuelle",
     "flow-builder": "Générateur de flux",
     "bcp-47-label": "BCP 47 - Généré à partir d'ISO 639 3, Locale et Variante",
     "iso-639-3-label": "Code ISO 639 3",

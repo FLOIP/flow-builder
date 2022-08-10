@@ -1,68 +1,30 @@
-import {ActionContext, ActionTree, Module} from 'vuex'
+import {ActionContext, ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IChoice, findBlockWith, IBlock, IBlockExit, IResource, ValidationException} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
 import Vue from 'vue'
 import {cloneDeep, find, reject} from 'lodash'
-import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import BaseStore, {actions as baseActions, mutations as baseMutations, getters as baseGetters, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 import {MobilePrimitives_SelectOneResponseBlockValidator} from '@/lib/validations'
 import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
-import {choicesToExpression} from '@/components/interaction-designer/block-editors/choices/expressionTransformers'
+import * as ChoiceModule from '@/store/flow/block/choice'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
 
+export const getters: GetterTree<IEmptyState, IRootState> = {
+  ...baseGetters,
+  ...ChoiceModule.getters,
+}
+
+export const mutations: MutationTree<IEmptyState> = {
+  ...baseMutations,
+  ...ChoiceModule.mutations,
+}
+
 const actions: ActionTree<IEmptyState, IRootState> = {
   ...baseActions,
-
-  updateChoiceName(
-    {rootGetters, dispatch},
-    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
-  ) {
-    const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
-    const resource: IResource = rootGetters['flow/resourcesByUuidOnActiveFlow'][resourceId]
-
-    if (resource == null) {
-      throw new ValidationException(`Unable to find resource for choice: ${resourceId}`)
-    }
-
-    // TODO: remove this in last PR
-    // const choice = find(block.config.choices, (v) => v.prompt === resourceId) as IChoice
-    // choice.name = value
-
-    // reactive way of editing choice.name
-    block.config.choices = block.config.choices.map(choice =>
-      (choice.prompt === resourceId
-          ? ({...choice, name: value})
-          : choice
-      ))
-
-    // update expression in property_value if a choice is renamed (and if set-contact-property is turned on)
-    const propertyValueMapping = block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping
-    if (propertyValueMapping !== undefined) {
-      Vue.set(
-        block.config.set_contact_property?.[0] ?? {},
-        'property_value',
-        choicesToExpression(block.config.choices, propertyValueMapping),
-      )
-    }
-  },
-
-  updateIvrTestExpression(
-    {rootGetters, dispatch},
-    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
-  ) {
-    const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
-    const resource: IResource = rootGetters['flow/resourcesByUuidOnActiveFlow'][resourceId]
-
-    if (resource == null) {
-      throw new ValidationException(`Unable to find resource for choice: ${resourceId}`)
-    }
-
-    const choice = find(block.config.choices, (v) => v.prompt === resourceId) as IChoice
-    Vue.set(choice, 'ivr_test', {})
-    Vue.set(choice.ivr_test as object, 'test_expression', value)
-  },
+  ...ChoiceModule.actions,
 
   addChoiceByResourceIdTo({rootGetters}, {blockId, resourceId}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'] }) {
     const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
@@ -82,22 +44,16 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     }
   },
 
-  deleteChoiceByResourceIdFrom({rootGetters}, {blockId, resourceId}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'] }) {
+  deleteChoiceByResourceIdFrom({dispatch, rootGetters}, {blockId, resourceId}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'] }) {
     const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
     const newChoices = reject(block.config.choices, v => v.prompt === resourceId)
     Vue.set(block.config, 'choices', newChoices)
 
     Vue.delete(block.vendor_metadata?.floip.ui_metadata.set_contact_property.property_value_mapping, resourceId)
 
-    // update expression in property_value if a choice is deleted (and if set-contact-property is turned on)
-    const propertyValueMapping = block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping
-    if (propertyValueMapping !== undefined) {
-      Vue.set(
-        block.config.set_contact_property?.[0] ?? {},
-        'property_value',
-        choicesToExpression(block.config.choices, propertyValueMapping),
-      )
-    }
+    dispatch('flow/block_updateContactPropertyAfterChoicesChange', {
+      blockId,
+    }, {root: true})
   },
 
   async reflowExitsFromChoices({dispatch, rootGetters}, {blockId}: { blockId: IBlock['uuid'] }) {
@@ -161,6 +117,9 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       floip: {
         ui_metadata: {
           branching_type: OutputBranchingType.EXIT_PER_CHOICE,
+          choices: {
+            // Prompt UUID -> ISelectOneResponseFloipUiMetadataChoice
+          },
         },
       },
     }
@@ -174,6 +133,8 @@ const actions: ActionTree<IEmptyState, IRootState> = {
 
 const MobilePrimitives_SelectOneResponseBlockStore: Module<IEmptyState, IRootState> = {
   ...cloneDeep(BaseStore),
+  getters,
+  mutations,
   actions,
 }
 

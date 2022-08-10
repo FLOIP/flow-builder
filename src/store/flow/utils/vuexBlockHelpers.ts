@@ -1,11 +1,10 @@
 import Vue from 'vue'
 import {toPath} from 'lodash'
-import {IContext, findBlockOnActiveFlowWith, IBlock} from '@floip/flow-runner'
+import {IContext, findBlockOnActiveFlowWith, IBlock, IChoice, IResource} from '@floip/flow-runner'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function makePath(block: any, rawPath: string): [object, string] {
   const path = toPath(rawPath)
-  console.info('PATH', path)
 
   let pointer = block
   while (path.length !== 1) {
@@ -29,6 +28,15 @@ export function updateBlockValueByPath(
   const base = findBlockOnActiveFlowWith(blockId, state as IContext)
   const [pointer, key] = makePath(base, path)
   Vue.set(pointer, key, value)
+}
+
+export function deleteChoiceValueByPath(
+  state: unknown,
+  choice: IChoice,
+  path: string,
+): void {
+  const [pointer, key] = makePath(choice, path)
+  Vue.delete(pointer, key)
 }
 
 export function removeBlockValueByPath(

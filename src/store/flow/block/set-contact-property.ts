@@ -2,6 +2,8 @@ import {IRootState} from '@/store'
 import {findBlockOnActiveFlowWith as findBlock, IBlock, IContext, SetContactProperty} from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IFlowsState} from '../index'
+import Vue from 'vue'
+import {choicesToExpression} from '@/components/interaction-designer/block-editors/choices/expressionTransformers'
 
 export interface ISetContactPropertyBlockKey {
   blockId: IBlock['uuid'],
@@ -145,5 +147,21 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   block_deleteContactPropertyByKey({commit}, {blockId, key}: ISetContactPropertyBlockKey): void {
     commit('block_removeContactProperty', {blockId, key})
+  },
+
+  /**
+   * update expression in property_value if a choice is renamed (and if set-contact-property is turned on)
+   */
+  block_updateContactPropertyAfterChoicesChange({state, commit, dispatch}, {blockId}: {blockId: IBlock['uuid']}): void {
+    const block = findBlock(blockId, state as unknown as IContext)
+    const propertyValueMapping = block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping
+
+    if (propertyValueMapping !== undefined) {
+      dispatch('block_setContactPropertyValueOnIndex', {
+        blockId,
+        index: 0,
+        propertyValue: choicesToExpression(block.config.choices, propertyValueMapping),
+      })
+    }
   },
 }

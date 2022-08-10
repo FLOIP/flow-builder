@@ -18,15 +18,18 @@
              <a
                v-if="hasVoiceMode"
                id="nav-voice-tab"
-               aria-controls="nav-home" aria-selected="true"
-               class="nav-item nav-link active" data-toggle="tab"
+               :class="{'active': hasVoiceMode}"
+               aria-controls="nav-home"
+               aria-selected="true"
+               class="nav-item nav-link"
+               data-toggle="tab"
                href="#nav-voice"
                role="tab">
                {{ trans('flow-builder.voice') }} ({{ trans('flow-builder.all-languages') }})
              </a>
              <template v-if="hasTextMode">
                <a
-                 v-for="({id: languageId, label: language}) in languages"
+                 v-for="({id: languageId, label: language}, index) in textLanguages"
                  :id="`nav-lang-tab-${languageId}`"
                  :key="languageId"
                  :href="`#nav-lang-${languageId}`"
@@ -34,6 +37,7 @@
                  aria-controls="nav-profile"
                  aria-selected="false"
                  class="nav-item nav-link"
+                 :class="{'active': !hasVoiceMode && hasTextMode && index === 0}"
                  data-toggle="tab"
                  role="tab">
                  {{ trans('flow-builder.data-type-text')}} ({{ language || trans('flow-builder.unknown-language') }})
@@ -46,7 +50,8 @@
              v-if="hasVoiceMode"
              id="nav-voice"
              aria-labelledby="nav-voice-tab"
-             class="tab-pane fade show active"
+             :class="{'show active': hasVoiceMode}"
+             class="tab-pane fade"
              role="tabpanel">
              <div class="mt-3">
                <voice-mapping-table :block="block"/>
@@ -54,17 +59,16 @@
            </div>
            <template v-if="hasTextMode">
              <div
-               v-for="({id: languageId, label: language}) in languages"
+               v-for="({id: languageId, label: language}, index) in textLanguages"
                :id="`nav-lang-${languageId}`"
                :key="languageId"
                aria-labelledby="nav-lang-tab"
                class="tab-pane fade"
+               :class="{'show active': !hasVoiceMode && hasTextMode && index === 0}"
                role="tabpanel">
                <div class="mt-3">
-                 <!--TODO: VMO-6654-->
-                 content {{ language }}
+                 <text-mapping-table :block="block" :lang-id="languageId"/>
                </div>
-
              </div>
            </template>
          </div>
@@ -82,11 +86,14 @@ import Lang from '@/lib/filters/lang'
 import {mapGetters} from 'vuex'
 import {ISelectOneResponseBlock} from '@floip/flow-runner'
 import VoiceMappingTable from './VoiceMappingTable.vue'
+import TextMappingTable from './TextMappingTable.vue'
 
 export default {
+  name: 'ChoiceMappingModal',
   components: {
     BModal,
     VoiceMappingTable,
+    TextMappingTable,
   },
   mixins: [Lang],
 
@@ -99,11 +106,11 @@ export default {
 
   computed: {
     ...mapGetters('flow', ['activeFlow', 'hasTextMode', 'hasVoiceMode']),
-    languages() {
+    textLanguages() {
       return this.hasTextMode === true ? this.activeFlow.languages : []
     },
     shouldHaveTabs() {
-      return this.hasVoiceMode === true || (this.hasTextMode === true && this.languages.length > 0)
+      return this.hasVoiceMode === true || (this.hasTextMode === true && this.activeFlow.languages.length > 0)
     },
   },
   methods: {
