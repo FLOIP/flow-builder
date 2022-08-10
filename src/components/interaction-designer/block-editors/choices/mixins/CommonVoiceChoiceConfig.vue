@@ -1,17 +1,14 @@
 <script>
 import {mapActions} from 'vuex'
-import {IChoice, ISelectOneResponseBlock} from '@floip/flow-runner'
 import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import {BLOCK_RESPONSE_EXPRESSION} from '@/store/flow/block/choice'
 
 export default {
   props: {
     block: {
-      type: ISelectOneResponseBlock,
       required: true,
     },
     choice: {
-      type: IChoice,
       required: true,
     },
     index: {

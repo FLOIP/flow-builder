@@ -42,11 +42,12 @@
 
 <script>
 import Lang from '@/lib/filters/lang'
+import {mapGetters} from 'vuex'
 import KeyPressSelector from './VoiceKeyPressSelector.vue'
 import CommonVoiceChoiceConfig from './mixins/CommonVoiceChoiceConfig.vue'
-import {mapGetters} from 'vuex'
 
 export default {
+  name: 'VoiceMappingRow',
   components: {
     KeyPressSelector,
   },

@@ -27,16 +27,16 @@ import {ISelectOneResponseBlock} from '@floip/flow-runner'
 import VoiceMappingRow from './VoiceMappingRow.vue'
 
 export default {
+  name: 'VoiceMappingTable',
   components: {
     VoiceMappingRow,
   },
   mixins: [Lang],
   props: {
-    block: {type: ISelectOneResponseBlock, required: true},
+    block: {
+      type: ISelectOneResponseBlock,
+      required: true,
+    },
   },
 }
 </script>
-
-<style scoped>
-
-</style>
