@@ -1,7 +1,7 @@
 <template>
   <tr class="voice-mapping-row">
     <td class="d-flex">
-      {{ choice.name }}
+      {{ currentChoice.name }}
       <div class="custom-control custom-checkbox ml-auto">
         <input
           :id="`useExpression-${index}`"
@@ -18,7 +18,7 @@
       <div class="d-flex justify-content-center">
         <key-press-selector
           :block="block"
-          :choice="choice"
+          :current-choice="currentChoice"
           :disabled="shouldUseExpression"
           :index="index"/>
       </div>
@@ -58,7 +58,7 @@ export default {
     // We already provide a default value for ivr_test.test_expression during choice creation
     // But, there might be a scenario where we still have it undefined, eg: for imported blocks
     // Therefore, we set it here to make sure we use key_press selector by default
-    if (this.hasVoiceMode === true && this.choice?.ivr_test?.test_expression === undefined) {
+    if (this.hasVoiceMode === true && this.currentChoice?.ivr_test?.test_expression === undefined) {
       this.updateCurrentExpression(`${this.BLOCK_RESPONSE_EXPRESSION} = '${this.keypress}'`)
     }
   },

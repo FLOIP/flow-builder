@@ -15,7 +15,7 @@
         v-for="(choice, index) in block.config.choices"
         :key="index"
         :block="block"
-        :choice="choice"
+        :current-choice="choice"
         :index="index" />
     </tbody>
   </table>
