@@ -51,17 +51,18 @@ export const mutations: MutationTree<IEmptyState> = {
 export const actions: ActionTree<IEmptyState, IRootState> = {
   choice_create(
     {rootGetters, dispatch},
-    params: {blockId: IBlock['uuid'], resourceId: IResource['uuid']},
+    {blockId, resourceId, value}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string },
   ) {
-    const block: ISelectOneResponseBlock = findBlockWith(params.blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
+    const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
     const {choices, set_contact_property} = block.config
 
-    dispatch('choice_updateName', params)
+    dispatch('choice_updateName', {blockId, resourceId, value})
 
     // Make sure to update the ivr_test expression to provide a default value,
     // which is associated with using key_press selector by default
     dispatch('choice_updateIvrTestExpression', {
-      ...params,
+      blockId,
+      resourceId,
       value: `${BLOCK_RESPONSE_EXPRESSION} = '${choices.length < 10
         ? choices.length
         : '*'
@@ -69,7 +70,10 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
     })
 
     if (set_contact_property !== undefined && set_contact_property.length > 0) {
-      dispatch('flow/block_updateContactPropertyMetadataAfterNewChoiceAdded', params, {root: true})
+      dispatch('flow/block_updateContactPropertyMetadataAfterNewChoiceAdded', {
+        blockId,
+        prompt: resourceId,
+      }, {root: true})
     }
   },
 
