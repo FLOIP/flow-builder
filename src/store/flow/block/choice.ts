@@ -51,9 +51,10 @@ export const mutations: MutationTree<IEmptyState> = {
 export const actions: ActionTree<IEmptyState, IRootState> = {
   choice_create(
     {rootGetters, dispatch},
-    params: { blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string },
+    params: {blockId: IBlock['uuid'], resourceId: IResource['uuid']},
   ) {
     const block: ISelectOneResponseBlock = findBlockWith(params.blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
+    const {choices, set_contact_property} = block.config
 
     dispatch('choice_updateName', params)
 
@@ -61,16 +62,15 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
     // which is associated with using key_press selector by default
     dispatch('choice_updateIvrTestExpression', {
       ...params,
-      value: `${BLOCK_RESPONSE_EXPRESSION} = '${block.config.choices.length < 10
-        ? block.config.choices.length
+      value: `${BLOCK_RESPONSE_EXPRESSION} = '${choices.length < 10
+        ? choices.length
         : '*'
       }'`,
     })
 
-    dispatch('flow/block_updateContactPropertyMetadataAfterNewChoiceAdded', {
-      blockId: params.blockId,
-      prompt: params.resourceId,
-    }, {root: true})
+    if (set_contact_property !== undefined && set_contact_property.length > 0) {
+      dispatch('flow/block_updateContactPropertyMetadataAfterNewChoiceAdded', params, {root: true})
+    }
   },
 
   choice_change(
