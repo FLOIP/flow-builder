@@ -2,13 +2,16 @@
 import {mapActions} from 'vuex'
 import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import {BLOCK_RESPONSE_EXPRESSION} from '@/store/flow/block/choice'
+import {IChoice, ISelectOneResponseBlock} from '@floip/flow-runner'
 
 export default {
   props: {
     block: {
+      type: ISelectOneResponseBlock,
       required: true,
     },
-    choice: {
+    currentChoice: {
+      type: IChoice,
       required: true,
     },
     index: {
@@ -27,7 +30,7 @@ export default {
       return this.currentExpression !== undefined ? this.currentExpression.replace(/\s/g, '') : undefined
     },
     currentExpression() {
-      return this.choice.ivr_test?.test_expression
+      return this.currentChoice.ivr_test?.test_expression
     },
     /**
      * Test if:

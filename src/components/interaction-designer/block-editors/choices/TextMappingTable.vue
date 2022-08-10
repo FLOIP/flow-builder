@@ -11,7 +11,7 @@
         v-for="(choice, index) in block.config.choices"
         :key="index"
         :block="block"
-        :block-choice="choice"
+        :current-choice="choice"
         :index="index"
         :lang-id="langId" />
     </tbody>

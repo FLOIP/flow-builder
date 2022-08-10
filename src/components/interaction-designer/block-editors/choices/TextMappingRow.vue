@@ -1,10 +1,10 @@
 <template>
   <tr class="text-mapping-row">
     <td>
-      {{ blockChoice.name }}
+      {{ currentChoice.name }}
     </td>
     <td>
-      <text-synonyms-editor :block="block" :choice="blockChoice" :index="index" :lang-id="langId"/>
+      <text-synonyms-editor :block="block" :current-choice="currentChoice" :index="index" :lang-id="langId"/>
     </td>
   </tr>
 </template>
@@ -24,7 +24,8 @@ export default {
       type: ISelectOneResponseBlock,
       required: true,
     },
-    blockChoice: {
+    currentChoice: {
+      type: IChoice,
       required: true,
     },
     index: {

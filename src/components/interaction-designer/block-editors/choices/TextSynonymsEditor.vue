@@ -42,7 +42,7 @@ export default {
       type: ISelectOneResponseBlock,
       required: true,
     },
-    choice: {
+    currentChoice: {
       type: IChoice,
       required: true,
     },
@@ -73,7 +73,7 @@ export default {
         .filter(({language}) => language === this.langId)
     },
     choiceTests() {
-      return this.choice.text_tests
+      return this.currentChoice.text_tests
     },
   },
 
@@ -82,8 +82,8 @@ export default {
     // But, there might be a scenario where we still have it undefined, eg: for imported blocks
     // Therefore, we set it here to make sure we use key_press selector by default
     const testIndex = 0
-    if (this.choice?.text_tests?.[testIndex]?.test_expression === undefined) {
-      this.updateCurrentExpression(testIndex, {value: this.choice.name})
+    if (this.currentChoice?.text_tests?.[testIndex]?.test_expression === undefined) {
+      this.updateCurrentExpression(testIndex, {value: this.currentChoice.name})
     }
   },
 
@@ -98,7 +98,7 @@ export default {
         // ADD
         this.choice_setSynonymForLanguage({
           blockId: this.block.uuid,
-          resourceId: this.choice.prompt,
+          resourceId: this.currentChoice.prompt,
           language: this.langId,
           index: testIndex,
           value,
@@ -106,7 +106,7 @@ export default {
       } else {
         // DELETION
         this.choice_removeTextTestsExpressionOnIndex({
-          choice: this.choice,
+          choice: this.currentChoice,
           testIndex,
         })
 
@@ -122,7 +122,7 @@ export default {
 
       this.choice_setSynonymForLanguage({
         blockId: this.block.uuid,
-        resourceId: this.choice.prompt,
+        resourceId: this.currentChoice.prompt,
         language: this.langId,
         value,
       })
