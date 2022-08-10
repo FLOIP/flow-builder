@@ -1,6 +1,6 @@
 <template>
   <div class="choices-builder form-group">
-    <h4>{{ 'flow-builder.choices' | trans }}</h4>
+    <label class="text-primary">{{ 'flow-builder.choices' | trans }}</label>
 
     <!-- Show non-empty choices -->
     <template v-for="(resource, i) in choiceResourcesOrderedByResourcesList">
@@ -42,6 +42,14 @@
       :mode="SupportedMode.TEXT"
       @beforeResourceVariantChanged="addDraftResourceToChoices"
       @afterResourceVariantChanged="handleNewChoiceChange" />
+
+    <validation-message
+      #input-control="{ isValid }"
+      :message-key="`block/${block.uuid}/config/choices`">
+      <!--Display programmatic validation & AJV validation related to /config/choices -->
+    </validation-message>
+
+    <choice-mapping-modal :block="block"/>
   </div>
 </template>
 
@@ -56,18 +64,23 @@ import {namespace} from 'vuex-class'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import ChoiceMappingModal from '@/components/interaction-designer/block-editors/choices/ChoiceMappingModal.vue'
 import Vue from 'vue'
+import {BLOCK_RESPONSE_EXPRESSION} from './mixins/CommonVoiceChoiceConfig.vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const validationVuexNamespace = namespace('validation')
 
-@Component({})
+@Component<any>({
+  components: {
+    ChoiceMappingModal,
+  },
+})
 export class ChoicesBuilder extends mixins(Lang) {
   @Prop() readonly block!: ISelectOneResponseBlock
 
   draftResource: IResource | null = null
-
   SupportedContentType = SupportedContentType
   SupportedMode = SupportedMode
   findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
@@ -114,16 +127,12 @@ export class ChoicesBuilder extends mixins(Lang) {
     }
   }
 
-  @blockVuexNamespace.Action updateChoiceName!: (
-    {blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], resourceValue: IResourceValue},
-  ) => void
-
   handleExistingResourceVariantChangedFor(
     {choiceIndex}: {choiceIndex: number},
-    {resourceId, variant}: {resourceId: IResource['uuid'], variant: IResourceValue},
+    {resourceId, value}: {resourceId: IResource['uuid'], value: IResourceValue['value']},
   ): void {
     const isLast = choiceIndex === this.choiceResourcesOrderedByResourcesList.length - 1
-    const hasEmptyValue = isEmpty(variant.value)
+    const hasEmptyValue = isEmpty(value)
 
     if (isLast && hasEmptyValue) {
       // TODO in VMO-6643: clean up resource, but should we first check for references?
@@ -144,9 +153,27 @@ export class ChoicesBuilder extends mixins(Lang) {
       return
     }
 
-    this.updateChoiceName({blockId: this.block.uuid, resourceId, resourceValue: variant})
+    this.updateChoiceName({blockId: this.block.uuid, resourceId, value})
     this.$emit('choiceChanged', {resourceId})
   }
+
+  handleNewChoiceChange({resourceId, value}: {resourceId: IResource['uuid'], value: string}) {
+    this.updateChoiceName({blockId: this.block.uuid, resourceId, value})
+    // Make sure to update the ivr_test expression to provide a default value,
+    // which is associated with using key_press selector by default
+    this.updateIvrTestExpression({
+      blockId: this.block.uuid,
+      resourceId,
+      value: `${BLOCK_RESPONSE_EXPRESSION} = '${this.block.config.choices.length}'`,
+    })
+  }
+
+  @blockVuexNamespace.Action updateChoiceName!: (
+    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: IResourceValue['value']},
+  ) => void
+  @blockVuexNamespace.Action updateIvrTestExpression!: (
+    {blockId, resourceId, value}: {blockId: IBlock['uuid'], resourceId: IResource['uuid'], value: string},
+  ) => void
 
   @validationVuexNamespace.Getter choiceMimeType!: string
 
@@ -154,14 +181,14 @@ export class ChoicesBuilder extends mixins(Lang) {
   @flowVuexNamespace.Action resource_add!: ({resource}: {resource: IResource}) => void
   // @flowVuexNamespace.Action flow_createBlankResourceForEnabledModesAndLangs!: () => Promise<IResource>
   @flowVuexNamespace.Action resource_createWith!: ({props}: { props: { uuid: string } & Partial<IResource> }) => Promise<IResource>
+
   @blockVuexNamespace.Action deleteChoiceByResourceIdFrom!:
     ({blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) => void
-
-  handleNewChoiceChange({resourceId, variant}: {resourceId: IResource['uuid'], variant: IResourceValue}) {
-    this.updateChoiceName({blockId: this.block.uuid, resourceId, resourceValue: variant})
-  }
+  @blockVuexNamespace.Action block_setChoiceIvrExpressionOnIndex!:
+    ({blockId, index, value}: { blockId: string, index: number, value: string }) => void
   @blockVuexNamespace.Action addChoiceByResourceIdTo!:
     ({blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) => void
+
 }
 export default ChoicesBuilder
 </script>

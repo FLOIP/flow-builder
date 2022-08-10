@@ -28,7 +28,7 @@
     "@avcs/autosuggest": "^1.7.5",
     "@floip/expression-evaluator": "^2.1.0",
     "@floip/expression-parser": "^1.11.3",
-    "@floip/flow-runner": "1.0.0-rc4.10",
+    "@floip/flow-runner": "1.0.0-rc4.12",
     "@flowjs/flow.js": "link:./src/lib/flow-2.0.0.js",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-regular-svg-icons": "^5.15.3",

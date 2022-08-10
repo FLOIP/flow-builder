@@ -15,9 +15,14 @@
         ref="input"
         v-model="expression"
         :class="['form-control', {'is-invalid': isInvalid}]"
+        :disabled="disabled"
         :rows="rows"
         :placeholder="placeholder"
+        @click="handleClick()"
         @input="$emit('input', $event.target.value)" />
+      <div
+        ref="suggest"
+        class="cloned-auto-suggest-content" />
     </div>
     <slot />
   </div>
@@ -45,6 +50,12 @@ const defaultDateFields = [
   'tomorrow',
 ]
 
+interface IAutoSuggest {
+  dropdown: {
+    dropdown: HTMLElement,
+  },
+}
+
 const flowNamespace = namespace('flow')
 
 @Component({})
@@ -57,8 +68,21 @@ export class ExpressionInput extends mixins(Lang) {
   @Prop({type: Number, default: 1}) readonly rows!: number
   @Prop({type: Boolean, default: null}) readonly validState!: boolean|null
   @Prop({type: String, default: ''}) readonly prependText!: string
+  @Prop({type: Boolean, default: false}) readonly disabled!: boolean
 
-  suggest = {}
+  suggest: IAutoSuggest = {} as IAutoSuggest
+
+  get autoSuggestDropdown(): HTMLElement {
+    return this.suggest.dropdown?.dropdown
+  }
+
+  get refAutoSuggestElement(): HTMLElement {
+    return this.$refs.suggest as HTMLElement
+  }
+
+  get refInputElement(): HTMLInputElement {
+    return this.$refs.input as HTMLInputElement
+  }
 
   get isInvalid(): boolean {
     return this.validState === false
@@ -155,13 +179,49 @@ export class ExpressionInput extends mixins(Lang) {
     ]
   }
 
+  /**
+   * Making sure we port the auto-suggest under desired dom
+   */
+  portAutoSuggestContent(): void {
+    // override position which came from AutoSuggest original code
+    this.autoSuggestDropdown.style.left = '0px'
+    this.autoSuggestDropdown.style.top = `${this.refInputElement.clientHeight}px`
+
+    // move the created autoSuggestDropdown inside the desired dom
+    this.refAutoSuggestElement.appendChild(this.autoSuggestDropdown)
+  }
+
+  /**
+   * Delay the portal to make sure AutoSuggest has finished the update.
+   */
+  debounce_portAutoSuggestContent(): void {
+    this.$nextTick(() => {
+      setTimeout(() => {
+        this.portAutoSuggestContent()
+      }, 500)
+    })
+  }
+
+  handleClick(): void {
+    // this is required in case the user re-clicks at the input without updating the expression
+    this.debounce_portAutoSuggestContent()
+  }
+
   mounted(): void {
-    const input = this.$refs.input
+    const input = this.refInputElement
     this.suggest = new AutoSuggest({
       caseSensitive: false,
       suggestions: this.suggestions,
-      onChange: () => (input as HTMLInputElement)!.dispatchEvent(new Event('input')),
+      onChange: () => input.dispatchEvent(new Event('input')),
     }, input)
+
+    // Unfortunately there is no `updated()` hook in AutoSuggest, so we will wait a bit
+    this.debounce_portAutoSuggestContent()
+  }
+
+  updated(): void {
+    // Unfortunately there is no `updated()` hook in AutoSuggest, so we will wait a bit
+    this.debounce_portAutoSuggestContent()
   }
 
   @flowNamespace.Getter activeFlow?: IFlow

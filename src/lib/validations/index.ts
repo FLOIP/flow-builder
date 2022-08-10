@@ -7,4 +7,6 @@
  */
 
 export {default as Core_SetGroupMembershipValidator} from './Core_SetGroupMembershipValidator'
+export {MobilePrimitives_SelectOneResponseBlockValidator} from './MobilePrimitives_SelectOneResponseBlockValidator'
 export {default as MobilePrimitives_NumericResponseBlockValidator} from './MobilePrimitives_NumericResponseBlockValidator'
+export * from './ExtendedValidatorBase'

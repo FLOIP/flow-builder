@@ -1,12 +1,10 @@
 export * from './choices'
-
 export * from './AdvancedExitEditor.vue'
 export * from './AdvancedExitsBuilder.vue'
 export * from './BlockEditor.vue'
 export * from './BlockId.vue'
 export * from './BlockOutputBranchingConfig.vue'
 export * from './Categorization.vue'
-export * from './ChoicesBuilder.vue'
 export * from './ContactPropertyEditor.vue'
 export * from './EndRecordingDigitsEditor.vue'
 export * from './ExitSemanticLabelEditor.vue'
