@@ -35,10 +35,6 @@ export {
   install as setGroupMembershipBlockInstaller,
 } from './Core_SetGroupMembershipBlock.vue'
 export {
-  default as ConsoleIO_PrintBlock,
-  install as printBlockInstaller,
-} from './ConsoleIO_PrintBlock.vue'
-export {
   default as Core_RunFlowBlock,
   install as runFlowBlockInstaller,
 } from './Core_RunFlowBlock.vue'
@@ -50,10 +46,6 @@ export {
   default as Core_OutputBlock,
   install as outputBlockInstaller,
 } from './Core_OutputBlock.vue'
-export {
-  default as ConsoleIO_ReadBlock,
-  install as readBlockInstaller,
-} from './ConsoleIO_ReadBlock.vue'
 export {
   default as Core_SetContactPropertyBlock,
   install as setContactPropertyBlockInstaller,
