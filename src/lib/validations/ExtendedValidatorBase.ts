@@ -22,7 +22,8 @@ class ExtendedValidatorBase {
    * Run programmatic validations, which are validations that are not handled by the AJV (jsonSchema)
    * We can override this in each block type validator for block specific validation.
    */
-  static runProgrammaticValidations(_block: IBlock, _options?: unknown): ValidationResults | null {
+  static runProgrammaticValidations(block: IBlock, _options?: unknown): ValidationResults | null {
+    console.debug('floip/ExtendedValidatorBase/runProgrammaticValidations()', `${block.type}`)
     return null
   }
 
@@ -32,6 +33,7 @@ class ExtendedValidatorBase {
    * - programmatic logic
    */
   static runAllValidations(block: IBlock, schemaVersion: string, customSchema?: JSONSchema7, options?: unknown): IValidationStatus {
+    console.debug('floip/ExtendedValidatorBase/runAllValidations()', `${block.type}`)
     const validationStatus = validateBlockWithJsonSchema({
       block,
       schemaVersion,

@@ -55,12 +55,8 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
 
-  /**
-   * Generic validation action which will call:
-   * - the consumer validateBlockWithCustomJsonSchema
-   * - any custom validation logic in the community version
-   */
   async validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
+    console.debug('floip/NumericResponseStore/validate()', `${block.type}`)
     return MobilePrimitives_NumericResponseBlockValidator.runAllValidations(block, schemaVersion, undefined, {
       hasVoiceMode: rootGetters['flow/hasVoiceMode'],
     })

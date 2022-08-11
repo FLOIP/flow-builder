@@ -1,9 +1,9 @@
-import {ActionContext, Dispatch, GetterTree, Module, MutationTree} from 'vuex'
+import {ActionContext, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlock} from '@floip/flow-runner'
 import {defaultsDeep} from 'lodash'
-import {validateBlockWithJsonSchema} from '@/store/validation/validationHelpers'
 import {IValidationStatus} from '@/store/validation'
+import {ExtendedValidatorBase} from '@/lib/validations'
 
 export interface IEmptyState {}
 
@@ -104,19 +104,24 @@ export const actions = {
    * Important: This will be overridden in the consumer side, so DO NOT add generic validations here,
    * instead edit the `validate()` if needed.
    */
-  async validateBlockWithCustomJsonSchema(
-    _ctx: unknown,
-    {block, schemaVersion}: {block: IBlock, schemaVersion: string},
-  ): Promise<IValidationStatus> {
-    return validateBlockWithJsonSchema({block, schemaVersion})
-  },
+  // async validateBlockWithCustomJsonSchema(
+  //   _ctx: unknown,
+  //   {block, schemaVersion, customBlockJsonSchema}: {block: IBlock, schemaVersion: string, customBlockJsonSchema?: JSONSchema7},
+  // ): Promise<IValidationStatus> {
+  //   console.debug('floip/validateBlockWithCustomJsonSchema()', `${block.type}`)
+  //   return validateBlockWithJsonSchema({block, schemaVersion, customBlockJsonSchema})
+  // },
 
-  //Will need to be fully overridden in block stores if needed (see MobilePrimitives_NumericResponseBlockStore.ts, for example)
+  /**
+   * Override this in block stores if needed (see MobilePrimitives_NumericResponseBlockStore.ts, for example)
+   */
   async validate(
     {dispatch}: ActionContext<IEmptyState, IRootState>,
     {block, schemaVersion}: {block: IBlock, schemaVersion: string},
   ): Promise<IValidationStatus> {
-    return dispatch('validateBlockWithCustomJsonSchema', {block, schemaVersion})
+    console.debug('floip/BaseBlock/validate()', `${block.type}`)
+    // return dispatch('validateBlockWithCustomJsonSchema', {block, schemaVersion, customBlockJsonSchema})
+    return ExtendedValidatorBase.runAllValidations(block, schemaVersion)
   },
 }
 
