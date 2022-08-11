@@ -2,8 +2,10 @@ import {ActionContext, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlock} from '@floip/flow-runner'
 import {defaultsDeep} from 'lodash'
-import {IValidationStatus} from '@/store/validation'
-import {ExtendedValidatorBase} from '@/lib/validations'
+import {IValidationStatus, validateBlockWithJsonSchema} from '@/store/validation'
+import {ValidationResults} from '@/lib/validations'
+import {ErrorObject} from 'ajv'
+import Lang from '@/lib/filters/lang'
 
 export interface IEmptyState {}
 
@@ -104,24 +106,53 @@ export const actions = {
    * Important: This will be overridden in the consumer side, so DO NOT add generic validations here,
    * instead edit the `validate()` if needed.
    */
-  // async validateBlockWithCustomJsonSchema(
-  //   _ctx: unknown,
-  //   {block, schemaVersion, customBlockJsonSchema}: {block: IBlock, schemaVersion: string, customBlockJsonSchema?: JSONSchema7},
-  // ): Promise<IValidationStatus> {
-  //   console.debug('floip/validateBlockWithCustomJsonSchema()', `${block.type}`)
-  //   return validateBlockWithJsonSchema({block, schemaVersion, customBlockJsonSchema})
-  // },
+  async validateBlockWithCustomJsonSchema(
+    _ctx: unknown,
+    {block, schemaVersion}: {block: IBlock, schemaVersion: string},
+  ): Promise<IValidationStatus> {
+    console.debug('floip/BaseBlock/validateBlockWithCustomJsonSchema()', `${block.type}`)
+    // we can provide the customBlockJsonSchema option for validateBlockWithJsonSchema when overriding this validateBlockWithCustomJsonSchema
+    return validateBlockWithJsonSchema({block, schemaVersion})
+  },
+
+  async validateWithProgrammaticLogic(
+    _ctx: unknown,
+    {block}: {block: IBlock},
+  ): Promise<ValidationResults> {
+    console.debug('floip/BaseBlock/validateWithProgrammaticLogic()', `${block.type}`)
+    return [] as ValidationResults
+  },
 
   /**
-   * Override this in block stores if needed (see MobilePrimitives_NumericResponseBlockStore.ts, for example)
+   * Override this in block stores if needed, it's not recommended though.
+   * For customization, let's try to override the 02 actions validateBlockWithCustomJsonSchema & validateWithProgrammaticLogic instead
    */
   async validate(
     {dispatch}: ActionContext<IEmptyState, IRootState>,
     {block, schemaVersion}: {block: IBlock, schemaVersion: string},
   ): Promise<IValidationStatus> {
     console.debug('floip/BaseBlock/validate()', `${block.type}`)
-    // return dispatch('validateBlockWithCustomJsonSchema', {block, schemaVersion, customBlockJsonSchema})
-    return ExtendedValidatorBase.runAllValidations(block, schemaVersion)
+    // Validation based on JsonSchema
+    const validationStatus: IValidationStatus = await dispatch('validateBlockWithCustomJsonSchema', {block, schemaVersion})
+
+    // Validation based on programmatic logic
+    const dataPaths = new Set(validationStatus.ajvErrors?.map((error: ErrorObject) => error.dataPath))
+    const validationResults: ValidationResults = await dispatch('validateWithProgrammaticLogic', {block})
+
+    validationResults.forEach(([dataPath, suffix]) => {
+      if (!dataPaths.has(dataPath)) {
+        dataPaths.add(dataPath)
+
+        validationStatus.ajvErrors = validationStatus.ajvErrors || []
+        validationStatus.ajvErrors.push({
+          dataPath,
+          message: Lang.trans(`flow-builder-validation.${suffix}`),
+        } as ErrorObject)
+      }
+    })
+
+    return validationStatus
+    // return ExtendedValidatorBase.runAllValidations(block, schemaVersion)
   },
 }
 

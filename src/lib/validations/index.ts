@@ -1,3 +1,5 @@
+import {ErrorObject} from 'ajv'
+
 /**
  * We have to use named exports from this file, otherwise the following
  * runtime error occurs:
@@ -5,8 +7,9 @@
  * Uncaught TypeError: Super expression must either be
  * null or a function, not undefined
  */
+export type ValidationMessageSuffix = string
+export type ValidationResult = [ErrorObject['dataPath'], ValidationMessageSuffix]
+export type ValidationResults = ValidationResult[]
 
-export {default as Core_SetGroupMembershipValidator} from './Core_SetGroupMembershipValidator'
-export {MobilePrimitives_SelectOneResponseBlockValidator} from './MobilePrimitives_SelectOneResponseBlockValidator'
-export {default as MobilePrimitives_NumericResponseBlockValidator} from './MobilePrimitives_NumericResponseBlockValidator'
-export * from './ExtendedValidatorBase'
+// export {default as Core_SetGroupMembershipValidator} from './Core_SetGroupMembershipValidator'
+// export {MobilePrimitives_SelectOneResponseBlockValidator} from './MobilePrimitives_SelectOneResponseBlockValidator'
