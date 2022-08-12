@@ -1676,9 +1676,10 @@
   resolved "https://registry.yarnpkg.com/@floip/expression-parser/-/expression-parser-1.11.3.tgz#da32541845ec482b60daabe963ccb6200870781c"
   integrity sha512-r8433SL1ZjOZKcgIkLMci9LUAYM7aJQGIdE9+37/op5H0DOhB8qh6HvQe7wDhpoOyrCiMYUx/6FBruOf9HT91w==
 
-"@floip/flow-runner@https://github.com/FLOIP/flow-runner.git#feature/VMO-6623/fix-validation-extension":
+"@floip/flow-runner@1.0.0-rc4.14":
   version "1.0.0-rc4.14"
-  resolved "https://github.com/FLOIP/flow-runner.git#8abc79b2b1bc0065ca5e2218caca3c2be5fb7cc3"
+  resolved "https://registry.yarnpkg.com/@floip/flow-runner/-/flow-runner-1.0.0-rc4.14.tgz#3a53e4d012a6f2ffd8f379550043641c115ffbdb"
+  integrity sha512-FpUZZiu6iO9pQTlviBKT9U19hbx/JtX0fjg4FbcGAwhvQ3lbNmZ+VTnaGv/0MRs56ZlqnTnlP2JD/hRROUzwVQ==
   dependencies:
     "@floip/expression-evaluator" "^2.1.3"
     ajv "^7.2.1"
