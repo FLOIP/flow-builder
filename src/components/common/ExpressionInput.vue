@@ -189,7 +189,7 @@ export class ExpressionInput extends mixins(Lang) {
     this.autoSuggestDropdown.style.top = `${this.refInputElement.clientHeight}px`
 
     // move the created autoSuggestDropdown inside the desired dom
-    this.refAutoSuggestElement.appendChild(this.autoSuggestDropdown)
+    this.refAutoSuggestElement?.appendChild(this.autoSuggestDropdown)
   }
 
   /**
