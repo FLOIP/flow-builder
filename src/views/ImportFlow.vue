@@ -73,7 +73,7 @@
                 <error-handler />
               </div>
             </div>
-
+            <error-handler-v2 />
             <div class="float-right mt-3">
               <router-link
                 :to="route('flows.cancelImport')"
@@ -101,19 +101,23 @@
 import Lang from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import {Component, Prop} from 'vue-property-decorator'
-import Vue from 'vue'
 import {Getter, Mutation, namespace, State} from 'vuex-class'
 import {debounce, forEach, get, isEmpty} from 'lodash'
 import {mixins} from 'vue-class-component'
 import {store} from '@/store'
 import {IContext} from '@floip/flow-runner'
+import ErrorHandlerV2 from '@/components/interaction-designer/flow-editors/import/ErrorHandlerV2.vue'
 
 import ImportStore from '@/store/flow/views/import'
 
 const flowVuexNamespace = namespace('flow')
 const importVuexNamespace = namespace('flow/import')
 
-@Component({})
+@Component({
+  components: {
+    ErrorHandlerV2,
+  },
+})
 class ImportFlow extends mixins(Lang, Routes) {
   @Prop({default: () => ({})}) readonly appConfig!: object
 
