@@ -19,6 +19,7 @@ import {
   flatValidationStatuses,
   getLocalizedAjvErrors,
   getLocalizedBackendErrors,
+  getOrCreateWholeContainerValidator,
   getOrCreateFlowValidator,
   getOrCreateLanguageValidator,
   getOrCreateResourceValidator,
@@ -173,12 +174,16 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     return state.validationStatuses[key]
   },
 
-  async validate_flowContainer({state}, {flowContainer}: { flowContainer: IContainer }): Promise<IValidationStatus> {
-    const key = `flowContainer/${flowContainer.uuid}`
-    const errors = getFlowStructureErrors(flowContainer, false)
+  /**
+   * Validate the whole container, including all contents like: flows, blocks, etc
+   */
+  async validate_wholeContainer({state, rootGetters}, {flowContainer}: { flowContainer: IContainer }): Promise<IValidationStatus> {
+    const key = `whole_container/${flowContainer.uuid}`
+    const validate = getOrCreateWholeContainerValidator(rootGetters['flow/activeFlowContainer'].specification_version)
     Vue.set(state.validationStatuses, key, {
-      isValid: !errors,
-      ajvErrors: getLocalizedAjvErrors(key, errors),
+      isValid: validate(flowContainer),
+      ajvErrors: getLocalizedAjvErrors(key, validate.errors),
+      type: 'whole_container',
     })
 
     debugValidationStatus(state.validationStatuses[key], 'flow container validation status')
