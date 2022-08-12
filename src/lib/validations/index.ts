@@ -10,6 +10,3 @@ import {ErrorObject} from 'ajv'
 export type ValidationMessageSuffix = string
 export type ValidationResult = [ErrorObject['dataPath'], ValidationMessageSuffix]
 export type ValidationResults = ValidationResult[]
-
-// export {default as Core_SetGroupMembershipValidator} from './Core_SetGroupMembershipValidator'
-// export {MobilePrimitives_SelectOneResponseBlockValidator} from './MobilePrimitives_SelectOneResponseBlockValidator'

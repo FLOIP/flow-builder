@@ -327,7 +327,7 @@ export function createDefaultBlockTypeInstallerFor(
 ) {
   return (builder: Vue) => {
     if (storeForBlockType === undefined || blockType === undefined) {
-      // If this error happens, try to not import function from '@/lib' but directly from the file (see eg: in ExtendedValidatorBase.ts)
+      // If this error happens, try to not import function from '@/lib' but directly from the file
       console.error('createDefaultBlockTypeInstallerFor',
         'something weird is happening: the store is undefined',
         'which might cause',

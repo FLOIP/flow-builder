@@ -115,6 +115,13 @@ export const actions = {
     return validateBlockWithJsonSchema({block, schemaVersion})
   },
 
+  /**
+   * Validate the Consumer block
+   * By overriding this action in the consumer side, we will be able to customize it using different json schema for eg.
+   *
+   * Important: This will be overridden in the consumer side, so DO NOT add generic validations here,
+   * instead edit the `validate()` if needed.
+   */
   async validateWithProgrammaticLogic(
     _ctx: unknown,
     {block}: {block: IBlock},
@@ -152,7 +159,6 @@ export const actions = {
     })
 
     return validationStatus
-    // return ExtendedValidatorBase.runAllValidations(block, schemaVersion)
   },
 }
 

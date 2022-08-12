@@ -55,12 +55,6 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
 
-  // async validate({rootGetters}, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-  //   console.debug('floip/NumericResponseStore/validate()', `${block.type}`)
-  //   return MobilePrimitives_NumericResponseBlockValidator.runAllValidations(block, schemaVersion, undefined, {
-  //     hasVoiceMode: rootGetters['flow/hasVoiceMode'],
-  //   })
-  // },
   async validateWithProgrammaticLogic(
     {rootGetters},
     {block}: {block: IBlock},

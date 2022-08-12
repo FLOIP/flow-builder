@@ -41,9 +41,6 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     }, {root: true})
   },
 
-  // async validate(_context, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-  //   return Core_SetGroupMembershipValidator.runAllValidations(block, schemaVersion)
-  // },
   async validateWithProgrammaticLogic(
     _ctx: unknown,
     {block}: {block: ISetContactPropertyBlock},

@@ -126,9 +126,6 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
 
-  // async validate(_context, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-  //   return MobilePrimitives_SelectOneResponseBlockValidator.runAllValidations(block, schemaVersion)
-  // },
   async validateWithProgrammaticLogic(
     _ctx: unknown,
     {block}: {block: ISelectOneResponseBlock},
