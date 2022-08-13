@@ -91,14 +91,13 @@ export const mutations: MutationTree<IValidationState> = {
   resetValidationStatuses(state, {key}): void {
     Vue.set(state.validationStatuses, key, {ajvErrors: undefined})
     Vue.set(state.validationStatuses[key], 'ajvErrors', [])
-    // state.validationStatuses[key] = {} as IValidationStatus
   },
   pushAjvErrorToValidationStatuses(state, {key, ajvError}): void {
     if (state.validationStatuses[key]?.ajvErrors === undefined) {
       Vue.set(state.validationStatuses, key, {ajvErrors: undefined})
       Vue.set(state.validationStatuses[key], 'ajvErrors', [])
     }
-    state.validationStatuses[key]!.isValid = false
+    // state.validationStatuses[key]!.isValid = false
     state.validationStatuses[key]!.ajvErrors!.push(ajvError)
   },
 }

@@ -6,6 +6,8 @@ import {cloneDeep, difference, differenceWith, find, findIndex, get, isEmpty, is
 import {IContactPropertyMultipleChoice} from '../block-types/Core_SetContactPropertyStore'
 import {IGroupOption} from '../block-types/Core_SetGroupMembershipStore'
 
+const TRUE_ERROR_KEY_WORDS = ['required', 'additionalProperties', 'error']
+
 import {
   checkSingleFlowOnly,
   detectedGroupChanges,
@@ -15,6 +17,7 @@ import {
   getPropertyBlocks,
   updateResourcesForLanguageMatch,
 } from '../utils/importHelpers'
+import {ErrorObject} from 'ajv'
 
 export const getters: GetterTree<IImportState, IRootState> = {
   languagesMissing: (state) => !isEmpty(state.missingLanguages),
@@ -24,6 +27,17 @@ export const getters: GetterTree<IImportState, IRootState> = {
   unsupportedBlockClasses: (state, getters, _rootState, rootGetters) => difference(getters.uploadedBlockTypes, rootGetters.blockClasses),
   unsupportedBlockClassesList: (state, getters) => join(getters.unsupportedBlockClasses, ', '),
   uploadedBlockTypes: (state) => uniq(get(state.flowContainer, 'flows[0].blocks', []).map((block: IBlock) => block.type)),
+  isSafeToImport: (state, getters) => Array.isArray(getters.wholeContainerValidationTrueErrors)
+    && getters.wholeContainerValidationTrueErrors.length === 0,
+  hasWarnings: (state, getters) => getters.wholeContainerValidationWarningErrors !== undefined
+    && getters.wholeContainerValidationWarningErrors.length > 0,
+  wholeContainerValidationTrueErrors: (state, getters) => getters.wholeContainerValidationErrors?.filter(
+    (ajvError: ErrorObject) => TRUE_ERROR_KEY_WORDS.includes(ajvError.keyword),
+  ),
+  wholeContainerValidationWarningErrors: (state, getters) => getters.wholeContainerValidationErrors?.filter(
+    (ajvError: ErrorObject) => !TRUE_ERROR_KEY_WORDS.includes(ajvError.keyword),
+    ),
+  wholeContainerValidationErrors: (state, getters, rootState) => rootState['validation'].validationStatuses?.whole_container?.ajvErrors ?? [],
 }
 
 export const mutations: MutationTree<IImportState> = {
@@ -151,7 +165,7 @@ export const mutations: MutationTree<IImportState> = {
 }
 
 export const actions: ActionTree<IImportState, IRootState> = {
-  async setFlowJson({commit, state, dispatch}, value: string) {
+  async setFlowJson({commit, state, getters, dispatch}, value: string) {
     commit('validation/resetValidationStatuses', {key: 'whole_container'}, {root: true})
     commit('setFlowError', '')
     commit('setFlowJsonText', value)
@@ -174,10 +188,11 @@ export const actions: ActionTree<IImportState, IRootState> = {
       return
     }
 
-    if (validationErrors.isValid === false) {
+    if (getters.isSafeToImport === false) {
       return
     }
 
+    console.debug('test', 'setFlowJsonText', flowContainer)
     //We know it's valid JSON at least. Let's display it correctly formatted
     commit('setFlowJsonText', JSON.stringify(flowContainer, null, 2))
 
