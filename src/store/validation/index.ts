@@ -24,6 +24,7 @@ import {
   getOrCreateLanguageValidator,
   getOrCreateResourceValidator,
 } from '@/store/validation/validationHelpers'
+import Lang from '@/lib/filters/lang'
 
 export interface IIndexedString {
   [key: string]: string,
@@ -87,8 +88,17 @@ export const mutations: MutationTree<IValidationState> = {
   removeValidationStatusesFor(state, {key}) {
     delete state.validationStatuses[key]
   },
-  resetValidationStatuses(state): void {
-    state.validationStatuses = {}
+  resetValidationStatuses(state, {key}): void {
+    Vue.set(state.validationStatuses, key, {ajvErrors: undefined})
+    Vue.set(state.validationStatuses[key], 'ajvErrors', [])
+    // state.validationStatuses[key] = {} as IValidationStatus
+  },
+  pushAjvErrorToValidationStatuses(state, {key, ajvError}): void {
+    if (state.validationStatuses[key]?.ajvErrors === undefined) {
+      Vue.set(state.validationStatuses, key, {ajvErrors: undefined})
+      Vue.set(state.validationStatuses[key], 'ajvErrors', [])
+    }
+    state.validationStatuses[key]!.ajvErrors!.push(ajvError)
   },
 }
 
@@ -180,9 +190,26 @@ export const actions: ActionTree<IValidationState, IRootState> = {
   /**
    * Validate the whole container, including all contents like: flows, blocks, etc
    */
-  async validate_wholeContainer({state, rootGetters}, {flowContainer}: { flowContainer: IContainer }): Promise<IValidationStatus> {
+  async validate_wholeContainer({state, commit, rootGetters}, {flowContainer}: { flowContainer: IContainer }): Promise<IValidationStatus> {
     // We do not add the uuid in key as it's hard coded in flow state for now
     const key = 'whole_container'
+
+    //TODO: fix >> import json >> edit manually from input fiel >> import new json >>> currenlty not working
+    // it was not a true json
+    if (flowContainer === undefined) {
+      console.debug('test x2', flowContainer)
+      commit('pushAjvErrorToValidationStatuses', {
+        key,
+        ajvError: {
+          dataPath: '/container',
+          keyword: 'error',
+          message: Lang.trans('flow-builder-validation.invalid-json-provided'),
+        } as ErrorObject,
+      })
+      state.validationStatuses[key].isValid = false
+      return state.validationStatuses[key]
+    }
+
     const validate = getOrCreateWholeContainerValidator(rootGetters['flow/activeFlowContainer'].specification_version)
     Vue.set(state.validationStatuses, key, {
       isValid: validate(flowContainer),
@@ -263,8 +290,8 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     )
   },
 
-  resetValidationStatuses({commit}): void {
-    commit('resetValidationStatuses')
+  resetValidationStatuses({commit}, {key}: {key: string}): void {
+    commit('resetValidationStatuses', {key})
   },
 }
 

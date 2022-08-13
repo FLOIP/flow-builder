@@ -30,7 +30,7 @@
 import TechErrorNotifications from '@/components/interaction-designer/flow-editors/import/TechErrorNotifications.vue'
 import {mapState} from 'vuex'
 
-const TRUE_ERROR_KEY_WORDS = ['required', 'additionalProperties']
+const TRUE_ERROR_KEY_WORDS = ['required', 'additionalProperties', 'error']
 
 export default {
   name: 'ErrorHandlerV2',
