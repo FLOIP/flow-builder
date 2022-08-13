@@ -1,12 +1,21 @@
 <template>
   <div class="tech-error-notification">
-    <div v-for="(ajvError, key) in wholeContainerValidationErrors" :key="key">
-      <a aria-controls="collapseExample" aria-expanded="false" data-toggle="collapse" href="#collapseExample" role="button">
-        Link with href {{ ajvError }}
-      </a>
-      <div id="collapseExample" class="collapse">
+    <div v-for="(ajvError, key) in validationErrors" :key="key">
+      <h6>
+        <b>#{{ key + 1 }} &nbsp;</b>
+        <b>Location</b>: {{ ajvError.dataPath }}, <b>Message</b>: {{ ajvError.message }}
+        <a :aria-controls="`collapse_${errorType}_${key}`"
+           :href="`#collapse_${errorType}_${key}`"
+           aria-expanded="false"
+           data-toggle="collapse"
+           role="button">
+          See details
+        </a>
+      </h6>
+
+      <div :id="`collapse_${errorType}_${key}`" class="collapse">
         <div class="card card-body">
-          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+          {{ ajvError }}
         </div>
       </div>
     </div>
@@ -15,19 +24,17 @@
 </template>
 
 <script>
-import {mapGetters, mapState} from 'vuex'
 
 export default {
   name: 'TechErrorNotifications',
-  computed: {
-    ...mapState('validation', ['validationStatuses']),
-    ...mapState('flow', ['container_uuid']),
-    wholeContainerValidationErrors() {
-      if (this.container_uuid !== undefined) {
-        return this.validationStatuses[`whole_container/${this.container_uuid}`]?.ajvErrors
-      } else {
-        return []
-      }
+  props: {
+    validationErrors: {
+      type: Array,
+      required: true,
+    },
+    errorType: {
+      type: String,
+      required: true,
     },
   },
 }
