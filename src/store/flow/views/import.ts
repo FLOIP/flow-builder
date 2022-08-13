@@ -152,7 +152,6 @@ export const mutations: MutationTree<IImportState> = {
 
 export const actions: ActionTree<IImportState, IRootState> = {
   async setFlowJson({commit, state, dispatch}, value: string) {
-    // TODO: CHeck why this make the import non reactive
     commit('validation/resetValidationStatuses', {key: 'whole_container'}, {root: true})
     commit('setFlowError', '')
     commit('setFlowJsonText', value)
@@ -164,30 +163,25 @@ export const actions: ActionTree<IImportState, IRootState> = {
       commit('resetLanguageMatching')
       commit('resetPropertyMatching')
       commit('resetGroupMatching')
-      commit('setFlowError', 'flow-builder.invalid-json-provided')
+      // commit('setFlowError', 'flow-builder.invalid-json-provided')
       // return
     }
-    console.debug('test 1', flowContainer)
+
     const validationErrors = await dispatch('validation/validate_wholeContainer', {flowContainer}, {root: true})
-    console.debug('test 2', validationErrors)
 
     if (flowContainer !== undefined && (validationErrors?.isValid === undefined || validationErrors?.isValid === false)) {
-      console.debug('test 2a', validationErrors)
-      // TODO: figure out to remove the error when providing non json container
       commit('setFlowErrorWithInterpolations', {text: 'flow-builder.flow-invalid', interpolations: {version: flowContainer.specification_version}})
-      console.debug('test 2b', validationErrors)
       return
     }
-    console.debug('test 3', validationErrors)
+
+    if (validationErrors.isValid === false) {
+      return
+    }
+
     //We know it's valid JSON at least. Let's display it correctly formatted
     commit('setFlowJsonText', JSON.stringify(flowContainer, null, 2))
 
-    // TODO: move this in the validation store
-    if (!checkSingleFlowOnly(flowContainer)) {
-      commit('setFlowError', 'flow-builder.importer-currently-supports-single-flow-only')
-      return
-    }
-
+    // TODO: try to refactor the following validation into the validation store
     const oldFlowContainer = cloneDeep(state.flowContainer)
     const newFlowContainer = cloneDeep(flowContainer)
     commit('setFlowContainer', flowContainer)

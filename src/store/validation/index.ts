@@ -98,6 +98,7 @@ export const mutations: MutationTree<IValidationState> = {
       Vue.set(state.validationStatuses, key, {ajvErrors: undefined})
       Vue.set(state.validationStatuses[key], 'ajvErrors', [])
     }
+    state.validationStatuses[key]!.isValid = false
     state.validationStatuses[key]!.ajvErrors!.push(ajvError)
   },
 }
@@ -189,27 +190,18 @@ export const actions: ActionTree<IValidationState, IRootState> = {
 
   /**
    * Validate the whole container, including all contents like: flows, blocks, etc
+   * Assuming the provided container could be an invalid json, etc
    */
-  async validate_wholeContainer({state, commit, rootGetters}, {flowContainer}: { flowContainer: IContainer }): Promise<IValidationStatus> {
+  async validate_wholeContainer({state, commit, dispatch, rootGetters}, {flowContainer}: { flowContainer: IContainer }): Promise<IValidationStatus> {
     // We do not add the uuid in key as it's hard coded in flow state for now
     const key = 'whole_container'
-
-    //TODO: fix >> import json >> edit manually from input fiel >> import new json >>> currenlty not working
-    // it was not a true json
-    if (flowContainer === undefined) {
-      console.debug('test x2', flowContainer)
-      commit('pushAjvErrorToValidationStatuses', {
-        key,
-        ajvError: {
-          dataPath: '/container',
-          keyword: 'error',
-          message: Lang.trans('flow-builder-validation.invalid-json-provided'),
-        } as ErrorObject,
-      })
-      state.validationStatuses[key].isValid = false
+    const checkProgrammaticValidation = await dispatch('validate_wholeContainerWithProgrammaticLogic', {key, flowContainer})
+    if (checkProgrammaticValidation === false) {
+      debugValidationStatus(state.validationStatuses[key], 'flow container validation status')
       return state.validationStatuses[key]
     }
 
+    // At this stage we assume the container has the specification_version
     const validate = getOrCreateWholeContainerValidator(rootGetters['flow/activeFlowContainer'].specification_version)
     Vue.set(state.validationStatuses, key, {
       isValid: validate(flowContainer),
@@ -219,6 +211,44 @@ export const actions: ActionTree<IValidationState, IRootState> = {
 
     debugValidationStatus(state.validationStatuses[key], 'flow container validation status')
     return state.validationStatuses[key]
+  },
+
+  async validate_wholeContainerWithProgrammaticLogic(
+    {state, commit, rootGetters},
+    {key, flowContainer}: { key: string, flowContainer: IContainer },
+  ): Promise<Boolean> {
+    const dataPath = '/container'
+    // we provide a keyword 'error' in ajvError to tell our error handler this should not be ignored (not like `pattern` keyword)
+    const keyword = 'error'
+    if (flowContainer === undefined) {
+      commit('pushAjvErrorToValidationStatuses', {
+        key,
+        ajvError: {dataPath, keyword, message: Lang.trans('flow-builder-validation.invalid-json-provided')} as ErrorObject,
+      })
+      return false
+    } else {
+      // We have a valid json file
+      if (flowContainer.flows.length === 0) {
+        commit('pushAjvErrorToValidationStatuses', {
+          key,
+          ajvError: {dataPath, keyword, message: Lang.trans('flow-builder-validation.container-flow-is-empty')} as ErrorObject,
+        })
+        return false
+      }
+
+      if (flowContainer.flows.length > 1) {
+        commit('pushAjvErrorToValidationStatuses', {
+          key,
+          ajvError: {
+            dataPath,
+            keyword,
+            message: Lang.trans('flow-builder-validation.importer-currently-supports-single-flow-only'),
+          } as ErrorObject,
+        })
+        return false
+      }
+    }
+    return true
   },
 
   async validate_new_language({state, rootGetters}, {language}: { language: ILanguage }): Promise<IValidationStatus> {
