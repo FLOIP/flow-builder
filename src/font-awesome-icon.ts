@@ -10,6 +10,7 @@ import {
   faInfoCircle,
   faMobileAlt,
   faSpinner,
+  faExclamationTriangle,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -48,6 +49,7 @@ library.add(
   faTimesCircle,
   faTrashAlt,
   faInfoCircle,
+  faExclamationTriangle,
   ...CustomIcons,
 )
 

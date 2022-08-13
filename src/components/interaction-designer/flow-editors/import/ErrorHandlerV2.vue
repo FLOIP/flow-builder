@@ -1,12 +1,14 @@
 <template>
   <div class="error-handler-v2">
     <div class="mt-4 ml-4 mr-4 mb-4">
+      <full-import-matcher />
+
       <h5>Result</h5>
       <div
         v-if="isSafeToImport && hasWarnings"
         class="alert alert-success mt-3"
         role="alert">
-        <font-awesome-icon :icon="['far', 'check-circle']" />
+        <font-awesome-icon :icon="['fa', 'exclamation-triangle']" />
         Success, with warnings
       </div>
       <div
@@ -24,13 +26,6 @@
         Failure
         <!--TODO: check why we use this in previous handler {{ flowError | trans(flowErrorInterpolations) }}-->
       </div>
-<!--  TODO: handle this    <div-->
-<!--        v-if="hasUnsupportedBlockClasses"-->
-<!--        class="alert alert-danger mt-3"-->
-<!--        role="alert">-->
-<!--        <i class="glyphicon glyphicon-exclamation-sign" />-->
-<!--        {{ `${trans('flow-builder.unsupported-blocks-detected')}: ${unsupportedBlockClassesList}` }}-->
-<!--      </div>-->
       <div v-if="!isSafeToImport">
         <h5>Errors</h5>
         <p>Please fix these errors first</p>
@@ -53,22 +48,32 @@
 
 <script>
 import TechErrorNotifications from '@/components/interaction-designer/flow-editors/import/TechErrorNotifications.vue'
-import {mapGetters} from 'vuex'
+import FullImportMatcher from '@/components/interaction-designer/flow-editors/import/FullImportMatcher.vue'
+import {mapGetters, mapState} from 'vuex'
 import Lang from '@/lib/filters/lang'
 
 export default {
   name: 'ErrorHandlerV2',
   components: {
     TechErrorNotifications,
+    FullImportMatcher,
   },
   mixins: [Lang],
   computed: {
+    ...mapState('flow/import', [
+      'missingLanguages',
+      'missingProperties',
+      'missingGroups',
+    ]),
     ...mapGetters('flow/import', [
       'isSafeToImport',
       'hasWarnings',
       'wholeContainerValidationTrueErrors',
       'wholeContainerValidationWarningErrors',
       'wholeContainerValidationErrors',
+      'languagesMissing',
+      'propertiesMissing',
+      'groupsMissing',
     ]),
   },
 }

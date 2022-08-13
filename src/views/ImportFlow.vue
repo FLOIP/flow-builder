@@ -51,7 +51,6 @@
                   class="tall-text"
                   :placeholder="'flow-builder.edit-flow-json' | trans"
                   @input="setUpdatingAndHandleFlowJsonTextChange" />
-                <error-handler />
               </div>
             </div>
             <div class="mt-2">
@@ -70,9 +69,9 @@
                   class="tall-text"
                   :placeholder="'flow-builder.paste-flow-json' | trans"
                   @input="setUpdatingAndHandleFlowJsonTextChange" />
-                <error-handler />
               </div>
             </div>
+            <error-handler />
             <error-handler-v2 />
             <div class="float-right mt-3">
               <router-link

@@ -29,36 +29,36 @@
       <i class="glyphicon glyphicon-exclamation-sign" />
       {{ `${trans('flow-builder.unsupported-blocks-detected')}: ${unsupportedBlockClassesList}` }}
     </div>
-    <import-matcher
-      v-if="languagesMissing"
-      class="mt-2"
-      :missing-matches="missingLanguages"
-      type-id="id"
-      type-label="label"
-      type="language"
-      :existing-options-without-match="existingLanguagesWithoutMatch"
-      match-not-found-text="flow-builder.match-for-languages-not-found"
-      @reactToMatch="handleMatchLanguage" />
-    <import-matcher
-      v-if="propertiesMissing"
-      class="mt-2"
-      :missing-matches="missingProperties"
-      type-id="name"
-      type-label="name"
-      type="property"
-      :existing-options-without-match="existingPropertiesWithoutMatch"
-      match-not-found-text="flow-builder.match-for-properties-not-found"
-      @reactToMatch="handleMatchProperty" />
-    <import-matcher
-      v-if="groupsMissing"
-      class="mt-2"
-      :missing-matches="missingGroups"
-      type-id="id"
-      type-label="group_name"
-      type="group"
-      :existing-options-without-match="existingGroupsWithoutMatch"
-      match-not-found-text="flow-builder.match-for-groups-not-found"
-      @reactToMatch="handleMatchGroup" />
+<!--    <import-matcher-->
+<!--      v-if="languagesMissing"-->
+<!--      class="mt-2"-->
+<!--      :missing-matches="missingLanguages"-->
+<!--      type-id="id"-->
+<!--      type-label="label"-->
+<!--      type="language"-->
+<!--      :existing-options-without-match="existingLanguagesWithoutMatch"-->
+<!--      match-not-found-text="flow-builder.match-for-languages-not-found"-->
+<!--      @reactToMatch="handleMatchLanguage" />-->
+<!--    <import-matcher-->
+<!--      v-if="propertiesMissing"-->
+<!--      class="mt-2"-->
+<!--      :missing-matches="missingProperties"-->
+<!--      type-id="name"-->
+<!--      type-label="name"-->
+<!--      type="property"-->
+<!--      :existing-options-without-match="existingPropertiesWithoutMatch"-->
+<!--      match-not-found-text="flow-builder.match-for-properties-not-found"-->
+<!--      @reactToMatch="handleMatchProperty" />-->
+<!--    <import-matcher-->
+<!--      v-if="groupsMissing"-->
+<!--      class="mt-2"-->
+<!--      :missing-matches="missingGroups"-->
+<!--      type-id="id"-->
+<!--      type-label="group_name"-->
+<!--      type="group"-->
+<!--      :existing-options-without-match="existingGroupsWithoutMatch"-->
+<!--      match-not-found-text="flow-builder.match-for-groups-not-found"-->
+<!--      @reactToMatch="handleMatchGroup" />-->
   </div>
 </template>
 
