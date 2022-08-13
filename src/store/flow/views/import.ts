@@ -27,6 +27,7 @@ import {ErrorObject} from 'ajv'
 import Lang from '@/lib/filters/lang'
 
 export const getters: GetterTree<IImportState, IRootState> = {
+  specVersion: (state) => state.flowContainer,
   languagesMissing: (state) => !isEmpty(state.missingLanguages),
   propertiesMissing: (state) => !isEmpty(state.missingProperties),
   groupsMissing: (state) => !isEmpty(state.missingGroups),
@@ -55,7 +56,7 @@ export const mutations: MutationTree<IImportState> = {
   baseReset(state) {
     state.flowContainer = null
     state.flowJsonText = ''
-    state.flowError = ''
+    state.flowSpecVersion = undefined
     state.propertyBlocks = []
     state.groupBlocks = []
   },
@@ -132,13 +133,8 @@ export const mutations: MutationTree<IImportState> = {
       set(state.flowContainer, 'flows[0].blocks', blocks)
     }
   },
-  setFlowErrorWithInterpolations(state, {text, interpolations}) {
-    state.flowError = text
-    state.flowErrorInterpolations = interpolations
-  },
-  setFlowError(state, text) {
-    state.flowError = text
-    state.flowErrorInterpolations = null
+  setFlowSpecVersion(state, version) {
+    state.flowSpecVersion = version
   },
   setGroupBlocks(state, groupBlocks) {
     state.groupBlocks = groupBlocks
@@ -175,7 +171,7 @@ export const mutations: MutationTree<IImportState> = {
 export const actions: ActionTree<IImportState, IRootState> = {
   async setFlowJson({commit, state, getters, dispatch}, value: string) {
     commit('validation/resetValidationStatuses', {key: 'whole_container'}, {root: true})
-    commit('setFlowError', '')
+    commit('setFlowSpecVersion', undefined)
     commit('setFlowJsonText', value)
     let flowContainer
     try {
@@ -185,8 +181,6 @@ export const actions: ActionTree<IImportState, IRootState> = {
       commit('resetLanguageMatching')
       commit('resetPropertyMatching')
       commit('resetGroupMatching')
-      // commit('setFlowError', 'flow-builder.invalid-json-provided')
-      // return
     }
 
     const hasProgrammaticError = await dispatch('validate_wholeContainerWithProgrammaticLogic', {
@@ -197,13 +191,11 @@ export const actions: ActionTree<IImportState, IRootState> = {
       return
     } else {
       const validationErrors = await dispatch('validation/validate_wholeContainer', {flowContainer}, {root: true})
-    }
 
-    // TODO: handle this setFlowErrorWithInterpolations
-    // if (flowContainer !== undefined && (validationErrors?.isValid === undefined || validationErrors?.isValid === false)) {
-    //   commit('setFlowErrorWithInterpolations', {text: 'flow-builder.flow-invalid', interpolations: {version: flowContainer.specification_version}})
-    //   return
-    // }
+      if (flowContainer !== undefined) {
+        commit('setFlowSpecVersion', {version: flowContainer?.specification_version})
+      }
+    }
 
     if (getters.isSafeToImport === false) {
       return
@@ -212,7 +204,6 @@ export const actions: ActionTree<IImportState, IRootState> = {
     //We know it's valid JSON at least. Let's display it correctly formatted
     commit('setFlowJsonText', JSON.stringify(flowContainer, null, 2))
 
-    // TODO: try to refactor the following validation into the validation store, or create new action for these
     // Try to fix the imported container
     const oldFlowContainer = cloneDeep(state.flowContainer)
     const newFlowContainer = cloneDeep(flowContainer)
@@ -468,8 +459,7 @@ export interface IImportState {
   existingGroupsWithoutMatch: IGroupOption[],
   flowContainer: IContext | null,
   flowJsonText: string,
-  flowError: string,
-  flowErrorInterpolations: null | object,
+  flowSpecVersion: string | undefined,
   propertyBlocks: IBlock[],
   groupBlocks: IBlock[],
   updating: boolean,
@@ -489,8 +479,7 @@ export const stateFactory = (): IImportState => ({
   existingGroupsWithoutMatch: [],
   flowContainer: null,
   flowJsonText: '',
-  flowError: '',
-  flowErrorInterpolations: null,
+  flowSpecVersion: undefined,
   propertyBlocks: [],
   groupBlocks: [],
   updating: false,

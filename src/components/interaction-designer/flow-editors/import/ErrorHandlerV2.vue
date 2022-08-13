@@ -23,7 +23,7 @@
         class="alert alert-danger mt-3"
         role="alert">
         <i class="glyphicon glyphicon-exclamation-sign" />
-        Failure
+        Failure {{ }}
         <!--TODO: check why we use this in previous handler {{ flowError | trans(flowErrorInterpolations) }}-->
       </div>
       <div v-if="!isSafeToImport">

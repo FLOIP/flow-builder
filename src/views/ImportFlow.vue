@@ -71,7 +71,6 @@
                   @input="setUpdatingAndHandleFlowJsonTextChange" />
               </div>
             </div>
-            <error-handler />
             <error-handler-v2 />
             <div class="float-right mt-3">
               <router-link
