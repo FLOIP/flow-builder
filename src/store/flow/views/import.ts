@@ -6,7 +6,13 @@ import {cloneDeep, difference, differenceWith, find, findIndex, get, isEmpty, is
 import {IContactPropertyMultipleChoice} from '../block-types/Core_SetContactPropertyStore'
 import {IGroupOption} from '../block-types/Core_SetGroupMembershipStore'
 
-const TRUE_ERROR_KEY_WORDS = ['required', 'additionalProperties', 'error']
+// AJV keywords considered as important errors which should block an import
+const TRUE_AJV_ERROR_KEY_WORDS = ['required', 'additionalProperties', 'error']
+// AJV dataPath part considered as important errors which should block an import
+const TRUE_AJV_ERROR_DATA_PATH_PART = [
+  // scenario eg.: `keyword = 'pattern', dataPath = 'flow/0/uuid'`
+  'uuid',
+]
 
 import {
   checkSingleFlowOnly,
@@ -24,20 +30,20 @@ export const getters: GetterTree<IImportState, IRootState> = {
   languagesMissing: (state) => !isEmpty(state.missingLanguages),
   propertiesMissing: (state) => !isEmpty(state.missingProperties),
   groupsMissing: (state) => !isEmpty(state.missingGroups),
-  // TODO: remove these when we can remove the old ErrorHandler
-  hasUnsupportedBlockClasses: (state, getters) => !isEmpty(getters.unsupportedBlockClasses),
-  unsupportedBlockClasses: (state, getters, _rootState, rootGetters) => difference(getters.uploadedBlockTypes, rootGetters.blockClasses),
-  unsupportedBlockClassesList: (state, getters) => join(getters.unsupportedBlockClasses, ', '),
-  uploadedBlockTypes: (state) => uniq(get(state.flowContainer, 'flows[0].blocks', []).map((block: IBlock) => block.type)),
   isSafeToImport: (state, getters) => Array.isArray(getters.wholeContainerValidationTrueErrors)
-    && getters.wholeContainerValidationTrueErrors.length === 0,
+    && getters.wholeContainerValidationTrueErrors.length === 0
+    && getters.languagesMissing === false
+    && getters.propertiesMissing === false
+    && getters.groupsMissing === false,
   hasWarnings: (state, getters) => getters.wholeContainerValidationWarningErrors !== undefined
     && getters.wholeContainerValidationWarningErrors.length > 0,
   wholeContainerValidationTrueErrors: (state, getters) => getters.wholeContainerValidationErrors?.filter(
-    (ajvError: ErrorObject) => TRUE_ERROR_KEY_WORDS.includes(ajvError.keyword),
+    (ajvError: ErrorObject) => TRUE_AJV_ERROR_KEY_WORDS.includes(ajvError.keyword)
+      || TRUE_AJV_ERROR_DATA_PATH_PART.some((pathPart) => ajvError.dataPath.includes(pathPart)),
   ),
   wholeContainerValidationWarningErrors: (state, getters) => getters.wholeContainerValidationErrors?.filter(
-    (ajvError: ErrorObject) => !TRUE_ERROR_KEY_WORDS.includes(ajvError.keyword),
+    (ajvError: ErrorObject) => !TRUE_AJV_ERROR_KEY_WORDS.includes(ajvError.keyword)
+      && !TRUE_AJV_ERROR_DATA_PATH_PART.some((pathPart) => ajvError.dataPath.includes(pathPart)),
     ),
   wholeContainerValidationErrors: (state, getters, rootState) => rootState['validation'].validationStatuses?.whole_container?.ajvErrors ?? [],
 }

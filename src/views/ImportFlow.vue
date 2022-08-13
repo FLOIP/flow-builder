@@ -181,14 +181,7 @@ class ImportFlow extends mixins(Lang, Routes) {
     this.setUpdating(false)
   }
 
-  get disableContinue() {
-    return !this.flowUUID
-      || this.flowError
-      || this.languagesMissing
-      || this.propertiesMissing
-      || this.groupsMissing
-      || this.hasUnsupportedBlockClasses
-  }
+  @importVuexNamespace.Getter isSafeToImport!: boolean
 
   get flowUUID() {
     return get(this.flowContainer, 'flows[0].uuid')
@@ -243,13 +236,10 @@ class ImportFlow extends mixins(Lang, Routes) {
 
   @Getter hasImportFlowTitle!: boolean
 
-  @importVuexNamespace.Getter hasUnsupportedBlockClasses!: boolean
-
-  @importVuexNamespace.Getter languagesMissing!: boolean
-
-  @importVuexNamespace.Getter groupsMissing!: boolean
-
-  @importVuexNamespace.Getter propertiesMissing!: boolean
+  get disableContinue() {
+    return this.flowUUID === undefined
+      || !this.isSafeToImport
+  }
 
   @importVuexNamespace.Action setFlowJson!: (value: string) => Promise<void>
 

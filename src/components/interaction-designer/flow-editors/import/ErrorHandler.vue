@@ -22,13 +22,13 @@
       <i class="glyphicon glyphicon-exclamation-sign" />
       {{ flowError | trans(flowErrorInterpolations) }}
     </div>
-    <div
-      v-if="hasUnsupportedBlockClasses"
-      class="alert alert-danger mt-3"
-      role="alert">
-      <i class="glyphicon glyphicon-exclamation-sign" />
-      {{ `${trans('flow-builder.unsupported-blocks-detected')}: ${unsupportedBlockClassesList}` }}
-    </div>
+<!--    <div-->
+<!--      v-if="hasUnsupportedBlockClasses"-->
+<!--      class="alert alert-danger mt-3"-->
+<!--      role="alert">-->
+<!--      <i class="glyphicon glyphicon-exclamation-sign" />-->
+<!--      {{ `${trans('flow-builder.unsupported-blocks-detected')}: ${unsupportedBlockClassesList}` }}-->
+<!--    </div>-->
 <!--    <import-matcher-->
 <!--      v-if="languagesMissing"-->
 <!--      class="mt-2"-->
@@ -109,10 +109,6 @@ export class ErrorHandler extends mixins(Lang) {
   @importVuexNamespace.Action matchGroup!: (
     {oldGroup, matchingNewGroup}: { oldGroup: object, matchingNewGroup: object },
   ) => Promise<void>
-
-  @importVuexNamespace.Getter hasUnsupportedBlockClasses!: boolean
-
-  @importVuexNamespace.Getter unsupportedBlockClassesList!: string
 
   @importVuexNamespace.Getter languagesMissing!: boolean
 
