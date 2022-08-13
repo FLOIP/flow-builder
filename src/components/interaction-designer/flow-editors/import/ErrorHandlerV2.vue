@@ -2,10 +2,35 @@
   <div class="error-handler-v2">
     <div class="mt-4 ml-4 mr-4 mb-4">
       <h5>Result</h5>
-      <div v-if="isSafeToImportValid && hasWarnings" class="alert alert-success">Success, with warnings</div>
-      <div v-if="isSafeToImportValid && !hasWarnings" class="alert alert-success">Success</div>
-      <div v-if="!isSafeToImportValid" class="alert alert-danger">Failure</div>
-
+      <div
+        v-if="isSafeToImportValid && hasWarnings"
+        class="alert alert-success mt-3"
+        role="alert">
+        <font-awesome-icon :icon="['far', 'check-circle']" />
+        Success, with warnings
+      </div>
+      <div
+        v-if="isSafeToImportValid && !hasWarnings"
+        class="alert alert-success mt-3"
+        role="alert">
+        <font-awesome-icon :icon="['far', 'check-circle']" />
+        {{ trans('flow-builder.import-success') }}
+      </div>
+      <div
+        v-if="!isSafeToImportValid"
+        class="alert alert-danger mt-3"
+        role="alert">
+        <i class="glyphicon glyphicon-exclamation-sign" />
+        Failure
+        <!--TODO: check why we use this in previous handler {{ flowError | trans(flowErrorInterpolations) }}-->
+      </div>
+<!--  TODO: handle this    <div-->
+<!--        v-if="hasUnsupportedBlockClasses"-->
+<!--        class="alert alert-danger mt-3"-->
+<!--        role="alert">-->
+<!--        <i class="glyphicon glyphicon-exclamation-sign" />-->
+<!--        {{ `${trans('flow-builder.unsupported-blocks-detected')}: ${unsupportedBlockClassesList}` }}-->
+<!--      </div>-->
       <div v-if="!isSafeToImportValid">
         <h5>Errors</h5>
         <p>Please fix these errors first</p>
@@ -29,6 +54,7 @@
 <script>
 import TechErrorNotifications from '@/components/interaction-designer/flow-editors/import/TechErrorNotifications.vue'
 import {mapState} from 'vuex'
+import Lang from '@/lib/filters/lang'
 
 const TRUE_ERROR_KEY_WORDS = ['required', 'additionalProperties', 'error']
 
@@ -37,7 +63,7 @@ export default {
   components: {
     TechErrorNotifications,
   },
-
+  mixins: [Lang],
   computed: {
     ...mapState('validation', ['validationStatuses']),
     ...mapState('flow', ['container_uuid']),

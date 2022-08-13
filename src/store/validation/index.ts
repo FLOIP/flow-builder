@@ -227,13 +227,14 @@ export const actions: ActionTree<IValidationState, IRootState> = {
       })
       return false
     } else {
+      let isValid = true
       // We have a valid json file
       if (flowContainer.flows.length === 0) {
         commit('pushAjvErrorToValidationStatuses', {
           key,
           ajvError: {dataPath, keyword, message: Lang.trans('flow-builder-validation.container-flow-is-empty')} as ErrorObject,
         })
-        return false
+        isValid = false
       }
 
       if (flowContainer.flows.length > 1) {
@@ -245,8 +246,25 @@ export const actions: ActionTree<IValidationState, IRootState> = {
             message: Lang.trans('flow-builder-validation.importer-currently-supports-single-flow-only'),
           } as ErrorObject,
         })
-        return false
+        isValid = false
       }
+
+      // TODO: move this supportedSpecVersions to builder config json, so we can override from consumer
+      // Then load from ui state here
+      const supportedSpecVersions = ['1.0.0-rc3', '1.0.0-rc4']
+      if (!supportedSpecVersions.includes(flowContainer.specification_version)) {
+        commit('pushAjvErrorToValidationStatuses', {
+          key,
+          ajvError: {
+            dataPath,
+            keyword,
+            message: `${Lang.trans('flow-builder-validation.non-supported-spec-version')}: ${flowContainer.specification_version}`
+          } as ErrorObject,
+        })
+        isValid = false
+      }
+
+      return isValid
     }
     return true
   },
