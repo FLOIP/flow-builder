@@ -87,6 +87,9 @@ export const mutations: MutationTree<IValidationState> = {
   removeValidationStatusesFor(state, {key}) {
     delete state.validationStatuses[key]
   },
+  resetValidationStatuses(state): void {
+    state.validationStatuses = {}
+  },
 }
 
 export const actions: ActionTree<IValidationState, IRootState> = {
@@ -178,7 +181,8 @@ export const actions: ActionTree<IValidationState, IRootState> = {
    * Validate the whole container, including all contents like: flows, blocks, etc
    */
   async validate_wholeContainer({state, rootGetters}, {flowContainer}: { flowContainer: IContainer }): Promise<IValidationStatus> {
-    const key = `whole_container/${flowContainer.uuid}`
+    // We do not add the uuid in key as it's hard coded in flow state for now
+    const key = 'whole_container'
     const validate = getOrCreateWholeContainerValidator(rootGetters['flow/activeFlowContainer'].specification_version)
     Vue.set(state.validationStatuses, key, {
       isValid: validate(flowContainer),
@@ -257,6 +261,10 @@ export const actions: ActionTree<IValidationState, IRootState> = {
         await dispatch('validate_resource', {resource: currentResource})
       }),
     )
+  },
+
+  resetValidationStatuses({commit}): void {
+    commit('resetValidationStatuses')
   },
 }
 

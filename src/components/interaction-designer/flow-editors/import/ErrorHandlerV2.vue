@@ -55,7 +55,7 @@ export default {
     },
     wholeContainerValidationErrors() {
       if (this.container_uuid !== undefined) {
-        return this.validationStatuses[`whole_container/${this.container_uuid}`]?.ajvErrors ?? []
+        return this.validationStatuses?.whole_container?.ajvErrors ?? []
       } else {
         return []
       }
