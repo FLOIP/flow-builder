@@ -24,6 +24,7 @@ export const getters: GetterTree<IImportState, IRootState> = {
   languagesMissing: (state) => !isEmpty(state.missingLanguages),
   propertiesMissing: (state) => !isEmpty(state.missingProperties),
   groupsMissing: (state) => !isEmpty(state.missingGroups),
+  // TODO: remove these when we can remove the old ErrorHandler
   hasUnsupportedBlockClasses: (state, getters) => !isEmpty(getters.unsupportedBlockClasses),
   unsupportedBlockClasses: (state, getters, _rootState, rootGetters) => difference(getters.uploadedBlockTypes, rootGetters.blockClasses),
   unsupportedBlockClassesList: (state, getters) => join(getters.unsupportedBlockClasses, ', '),
@@ -229,7 +230,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
     commit('setFlowJsonText', JSON.stringify(state.flowContainer, null, 2))
   },
   async validate_wholeContainerWithProgrammaticLogic(
-    {state, commit, rootGetters},
+    {state, commit, getters, rootGetters},
     {key, flowContainer}: { key: string, flowContainer: IContainer },
   ): Promise<Boolean> {
     const dataPath = '/container'
@@ -273,14 +274,26 @@ export const actions: ActionTree<IImportState, IRootState> = {
           ajvError: {
             dataPath,
             keyword,
-            message: `${Lang.trans('flow-builder-validation.non-supported-spec-version')}: ${flowContainer.specification_version}`
+            message: `${Lang.trans('flow-builder-validation.non-supported-spec-version')}: ${flowContainer.specification_version}`,
           } as ErrorObject,
         }, {root: true})
         isValid = false
       }
 
-      // TODO: move the unsupported block type check here
-
+      const uploadedBlockTypes = uniq(get(flowContainer, 'flows[0].blocks', []).map((block: IBlock) => block.type))
+      const unsupportedBlockClasses = difference(uploadedBlockTypes, rootGetters.blockClasses)
+      if (!isEmpty(unsupportedBlockClasses) === true) {
+        const unsupportedBlockClassesList = join(unsupportedBlockClasses, ', ')
+        commit('validation/pushAjvErrorToValidationStatuses', {
+          key,
+          ajvError: {
+            dataPath,
+            keyword,
+            message: `${Lang.trans('flow-builder-validation.unsupported-blocks-detected')}: ${unsupportedBlockClassesList}`,
+          } as ErrorObject,
+        }, {root: true})
+        isValid = false
+      }
       return isValid
     }
     return true
