@@ -189,16 +189,11 @@ export const actions: ActionTree<IValidationState, IRootState> = {
 
   /**
    * Validate the whole container, including all contents like: flows, blocks, etc
-   * Assuming the provided container could be an invalid json, etc
+   * Assuming the provided container is a valid JSON
    */
   async validate_wholeContainer({state, commit, dispatch, rootGetters}, {flowContainer}: { flowContainer: IContainer }): Promise<IValidationStatus> {
     // We do not add the uuid in key as it's hard coded in flow state for now
     const key = 'whole_container'
-    const checkProgrammaticValidation = await dispatch('validate_wholeContainerWithProgrammaticLogic', {key, flowContainer})
-    if (checkProgrammaticValidation === false) {
-      debugValidationStatus(state.validationStatuses[key], 'flow container validation status')
-      return state.validationStatuses[key]
-    }
 
     // At this stage we assume the container has the specification_version
     const validate = getOrCreateWholeContainerValidator(rootGetters['flow/activeFlowContainer'].specification_version)
@@ -210,62 +205,6 @@ export const actions: ActionTree<IValidationState, IRootState> = {
 
     debugValidationStatus(state.validationStatuses[key], 'flow container validation status')
     return state.validationStatuses[key]
-  },
-
-  async validate_wholeContainerWithProgrammaticLogic(
-    {state, commit, rootGetters},
-    {key, flowContainer}: { key: string, flowContainer: IContainer },
-  ): Promise<Boolean> {
-    const dataPath = '/container'
-    // we provide a keyword 'error' in ajvError to tell our error handler this should not be ignored (not like `pattern` keyword)
-    const keyword = 'error'
-    if (flowContainer === undefined) {
-      commit('pushAjvErrorToValidationStatuses', {
-        key,
-        ajvError: {dataPath, keyword, message: Lang.trans('flow-builder-validation.invalid-json-provided')} as ErrorObject,
-      })
-      return false
-    } else {
-      let isValid = true
-      // We have a valid json file
-      if (flowContainer.flows.length === 0) {
-        commit('pushAjvErrorToValidationStatuses', {
-          key,
-          ajvError: {dataPath, keyword, message: Lang.trans('flow-builder-validation.container-flow-is-empty')} as ErrorObject,
-        })
-        isValid = false
-      }
-
-      if (flowContainer.flows.length > 1) {
-        commit('pushAjvErrorToValidationStatuses', {
-          key,
-          ajvError: {
-            dataPath,
-            keyword,
-            message: Lang.trans('flow-builder-validation.importer-currently-supports-single-flow-only'),
-          } as ErrorObject,
-        })
-        isValid = false
-      }
-
-      // TODO: move this supportedSpecVersions to builder config json, so we can override from consumer
-      // Then load from ui state here
-      const supportedSpecVersions = ['1.0.0-rc3', '1.0.0-rc4']
-      if (!supportedSpecVersions.includes(flowContainer.specification_version)) {
-        commit('pushAjvErrorToValidationStatuses', {
-          key,
-          ajvError: {
-            dataPath,
-            keyword,
-            message: `${Lang.trans('flow-builder-validation.non-supported-spec-version')}: ${flowContainer.specification_version}`
-          } as ErrorObject,
-        })
-        isValid = false
-      }
-
-      return isValid
-    }
-    return true
   },
 
   async validate_new_language({state, rootGetters}, {language}: { language: ILanguage }): Promise<IValidationStatus> {

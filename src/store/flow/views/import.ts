@@ -1,7 +1,7 @@
 import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IContext} from '@floip/flow-runner'
+import {IBlock, IContainer, IContext} from '@floip/flow-runner'
 import {cloneDeep, difference, differenceWith, find, findIndex, get, isEmpty, isEqual, join, keys, reject, set, uniq} from 'lodash'
 import {IContactPropertyMultipleChoice} from '../block-types/Core_SetContactPropertyStore'
 import {IGroupOption} from '../block-types/Core_SetGroupMembershipStore'
@@ -18,6 +18,7 @@ import {
   updateResourcesForLanguageMatch,
 } from '../utils/importHelpers'
 import {ErrorObject} from 'ajv'
+import Lang from '@/lib/filters/lang'
 
 export const getters: GetterTree<IImportState, IRootState> = {
   languagesMissing: (state) => !isEmpty(state.missingLanguages),
@@ -181,22 +182,30 @@ export const actions: ActionTree<IImportState, IRootState> = {
       // return
     }
 
-    const validationErrors = await dispatch('validation/validate_wholeContainer', {flowContainer}, {root: true})
-
-    if (flowContainer !== undefined && (validationErrors?.isValid === undefined || validationErrors?.isValid === false)) {
-      commit('setFlowErrorWithInterpolations', {text: 'flow-builder.flow-invalid', interpolations: {version: flowContainer.specification_version}})
+    const hasProgrammaticError = await dispatch('validate_wholeContainerWithProgrammaticLogic', {
+      key: 'whole_container',
+      flowContainer,
+    })
+    if (hasProgrammaticError === false) {
       return
+    } else {
+      const validationErrors = await dispatch('validation/validate_wholeContainer', {flowContainer}, {root: true})
     }
+
+    // TODO: handle this setFlowErrorWithInterpolations
+    // if (flowContainer !== undefined && (validationErrors?.isValid === undefined || validationErrors?.isValid === false)) {
+    //   commit('setFlowErrorWithInterpolations', {text: 'flow-builder.flow-invalid', interpolations: {version: flowContainer.specification_version}})
+    //   return
+    // }
 
     if (getters.isSafeToImport === false) {
       return
     }
 
-    console.debug('test', 'setFlowJsonText', flowContainer)
     //We know it's valid JSON at least. Let's display it correctly formatted
     commit('setFlowJsonText', JSON.stringify(flowContainer, null, 2))
 
-    // TODO: try to refactor the following validation into the validation store
+    // TODO: try to refactor the following validation into the validation store, or create new action for these
     // Try to fix the imported container
     const oldFlowContainer = cloneDeep(state.flowContainer)
     const newFlowContainer = cloneDeep(flowContainer)
@@ -218,6 +227,63 @@ export const actions: ActionTree<IImportState, IRootState> = {
       await dispatch('tryToFixGroups', state.groupBlocks)
     }
     commit('setFlowJsonText', JSON.stringify(state.flowContainer, null, 2))
+  },
+  async validate_wholeContainerWithProgrammaticLogic(
+    {state, commit, rootGetters},
+    {key, flowContainer}: { key: string, flowContainer: IContainer },
+  ): Promise<Boolean> {
+    const dataPath = '/container'
+    // we provide a keyword 'error' in ajvError to tell our error handler this should not be ignored (not like `pattern` keyword)
+    const keyword = 'error'
+    if (flowContainer === undefined) {
+      commit('validation/pushAjvErrorToValidationStatuses', {
+        key,
+        ajvError: {dataPath, keyword, message: Lang.trans('flow-builder-validation.invalid-json-provided')} as ErrorObject,
+      }, {root: true})
+      return false
+    } else {
+      let isValid = true
+      // We have a valid json file
+      if (flowContainer.flows.length === 0) {
+        commit('validation/pushAjvErrorToValidationStatuses', {
+          key,
+          ajvError: {dataPath, keyword, message: Lang.trans('flow-builder-validation.container-flow-is-empty')} as ErrorObject,
+        }, {root: true})
+        isValid = false
+      }
+
+      if (flowContainer.flows.length > 1) {
+        commit('validation/pushAjvErrorToValidationStatuses', {
+          key,
+          ajvError: {
+            dataPath,
+            keyword,
+            message: Lang.trans('flow-builder-validation.importer-currently-supports-single-flow-only'),
+          } as ErrorObject,
+        }, {root: true})
+        isValid = false
+      }
+
+      // TODO: move this supportedSpecVersions to builder config json, so we can override from consumer
+      // Then load from ui state here
+      const supportedSpecVersions = ['1.0.0-rc3', '1.0.0-rc4']
+      if (!supportedSpecVersions.includes(flowContainer.specification_version)) {
+        commit('validation/pushAjvErrorToValidationStatuses', {
+          key,
+          ajvError: {
+            dataPath,
+            keyword,
+            message: `${Lang.trans('flow-builder-validation.non-supported-spec-version')}: ${flowContainer.specification_version}`
+          } as ErrorObject,
+        }, {root: true})
+        isValid = false
+      }
+
+      // TODO: move the unsupported block type check here
+
+      return isValid
+    }
+    return true
   },
   async tryToFixLanguages({state, commit, rootGetters}, flowContainer: IContext) {
     const uploadLanguages: ILanguage[] = get(flowContainer, 'flows[0].languages', [])
