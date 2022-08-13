@@ -182,28 +182,29 @@ export const actions: ActionTree<IImportState, IRootState> = {
     commit('setFlowJsonText', JSON.stringify(flowContainer, null, 2))
 
     // TODO: try to refactor the following validation into the validation store
+    // Try to fix the imported container
     const oldFlowContainer = cloneDeep(state.flowContainer)
     const newFlowContainer = cloneDeep(flowContainer)
     commit('setFlowContainer', flowContainer)
 
     if (detectedLanguageChanges({flowContainer: newFlowContainer, oldFlowContainer})) {
-      await dispatch('validateLanguages', state.flowContainer)
+      await dispatch('tryToFixLanguages', state.flowContainer)
     }
     // matching on "property_key" == "name" in builder.config.json
     const newPropertyBlocks = getPropertyBlocks(flowContainer)
     if (detectedPropertyChanges({newPropertyBlocks, oldPropertyBlocks: state.propertyBlocks})) {
       commit('setPropertyBlocks', newPropertyBlocks)
-      await dispatch('validateProperties', state.propertyBlocks)
+      await dispatch('tryToFixProperties', state.propertyBlocks)
     }
     // matching on "group_key" == "id" in builder.config.json
     const newGroupBlocks = getGroupBlocks(flowContainer)
     if (detectedGroupChanges({newGroupBlocks, oldGroupBlocks: state.groupBlocks})) {
       commit('setGroupBlocks', newGroupBlocks)
-      await dispatch('validateGroups', state.groupBlocks)
+      await dispatch('tryToFixGroups', state.groupBlocks)
     }
     commit('setFlowJsonText', JSON.stringify(state.flowContainer, null, 2))
   },
-  async validateLanguages({state, commit, rootGetters}, flowContainer: IContext) {
+  async tryToFixLanguages({state, commit, rootGetters}, flowContainer: IContext) {
     const uploadLanguages: ILanguage[] = get(flowContainer, 'flows[0].languages', [])
     const matchingLanguages: ILanguage[] = []
     if (uploadLanguages) {
@@ -223,7 +224,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
       commit('setExistingLanguagesWithoutMatch', differenceWith(rootGetters.languages, state.matchingLanguages, isEqual))
     }
   },
-  async validateProperties({rootGetters, state, commit}, newPropertyBlocks: IBlock[]) {
+  async tryToFixProperties({rootGetters, state, commit}, newPropertyBlocks: IBlock[]) {
     const matchingProperties: IContactPropertyMultipleChoice[] = []
     const blocksMissingProperties = cloneDeep(state.blocksMissingProperties)
     newPropertyBlocks.forEach((propertyBlock) => {
@@ -259,7 +260,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
     commit('setExistingPropertiesWithoutMatch', differenceWith(rootGetters.subscriberPropertyFields, state.matchingProperties, isEqual))
   },
 
-  async validateGroups({rootGetters, state, commit}, newGroupBlocks: IBlock[]) {
+  async tryToFixGroups({rootGetters, state, commit}, newGroupBlocks: IBlock[]) {
     const matchingGroups: IGroupOption[] = []
     const blocksMissingGroups = cloneDeep(state.blocksMissingGroups)
     newGroupBlocks.forEach((groupBlock) => {
@@ -298,7 +299,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
     )
     commit('setFlowJsonText', JSON.stringify(state.flowContainer, null, 2))
     commit('setMissingLanguages', reject(state.missingLanguages, (language) => isEqual(language, oldLanguage)))
-    dispatch('validateLanguages', state.flowContainer)
+    dispatch('tryToFixLanguages', state.flowContainer)
   },
   matchProperty({commit, state, dispatch}, {oldProperty, matchingNewProperty}) {
     const blocks = cloneDeep(get(state.flowContainer, 'flows[0].blocks'))
@@ -323,7 +324,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
       return newBlocksMissingProperties
     }, newBlocksMissingProperties))
     commit('setPropertyBlocks', getPropertyBlocks(state.flowContainer as IContext))
-    dispatch('validateProperties', state.propertyBlocks)
+    dispatch('tryToFixProperties', state.propertyBlocks)
   },
   matchGroup({commit, state, dispatch}, {oldGroup, matchingNewGroup}) {
     const blocks = cloneDeep(get(state.flowContainer, 'flows[0].blocks'))
@@ -349,7 +350,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
       return newBlocksMissingGroups
     }, newBlocksMissingGroups))
     commit('setGroupBlocks', getGroupBlocks(state.flowContainer as IContext))
-    dispatch('validateGroups', state.groupBlocks)
+    dispatch('tryToFixGroups', state.groupBlocks)
   },
 }
 
