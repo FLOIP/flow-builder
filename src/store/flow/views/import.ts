@@ -7,7 +7,7 @@ import {IContactPropertyMultipleChoice} from '../block-types/Core_SetContactProp
 import {IGroupOption} from '../block-types/Core_SetGroupMembershipStore'
 
 // AJV keywords considered as important errors which should block an import
-const TRUE_AJV_ERROR_KEY_WORDS = ['required', 'additionalProperties', 'error']
+const TRUE_AJV_ERROR_KEY_WORDS = ['required', 'additionalProperties', 'minItems', 'error']
 // AJV dataPath part considered as important errors which should block an import
 const TRUE_AJV_ERROR_DATA_PATH_PART = [
   // scenario eg.: `keyword = 'pattern', dataPath = 'flow/0/uuid'`
