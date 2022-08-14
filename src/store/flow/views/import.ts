@@ -227,7 +227,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
     commit('setFlowJsonText', JSON.stringify(state.flowContainer, null, 2))
   },
   async validate_wholeContainerWithProgrammaticLogic(
-    {state, commit, getters, rootGetters},
+    {state, commit, getters, rootState, rootGetters},
     {key, flowContainer}: { key: string, flowContainer: IContainer },
   ): Promise<Boolean> {
     const dataPath = '/container'
@@ -262,10 +262,14 @@ export const actions: ActionTree<IImportState, IRootState> = {
         isValid = false
       }
 
-      // TODO: move this supportedSpecVersions to builder config json, so we can override from consumer
-      // Then load from ui state here
-      const supportedSpecVersions = ['1.0.0-rc3', '1.0.0-rc4']
-      if (!supportedSpecVersions.includes(flowContainer.specification_version)) {
+      const supportedSpecVersions = rootGetters?.supportedFlowSpecVersionsForImport
+      if (supportedSpecVersions === undefined
+        || !Array.isArray(supportedSpecVersions)
+        || (Array.isArray(supportedSpecVersions) && supportedSpecVersions === [])) {
+        throw new Error('Please set the supportedFlowSpecVersionsForImport in flow config')
+      }
+
+      if (supportedSpecVersions.includes(flowContainer.specification_version) === false) {
         commit('validation/pushAjvErrorToValidationStatuses', {
           key,
           ajvError: {
