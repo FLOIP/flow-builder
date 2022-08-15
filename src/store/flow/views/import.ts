@@ -170,8 +170,6 @@ export const mutations: MutationTree<IImportState> = {
 
 export const actions: ActionTree<IImportState, IRootState> = {
   async setFlowJson({commit, state, getters, dispatch}, value: string) {
-    commit('validation/resetValidationStatuses', {key: 'whole_container'}, {root: true})
-    commit('setFlowSpecVersion', undefined)
     commit('setFlowJsonText', value)
     let flowContainer
     try {
@@ -462,7 +460,7 @@ export interface IImportState {
   matchingGroups: IGroupOption[],
   existingGroupsWithoutMatch: IGroupOption[],
   flowContainer: IContext | null,
-  flowJsonText: string | undefined,
+  flowJsonText: string,
   flowSpecVersion: string | undefined,
   propertyBlocks: IBlock[],
   groupBlocks: IBlock[],
@@ -482,7 +480,7 @@ export const stateFactory = (): IImportState => ({
   matchingGroups: [],
   existingGroupsWithoutMatch: [],
   flowContainer: null,
-  flowJsonText: undefined,
+  flowJsonText: '',
   flowSpecVersion: undefined,
   propertyBlocks: [],
   groupBlocks: [],

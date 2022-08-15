@@ -110,6 +110,7 @@ import ImportStore from '@/store/flow/views/import'
 
 const flowVuexNamespace = namespace('flow')
 const importVuexNamespace = namespace('flow/import')
+const validationVuexNamespace = namespace('validation')
 
 @Component({
   components: {
@@ -140,13 +141,7 @@ class ImportFlow extends mixins(Lang, Routes) {
     }
   }
 
-  reset() {
-    this.fileName = ''
-    this.baseReset()
-    this.resetLanguageMatching()
-    this.resetPropertyMatching()
-    this.resetGroupMatching()
-  }
+  @validationVuexNamespace.Action resetValidationStatuses!: ({key}: {key: string}) => void
 
   get uploadOrPaste() {
     return this.uploadOrPasteSetting
@@ -259,6 +254,15 @@ class ImportFlow extends mixins(Lang, Routes) {
   @importVuexNamespace.State flowJsonText!: string
 
   @importVuexNamespace.State flowContainer!: IContext
+
+  reset() {
+    this.fileName = ''
+    this.baseReset()
+    this.resetLanguageMatching()
+    this.resetPropertyMatching()
+    this.resetGroupMatching()
+    this.resetValidationStatuses({key: 'whole_container'})
+  }
 }
 
 export default ImportFlow
