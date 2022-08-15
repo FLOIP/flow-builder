@@ -1,8 +1,6 @@
 <template>
   <div v-if="hasSomethingToImport" class="error-handler-v2">
     <div class="mt-4 ml-4 mr-4 mb-4">
-      <full-import-matcher />
-
       <h5>{{ trans('flow-builder.results') }}</h5>
       <div
         v-if="isSafeToImport && hasWarnings"
@@ -18,16 +16,17 @@
         <font-awesome-icon :icon="['far', 'check-circle']" />
         {{ trans('flow-builder.import-success') }}
       </div>
-      <div
-        v-if="!isSafeToImport"
-        class="alert alert-danger mt-3"
-        role="alert">
-        <i class="glyphicon glyphicon-exclamation-sign" />
-        {{ trans('flow-builder.failure') }}
-      </div>
       <div v-if="!isSafeToImport">
+        <div
+          class="alert alert-danger mt-3"
+          role="alert">
+          <i class="glyphicon glyphicon-exclamation-sign" />
+          {{ trans('flow-builder.failure') }}
+        </div>
+
         <h5>{{ trans('flow-builder.errors') }}</h5>
         <p>{{ trans('flow-builder.please-fix-errors-first') }}</p>
+        <full-import-matcher />
         <tech-error-notifications
           :validation-errors="containerImportValidationTrueErrors"
           error-type="error"/>
