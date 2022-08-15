@@ -212,8 +212,8 @@ export function getOrCreateFlowValidator(schemaVersion: string): ValidateFunctio
 /**
  * Validator for the container and its content (flows, blocks, etc)
  */
-export function getOrCreateWholeContainerValidator(schemaVersion: string): ValidateFunction {
-  const validationType = 'whole_container'
+export function getOrCreateContainerImportValidator(schemaVersion: string): ValidateFunction {
+  const validationType = 'container_import'
   if (isEmpty(validators) || !validators.has(validationType)) {
     const flowJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`)
 

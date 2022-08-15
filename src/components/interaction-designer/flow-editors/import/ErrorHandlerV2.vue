@@ -30,7 +30,7 @@
         <h5>Errors</h5>
         <p>Please fix these errors first</p>
         <tech-error-notifications
-          :validation-errors="wholeContainerValidationTrueErrors"
+          :validation-errors="containerImportValidationTrueErrors"
           error-type="error"/>
       </div>
 
@@ -39,7 +39,7 @@
         <h5>Warning</h5>
         <p>These won't block you to import the flow, but you will need to fix them once imported</p>
         <tech-error-notifications
-          :validation-errors="wholeContainerValidationWarningErrors"
+          :validation-errors="containerImportValidationWarningErrors"
           error-type="warning"/>
       </div>
     </div>
@@ -69,9 +69,9 @@ export default {
       'hasSomethingToImport',
       'isSafeToImport',
       'hasWarnings',
-      'wholeContainerValidationTrueErrors',
-      'wholeContainerValidationWarningErrors',
-      'wholeContainerValidationErrors',
+      'containerImportValidationTrueErrors',
+      'containerImportValidationWarningErrors',
+      'containerImportValidationErrors',
       'languagesMissing',
       'propertiesMissing',
       'groupsMissing',

@@ -261,7 +261,7 @@ class ImportFlow extends mixins(Lang, Routes) {
     this.resetLanguageMatching()
     this.resetPropertyMatching()
     this.resetGroupMatching()
-    this.resetValidationStatuses({key: 'whole_container'})
+    this.resetValidationStatuses({key: 'container_import'})
   }
 }
 

@@ -19,7 +19,7 @@ import {
   flatValidationStatuses,
   getLocalizedAjvErrors,
   getLocalizedBackendErrors,
-  getOrCreateWholeContainerValidator,
+  getOrCreateContainerImportValidator,
   getOrCreateFlowValidator,
   getOrCreateLanguageValidator,
   getOrCreateResourceValidator,
@@ -188,19 +188,19 @@ export const actions: ActionTree<IValidationState, IRootState> = {
   },
 
   /**
-   * Validate the whole container, including all contents like: flows, blocks, etc
+   * Validate the whole container for import purpose, including all contents like: flows, blocks, etc
    * Assuming the provided container is a valid JSON
    */
-  async validate_wholeContainer({state, commit, dispatch, rootGetters}, {flowContainer}: { flowContainer: IContainer }): Promise<IValidationStatus> {
+  async validate_containerImport({state, commit, dispatch, rootGetters}, {flowContainer}: { flowContainer: IContainer }): Promise<IValidationStatus> {
     // We do not add the uuid in key as it's hard coded in flow state for now
-    const key = 'whole_container'
+    const key = 'container_import'
 
     // At this stage we assume the container has the specification_version
-    const validate = getOrCreateWholeContainerValidator(rootGetters['flow/activeFlowContainer'].specification_version)
+    const validate = getOrCreateContainerImportValidator(rootGetters['flow/activeFlowContainer'].specification_version)
     Vue.set(state.validationStatuses, key, {
       isValid: validate(flowContainer),
       ajvErrors: getLocalizedAjvErrors(key, validate.errors),
-      type: 'whole_container',
+      type: 'container_import',
     })
 
     debugValidationStatus(state.validationStatuses[key], 'flow container validation status')

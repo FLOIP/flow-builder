@@ -31,22 +31,22 @@ export const getters: GetterTree<IImportState, IRootState> = {
   languagesMissing: (state) => !isEmpty(state.missingLanguages),
   propertiesMissing: (state) => !isEmpty(state.missingProperties),
   groupsMissing: (state) => !isEmpty(state.missingGroups),
-  isSafeToImport: (state, getters) => Array.isArray(getters.wholeContainerValidationTrueErrors)
-    && getters.wholeContainerValidationTrueErrors.length === 0
+  isSafeToImport: (state, getters) => Array.isArray(getters.containerImportValidationTrueErrors)
+    && getters.containerImportValidationTrueErrors.length === 0
     && getters.languagesMissing === false
     && getters.propertiesMissing === false
     && getters.groupsMissing === false,
-  hasWarnings: (state, getters) => getters.wholeContainerValidationWarningErrors !== undefined
-    && getters.wholeContainerValidationWarningErrors.length > 0,
-  wholeContainerValidationTrueErrors: (state, getters) => getters.wholeContainerValidationErrors?.filter(
+  hasWarnings: (state, getters) => getters.containerImportValidationWarningErrors !== undefined
+    && getters.containerImportValidationWarningErrors.length > 0,
+  containerImportValidationTrueErrors: (state, getters) => getters.containerImportValidationErrors?.filter(
     (ajvError: ErrorObject) => TRUE_AJV_ERROR_KEY_WORDS.includes(ajvError.keyword)
       || TRUE_AJV_ERROR_DATA_PATH_PART.some((pathPart) => ajvError.dataPath.includes(pathPart)),
   ),
-  wholeContainerValidationWarningErrors: (state, getters) => getters.wholeContainerValidationErrors?.filter(
+  containerImportValidationWarningErrors: (state, getters) => getters.containerImportValidationErrors?.filter(
     (ajvError: ErrorObject) => !TRUE_AJV_ERROR_KEY_WORDS.includes(ajvError.keyword)
       && !TRUE_AJV_ERROR_DATA_PATH_PART.some((pathPart) => ajvError.dataPath.includes(pathPart)),
     ),
-  wholeContainerValidationErrors: (state, getters, rootState) => rootState['validation'].validationStatuses?.whole_container?.ajvErrors ?? [],
+  containerImportValidationErrors: (state, getters, rootState) => rootState['validation'].validationStatuses?.container_import?.ajvErrors ?? [],
 }
 
 export const mutations: MutationTree<IImportState> = {
@@ -181,14 +181,14 @@ export const actions: ActionTree<IImportState, IRootState> = {
       commit('resetGroupMatching')
     }
 
-    const hasProgrammaticError = await dispatch('validate_wholeContainerWithProgrammaticLogic', {
-      key: 'whole_container',
+    const hasProgrammaticError = await dispatch('validate_containerImportWithProgrammaticLogic', {
+      key: 'container_import',
       flowContainer,
     })
     if (hasProgrammaticError === false) {
       return
     } else {
-      const validationErrors = await dispatch('validation/validate_wholeContainer', {flowContainer}, {root: true})
+      const validationErrors = await dispatch('validation/validate_containerImport', {flowContainer}, {root: true})
 
       if (flowContainer !== undefined) {
         commit('setFlowSpecVersion', flowContainer?.specification_version)
@@ -224,7 +224,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
     }
     commit('setFlowJsonText', JSON.stringify(state.flowContainer, null, 2))
   },
-  async validate_wholeContainerWithProgrammaticLogic(
+  async validate_containerImportWithProgrammaticLogic(
     {state, commit, getters, rootState, rootGetters},
     {key, flowContainer}: { key: string, flowContainer: IContainer },
   ): Promise<Boolean> {
