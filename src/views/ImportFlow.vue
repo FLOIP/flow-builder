@@ -83,7 +83,7 @@
 
               <slot
                 name="createAction"
-                :container="flowContainer">
+                :json="flowJson">
                 <a
                   :href="route('flows.editFlow', {flowId: flowUUID, component: 'designer', mode: 'edit'})"
                   class="btn btn-primary"
