@@ -379,7 +379,7 @@
     "subscriberPropertyFieldDataTypesMapping": {
       "text": ["MobilePrimitives.OpenResponse", "SmartDevices.LocationResponse", "MobilePrimitives.NumericResponse", "MobilePrimitives.SelectOneResponse", "MobilePrimitives.SelectManyResponse"],
       "location": ["SmartDevices.LocationResponse"],
-      "number": ["MobilePrimitives.NumericResponse", "MobilePrimitives.OpenResponse", "MobilePrimitives.SelectOneResponse"],
+      "number": ["MobilePrimitives.NumericResponse", "MobilePrimitives.OpenResponse", "MobilePrimitives.SelectOneResponse", "MobilePrimitives.SelectManyResponse"],
       "phone": ["MobilePrimitives.NumericResponse"],
       "multiple_choice": ["MobilePrimitives.SelectManyResponse"],
       "media": ["SmartDevices.PhotoResponse"]
