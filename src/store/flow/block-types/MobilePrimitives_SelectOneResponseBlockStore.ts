@@ -132,6 +132,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
   ): Promise<ValidationResults> {
     console.debug('floip/SelectOneResponse/validateWithProgrammaticLogic()', `${block.type}`)
     const errors: ValidationResults = []
+    const choiceValidationKey = '/config/choices'
 
     // validationMax must be greater than validationMin
     const allIvrTestExpressions = block.config.choices.map(choice => choice.ivr_test?.test_expression)
@@ -139,7 +140,16 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       (item, index) => item !== undefined && allIvrTestExpressions.indexOf(item) !== index,
     )
     if (duplicates.length > 0) {
-      errors.push(['/config/choices', 'duplicate-ivr-test-test_expression'])
+      errors.push([choiceValidationKey, 'duplicate-ivr-test-test_expression'])
+    }
+
+    // should not have duplicate choices
+    const allChoiceNames = block.config.choices.map(choice => choice.name)
+    const duplicatedChoiceNames = allChoiceNames.filter(
+      (item, index) => item !== undefined && allChoiceNames.indexOf(item) !== index,
+    )
+    if (duplicatedChoiceNames.length > 0) {
+      errors.push([choiceValidationKey, 'duplicate-choice-names'])
     }
 
     return errors
