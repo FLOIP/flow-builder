@@ -3,17 +3,10 @@ import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlock, IContainer, IContext} from '@floip/flow-runner'
 import {cloneDeep, difference, differenceWith, find, findIndex, get, isEmpty, isEqual, join, keys, reject, set, uniq} from 'lodash'
+import {ErrorObject} from 'ajv'
+import Lang from '@/lib/filters/lang'
 import {IContactPropertyMultipleChoice} from '../block-types/Core_SetContactPropertyStore'
 import {IGroupOption} from '../block-types/Core_SetGroupMembershipStore'
-
-// AJV keywords considered as important errors which should block an import
-const TRUE_AJV_ERROR_KEY_WORDS = ['required', 'additionalProperties', 'minItems', 'error']
-// AJV dataPath part considered as important errors which should block an import
-const TRUE_AJV_ERROR_DATA_PATH_PART = [
-  // scenario eg.: `keyword = 'pattern', dataPath = 'flow/0/uuid'`
-  'uuid',
-]
-
 import {
   checkSingleFlowOnly,
   detectedGroupChanges,
@@ -23,11 +16,18 @@ import {
   getPropertyBlocks,
   updateResourcesForLanguageMatch,
 } from '../utils/importHelpers'
-import {ErrorObject} from 'ajv'
-import Lang from '@/lib/filters/lang'
+
+// AJV keywords considered as important errors which should block an import
+const TRUE_AJV_ERROR_KEY_WORDS = ['required', 'additionalProperties', 'minItems', 'error']
+// AJV dataPath part considered as important errors which should block an import
+const TRUE_AJV_ERROR_DATA_PATH_PART = [
+  // scenario eg.: `keyword = 'pattern', dataPath = 'flow/0/uuid'`
+  'uuid',
+]
 
 export const getters: GetterTree<IImportState, IRootState> = {
-  specVersion: (state) => state.flowContainer,
+  flowSpecVersion: (state) => state.flowSpecVersion,
+  hasSomethingToImport: (state) => !isEmpty(state.flowJsonText),
   languagesMissing: (state) => !isEmpty(state.missingLanguages),
   propertiesMissing: (state) => !isEmpty(state.missingProperties),
   groupsMissing: (state) => !isEmpty(state.missingGroups),
@@ -193,7 +193,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
       const validationErrors = await dispatch('validation/validate_wholeContainer', {flowContainer}, {root: true})
 
       if (flowContainer !== undefined) {
-        commit('setFlowSpecVersion', {version: flowContainer?.specification_version})
+        commit('setFlowSpecVersion', flowContainer?.specification_version)
       }
     }
 
@@ -462,7 +462,7 @@ export interface IImportState {
   matchingGroups: IGroupOption[],
   existingGroupsWithoutMatch: IGroupOption[],
   flowContainer: IContext | null,
-  flowJsonText: string,
+  flowJsonText: string | undefined,
   flowSpecVersion: string | undefined,
   propertyBlocks: IBlock[],
   groupBlocks: IBlock[],
@@ -482,7 +482,7 @@ export const stateFactory = (): IImportState => ({
   matchingGroups: [],
   existingGroupsWithoutMatch: [],
   flowContainer: null,
-  flowJsonText: '',
+  flowJsonText: undefined,
   flowSpecVersion: undefined,
   propertyBlocks: [],
   groupBlocks: [],

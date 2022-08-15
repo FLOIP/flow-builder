@@ -1,5 +1,5 @@
 <template>
-  <div class="error-handler-v2">
+  <div v-if="hasSomethingToImport" class="error-handler-v2">
     <div class="mt-4 ml-4 mr-4 mb-4">
       <full-import-matcher />
 
@@ -66,6 +66,7 @@ export default {
       'missingGroups',
     ]),
     ...mapGetters('flow/import', [
+      'hasSomethingToImport',
       'isSafeToImport',
       'hasWarnings',
       'wholeContainerValidationTrueErrors',
