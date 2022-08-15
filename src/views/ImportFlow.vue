@@ -81,13 +81,17 @@
                 {{ trans('flow-builder.cancel') }}
               </router-link>
 
-              <a
-                :href="route('flows.editFlow', {flowId: flowUUID, component: 'designer', mode: 'edit'})"
-                class="btn btn-primary"
-                :class="{'disabled': disableContinue}"
-                @click.prevent="handleImportFlow(route('flows.editFlow', {flowId: flowUUID, component: 'designer', mode: 'edit'}))">
-                {{ 'flow-builder.create-flow' | trans }}
-              </a>
+              <slot
+                name="createAction"
+                :container="flowContainer">
+                <a
+                  :href="route('flows.editFlow', {flowId: flowUUID, component: 'designer', mode: 'edit'})"
+                  class="btn btn-primary"
+                  :class="{'disabled': disableContinue}"
+                  @click.prevent="handleImportFlow(route('flows.editFlow', {flowId: flowUUID, component: 'designer', mode: 'edit'}))">
+                  {{ 'flow-builder.create-flow' | trans }}
+                </a>
+              </slot>
             </div>
           </div>
         </div>
