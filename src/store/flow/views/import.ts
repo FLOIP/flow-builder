@@ -241,7 +241,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
     } else {
       let isValid = true
       // We have a valid json file
-      if (flowContainer.flows.length === 0) {
+      if (flowContainer.flows === undefined || flowContainer.flows?.length === 0) {
         commit('validation/pushAjvErrorToValidationStatuses', {
           key,
           ajvError: {dataPath, keyword, message: Lang.trans('flow-builder-validation.container-flow-is-empty')} as ErrorObject,
@@ -249,7 +249,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
         isValid = false
       }
 
-      if (flowContainer.flows.length > 1) {
+      if (flowContainer.flows?.length > 1) {
         commit('validation/pushAjvErrorToValidationStatuses', {
           key,
           ajvError: {
