@@ -170,6 +170,7 @@ export const mutations: MutationTree<IImportState> = {
 
 export const actions: ActionTree<IImportState, IRootState> = {
   async setFlowJson({commit, state, getters, dispatch}, value: string) {
+    commit('validation/resetValidationStatuses', {key: 'container_import'}, {root: true})
     commit('setFlowJsonText', value)
     let flowContainer
     try {

@@ -3,13 +3,13 @@
     <div class="mt-4 ml-4 mr-4 mb-4">
       <full-import-matcher />
 
-      <h5>Result</h5>
+      <h5>{{ trans('flow-builder.results') }}</h5>
       <div
         v-if="isSafeToImport && hasWarnings"
         class="alert alert-success mt-3"
         role="alert">
         <font-awesome-icon :icon="['fa', 'exclamation-triangle']" />
-        Success, with warnings
+        {{ trans('flow-builder.success-with-warnings') }}
       </div>
       <div
         v-if="isSafeToImport && !hasWarnings"
@@ -23,12 +23,11 @@
         class="alert alert-danger mt-3"
         role="alert">
         <i class="glyphicon glyphicon-exclamation-sign" />
-        Failure {{ }}
-        <!--TODO: check why we use this in previous handler {{ flowError | trans(flowErrorInterpolations) }}-->
+        {{ trans('flow-builder.failure') }}
       </div>
       <div v-if="!isSafeToImport">
-        <h5>Errors</h5>
-        <p>Please fix these errors first</p>
+        <h5>{{ trans('flow-builder.errors') }}</h5>
+        <p>{{ trans('flow-builder.please-fix-errors-first') }}</p>
         <tech-error-notifications
           :validation-errors="containerImportValidationTrueErrors"
           error-type="error"/>
@@ -36,8 +35,8 @@
 
       <div v-if="hasWarnings"
            class="mt-4">
-        <h5>Warning</h5>
-        <p>These won't block you to import the flow, but you will need to fix them once imported</p>
+        <h5>{{ trans('flow-builder.warnings') }}</h5>
+        <p>{{ trans('flow-builder.warnings-hint-on-import') }}</p>
         <tech-error-notifications
           :validation-errors="containerImportValidationWarningErrors"
           error-type="warning"/>
