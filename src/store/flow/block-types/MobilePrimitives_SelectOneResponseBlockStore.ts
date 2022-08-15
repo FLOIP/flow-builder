@@ -6,7 +6,7 @@ import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISele
 import Vue from 'vue'
 import {cloneDeep, find, reject} from 'lodash'
 import BaseStore, {actions as baseActions, mutations as baseMutations, getters as baseGetters, IEmptyState} from '@/store/flow/block-types/BaseBlock'
-import {MobilePrimitives_SelectOneResponseBlockValidator} from '@/lib/validations'
+import {ValidationResults} from '@/lib/validations'
 import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 import * as ChoiceModule from '@/store/flow/block/choice'
 
@@ -126,8 +126,33 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
 
-  async validate(_context, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-    return MobilePrimitives_SelectOneResponseBlockValidator.runAllValidations(block, schemaVersion)
+  async validateWithProgrammaticLogic(
+    _ctx: unknown,
+    {block}: {block: ISelectOneResponseBlock},
+  ): Promise<ValidationResults> {
+    console.debug('floip/SelectOneResponse/validateWithProgrammaticLogic()', `${block.type}`)
+    const errors: ValidationResults = []
+    const choiceValidationKey = '/config/choices'
+
+    // validationMax must be greater than validationMin
+    const allIvrTestExpressions = block.config.choices.map(choice => choice.ivr_test?.test_expression)
+    const duplicates = allIvrTestExpressions.filter(
+      (item, index) => item !== undefined && allIvrTestExpressions.indexOf(item) !== index,
+    )
+    if (duplicates.length > 0) {
+      errors.push([choiceValidationKey, 'duplicate-ivr-test-test_expression'])
+    }
+
+    // should not have duplicate choices
+    const allChoiceNames = block.config.choices.map(choice => choice.name)
+    const duplicatedChoiceNames = allChoiceNames.filter(
+      (item, index) => item !== undefined && allChoiceNames.indexOf(item) !== index,
+    )
+    if (duplicatedChoiceNames.length > 0) {
+      errors.push([choiceValidationKey, 'duplicate-choice-names'])
+    }
+
+    return errors
   },
 }
 
