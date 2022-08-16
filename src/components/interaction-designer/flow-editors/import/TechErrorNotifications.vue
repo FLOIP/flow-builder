@@ -3,7 +3,7 @@
     <div v-for="(ajvError, key) in validationErrors" :key="key">
       <h6>
         <b>#{{ key + 1 }} &nbsp;</b>
-        <b>Location</b>: {{ ajvError.dataPath }}, <b>Message</b>: {{ ajvError.message }}
+        <b>{{ trans('flow-builder.location') }}</b>: {{ ajvError.dataPath }}, <b>{{ trans('flow-builder.message') }}</b>: {{ ajvError.message }}
         <a :aria-controls="`collapse_${errorType}_${key}`"
            :href="`#collapse_${errorType}_${key}`"
            aria-expanded="false"
@@ -25,6 +25,8 @@
 
 <script>
 
+import Lang from '@/lib/filters/lang'
+
 export default {
   name: 'TechErrorNotifications',
   props: {
@@ -37,6 +39,7 @@ export default {
       required: true,
     },
   },
+  mixins: [Lang],
 }
 </script>
 
