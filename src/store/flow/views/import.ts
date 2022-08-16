@@ -18,7 +18,7 @@ import {
 } from '../utils/importHelpers'
 
 // AJV keywords considered as important errors which should block an import
-const TRUE_AJV_ERROR_KEY_WORDS = ['required', 'additionalProperties', 'minItems', 'error']
+const TRUE_AJV_ERROR_KEY_WORDS = ['required', 'additionalProperties', 'minItems', 'error', 'backend_error']
 // AJV dataPath part considered as important errors which should block an import
 const TRUE_AJV_ERROR_DATA_PATH_PART = [
   // scenario eg.: `keyword = 'pattern', dataPath = 'flow/0/uuid'`

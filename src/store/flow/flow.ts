@@ -21,6 +21,8 @@ import {discoverContentTypesFor} from '@/store/flow/resource'
 import {computeBlockCanvasCoordinates} from '@/store/builder'
 import {IFlowsState} from '.'
 import {mergeFlowContainer} from './utils/importHelpers'
+import Lang from '@/lib/filters/lang'
+import {ErrorObject} from 'ajv'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   //We allow for an attempt to get a flow which doesn't yet exist in the state - e.g. the first_flow_id doesn't correspond to a flow
@@ -166,7 +168,15 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       return getters.activeFlowContainer
     } catch (error) {
       commit('flow_updateCreatedState', oldCreatedState)
-      console.info(`Server error persisting flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
+      commit('validation/pushAjvErrorToValidationStatuses', {
+        key: 'container_import',
+        ajvError: {
+          dataPath: '/container',
+          keyword: 'backend_error',
+          message: error.response.data?.error ?? error.response.data,
+        } as ErrorObject,
+      }, {root: true})
+      console.warn(`Server error persisting flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
       return null
     }
   },
