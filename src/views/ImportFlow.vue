@@ -107,6 +107,7 @@ import {IContext} from '@floip/flow-runner'
 import ErrorHandlerV2 from '@/components/interaction-designer/flow-editors/import/ErrorHandlerV2.vue'
 
 import ImportStore from '@/store/flow/views/import'
+import {ErrorObject} from 'ajv'
 
 const flowVuexNamespace = namespace('flow')
 const importVuexNamespace = namespace('flow/import')
@@ -202,27 +203,29 @@ class ImportFlow extends mixins(Lang, Routes) {
     reader.readAsText(selectedFile, 'UTF-8')
   }
 
-  async handleImportFlow(route: string) {
-    const flowContainer = await this.flow_import({
-      // @ts-ignore - Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
-      persistRoute: this.route('flows.persistFlow', {}),
-      flowContainer: this.flowContainer,
-    })
-    if (flowContainer) {
-      this.reset()
-      this.$router.push(route)
-    } else {
-      this.setFlowError('flow-builder.problem-importing-flow')
-      // TODO - hook into validation system when we have it to display any errors? Or should we have caught any errors already?
-    }
-  }
+  @validationVuexNamespace.Mutation pushAjvErrorToValidationStatuses!: ({key, ajvError}: {key: string, ajvError: ErrorObject}) => void
 
   @State(({trees: {ui}}) => ui) ui!: any
 
-  @flowVuexNamespace.Action flow_import!: ({
+  @flowVuexNamespace.Action flow_persistImport!: ({
     persistRoute,
     flowContainer,
   }: { persistRoute: string, flowContainer: IContext }) => Promise<IContext>
+
+  async handleImportFlow(route: string) {
+    const flowContainer = await this.flow_persistImport({
+      // @ts-ignore - Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
+      persistRoute: this.route('flows.persistFlowImport', {}),
+      flowContainer: this.flowContainer,
+    })
+
+    if (flowContainer != null) {
+      this.reset()
+      this.$router.push(route)
+    } else {
+      console.warn('There was something wrong when trying to import flow', 'Check console log for more details')
+    }
+  }
 
   @Mutation configure!: ({appConfig, builderConfig}: { appConfig: object, builderConfig: object }) => void
 
