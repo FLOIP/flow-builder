@@ -1,4 +1,5 @@
 // tests/unit/storybook.spec.js
+// TODO: https://viamoinc.atlassian.net/browse/VMO-5852
 import initStoryshots from '@storybook/addon-storyshots'
 
 initStoryshots({
