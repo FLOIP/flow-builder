@@ -126,12 +126,12 @@ module.exports = {
         res.end(JSON.stringify(container))
       })
       // To persist flow import via "import flow page"
-      // In the success case, just echo the flow back
+      // In the success case, just echo the flow back: the response might have multiple data, but we fetch from createdContainer
       app.post('/backend/flows/import', bodyParser.json(), (req, res) => {
         const container = req.body
         console.debug('Simulating flow import ...')
         res.writeHead(200, { 'Content-Type': 'application/json' })
-        res.end(JSON.stringify(container))
+        res.end(JSON.stringify({message: 'anything', createdContainer: container}))
         // For dev: to simulate a failure, just uncomment the follow 02 lines, and comment the 02 previous lines for status 200
         // and re-serve the app. Then test an import.
         // res.writeHead(500, { 'Content-Type': 'application/json' })

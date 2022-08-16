@@ -34,7 +34,7 @@
         "persistFlowImport": {
           "name": "persistFlowImport",
           "path": "\/backend\/flows\/import",
-          "methods": ["POST"]
+          "methods": ["POST", "PUT"]
         },
         "fetchFlow": {
           "name": "fetchFlow",

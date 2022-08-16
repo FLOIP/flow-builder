@@ -27,7 +27,7 @@ import {ErrorObject} from 'ajv'
 export const getters: GetterTree<IFlowsState, IRootState> = {
   //We allow for an attempt to get a flow which doesn't yet exist in the state - e.g. the first_flow_id doesn't correspond to a flow
   activeFlow: (state): IFlow | undefined => {
-    if (state.flows.length) {
+    if (state.flows?.length) {
       try {
         return getActiveFlowFrom(state as unknown as IContext)
       } catch (err) {
@@ -147,11 +147,44 @@ export const mutations: MutationTree<IFlowsState> = {
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
-
-  async flow_import({getters, dispatch}, {persistRoute, flowContainer}): Promise<IContext | null> {
+  /**
+   * Persistence for IMPORT action
+   */
+  async flow_persistImport({getters, commit, dispatch}, {persistRoute, flowContainer}): Promise<IContext | null> {
     flowContainer = mergeFlowContainer(cloneDeep(getters.activeFlowContainer), flowContainer)
-    return dispatch('flow_persist', {persistRoute, flowContainer})
+    const restVerb = flowContainer.isCreated ? 'put' : 'post'
+    const oldCreatedState = flowContainer.isCreated
+    if (!persistRoute) {
+      console.info('Flow persistence route not configured correctly in builder.config.json. Falling back to vuex store')
+      commit('flow_setFlowContainer', flowContainer)
+      return getters.activeFlowContainer
+    }
+    try {
+      const {data: {createdContainer}} = await axios[restVerb](persistRoute, omit(flowContainer, ['isCreated']))
+      console.debug('test', createdContainer)
+      commit('flow_setFlowContainer', createdContainer)
+      // commit('flow_setFlowContainer', data)
+      commit('flow_updateCreatedState', true)
+      dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
+      return getters.activeFlowContainer
+    } catch (error) {
+      commit('flow_updateCreatedState', oldCreatedState)
+      commit('validation/pushAjvErrorToValidationStatuses', {
+        key: 'container_import',
+        ajvError: {
+          dataPath: '/container',
+          keyword: 'backend_error',
+          message: error.response.data?.error ?? error.response.data,
+        } as ErrorObject,
+      }, {root: true})
+      console.error(`Server error persisting flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
+      return null
+    }
   },
+
+  /**
+   * Persistence for SAVE action
+   */
   async flow_persist({getters, commit, dispatch}, {persistRoute, flowContainer}): Promise<IContext | null> {
     const restVerb = flowContainer.isCreated ? 'put' : 'post'
     const oldCreatedState = flowContainer.isCreated
@@ -168,15 +201,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       return getters.activeFlowContainer
     } catch (error) {
       commit('flow_updateCreatedState', oldCreatedState)
-      commit('validation/pushAjvErrorToValidationStatuses', {
-        key: 'container_import',
-        ajvError: {
-          dataPath: '/container',
-          keyword: 'backend_error',
-          message: error.response.data?.error ?? error.response.data,
-        } as ErrorObject,
-      }, {root: true})
-      console.warn(`Server error persisting flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
+      console.error(`Server error persisting flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
       return null
     }
   },
