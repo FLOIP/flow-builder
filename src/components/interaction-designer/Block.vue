@@ -68,7 +68,7 @@
         <div
           v-for="(exit) in block.exits"
           :key="exit.uuid"
-          class="block-exit mr-2 flex-shrink-1"
+          class="block-exit flex-shrink-1"
           :class="{
             'initial': false,
             'pending': isConnectionSourceRelocateActive,
@@ -629,6 +629,8 @@ export default Block
     white-space: nowrap;
     position: relative;
     top: 0em;
+    gap: 0.4rem;
+    margin-bottom: 0.4rem;
 
     .block-exit {
       display: inline-block;
