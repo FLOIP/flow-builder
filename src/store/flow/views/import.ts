@@ -1,11 +1,12 @@
 import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IContext} from '@floip/flow-runner'
+import {IBlock, IContainer, IContext} from '@floip/flow-runner'
 import {cloneDeep, difference, differenceWith, find, findIndex, get, isEmpty, isEqual, join, keys, reject, set, uniq} from 'lodash'
+import {ErrorObject} from 'ajv'
+import Lang from '@/lib/filters/lang'
 import {IContactPropertyMultipleChoice} from '../block-types/Core_SetContactPropertyStore'
 import {IGroupOption} from '../block-types/Core_SetGroupMembershipStore'
-
 import {
   checkSingleFlowOnly,
   detectedGroupChanges,
@@ -16,14 +17,36 @@ import {
   updateResourcesForLanguageMatch,
 } from '../utils/importHelpers'
 
+// AJV keywords considered as important errors which should block an import
+const TRUE_AJV_ERROR_KEY_WORDS = ['required', 'additionalProperties', 'minItems', 'error']
+// AJV dataPath part considered as important errors which should block an import
+const TRUE_AJV_ERROR_DATA_PATH_PART = [
+  // scenario eg.: `keyword = 'pattern', dataPath = 'flow/0/uuid'`
+  'uuid',
+]
+
 export const getters: GetterTree<IImportState, IRootState> = {
+  flowSpecVersion: (state) => state.flowSpecVersion,
+  hasSomethingToImport: (state) => !isEmpty(state.flowJsonText),
   languagesMissing: (state) => !isEmpty(state.missingLanguages),
   propertiesMissing: (state) => !isEmpty(state.missingProperties),
   groupsMissing: (state) => !isEmpty(state.missingGroups),
-  hasUnsupportedBlockClasses: (state, getters) => !isEmpty(getters.unsupportedBlockClasses),
-  unsupportedBlockClasses: (state, getters, _rootState, rootGetters) => difference(getters.uploadedBlockTypes, rootGetters.blockClasses),
-  unsupportedBlockClassesList: (state, getters) => join(getters.unsupportedBlockClasses, ', '),
-  uploadedBlockTypes: (state) => uniq(get(state.flowContainer, 'flows[0].blocks', []).map((block: IBlock) => block.type)),
+  isSafeToImport: (state, getters) => Array.isArray(getters.containerImportValidationTrueErrors)
+    && getters.containerImportValidationTrueErrors.length === 0
+    && getters.languagesMissing === false
+    && getters.propertiesMissing === false
+    && getters.groupsMissing === false,
+  hasWarnings: (state, getters) => getters.containerImportValidationWarningErrors !== undefined
+    && getters.containerImportValidationWarningErrors.length > 0,
+  containerImportValidationTrueErrors: (state, getters) => getters.containerImportValidationErrors?.filter(
+    (ajvError: ErrorObject) => TRUE_AJV_ERROR_KEY_WORDS.includes(ajvError.keyword)
+      || TRUE_AJV_ERROR_DATA_PATH_PART.some((pathPart) => ajvError.dataPath.includes(pathPart)),
+  ),
+  containerImportValidationWarningErrors: (state, getters) => getters.containerImportValidationErrors?.filter(
+    (ajvError: ErrorObject) => !TRUE_AJV_ERROR_KEY_WORDS.includes(ajvError.keyword)
+      && !TRUE_AJV_ERROR_DATA_PATH_PART.some((pathPart) => ajvError.dataPath.includes(pathPart)),
+    ),
+  containerImportValidationErrors: (state, getters, rootState) => rootState['validation'].validationStatuses?.container_import?.ajvErrors ?? [],
 }
 
 export const mutations: MutationTree<IImportState> = {
@@ -33,7 +56,7 @@ export const mutations: MutationTree<IImportState> = {
   baseReset(state) {
     state.flowContainer = null
     state.flowJsonText = ''
-    state.flowError = ''
+    state.flowSpecVersion = undefined
     state.propertyBlocks = []
     state.groupBlocks = []
   },
@@ -110,13 +133,8 @@ export const mutations: MutationTree<IImportState> = {
       set(state.flowContainer, 'flows[0].blocks', blocks)
     }
   },
-  setFlowErrorWithInterpolations(state, {text, interpolations}) {
-    state.flowError = text
-    state.flowErrorInterpolations = interpolations
-  },
-  setFlowError(state, text) {
-    state.flowError = text
-    state.flowErrorInterpolations = null
+  setFlowSpecVersion(state, version) {
+    state.flowSpecVersion = version
   },
   setGroupBlocks(state, groupBlocks) {
     state.groupBlocks = groupBlocks
@@ -151,8 +169,8 @@ export const mutations: MutationTree<IImportState> = {
 }
 
 export const actions: ActionTree<IImportState, IRootState> = {
-  async setFlowJson({commit, state, dispatch}, value: string) {
-    commit('setFlowError', '')
+  async setFlowJson({commit, state, getters, dispatch}, value: string) {
+    commit('validation/resetValidationStatuses', {key: 'container_import'}, {root: true})
     commit('setFlowJsonText', value)
     let flowContainer
     try {
@@ -162,45 +180,125 @@ export const actions: ActionTree<IImportState, IRootState> = {
       commit('resetLanguageMatching')
       commit('resetPropertyMatching')
       commit('resetGroupMatching')
-      commit('setFlowError', 'flow-builder.invalid-json-provided')
+    }
+
+    const hasProgrammaticError = await dispatch('validate_containerImportWithProgrammaticLogic', {
+      key: 'container_import',
+      flowContainer,
+    })
+    if (hasProgrammaticError === false) {
+      return
+    } else {
+      const validationErrors = await dispatch('validation/validate_containerImport', {flowContainer}, {root: true})
+
+      if (flowContainer !== undefined) {
+        commit('setFlowSpecVersion', flowContainer?.specification_version)
+      }
+    }
+
+    if (getters.isSafeToImport === false) {
       return
     }
 
     //We know it's valid JSON at least. Let's display it correctly formatted
     commit('setFlowJsonText', JSON.stringify(flowContainer, null, 2))
 
-    if (!checkSingleFlowOnly(flowContainer)) {
-      commit('setFlowError', 'flow-builder.importer-currently-supports-single-flow-only')
-      return
-    }
-    const validationErrors = await dispatch('validation/validate_flowContainer', {flowContainer}, {root: true})
-    if (!validationErrors.isValid) {
-      commit('setFlowErrorWithInterpolations', {text: 'flow-builder.flow-invalid', interpolations: {version: flowContainer.specification_version}})
-      return
-    }
-
+    // Try to fix the imported container
     const oldFlowContainer = cloneDeep(state.flowContainer)
     const newFlowContainer = cloneDeep(flowContainer)
     commit('setFlowContainer', flowContainer)
 
     if (detectedLanguageChanges({flowContainer: newFlowContainer, oldFlowContainer})) {
-      await dispatch('validateLanguages', state.flowContainer)
+      await dispatch('tryToFixLanguages', state.flowContainer)
     }
     // matching on "property_key" == "name" in builder.config.json
     const newPropertyBlocks = getPropertyBlocks(flowContainer)
     if (detectedPropertyChanges({newPropertyBlocks, oldPropertyBlocks: state.propertyBlocks})) {
       commit('setPropertyBlocks', newPropertyBlocks)
-      await dispatch('validateProperties', state.propertyBlocks)
+      await dispatch('tryToFixProperties', state.propertyBlocks)
     }
     // matching on "group_key" == "id" in builder.config.json
     const newGroupBlocks = getGroupBlocks(flowContainer)
     if (detectedGroupChanges({newGroupBlocks, oldGroupBlocks: state.groupBlocks})) {
       commit('setGroupBlocks', newGroupBlocks)
-      await dispatch('validateGroups', state.groupBlocks)
+      await dispatch('tryToFixGroups', state.groupBlocks)
     }
     commit('setFlowJsonText', JSON.stringify(state.flowContainer, null, 2))
   },
-  async validateLanguages({state, commit, rootGetters}, flowContainer: IContext) {
+  async validate_containerImportWithProgrammaticLogic(
+    {state, commit, getters, rootState, rootGetters},
+    {key, flowContainer}: { key: string, flowContainer: IContainer },
+  ): Promise<Boolean> {
+    const dataPath = '/container'
+    // we provide a keyword 'error' in ajvError to tell our error handler this should not be ignored (not like `pattern` keyword)
+    const keyword = 'error'
+    if (flowContainer === undefined) {
+      commit('validation/pushAjvErrorToValidationStatuses', {
+        key,
+        ajvError: {dataPath, keyword, message: Lang.trans('flow-builder-validation.invalid-json-provided')} as ErrorObject,
+      }, {root: true})
+      return false
+    } else {
+      let isValid = true
+      // We have a valid json file
+      if (flowContainer.flows === undefined || flowContainer.flows?.length === 0) {
+        commit('validation/pushAjvErrorToValidationStatuses', {
+          key,
+          ajvError: {dataPath, keyword, message: Lang.trans('flow-builder-validation.container-flow-is-empty')} as ErrorObject,
+        }, {root: true})
+        isValid = false
+      }
+
+      if (flowContainer.flows?.length > 1) {
+        commit('validation/pushAjvErrorToValidationStatuses', {
+          key,
+          ajvError: {
+            dataPath,
+            keyword,
+            message: Lang.trans('flow-builder-validation.importer-currently-supports-single-flow-only'),
+          } as ErrorObject,
+        }, {root: true})
+        isValid = false
+      }
+
+      const supportedSpecVersions = rootGetters?.supportedFlowSpecVersionsForImport
+      if (supportedSpecVersions === undefined
+        || !Array.isArray(supportedSpecVersions)
+        || (Array.isArray(supportedSpecVersions) && supportedSpecVersions === [])) {
+        throw new Error('Please set the supportedFlowSpecVersionsForImport in flow config')
+      }
+
+      if (supportedSpecVersions.includes(flowContainer.specification_version) === false) {
+        commit('validation/pushAjvErrorToValidationStatuses', {
+          key,
+          ajvError: {
+            dataPath,
+            keyword,
+            message: `${Lang.trans('flow-builder-validation.non-supported-spec-version')}: ${flowContainer.specification_version}`,
+          } as ErrorObject,
+        }, {root: true})
+        isValid = false
+      }
+
+      const uploadedBlockTypes = uniq(get(flowContainer, 'flows[0].blocks', []).map((block: IBlock) => block.type))
+      const unsupportedBlockClasses = difference(uploadedBlockTypes, rootGetters.blockClasses)
+      if (!isEmpty(unsupportedBlockClasses) === true) {
+        const unsupportedBlockClassesList = join(unsupportedBlockClasses, ', ')
+        commit('validation/pushAjvErrorToValidationStatuses', {
+          key,
+          ajvError: {
+            dataPath,
+            keyword,
+            message: `${Lang.trans('flow-builder-validation.unsupported-blocks-detected')}: ${unsupportedBlockClassesList}`,
+          } as ErrorObject,
+        }, {root: true})
+        isValid = false
+      }
+      return isValid
+    }
+    return true
+  },
+  async tryToFixLanguages({state, commit, rootGetters}, flowContainer: IContext) {
     const uploadLanguages: ILanguage[] = get(flowContainer, 'flows[0].languages', [])
     const matchingLanguages: ILanguage[] = []
     if (uploadLanguages) {
@@ -220,7 +318,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
       commit('setExistingLanguagesWithoutMatch', differenceWith(rootGetters.languages, state.matchingLanguages, isEqual))
     }
   },
-  async validateProperties({rootGetters, state, commit}, newPropertyBlocks: IBlock[]) {
+  async tryToFixProperties({rootGetters, state, commit}, newPropertyBlocks: IBlock[]) {
     const matchingProperties: IContactPropertyMultipleChoice[] = []
     const blocksMissingProperties = cloneDeep(state.blocksMissingProperties)
     newPropertyBlocks.forEach((propertyBlock) => {
@@ -256,7 +354,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
     commit('setExistingPropertiesWithoutMatch', differenceWith(rootGetters.subscriberPropertyFields, state.matchingProperties, isEqual))
   },
 
-  async validateGroups({rootGetters, state, commit}, newGroupBlocks: IBlock[]) {
+  async tryToFixGroups({rootGetters, state, commit}, newGroupBlocks: IBlock[]) {
     const matchingGroups: IGroupOption[] = []
     const blocksMissingGroups = cloneDeep(state.blocksMissingGroups)
     newGroupBlocks.forEach((groupBlock) => {
@@ -295,7 +393,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
     )
     commit('setFlowJsonText', JSON.stringify(state.flowContainer, null, 2))
     commit('setMissingLanguages', reject(state.missingLanguages, (language) => isEqual(language, oldLanguage)))
-    dispatch('validateLanguages', state.flowContainer)
+    dispatch('tryToFixLanguages', state.flowContainer)
   },
   matchProperty({commit, state, dispatch}, {oldProperty, matchingNewProperty}) {
     const blocks = cloneDeep(get(state.flowContainer, 'flows[0].blocks'))
@@ -320,7 +418,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
       return newBlocksMissingProperties
     }, newBlocksMissingProperties))
     commit('setPropertyBlocks', getPropertyBlocks(state.flowContainer as IContext))
-    dispatch('validateProperties', state.propertyBlocks)
+    dispatch('tryToFixProperties', state.propertyBlocks)
   },
   matchGroup({commit, state, dispatch}, {oldGroup, matchingNewGroup}) {
     const blocks = cloneDeep(get(state.flowContainer, 'flows[0].blocks'))
@@ -346,7 +444,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
       return newBlocksMissingGroups
     }, newBlocksMissingGroups))
     commit('setGroupBlocks', getGroupBlocks(state.flowContainer as IContext))
-    dispatch('validateGroups', state.groupBlocks)
+    dispatch('tryToFixGroups', state.groupBlocks)
   },
 }
 
@@ -364,8 +462,7 @@ export interface IImportState {
   existingGroupsWithoutMatch: IGroupOption[],
   flowContainer: IContext | null,
   flowJsonText: string,
-  flowError: string,
-  flowErrorInterpolations: null | object,
+  flowSpecVersion: string | undefined,
   propertyBlocks: IBlock[],
   groupBlocks: IBlock[],
   updating: boolean,
@@ -385,8 +482,7 @@ export const stateFactory = (): IImportState => ({
   existingGroupsWithoutMatch: [],
   flowContainer: null,
   flowJsonText: '',
-  flowError: '',
-  flowErrorInterpolations: null,
+  flowSpecVersion: undefined,
   propertyBlocks: [],
   groupBlocks: [],
   updating: false,

@@ -51,7 +51,6 @@
                   class="tall-text"
                   :placeholder="'flow-builder.edit-flow-json' | trans"
                   @input="setUpdatingAndHandleFlowJsonTextChange" />
-                <error-handler />
               </div>
             </div>
             <div class="mt-2">
@@ -70,10 +69,9 @@
                   class="tall-text"
                   :placeholder="'flow-builder.paste-flow-json' | trans"
                   @input="setUpdatingAndHandleFlowJsonTextChange" />
-                <error-handler />
               </div>
             </div>
-
+            <error-handler-v2 />
             <div class="float-right mt-3">
               <router-link
                 :to="route('flows.cancelImport')"
@@ -101,19 +99,24 @@
 import Lang from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import {Component, Prop} from 'vue-property-decorator'
-import Vue from 'vue'
 import {Getter, Mutation, namespace, State} from 'vuex-class'
 import {debounce, forEach, get, isEmpty} from 'lodash'
 import {mixins} from 'vue-class-component'
 import {store} from '@/store'
 import {IContext} from '@floip/flow-runner'
+import ErrorHandlerV2 from '@/components/interaction-designer/flow-editors/import/ErrorHandlerV2.vue'
 
 import ImportStore from '@/store/flow/views/import'
 
 const flowVuexNamespace = namespace('flow')
 const importVuexNamespace = namespace('flow/import')
+const validationVuexNamespace = namespace('validation')
 
-@Component({})
+@Component({
+  components: {
+    ErrorHandlerV2,
+  },
+})
 class ImportFlow extends mixins(Lang, Routes) {
   @Prop({default: () => ({})}) readonly appConfig!: object
 
@@ -138,13 +141,7 @@ class ImportFlow extends mixins(Lang, Routes) {
     }
   }
 
-  reset() {
-    this.fileName = ''
-    this.baseReset()
-    this.resetLanguageMatching()
-    this.resetPropertyMatching()
-    this.resetGroupMatching()
-  }
+  @validationVuexNamespace.Action resetValidationStatuses!: ({key}: {key: string}) => void
 
   get uploadOrPaste() {
     return this.uploadOrPasteSetting
@@ -178,14 +175,7 @@ class ImportFlow extends mixins(Lang, Routes) {
     this.setUpdating(false)
   }
 
-  get disableContinue() {
-    return !this.flowUUID
-      || this.flowError
-      || this.languagesMissing
-      || this.propertiesMissing
-      || this.groupsMissing
-      || this.hasUnsupportedBlockClasses
-  }
+  @importVuexNamespace.Getter isSafeToImport!: boolean
 
   get flowUUID() {
     return get(this.flowContainer, 'flows[0].uuid')
@@ -240,13 +230,10 @@ class ImportFlow extends mixins(Lang, Routes) {
 
   @Getter hasImportFlowTitle!: boolean
 
-  @importVuexNamespace.Getter hasUnsupportedBlockClasses!: boolean
-
-  @importVuexNamespace.Getter languagesMissing!: boolean
-
-  @importVuexNamespace.Getter groupsMissing!: boolean
-
-  @importVuexNamespace.Getter propertiesMissing!: boolean
+  get disableContinue() {
+    return this.flowUUID === undefined
+      || !this.isSafeToImport
+  }
 
   @importVuexNamespace.Action setFlowJson!: (value: string) => Promise<void>
 
@@ -267,6 +254,15 @@ class ImportFlow extends mixins(Lang, Routes) {
   @importVuexNamespace.State flowJsonText!: string
 
   @importVuexNamespace.State flowContainer!: IContext
+
+  reset() {
+    this.fileName = ''
+    this.baseReset()
+    this.resetLanguageMatching()
+    this.resetPropertyMatching()
+    this.resetGroupMatching()
+    this.resetValidationStatuses({key: 'container_import'})
+  }
 }
 
 export default ImportFlow

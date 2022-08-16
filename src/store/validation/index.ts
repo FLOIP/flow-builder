@@ -19,10 +19,12 @@ import {
   flatValidationStatuses,
   getLocalizedAjvErrors,
   getLocalizedBackendErrors,
+  getOrCreateContainerImportValidator,
   getOrCreateFlowValidator,
   getOrCreateLanguageValidator,
   getOrCreateResourceValidator,
 } from '@/store/validation/validationHelpers'
+import Lang from '@/lib/filters/lang'
 
 export interface IIndexedString {
   [key: string]: string,
@@ -85,6 +87,18 @@ export const getters: GetterTree<IValidationState, IRootState> = {
 export const mutations: MutationTree<IValidationState> = {
   removeValidationStatusesFor(state, {key}) {
     delete state.validationStatuses[key]
+  },
+  resetValidationStatuses(state, {key}): void {
+    Vue.set(state.validationStatuses, key, {ajvErrors: undefined})
+    Vue.set(state.validationStatuses[key], 'ajvErrors', [])
+  },
+  pushAjvErrorToValidationStatuses(state, {key, ajvError}): void {
+    if (state.validationStatuses[key]?.ajvErrors === undefined) {
+      Vue.set(state.validationStatuses, key, {ajvErrors: undefined})
+      Vue.set(state.validationStatuses[key], 'ajvErrors', [])
+    }
+    // state.validationStatuses[key]!.isValid = false
+    state.validationStatuses[key]!.ajvErrors!.push(ajvError)
   },
 }
 
@@ -173,12 +187,20 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     return state.validationStatuses[key]
   },
 
-  async validate_flowContainer({state}, {flowContainer}: { flowContainer: IContainer }): Promise<IValidationStatus> {
-    const key = `flowContainer/${flowContainer.uuid}`
-    const errors = getFlowStructureErrors(flowContainer, false)
+  /**
+   * Validate the whole container for import purpose, including all contents like: flows, blocks, etc
+   * Assuming the provided container is a valid JSON
+   */
+  async validate_containerImport({state, commit, dispatch, rootGetters}, {flowContainer}: { flowContainer: IContainer }): Promise<IValidationStatus> {
+    // We do not add the uuid in key as it's hard coded in flow state for now
+    const key = 'container_import'
+
+    // At this stage we assume the container has the specification_version
+    const validate = getOrCreateContainerImportValidator(rootGetters['flow/activeFlowContainer'].specification_version)
     Vue.set(state.validationStatuses, key, {
-      isValid: !errors,
-      ajvErrors: getLocalizedAjvErrors(key, errors),
+      isValid: validate(flowContainer),
+      ajvErrors: getLocalizedAjvErrors(key, validate.errors),
+      type: 'container_import',
     })
 
     debugValidationStatus(state.validationStatuses[key], 'flow container validation status')
@@ -252,6 +274,10 @@ export const actions: ActionTree<IValidationState, IRootState> = {
         await dispatch('validate_resource', {resource: currentResource})
       }),
     )
+  },
+
+  resetValidationStatuses({commit}, {key}: {key: string}): void {
+    commit('resetValidationStatuses', {key})
   },
 }
 
