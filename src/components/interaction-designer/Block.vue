@@ -68,7 +68,7 @@
         <div
           v-for="(exit) in block.exits"
           :key="exit.uuid"
-          class="block-exit flex-shrink-1"
+          class="block-exit flex-grow-1"
           :class="{
             'initial': false,
             'pending': isConnectionSourceRelocateActive,
@@ -82,9 +82,8 @@
             <div class="total-label-container">
               <span class="badge badge-primary tree-block-item-label tree-block-item-output-subscribers-1" />
             </div>
-
             <div
-              class="block-exit-name badge badge-warning is-connected"
+              class="block-exit-name badge badge-warning is-connected w-100"
               :class="{
                 'is-connected': exit.destination_block != null,
                 'is-disconnected': exit.destination_block == null,
@@ -641,7 +640,7 @@ export default Block
         display: flex;
         justify-content: center;
 
-        width: 100px;
+        min-width: 100px;
         height: 28px;
 
         padding: 0.4em;
@@ -651,6 +650,8 @@ export default Block
         font-size: 12px;
 
         .block-exit-name-text {
+          display: inline-block;
+          max-width: calc(100px - 0.8em);
           text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;
