@@ -22,7 +22,7 @@ import {
   getOrCreateContainerImportValidator,
   getOrCreateFlowValidator,
   getOrCreateLanguageValidator,
-  getOrCreateResourceValidator,
+  getOrCreateResourceValidator, getUniqueObjectValuesFromArray,
 } from '@/store/validation/validationHelpers'
 import Lang from '@/lib/filters/lang'
 
@@ -151,10 +151,11 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     Object.keys(backendErrorsList).forEach((currentUuid) => {
       const key = `backend/${type}/${currentUuid}`
       const currentErrors = backendErrorsList[currentUuid]
+      const uniqueErrors = getUniqueObjectValuesFromArray(currentErrors, 'message') as { message: string }[]
 
       Vue.set(state.validationStatuses, key, {
-        isValid: currentErrors === undefined || currentErrors.length === 0,
-        ajvErrors: getLocalizedBackendErrors(key, currentErrors),
+        isValid: uniqueErrors === undefined || uniqueErrors.length === 0,
+        ajvErrors: getLocalizedBackendErrors(key, uniqueErrors),
       })
 
       debugValidationStatus(state.validationStatuses[key], `${type} validation based on backend action`)
