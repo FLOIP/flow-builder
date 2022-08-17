@@ -1,6 +1,5 @@
 {
   "ui": {
-    "supportedFlowSpecVersionsForImport": ["1.0.0-rc4"],
     "routes": {
       "languages": {
         "persistLanguage": {
@@ -84,6 +83,7 @@
         }
       }
     },
+    "supportedFlowSpecVersionsForImport": ["1.0.0-rc4"],
     "languages": [
       {
         "id": "22",
