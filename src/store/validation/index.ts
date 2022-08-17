@@ -13,7 +13,7 @@ import {
   SupportedMode,
 
 } from '@floip/flow-runner'
-import {cloneDeep, each, filter, get, forIn, includes, intersection, isEmpty, map, union} from 'lodash'
+import {cloneDeep, each, filter, get, forIn, includes, intersection, isEmpty, map, uniqBy} from 'lodash'
 import {
   debugValidationStatus,
   flatValidationStatuses,
@@ -22,9 +22,8 @@ import {
   getOrCreateContainerImportValidator,
   getOrCreateFlowValidator,
   getOrCreateLanguageValidator,
-  getOrCreateResourceValidator, getUniqueObjectValuesFromArray,
+  getOrCreateResourceValidator,
 } from '@/store/validation/validationHelpers'
-import Lang from '@/lib/filters/lang'
 
 export interface IIndexedString {
   [key: string]: string,
@@ -151,7 +150,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     Object.keys(backendErrorsList).forEach((currentUuid) => {
       const key = `backend/${type}/${currentUuid}`
       const currentErrors = backendErrorsList[currentUuid]
-      const uniqueErrors = getUniqueObjectValuesFromArray(currentErrors, 'message') as { message: string }[]
+      const uniqueErrors = uniqBy(currentErrors, 'message') as { message: string }[]
 
       Vue.set(state.validationStatuses, key, {
         isValid: uniqueErrors === undefined || uniqueErrors.length === 0,

@@ -286,24 +286,3 @@ export function validateBlockWithJsonSchema({block, schemaVersion, customBlockJs
     },
   }
 }
-
-/**
- *  Get unique object by removing duplicates, based on a given key:
- *  eg: if we have [{'message': 'error 1'}, {'message': 'error 1'}, {'message': 'error 2'}]
- *  the return would be  [{'message': 'error 1'}, {'message': 'error 2'}]
- *
- * @param list
- * @param keyToCompare
- */
-export function getUniqueObjectValuesFromArray(list: Array<Object>, keyToCompare: string) {
-  if (isEmpty(keyToCompare)) {
-    return list
-  }
-
-  if (isEmpty(list)) {
-    return []
-  }
-
-  return [...new Set(list.map(obj => get(obj, keyToCompare)))]
-    .map(message => list.find(obj => get(obj, keyToCompare) === message))
-}
