@@ -1,7 +1,7 @@
 const path = require('path')
 const fs = require('fs')
-const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 
 module.exports = {
   lintOnSave: false,
