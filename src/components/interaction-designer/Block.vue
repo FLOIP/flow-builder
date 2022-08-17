@@ -124,6 +124,7 @@
                     </div>
                     <connection
                       :key="`exit/${exit.uuid}/line-for-draft`"
+                      :color="connectionColorAtSourceDragged"
                       :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
                       :source="block"
                       :target="blocksById[exit.destination_block]"
@@ -148,6 +149,7 @@
 
                   <connection
                     :key="`exit/${exit.uuid}/line`"
+                    :color="connectionColorForKnowDestination"
                     :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
                     :source="livePosition ? null : block"
                     :target="blocksById[exit.destination_block]"
@@ -183,6 +185,7 @@ import {
 } from '@/store/builder'
 import Lang from '@/lib/filters/lang'
 import {BlockClasses, IPositionLeftTop} from '@/lib/types'
+import {colorStates} from '@/components/interaction-designer/Connection.vue'
 
 const LABEL_CONTAINER_MAX_WIDTH = 650
 
@@ -208,6 +211,8 @@ export class Block extends mixins(Lang) {
   blockHeight = 0
   exitHovers = {}
   lineHovers: Record<IBlockExit['uuid'], boolean> = {}
+  connectionColorAtSourceDragged = colorStates.CONNECTING
+  connectionColorForKnowDestination = colorStates.DEFAULT
 
   created(): void {
     this.initDraggableForExitsByUuid()

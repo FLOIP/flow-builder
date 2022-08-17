@@ -7,7 +7,7 @@
 <script lang="ts">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import {mixins} from 'vue-class-component'
-import {Component, Prop} from 'vue-property-decorator'
+import {Component, Prop, Watch} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 import LeaderLine from 'leader-line'
 import {set} from 'lodash'
@@ -15,10 +15,7 @@ import {IBlock, IBlockExit} from '@floip/flow-runner'
 import Lang from '@/lib/filters/lang'
 import {IConnectionContext} from '@/store/builder'
 
-const lightColor = '#6897BB'
-const darkColor = '#30516a'
-const disconnectionColor = '#656262'
-const exitColor = {
+export const colorStates = {
   ON_HOVER: '#A31E65',
   CONNECTING: '#10661E',
   // For states: Disconnected, Connected, Extremity element in focus
@@ -28,7 +25,8 @@ const exitColor = {
 const builderNamespace = namespace('builder')
 
 interface ILeaderLineOptions {
-  endPlugColor: string,
+  color: string,
+  // endPlugColor: string,
   endPlugSize: number,
   endSocket: string,
   gradient: true,
@@ -37,7 +35,7 @@ interface ILeaderLineOptions {
   path: string,
   size: number,
   startPlug: string,
-  startPlugColor: string,
+  // startPlugColor: string,
   startSocket: string,
 }
 
@@ -48,6 +46,7 @@ export class Connection extends mixins(Lang) {
   @Prop({type: Object}) readonly source!: IBlock
   @Prop({type: Object}) readonly target!: IBlock
   @Prop({type: Object}) readonly position!: { x: number, y: number }
+  @Prop({type: String}) readonly color!: string
 
   // The leader-line library has no types yet
   // No need to set up observers over this
@@ -55,28 +54,22 @@ export class Connection extends mixins(Lang) {
   line: any = undefined
   isPermanentlyActive = false
 
+  get hasDestination(): Boolean {
+    return this.exit.destination_block != null
+  }
+
+  /**
+   * these options come from the Leader-line doc: https://anseki.github.io/leader-line/#options
+   */
   get options(): ILeaderLineOptions {
     return {
       startPlug: 'square',
-
-      startPlugColor: lightColor,
-      endPlugColor: darkColor,
-      gradient: true,
-
+      color: this.color,
       startSocket: 'bottom',
       endSocket: 'top',
-
-      size: 8,
-      outline: true,
-      outlineColor: '#ffffff',
-      // outlineSize: 0.08,
-
-      path: 'fluid',
-      endPlugSize: 0.5,
-      // path: 'fluid',
-      // path: 'arc',
-      // path: 'magnet',
-
+      size: 4,
+      path: 'grid',
+      endPlugSize: 1,
       // middleLabel: LeaderLine.captionLabel(this.exit.name, {
       //   color: darkColor,
       //   fontSize: 12,
@@ -87,8 +80,7 @@ export class Connection extends mixins(Lang) {
 
   get onHoverOptions(): Partial<ILeaderLineOptions> {
     return {
-      startPlugColor: exitColor.ON_HOVER,
-      endPlugColor: exitColor.ON_HOVER,
+      color: colorStates.ON_HOVER,
     }
   }
 
@@ -205,12 +197,22 @@ export class Connection extends mixins(Lang) {
   }
 
   mouseOverHandler(): void {
-    this.line.setOptions(this.onHoverOptions)
+    // Do not handle anything if we don't have the destination yet
+    if (!this.hasDestination) {
+      return
+    }
+
+    this.line.setOptions(this.onHoverOptions);
     this.activateConnection({connectionContext: this.connectionContext})
     this.$emit('lineMouseIn')
   }
 
   mouseOutHandler(): void {
+    // Do not handle anything if we don't have the destination yet
+    if (!this.hasDestination) {
+      return
+    }
+
     if (!this.isPermanentlyActive) {
       this.line.setOptions(this.options)
       this.deactivateConnection({connectionContext: this.connectionContext})
