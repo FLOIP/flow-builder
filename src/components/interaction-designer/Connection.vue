@@ -17,7 +17,13 @@ import {IConnectionContext} from '@/store/builder'
 
 const lightColor = '#6897BB'
 const darkColor = '#30516a'
-const disconnectionColor = '#dc3545'
+const disconnectionColor = '#656262'
+const exitColor = {
+  ON_HOVER: '#A31E65',
+  CONNECTING: '#10661E',
+  // For states: Disconnected, Connected, Extremity element in focus
+  DEFAULT: '#707070',
+}
 
 const builderNamespace = namespace('builder')
 
@@ -60,12 +66,12 @@ export class Connection extends mixins(Lang) {
       startSocket: 'bottom',
       endSocket: 'top',
 
-      size: 5,
+      size: 8,
       outline: true,
       outlineColor: '#ffffff',
       // outlineSize: 0.08,
 
-      path: 'grid',
+      path: 'fluid',
       endPlugSize: 0.5,
       // path: 'fluid',
       // path: 'arc',
@@ -79,10 +85,10 @@ export class Connection extends mixins(Lang) {
     }
   }
 
-  get prominentOptions(): Partial<ILeaderLineOptions> {
+  get onHoverOptions(): Partial<ILeaderLineOptions> {
     return {
-      startPlugColor: disconnectionColor,
-      endPlugColor: disconnectionColor,
+      startPlugColor: exitColor.ON_HOVER,
+      endPlugColor: exitColor.ON_HOVER,
     }
   }
 
@@ -199,7 +205,7 @@ export class Connection extends mixins(Lang) {
   }
 
   mouseOverHandler(): void {
-    this.line.setOptions(this.prominentOptions)
+    this.line.setOptions(this.onHoverOptions)
     this.activateConnection({connectionContext: this.connectionContext})
     this.$emit('lineMouseIn')
   }
