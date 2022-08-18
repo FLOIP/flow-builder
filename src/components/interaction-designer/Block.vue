@@ -228,6 +228,7 @@ export class Block extends mixins(Lang) {
   lineHovers: Record<IBlockExit['uuid'], boolean> = {}
   connectionColorAtSourceDragged = colorStates.CONNECTING
   connectionColorForKnowDestination = colorStates.DEFAULT
+  isConnectionSource = false
 
   created(): void {
     this.initDraggableForExitsByUuid()
@@ -307,7 +308,7 @@ export class Block extends mixins(Lang) {
   }
 
   get isWaitingForConnection(): boolean {
-    return this.isMouseOnBlock === true && this.isConnectionCreationInProgress
+    return !this.isConnectionSource && this.isMouseOnBlock === true && this.isConnectionCreationInProgress
   }
 
   get isBlockSelected(): boolean {
@@ -497,6 +498,7 @@ export class Block extends mixins(Lang) {
     const {left: x, top: y} = draggable
 
     this.$set(this.exitOnDragged, exit.uuid, true)
+    this.isConnectionSource = true
 
     this.initializeConnectionCreateWith({
       block,
@@ -518,6 +520,7 @@ export class Block extends mixins(Lang) {
     const {x: left, y: top} = this.operations[OperationKind.CONNECTION_CREATE]!.data!.position
 
     this.$set(this.exitOnDragged, exit.uuid, false)
+    this.isConnectionSource = false
 
     console.debug('Block', 'onCreateExitDragEnded', 'operation.data.position', {left, top})
     console.debug('Block', 'onCreateExitDragEnded', 'reset', {left: draggable.left, top: draggable.top})
