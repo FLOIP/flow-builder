@@ -377,6 +377,7 @@ export class Block extends mixins(Lang) {
   @builderNamespace.Mutation setBlockPositionTo!: BlockPositionAction
   @builderNamespace.Mutation initDraggableForExitsByUuid!: () => void
   @builderNamespace.Mutation setIsBlockEditorOpen!: () => void
+  @builderNamespace.Mutation deactivateConnectionFromExitUuid!: ({exitUuid}: {exitUuid: IBlockExit['uuid']}) => void
 
   @builderNamespace.Action removeConnectionFrom!: BlockExitAction
 
@@ -498,6 +499,8 @@ export class Block extends mixins(Lang) {
 
   handleRemoveConnectionFrom(exit: IBlockExit): void {
     const {block} = this
+    this.setLineClicked(exit, false)
+    this.deactivateConnectionFromExitUuid({exitUuid: exit.uuid})
     this.removeConnectionFrom({block, exit})
     // force render, useful if the exit label is very short
     this.labelContainerMaxWidth += 0

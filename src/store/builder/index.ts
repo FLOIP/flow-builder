@@ -1,4 +1,4 @@
-import {filter, flatMap, isEqual, keyBy, map, mapValues, union} from 'lodash'
+import {filter, flatMap, isEqual, keyBy, map, mapValues, union, reject} from 'lodash'
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
@@ -119,6 +119,10 @@ export const mutations: MutationTree<IBuilderState> = {
 
   deactivateConnection(state, {connectionContext}) {
     state.activeConnectionsContext = filter(state.activeConnectionsContext, (context) => context !== connectionContext)
+  },
+
+  deactivateConnectionFromExitUuid(state, {exitUuid}: {exitUuid: IBlockExit['uuid']}) {
+    state.activeConnectionsContext = reject(state.activeConnectionsContext, (context) => context.exitId === exitUuid)
   },
 
   setIsConnectionCreationInProgress(state, {value}: {value: boolean}) {
