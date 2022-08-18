@@ -19,6 +19,7 @@ export class PlainDraggable extends mixins(Lang) {
   @Prop(Number) startX?: number
   @Prop(Number) startY?: number
   @Prop({type: Boolean, required: true}) isEditable!: boolean
+  @Prop(String) dragHandleId?: string
   @Prop({type: String, required: true}) contentType!: string
 
   // The plain-draggable library has no types yet
@@ -35,7 +36,9 @@ export class PlainDraggable extends mixins(Lang) {
     console.debug('PlainDraggable.vue', 'mounted')
 
     // this.$nextTick(() => {
-    const handle = this.$el.querySelectorAll('.draggable-handle')[0]
+    const handle = this.dragHandleId !== undefined
+      ? document.getElementById(this.dragHandleId)
+      : this.$el.querySelectorAll('.draggable-handle')[0]
 
     this.draggable = new PlainDraggableLib(this.$el, {
       containment: document.querySelector('.builder-canvas'),

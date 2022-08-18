@@ -35,7 +35,9 @@
       @dragged="onMoved"
       @dragStarted="selectBlock"
       @dragEnded="handleDraggableEndedForBlock"
-      @destroyed="handleDraggableDestroyedForBlock">
+      @destroyed="handleDraggableDestroyedForBlock"
+      @mouseenter.native="isConnectionCreateActive && activateBlockAsDropZone($event)"
+      @mouseleave.native="isConnectionCreateActive && deactivateBlockAsDropZone($event)">
       <block-toolbar
         :block="block"
         :is-editor-visible="shouldShowBlockEditor"
@@ -50,9 +52,7 @@
           'fulfilled': false,
           'rejected': false,
           'activated': isBlockActivated,
-        }"
-        @mouseenter="isConnectionCreateActive && activateBlockAsDropZone($event)"
-        @mouseleave="isConnectionCreateActive && deactivateBlockAsDropZone($event)">
+        }">
         <div class="d-flex justify-content-between">
           <p class="block-type">
             {{ trans(`flow-builder.${block.type}`) }}
@@ -77,7 +77,16 @@
         class="block-exits d-flex mt-1">
         <div
           v-for="(exit) in block.exits"
+          :id="exit.uuid"
           :key="exit.uuid"
+          v-b-tooltip.hover.bottom="
+            transIf(
+              isEditable,
+              exit.destination_block
+                ? 'flow-builder.tooltip-remove-connection'
+                : 'flow-builder.tooltip-new-connection'
+            )
+          "
           class="block-exit mr-2 flex-shrink-1"
           :class="{
             'initial': false,
@@ -87,7 +96,9 @@
             'activated': isExitActivatedForRelocate(exit),
           }"
           @mouseenter="isConnectionSourceRelocateActive && activateExitAsDropZone($event, exit)"
-          @mouseleave="isConnectionSourceRelocateActive && deactivateExitAsDropZone($event, exit)">
+          @mouseleave="isConnectionSourceRelocateActive && deactivateExitAsDropZone($event, exit)"
+          @mousemove="updateCursorPosition"
+          @click="exit.destination_block && handleRemoveConnectionFrom(exit)">
           <div class="visible-exits">
             <div class="total-label-container">
               <span class="badge badge-primary tree-block-item-label tree-block-item-output-subscribers-1" />
@@ -118,7 +129,7 @@
                     v-if="exitHovers[exit.uuid] || isExitActivatedForCreate(exit)"
                     :id="`exit/${exit.uuid}/pseudo-block-handle`"
                     :key="`exit/${exit.uuid}/pseudo-block-handle`"
-                    v-b-tooltip.hover.bottom="transIf(isEditable, 'flow-builder.tooltip-new-connection')"
+                    :drag-handle-id="exit.uuid"
                     class="btn btn-xs btn-flat p-0"
                     :is-editable="isEditable"
                     content-type="exit"
@@ -154,11 +165,9 @@
                     class="btn btn-xs btn-flat">
                     <font-awesome-icon
                       v-if="exitHovers[exit.uuid]"
-                      v-b-tooltip.hover.bottom="trans('flow-builder.tooltip-remove-connection')"
                       class="text-white"
                       title="Click to remove this connection"
-                      :icon="['far', 'times-circle']"
-                      @click="handleRemoveConnectionFrom(exit)" />
+                      :icon="['far', 'times-circle']" />
                   </div>
 
                   <connection
@@ -213,6 +222,8 @@ type BlockExitAction = ({block, exit}: { block: IBlock, exit: IBlockExit }) => v
 type BlockPositionAction = ({block, position}: { block: IBlock, position: IPosition }) => void;
 type BlockExitPositionAction = ({block, exit, position}: { block: IBlock, exit: IBlockExit, position: IPosition }) => void;
 
+const ICON_SIZE = 10
+
 @Component({})
 export class Block extends mixins(Lang) {
   @Prop({type: Object, required: true}) readonly block!: IBlock
@@ -226,6 +237,7 @@ export class Block extends mixins(Lang) {
   exitHovers = {}
   exitOnDragged: Record<IBlockExit['uuid'], boolean> = {}
   lineHovers: Record<IBlockExit['uuid'], boolean> = {}
+  cursorPosition: { x: number, y: number } | null = null
   connectionColorAtSourceDragged = colorStates.CONNECTING
   connectionColorForKnowDestination = colorStates.DEFAULT
   isConnectionSource = false
@@ -506,10 +518,7 @@ export class Block extends mixins(Lang) {
       position: {x, y},
     })
 
-    // since mouseenter + mouseleave will not occur when draggable is below cursor
-    // we simply snap the draggable out from under the cursor during this operation
-    draggable.left += 30
-    draggable.top += 25
+    this.adjustDraggablePosition(draggable)
   }
 
   onCreateExitDragged({position: {left: x, top: y}}: {position: {left: number, top: number}}): void {
@@ -542,10 +551,7 @@ export class Block extends mixins(Lang) {
       position: {x, y},
     })
 
-    // since mouseenter + mouseleave will not occur when draggable is below cursor
-    // we simply snap the draggable out from under the cursor during this operation
-    draggable.left += 30
-    draggable.top += 25
+    this.adjustDraggablePosition(draggable)
   }
 
   onMoveExitDragged({position: {left: x, top: y}}: {position: {left: number, top: number}}): void {
@@ -597,6 +603,21 @@ export class Block extends mixins(Lang) {
     forEach(this.block.exits, (exit) => {
       delete this.draggableForExitsByUuid[exit.uuid]
     })
+  }
+
+  updateCursorPosition(e: MouseEvent): void {
+    this.cursorPosition = {
+      x: e.clientX + window.scrollX,
+      y: e.clientY + window.scrollY,
+    }
+  }
+
+  adjustDraggablePosition(draggable: Draggable): void {
+    const dx = this.cursorPosition!.x - draggable.left - ICON_SIZE
+    const dy = this.cursorPosition!.y - draggable.top - ICON_SIZE
+
+    draggable.left += dx
+    draggable.top += dy
   }
 }
 
