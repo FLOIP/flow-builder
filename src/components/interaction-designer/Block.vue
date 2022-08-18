@@ -112,8 +112,8 @@
                 'is-initiating': exit.destination_block == null && exitOnDragged[exit.uuid] === true,
                 'is-connected': exit.destination_block != null,
                 'is-disconnected': exit.destination_block == null && exitOnDragged[exit.uuid] === false,
-                'is-connected-and-hovered': (exit.destination_block != null && exitHovers[exit.uuid] === true)
-                 || (exit.destination_block != null && lineHovers[exit.uuid] === true),
+                'is-connected-and-highlighted': exit.destination_block != null
+                 && (exitHovers[exit.uuid] === true ||  lineHovers[exit.uuid] === true || linePermanentlyActive[exit.uuid] === true),
               }"
               class="block-exit-name badge badge-warning"
               @mouseenter="exitMouseEnter(exit)"
@@ -181,6 +181,8 @@
                     :exit="exit"
                     :position="livePosition"
                     @lineMouseIn="setLineHovered(exit, true)"
+                    @lineMouseClickedIn="setLineClicked(exit, true)"
+                    @lineMouseClickedOut="setLineClicked(exit, false)"
                     @lineMouseOut="setLineHovered(exit, false)" />
                 </template>
               </span>
@@ -239,6 +241,7 @@ export class Block extends mixins(Lang) {
   exitHovers = {}
   exitOnDragged: Record<IBlockExit['uuid'], boolean> = {}
   lineHovers: Record<IBlockExit['uuid'], boolean> = {}
+  linePermanentlyActive: Record<IBlockExit['uuid'], boolean> = {}
   cursorPosition: { x: number, y: number } | null = null
   connectionColorAtSourceDragged = colorStates.CONNECTING
   connectionColorForKnowDestination = colorStates.DEFAULT
@@ -404,6 +407,12 @@ export class Block extends mixins(Lang) {
   setLineHovered(exit: IBlockExit, value: boolean): void {
     this.$nextTick(() => {
       this.$set(this.lineHovers, exit.uuid, value)
+    })
+  }
+
+  setLineClicked(exit: IBlockExit, value: boolean): void {
+    this.$nextTick(() => {
+      this.$set(this.linePermanentlyActive, exit.uuid, value)
     })
   }
 
@@ -745,7 +754,7 @@ export default Block
           background: #858585;
         }
 
-        &.is-connected-and-hovered {
+        &.is-connected-and-highlighted {
           color: #fff;
           background: #A31E65;
         }

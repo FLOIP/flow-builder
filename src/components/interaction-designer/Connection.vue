@@ -225,6 +225,7 @@ export class Connection extends mixins(Lang) {
     this.activateConnection({connectionContext: this.connectionContext})
     this.activateBlock({blockId: null})
     this.$emit('lineMouseIn')
+    this.$emit('lineMouseClickedIn')
   }
 
   clickAwayHandler(connectionElement: Element): void {
@@ -240,6 +241,7 @@ export class Connection extends mixins(Lang) {
         this.isPermanentlyActive = false
         this.line.setOptions(this.options)
         this.deactivateConnection({connectionContext: this.connectionContext})
+        this.$emit('lineMouseClickedOut')
       }
       this.$emit('lineMouseOut')
     }, false)
