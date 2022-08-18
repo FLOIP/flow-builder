@@ -59,6 +59,7 @@ export interface IBuilderState {
   draggableForExitsByUuid: object,
   isBlockEditorOpen: boolean,
   interactionDesignerBoundingClientRect: DOMRect,
+  isConnectionCreationInProgress: boolean,
 }
 
 export const stateFactory = (): IBuilderState => ({
@@ -80,6 +81,7 @@ export const stateFactory = (): IBuilderState => ({
   draggableForExitsByUuid: {},
   isBlockEditorOpen: false,
   interactionDesignerBoundingClientRect: {} as DOMRect,
+  isConnectionCreationInProgress: false,
 })
 
 export type ConnectionLayout = any[]
@@ -117,6 +119,10 @@ export const mutations: MutationTree<IBuilderState> = {
 
   deactivateConnection(state, {connectionContext}) {
     state.activeConnectionsContext = filter(state.activeConnectionsContext, (context) => context !== connectionContext)
+  },
+
+  setIsConnectionCreationInProgress(state, {value}: {value: boolean}) {
+    state.isConnectionCreationInProgress = value
   },
 
   setOperation({operations}: { operations: any }, {operation}: { operation: SupportedOperation }) {

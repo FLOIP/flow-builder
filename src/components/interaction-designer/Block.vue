@@ -1,7 +1,9 @@
 <template>
   <div
     class="block"
-    @click="selectBlock">
+    @click="selectBlock"
+    @mouseenter="setIsMouseOnBlock(true)"
+    @mouseleave="setIsMouseOnBlock(false)">
     <block-editor
       v-if="shouldShowBlockEditor"
       class="block-editor"
@@ -13,8 +15,9 @@
       class="block-draggable"
       :class="{
         'is-active': isBlockActivated,
-        'highlight-as-source': isAssociatedWithActiveConnectionAsSourceBlock,
-        'highlight-as-target': isAssociatedWithActiveConnectionAsTargetBlock,
+        'source-block-having-active-connection': isAssociatedWithActiveConnectionAsSourceBlock,
+        'target-block-having-active-connection': isAssociatedWithActiveConnectionAsTargetBlock,
+        'target-block-waiting-for-connection': isWaitingForConnection,
         'has-toolbar': isBlockSelected || shouldShowBlockEditor,
         ['has-exits']: hasExitsShown,
         ['has-multiple-exits']: hasMultipleExitsShown,
@@ -23,7 +26,12 @@
       }"
       :start-x="x"
       :start-y="y"
+      content-type="block"
       :is-editable="isEditable"
+      @mouseenter="alert('test enter')"
+      @mouseleave="alert('test leave')"
+      @mouseout="alert('test out')"
+      @mouseover="alert('test over')"
       @dragged="onMoved"
       @dragStarted="selectBlock"
       @dragEnded="handleDraggableEndedForBlock"
@@ -91,7 +99,8 @@
                 'is-initiating': exit.destination_block == null && exitOnDragged[exit.uuid] === true,
                 'is-connected': exit.destination_block != null,
                 'is-disconnected': exit.destination_block == null && exitOnDragged[exit.uuid] === false,
-                'is-connected-and-hovered': (exit.destination_block != null && exitHovers[exit.uuid] === true) || (exit.destination_block != null && lineHovers[exit.uuid] === true),
+                'is-connected-and-hovered': (exit.destination_block != null && exitHovers[exit.uuid] === true)
+                 || (exit.destination_block != null && lineHovers[exit.uuid] === true),
               }"
               class="block-exit-name badge badge-warning"
               @mouseenter="exitMouseEnter(exit)"
@@ -112,6 +121,7 @@
                     v-b-tooltip.hover.bottom="transIf(isEditable, 'flow-builder.tooltip-new-connection')"
                     class="btn btn-xs btn-flat p-0"
                     :is-editable="isEditable"
+                    content-type="exit"
                     @initialized="handleDraggableInitializedFor(exit, $event)"
                     @dragStarted="onCreateExitDragStarted($event, exit)"
                     @dragged="onCreateExitDragged($event)"
@@ -248,6 +258,7 @@ export class Block extends mixins(Lang) {
   @builderNamespace.State activeConnectionsContext!: IConnectionContext[]
   @builderNamespace.State draggableForExitsByUuid!: Record<string, Draggable>
   @builderNamespace.State isBlockEditorOpen!: boolean
+  @builderNamespace.State isConnectionCreationInProgress!: boolean
   @State(({trees: {ui}}) => ui.blockClasses) blockClasses!: BlockClasses
 
   @builderNamespace.Getter blocksById!: Record<IBlock['uuid'], IBlock>
@@ -255,6 +266,8 @@ export class Block extends mixins(Lang) {
   @builderNamespace.Getter interactionDesignerBoundingClientRect!: DOMRect
 
   @flowNamespace.Getter activeFlow?: IFlow
+
+  isMouseOnBlock = false
 
   get blockExitsLength(): number {
     return this.block.exits.length
@@ -291,6 +304,10 @@ export class Block extends mixins(Lang) {
   get isAssociatedWithActiveConnectionAsTargetBlock(): boolean {
     const {block, activeConnectionsContext} = this
     return !!filter(activeConnectionsContext, (context) => context.targetId === block.uuid).length
+  }
+
+  get isWaitingForConnection(): boolean {
+    return this.isMouseOnBlock === true && this.isConnectionCreationInProgress
   }
 
   get isBlockSelected(): boolean {
@@ -356,6 +373,10 @@ export class Block extends mixins(Lang) {
   @builderNamespace.Action setConnectionCreateTargetBlock!: BlockAction
   @builderNamespace.Action setConnectionCreateTargetBlockToNullFrom!: BlockAction
   @builderNamespace.Action applyConnectionCreate!: () => void
+
+  setIsMouseOnBlock(value: boolean):void {
+    this.isMouseOnBlock = value
+  }
 
   exitMouseEnter(exit: IBlockExit): void {
     this.$set(this.exitHovers, exit.uuid, true)
@@ -716,7 +737,7 @@ export default Block
     box-shadow: 0 3px 6px #CACACA;
   }
 
-  &.highlight-as-target {
+  &.target-block-having-active-connection {
     color: #fff;
     background: #A31E65;
     border: none;
@@ -727,6 +748,21 @@ export default Block
 
     .block-exit-name {
       color: #A31E65 !important;
+      background: #fff !important;
+    }
+  }
+
+  &.target-block-waiting-for-connection {
+    color: #fff;
+    background: #10661E;
+    border: none;
+
+    .block-label.empty {
+      color: #fff;
+    }
+
+    .block-exit-name {
+      color: #10661E !important;
       background: #fff !important;
     }
   }
