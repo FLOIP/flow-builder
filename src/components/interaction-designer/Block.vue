@@ -12,7 +12,9 @@
       ref="draggable"
       class="block-draggable"
       :class="{
-        active: isBlockActivated,
+        'is-active': isBlockActivated,
+        'highlight-as-source': isAssociatedWithActiveConnectionAsSourceBlock,
+        'highlight-as-target': isAssociatedWithActiveConnectionAsTargetBlock,
         'has-toolbar': isBlockSelected || shouldShowBlockEditor,
         ['has-exits']: hasExitsShown,
         ['has-multiple-exits']: hasMultipleExitsShown,
@@ -44,7 +46,7 @@
         @mouseenter="isConnectionCreateActive && activateBlockAsDropZone($event)"
         @mouseleave="isConnectionCreateActive && deactivateBlockAsDropZone($event)">
         <div class="d-flex justify-content-between">
-          <p class="block-type text-muted">
+          <p class="block-type">
             {{ trans(`flow-builder.${block.type}`) }}
           </p>
           <i
@@ -279,6 +281,16 @@ export class Block extends mixins(Lang) {
   get isAssociatedWithActiveConnection(): boolean {
     const {block, activeConnectionsContext} = this
     return !!filter(activeConnectionsContext, (context) => context.sourceId === block.uuid || context.targetId === block.uuid).length
+  }
+
+  get isAssociatedWithActiveConnectionAsSourceBlock(): boolean {
+    const {block, activeConnectionsContext} = this
+    return !!filter(activeConnectionsContext, (context) => context.sourceId === block.uuid).length
+  }
+
+  get isAssociatedWithActiveConnectionAsTargetBlock(): boolean {
+    const {block, activeConnectionsContext} = this
+    return !!filter(activeConnectionsContext, (context) => context.targetId === block.uuid).length
   }
 
   get isBlockSelected(): boolean {
@@ -694,20 +706,33 @@ export default Block
 
       &.activated {
         border-radius: 0.3em;
-        border-color: #333333;
       }
     }
   }
 
   // state mutations
 
-  &.active {
-    border-width: 2px;
+  &.is-active {
     box-shadow: 0 3px 6px #CACACA;
   }
 
+  &.highlight-as-target {
+    color: #fff;
+    background: #A31E65;
+    border: none;
+
+    .block-label.empty {
+      color: #fff;
+    }
+
+    .block-exit-name {
+      color: #A31E65 !important;
+      background: #fff !important;
+    }
+  }
+
   // block exit states
-  &.active,
+  &.is-active,
   &:hover {
     .block-exit .block-exit-remove {
       opacity: 1;
