@@ -25,7 +25,9 @@
       @dragged="onMoved"
       @dragStarted="selectBlock"
       @dragEnded="handleDraggableEndedForBlock"
-      @destroyed="handleDraggableDestroyedForBlock">
+      @destroyed="handleDraggableDestroyedForBlock"
+      @mouseenter.native="isConnectionCreateActive && activateBlockAsDropZone($event)"
+      @mouseleave.native="isConnectionCreateActive && deactivateBlockAsDropZone($event)">
       <block-toolbar
         :block="block"
         :is-editor-visible="shouldShowBlockEditor"
@@ -40,9 +42,7 @@
           'fulfilled': false,
           'rejected': false,
           'activated': isBlockActivated,
-        }"
-        @mouseenter="isConnectionCreateActive && activateBlockAsDropZone($event)"
-        @mouseleave="isConnectionCreateActive && deactivateBlockAsDropZone($event)">
+        }">
         <div class="d-flex justify-content-between">
           <p class="block-type text-muted">
             {{ trans(`flow-builder.${block.type}`) }}
