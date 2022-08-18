@@ -84,12 +84,14 @@
             </div>
 
             <div
-              class="block-exit-name badge badge-warning is-connected"
               :class="{
+                'is-new': exit.destination_block == null && exitOnDragged[exit.uuid] === undefined,
+                'is-initiating': exit.destination_block == null && exitOnDragged[exit.uuid] === true,
                 'is-connected': exit.destination_block != null,
-                'is-disconnected': exit.destination_block == null,
-                'is-connected-and-hovered': (exit.destination_block != null && exitHovers[exit.uuid]) || (exit.destination_block != null && lineHovers[exit.uuid]),
+                'is-disconnected': exit.destination_block == null && exitOnDragged[exit.uuid] === false,
+                'is-connected-and-hovered': (exit.destination_block != null && exitHovers[exit.uuid] === true) || (exit.destination_block != null && lineHovers[exit.uuid] === true),
               }"
+              class="block-exit-name badge badge-warning"
               @mouseenter="exitMouseEnter(exit)"
               @mouseleave="exitMouseLeave(exit)">
               <span
@@ -119,7 +121,7 @@
                   <template v-if="isConnectionCreateActive && isExitActivatedForCreate(exit) && livePosition">
                     <div
                       :id="`exit/${exit.uuid}/handle`"
-                      class="btn btn-xs p-0">
+                      class="btn btn-xs p-0 text-white">
                       <i class="glyphicon glyphicon-move" />
                     </div>
                     <connection
@@ -141,7 +143,7 @@
                     <font-awesome-icon
                       v-if="exitHovers[exit.uuid]"
                       v-b-tooltip.hover.bottom="trans('flow-builder.tooltip-remove-connection')"
-                      class="text-danger"
+                      class="text-white"
                       title="Click to remove this connection"
                       :icon="['far', 'times-circle']"
                       @click="handleRemoveConnectionFrom(exit)" />
@@ -210,6 +212,7 @@ export class Block extends mixins(Lang) {
   blockWidth = 0
   blockHeight = 0
   exitHovers = {}
+  exitOnDragged: Record<IBlockExit['uuid'], boolean> = {}
   lineHovers: Record<IBlockExit['uuid'], boolean> = {}
   connectionColorAtSourceDragged = colorStates.CONNECTING
   connectionColorForKnowDestination = colorStates.DEFAULT
@@ -460,6 +463,8 @@ export class Block extends mixins(Lang) {
     const {block} = this
     const {left: x, top: y} = draggable
 
+    this.$set(this.exitOnDragged, exit.uuid, true)
+
     this.initializeConnectionCreateWith({
       block,
       exit,
@@ -476,8 +481,10 @@ export class Block extends mixins(Lang) {
     this.livePosition = {x, y}
   }
 
-  onCreateExitDragEnded({draggable}: {draggable: Draggable}): void {
+  onCreateExitDragEnded({draggable}: {draggable: Draggable}, exit: IBlockExit): void {
     const {x: left, y: top} = this.operations[OperationKind.CONNECTION_CREATE]!.data!.position
+
+    this.$set(this.exitOnDragged, exit.uuid, false)
 
     console.debug('Block', 'onCreateExitDragEnded', 'operation.data.position', {left, top})
     console.debug('Block', 'onCreateExitDragEnded', 'reset', {left: draggable.left, top: draggable.top})
@@ -659,9 +666,19 @@ export default Block
           overflow: hidden;
         }
 
-        &.is-connected {
+        &.is-new {
           color: #fff;
-          background: #418BCA;
+          background: #707070;
+        }
+
+        &.is-connected {
+          color: #000;
+          background: #D6D6D6;
+        }
+
+        &.is-initiating {
+          color: #fff;
+          background: #10661E;
         }
 
         &.is-disconnected {
@@ -670,8 +687,8 @@ export default Block
         }
 
         &.is-connected-and-hovered {
-          color: #dc3545;
-          background: #FFECEC;
+          color: #fff;
+          background: #A31E65;
         }
       }
 
