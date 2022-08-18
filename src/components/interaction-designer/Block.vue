@@ -41,7 +41,9 @@
       <block-toolbar
         :block="block"
         :is-editor-visible="shouldShowBlockEditor"
-        :is-block-selected="isBlockSelected" />
+        :is-activated-by-connection="isAssociatedWithActiveConnectionAsTargetBlock"
+        :is-block-selected="isBlockSelected"
+        :is-waiting-for-connection="isWaitingForConnection" />
 
       <header
         :id="`block/${block.uuid}/handle`"
