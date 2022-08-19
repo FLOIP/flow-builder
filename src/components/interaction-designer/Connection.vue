@@ -7,7 +7,7 @@
 <script lang="ts">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
 import {mixins} from 'vue-class-component'
-import {Component, Prop, Watch} from 'vue-property-decorator'
+import {Component, Prop} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 import LeaderLine from 'leader-line'
 import {set} from 'lodash'
