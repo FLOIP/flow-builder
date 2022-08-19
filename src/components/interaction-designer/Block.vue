@@ -34,13 +34,6 @@
       @destroyed="handleDraggableDestroyedForBlock"
       @mouseenter.native="isConnectionCreateActive && activateBlockAsDropZone($event)"
       @mouseleave.native="isConnectionCreateActive && deactivateBlockAsDropZone($event)">
-      <block-toolbar
-        :block="block"
-        :is-editor-visible="shouldShowBlockEditor"
-        :is-activated-by-connection="isAssociatedWithActiveConnectionAsTargetBlock"
-        :is-block-selected="isBlockSelected"
-        :is-waiting-for-connection="isWaitingForConnection" />
-
       <header
         :id="`block/${block.uuid}/handle`"
         class="block-target draggable-handle"
@@ -51,6 +44,14 @@
           'rejected': false,
           'activated': isBlockActivated,
         }">
+        <block-toolbar
+          v-if="isMouseOnBlock || isWaitingForConnection || isAssociatedWithActiveConnectionAsTargetBlock"
+          :block="block"
+          :is-activated-by-connection="isAssociatedWithActiveConnectionAsTargetBlock"
+          :is-block-selected="isBlockSelected"
+          :is-editor-visible="shouldShowBlockEditor"
+          :is-waiting-for-connection="isWaitingForConnection" />
+
         <div class="d-flex justify-content-between">
           <p class="block-type">
             {{ trans(`flow-builder.${block.type}`) }}

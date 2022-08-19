@@ -159,12 +159,12 @@ export default BlockToolbar
   .block-toolbar {
     transition: opacity 100ms ease-in-out;
     background: white;
-    opacity: 0; // default state of hidden
+    //opacity: 0; // default state of hidden
 
-    margin-top: -37.25px;
-    margin-right: -7.5px;
-    margin-left: -7.5px;
-    padding: 5px;
+    //margin-top: -37.25px;
+    //margin-right: -7.5px;
+    //margin-left: -7.5px;
+    //padding: 5px;
 
     border-top: inherit;
     border-right: inherit;
@@ -175,26 +175,26 @@ export default BlockToolbar
 
   &.has-multiple-exits {
     .block-toolbar {
-      margin-right: -7.5px;
+      //margin-right: -7.5px;
     }
   }
 
   &.has-toolbar,
   &:hover {
     .block-toolbar {
-      opacity: 1;
+      //opacity: 1;
     }
   }
 
   &.active {
     .block-toolbar {
-      margin-left: -8.5px;
-      margin-right: -8.5px;
+      //margin-left: -8.5px;
+      //margin-right: -8.5px;
     }
 
     &.has-multiple-exits {
       .block-toolbar {
-        margin-right: -8.5px;
+        //margin-right: -8.5px;
       }
     }
   }
@@ -203,16 +203,16 @@ export default BlockToolbar
     color: #fff;
     background: $success-600;
     border: none;
-    margin-right: -6.5px !important;
-    margin-left: -6.5px !important;
+    //margin-right: -6.5px !important;
+    //margin-left: -6.5px !important;
   }
 
   .target-block-toolbar-activated-by-connection {
     color: #fff;
-    background: $primary-600;
+    background: red;
     border: none;
-    margin-right: -6.5px !important;
-    margin-left: -6.5px !important;
+    //margin-right: -6.5px !important;
+    //margin-left: -6.5px !important;
   }
 }
 </style>
