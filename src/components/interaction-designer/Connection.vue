@@ -162,7 +162,7 @@ export class Connection extends mixins(Lang) {
     // Add event listeners
     if (connectionElement !== null) {
       connectionElement.addEventListener('click', this.clickHandler.bind(this), false)
-      connectionElement.addEventListener('click', this.clickAwayHandler.bind(this, connectionElement), false)
+      document.addEventListener('click', this.clickAwayHandler.bind(this, connectionElement), false)
       connectionElement.addEventListener('mouseover', this.mouseOverHandler.bind(this), false)
       connectionElement.addEventListener('mouseout', this.mouseOutHandler.bind(this), false)
     }
@@ -228,23 +228,29 @@ export class Connection extends mixins(Lang) {
     this.$emit('lineMouseClickedIn')
   }
 
-  clickAwayHandler(connectionElement: Element): void {
-    document.addEventListener('click', (event) => {
-      // Do not listen if the connection was not fully set
+  clickAwayHandler = function (connectionElement: Element, event): void {
+    // Do not listen if the connection was not fully set
+    // TODO: Correctly implement the commented removeEventListener in case of performance issue on multiple bocks
+    try {
       if (!this.line?.end) {
+        // document.removeEventListener('click', this.clickAwayHandler.bind(this, connectionElement), false)
         return
       }
+    } catch (e) {
+      // document.removeEventListener('click', this.clickAwayHandler.bind(this, connectionElement), false)
+      return
+    }
 
-      const isClickInside = connectionElement.contains(event.target as Element)
+    const isClickInside = connectionElement.contains(event.target as Element)
 
-      if (!isClickInside) {
-        this.isPermanentlyActive = false
-        this.line.setOptions(this.options)
-        this.deactivateConnection({connectionContext: this.connectionContext})
-        this.$emit('lineMouseClickedOut')
-      }
-      this.$emit('lineMouseOut')
-    }, false)
+    if (!isClickInside) {
+      this.isPermanentlyActive = false
+      this.line.setOptions(this.options)
+      this.deactivateConnection({connectionContext: this.connectionContext})
+      this.$emit('lineMouseClickedOut')
+      // document.removeEventListener('click', this.clickAwayHandler.bind(this, connectionElement), false)
+    }
+    this.$emit('lineMouseOut')
   }
 }
 
