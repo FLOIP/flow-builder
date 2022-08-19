@@ -126,7 +126,7 @@ export const actions = {
    */
   async maybeHandleAnotherBlockChange(
     context: ActionContext<IEmptyState, IRootState>,
-    {oldBlock, newBlock}: {oldBlock: IBlock, newBlock: IBlock | null},
+    {blockId, oldBlock, newBlock}: {blockId: IBlock['uuid'], oldBlock: IBlock, newBlock: IBlock | null},
   ): Promise<void> {},
 }
 
