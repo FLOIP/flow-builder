@@ -421,7 +421,10 @@ export class Block extends mixins(Lang) {
   // eslint-disable-next-line no-unused-vars
   deactivateBlockAsDropZone(): void {
     const {block} = this
-    this.setConnectionCreateTargetBlockToNullFrom({block})
+
+    if ((this.operations[OperationKind.CONNECTION_CREATE] as IConnectionCreateOperation).data?.targetId !== null) {
+      this.setConnectionCreateTargetBlockToNullFrom({block})
+    }
   }
 
   onMoved({position: {left: x, top: y}}: {position: {left: number, top: number}}): void {
