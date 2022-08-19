@@ -8,7 +8,7 @@ import {
 } from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, has, isArray, isNil, last, reject, snakeCase} from 'lodash'
+import {cloneDeep, defaults, has, isArray, isNil, last, reject, snakeCase} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IFlowsState} from '.'
 import {removeBlockValueByPath, updateBlockValueByPath} from './utils/vuexBlockHelpers'
@@ -159,13 +159,16 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
    * @param lockAutoUpdate, true if user overrides auto-generated name
    */
   block_setName(
-    {commit, state},
+    {commit, dispatch, state},
     {blockId, value, lockAutoUpdate = false}: {blockId: IBlock['uuid'], value: string, lockAutoUpdate: boolean},
   ) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
 
     if (block.vendor_metadata?.floip.ui_metadata?.should_auto_update_name === true || lockAutoUpdate) {
+      const oldBlock = cloneDeep(block)
       commit('block_setName', {blockId, value})
+      const newBlock = cloneDeep(block)
+      dispatch('block_notifyOtherBlocksAboutBlockChange', {oldBlock, newBlock})
     }
 
     if (lockAutoUpdate) {
@@ -175,6 +178,26 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         value: false,
       })
     }
+  },
+
+  /**
+   * We can use this to update expressions located in other blocks' configs
+   * if they are referencing the modified block, e.g. "@(flow.myBlockNameThatChanged)"
+   * @param oldBlock
+   * @param newBlock, null if the block was deleted
+   */
+  block_notifyOtherBlocksAboutBlockChange(
+    {dispatch, rootGetters, state},
+    {oldBlock, newBlock}: {oldBlock: IBlock, newBlock: IBlock | null},
+  ) {
+    return Promise.all(
+      rootGetters['flow/activeFlow']?.blocks.map((blockToNotify: IBlock) =>
+        dispatch(
+          `flow/${blockToNotify.type}/maybeHandleAnotherBlockChange`,
+          {oldBlock, newBlock},
+          {root: true},
+        )) ?? [],
+    )
   },
 
   block_resetName({commit, state}, {blockId}) {

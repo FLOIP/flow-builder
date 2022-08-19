@@ -1,4 +1,4 @@
-import {ActionContext, Dispatch, GetterTree, Module, MutationTree} from 'vuex'
+import {ActionContext, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlock} from '@floip/flow-runner'
 import {defaultsDeep} from 'lodash'
@@ -19,6 +19,7 @@ export const getters: GetterTree<IEmptyState, IRootState> = {
 
 export const mutations: MutationTree<IEmptyState> = {}
 
+// noinspection JSUnusedLocalSymbols
 export const actions = {
   async createWith(
     {getters, dispatch}: ActionContext<IEmptyState, IRootState>,
@@ -118,6 +119,15 @@ export const actions = {
   ): Promise<IValidationStatus> {
     return dispatch('validateBlockWithCustomJsonSchema', {block, schemaVersion})
   },
+
+  /**
+   * Override this method on the consumer side to react to another block's changes,
+   * e.g. to update expressions that reference the modified block: "@(flow.myBlockNameThatChanged)"
+   */
+  async maybeHandleAnotherBlockChange(
+    context: ActionContext<IEmptyState, IRootState>,
+    {oldBlock, newBlock}: {oldBlock: IBlock, newBlock: IBlock | null},
+  ): Promise<void> {},
 }
 
 const BaseBlockStore: Module<IEmptyState, IRootState> = {
