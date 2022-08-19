@@ -153,6 +153,8 @@ export default BlockToolbar
 </script>
 
 <style lang="scss">
+@import "../../../scss/custom_variables";
+
 .block-draggable {
   .block-toolbar {
     transition: opacity 100ms ease-in-out;
@@ -199,7 +201,7 @@ export default BlockToolbar
 
   .target-block-toolbar-waiting-for-connection {
     color: #fff;
-    background: #10661E;
+    background: $success-600;
     border: none;
     margin-right: -6.5px !important;
     margin-left: -6.5px !important;
@@ -207,7 +209,7 @@ export default BlockToolbar
 
   .target-block-toolbar-activated-by-connection {
     color: #fff;
-    background: #A31E65;
+    background: $primary-600;
     border: none;
     margin-right: -6.5px !important;
     margin-left: -6.5px !important;

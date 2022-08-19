@@ -639,6 +639,8 @@ export default Block
 </script>
 
 <style lang="scss">
+@import "../../scss/custom_variables";
+
 .fa-btn {
   cursor: pointer;
 }
@@ -739,7 +741,7 @@ export default Block
 
         &.is-new {
           color: #fff;
-          background: #707070;
+          background: $neutral-600;
         }
 
         &.is-connected {
@@ -749,17 +751,17 @@ export default Block
 
         &.is-initiating {
           color: #fff;
-          background: #10661E;
+          background: $success-600;
         }
 
         &.is-disconnected {
           color: #fff;
-          background: #858585;
+          background: $neutral-600;
         }
 
         &.is-connected-and-highlighted {
           color: #fff;
-          background: #A31E65;
+          background: $primary-600;
         }
       }
 
@@ -777,7 +779,7 @@ export default Block
 
   &.target-block-having-active-connection {
     color: #fff;
-    background: #A31E65;
+    background: $primary-600;
     border: none;
 
     .block-label.empty {
@@ -785,14 +787,14 @@ export default Block
     }
 
     .block-exit-name {
-      color: #A31E65 !important;
+      color: $primary-600 !important;
       background: #fff !important;
     }
   }
 
   &.target-block-waiting-for-connection {
     color: #fff;
-    background: #10661E;
+    background: $success-600;
     border: none;
 
     .block-label.empty {
@@ -800,7 +802,7 @@ export default Block
     }
 
     .block-exit-name {
-      color: #10661E !important;
+      color: $success-600 !important;
       background: #fff !important;
     }
   }
