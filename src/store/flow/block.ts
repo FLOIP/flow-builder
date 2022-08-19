@@ -171,7 +171,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       const oldBlock = cloneDeep(block)
       commit('block_setName', {blockId, value})
       const newBlock = cloneDeep(block)
-      dispatch('block_notifyOtherBlocksAboutBlockChange', {blockId, oldBlock, newBlock})
+      dispatch('block_notifyOtherBlocksAboutBlockChange', {oldBlock, newBlock})
     }
 
     if (lockAutoUpdate) {
@@ -188,19 +188,18 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
    * if they are referencing the modified block, e.g. "@(flow.myBlockNameThatChanged)"
    * @param dispatch
    * @param rootGetters
-   * @param thisBlock, listening block
    * @param oldBlock, deep clone of the modified block before the change
    * @param newBlock, deep clone of the modified block after the change, null if the block was deleted
    */
   block_notifyOtherBlocksAboutBlockChange(
     {dispatch, rootGetters},
-    {thisBlock, oldBlock, newBlock}: {thisBlock: IBlock, oldBlock: IBlock, newBlock: IBlock | null},
+    {oldBlock, newBlock}: {oldBlock: IBlock, newBlock: IBlock | null},
   ) {
     return Promise.all(
       rootGetters['flow/activeFlow']?.blocks.map((blockToNotify: IBlock) =>
         dispatch(
           `flow/${blockToNotify.type}/maybeHandleAnotherBlockChange`,
-          {thisBlock, oldBlock, newBlock},
+          {thisBlock: blockToNotify, oldBlock, newBlock},
           {root: true},
         )) ?? [],
     )
