@@ -26,16 +26,16 @@ const builderNamespace = namespace('builder')
 
 interface ILeaderLineOptions {
   color: string,
-  // endPlugColor: string,
+  endPlugColor?: string,
   endPlugSize: number,
   endSocket: string,
-  gradient: true,
-  outline: boolean,
-  outlineColor: string,
+  gradient?: true,
+  outline?: boolean,
+  outlineColor?: string,
   path: string,
   size: number,
   startPlug: string,
-  // startPlugColor: string,
+  startPlugColor?: string,
   startSocket: string,
 }
 
@@ -228,7 +228,7 @@ export class Connection extends mixins(Lang) {
     this.$emit('lineMouseClickedIn')
   }
 
-  clickAwayHandler = function (connectionElement: Element, event): void {
+  clickAwayHandler(connectionElement: Element, event: Event): void {
     // Do not listen if the connection was not fully set
     // TODO: Correctly implement the commented removeEventListener in case of performance issue on multiple bocks
     try {
