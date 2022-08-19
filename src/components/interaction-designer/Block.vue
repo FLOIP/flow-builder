@@ -112,8 +112,9 @@
                 'is-initiating': exit.destination_block == null && exitOnDragged[exit.uuid] === true,
                 'is-connected': exit.destination_block != null,
                 'is-disconnected': exit.destination_block == null && exitOnDragged[exit.uuid] === false,
-                'is-connected-and-highlighted': exit.destination_block != null
-                 && (exitHovers[exit.uuid] === true ||  lineHovers[exit.uuid] === true || linePermanentlyActive[exit.uuid] === true),
+                'is-highlighted-from-connection': exit.destination_block != null
+                 && (lineHovers[exit.uuid] === true || linePermanentlyActive[exit.uuid] === true),
+                'is-connected-and-on-hover': exit.destination_block != null && exitHovers[exit.uuid] === true,
               }"
               class="block-exit-name badge badge-warning"
               @mouseenter="exitMouseEnter(exit)"
@@ -167,7 +168,7 @@
                     class="btn btn-xs btn-flat">
                     <font-awesome-icon
                       v-if="exitHovers[exit.uuid]"
-                      class="text-white"
+                      class="text-danger"
                       title="Click to remove this connection"
                       :icon="['far', 'times-circle']" />
                   </div>
@@ -759,9 +760,13 @@ export default Block
           background: $neutral-600;
         }
 
-        &.is-connected-and-highlighted {
+        &.is-highlighted-from-connection {
           color: #fff;
           background: $primary-600;
+        }
+
+        &.is-connected-and-on-hover {
+          background: $primary-50;
         }
       }
 
