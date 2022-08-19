@@ -579,10 +579,6 @@ export default Block
 </script>
 
 <style lang="scss">
-.fa-btn {
-  cursor: pointer;
-}
-
 .btn-secondary.btn-flat {
   @extend .btn-secondary;
   background: transparent;
@@ -659,6 +655,7 @@ export default Block
       display: inline-block;
       border: 1px dashed transparent;
       transition: border-radius 200ms ease-in-out;
+      cursor: pointer;
 
       .block-exit-name {
         display: flex;
