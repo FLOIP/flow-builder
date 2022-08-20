@@ -400,13 +400,15 @@ export class Block extends mixins(Lang) {
   @builderNamespace.Action applyConnectionCreate!: () => void
 
   UpdateShouldShowBlockToolBar(): void {
+    //do not show the block toolbar when waiting for connection
+    if (this.isWaitingForConnection) {
+      return
+    }
+
     this.block_updateShouldShowBlockToolBar({
       blockId: this.block.uuid,
-      value: this.isBlockSelected
-        || this.isMouseOnBlock
-        || this.isWaitingForConnection
-        || this.isAssociatedWithActiveConnectionAsTargetBlock,
-    })
+      value: this.isBlockSelected || this.isMouseOnBlock,
+    });
   }
 
   setIsMouseOnBlock(value: boolean):void {
