@@ -102,7 +102,7 @@
               <span class="badge badge-primary tree-block-item-label tree-block-item-output-subscribers-1" />
             </div>
             <div
-              class="w-100"
+              class="block-exit-name badge badge-warning w-100"
               :class="{
                 'is-new': exit.destination_block == null && exitOnDragged[exit.uuid] === undefined,
                 'is-initiating': exit.destination_block == null && exitOnDragged[exit.uuid] === true,
@@ -112,7 +112,6 @@
                  && (lineHovers[exit.uuid] === true || linePermanentlyActive[exit.uuid] === true),
                 'is-connected-and-on-hover': exit.destination_block != null && exitHovers[exit.uuid] === true,
               }"
-              class="block-exit-name badge badge-warning"
               @mouseenter="exitMouseEnter(exit)"
               @mouseleave="exitMouseLeave(exit)">
               <span
