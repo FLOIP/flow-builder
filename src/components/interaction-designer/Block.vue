@@ -86,7 +86,7 @@
                 : 'flow-builder.tooltip-new-connection'
             )
           "
-          class="block-exit mr-2 flex-shrink-1"
+          class="block-exit mr-2 flex-grow-1"
           :class="{
             'initial': false,
             'pending': isConnectionSourceRelocateActive,
@@ -102,8 +102,8 @@
             <div class="total-label-container">
               <span class="badge badge-primary tree-block-item-label tree-block-item-output-subscribers-1" />
             </div>
-
             <div
+              class="block-exit-name badge badge-warning w-100"
               :class="{
                 'is-new': exit.destination_block == null && exitOnDragged[exit.uuid] === undefined,
                 'is-initiating': exit.destination_block == null && exitOnDragged[exit.uuid] === true,
@@ -113,7 +113,6 @@
                  && (lineHovers[exit.uuid] === true || linePermanentlyActive[exit.uuid] === true),
                 'is-connected-and-on-hover': exit.destination_block != null && exitHovers[exit.uuid] === true,
               }"
-              class="block-exit-name badge badge-warning"
               @mouseenter="exitMouseEnter(exit)"
               @mouseleave="exitMouseLeave(exit)">
               <span
@@ -497,7 +496,10 @@ export class Block extends mixins(Lang) {
   // eslint-disable-next-line no-unused-vars
   deactivateBlockAsDropZone(): void {
     const {block} = this
-    this.setConnectionCreateTargetBlockToNullFrom({block})
+
+    if ((this.operations[OperationKind.CONNECTION_CREATE] as IConnectionCreateOperation).data?.targetId !== null) {
+      this.setConnectionCreateTargetBlockToNullFrom({block})
+    }
   }
 
   onMoved({position: {left: x, top: y}}: {position: {left: number, top: number}}): void {
@@ -662,10 +664,6 @@ export default Block
 <style lang="scss">
 @import "../../scss/custom_variables";
 
-.fa-btn {
-  cursor: pointer;
-}
-
 .btn-secondary.btn-flat {
   @extend .btn-secondary;
   background: transparent;
@@ -735,17 +733,20 @@ export default Block
     white-space: nowrap;
     position: relative;
     top: 0em;
+    gap: 0.4rem;
+    margin-bottom: 0.4rem;
 
     .block-exit {
       display: inline-block;
       border: 1px dashed transparent;
       transition: border-radius 200ms ease-in-out;
+      cursor: pointer;
 
       .block-exit-name {
         display: flex;
         justify-content: center;
 
-        width: 100px;
+        min-width: 100px;
         height: 28px;
 
         padding: 0.4em;
@@ -755,6 +756,8 @@ export default Block
         font-size: 12px;
 
         .block-exit-name-text {
+          display: inline-block;
+          max-width: calc(100px - 0.8em);
           text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;
