@@ -1,5 +1,9 @@
 <template>
-  <div class="block-toolbar d-flex justify-content-between">
+  <div :class="{
+      'target-block-toolbar-waiting-for-connection': isWaitingForConnection,
+      'target-block-toolbar-activated-by-connection': isActivatedByConnection
+    }"
+    class="block-toolbar d-flex justify-content-between">
     <div class="header-actions-left">
       <template v-if="isEditable">
         <!--Selection-->
@@ -29,7 +33,10 @@
             <small>{{ trans('flow-builder.cancel') }}</small>
           </button>
           <button
-            class="btn btn-danger btn-xs ml-1"
+            :class="{
+              'text-danger': !isWaitingForConnection && !isActivatedByConnection,
+            }"
+            class="btn btn-xs ml-1"
             @click.prevent="handleDeleteBlock">
             <small>{{ trans('flow-builder.delete-block') }}</small>
           </button>
@@ -38,7 +45,10 @@
           v-if="!isDeleting"
           v-b-tooltip.hover="trans('flow-builder.tooltip-delete-block')"
           :icon="['far', 'trash-alt']"
-          class="fa-btn text-danger"
+          :class="{
+              'text-danger': !isWaitingForConnection && !isActivatedByConnection,
+            }"
+          class="fa-btn"
           @click.prevent="isDeleting = true" />
       </div>
       <!--Duplicate-->
@@ -79,6 +89,8 @@ export class BlockToolbar extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly isBlockSelected!: boolean
   @Prop() readonly isEditorVisible!: boolean
+  @Prop() readonly isWaitingForConnection!: boolean
+  @Prop() readonly isActivatedByConnection!: boolean
 
   isDeleting = false
 
@@ -141,13 +153,15 @@ export default BlockToolbar
 </script>
 
 <style lang="scss">
+@import "../../../scss/custom_variables";
+
 .block-draggable {
   .block-toolbar {
     transition: opacity 100ms ease-in-out;
     background: white;
     opacity: 0; // default state of hidden
 
-    margin-top: -39.25px;
+    margin-top: -37.25px;
     margin-right: -7.5px;
     margin-left: -7.5px;
     padding: 5px;
@@ -183,6 +197,22 @@ export default BlockToolbar
         margin-right: -8.5px;
       }
     }
+  }
+
+  .target-block-toolbar-waiting-for-connection {
+    color: #fff;
+    background: $success-600;
+    border: none;
+    margin-right: -6.5px !important;
+    margin-left: -6.5px !important;
+  }
+
+  .target-block-toolbar-activated-by-connection {
+    color: #fff;
+    background: $primary-600;
+    border: none;
+    margin-right: -6.5px !important;
+    margin-left: -6.5px !important;
   }
 }
 </style>

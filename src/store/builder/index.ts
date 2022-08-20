@@ -1,4 +1,4 @@
-import {filter, flatMap, isEqual, keyBy, map, mapValues, union} from 'lodash'
+import {filter, flatMap, isEqual, keyBy, map, mapValues, union, reject} from 'lodash'
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
@@ -59,6 +59,7 @@ export interface IBuilderState {
   draggableForExitsByUuid: object,
   isBlockEditorOpen: boolean,
   interactionDesignerBoundingClientRect: DOMRect,
+  isConnectionCreationInProgress: boolean,
 }
 
 export const stateFactory = (): IBuilderState => ({
@@ -80,6 +81,7 @@ export const stateFactory = (): IBuilderState => ({
   draggableForExitsByUuid: {},
   isBlockEditorOpen: false,
   interactionDesignerBoundingClientRect: {} as DOMRect,
+  isConnectionCreationInProgress: false,
 })
 
 export type ConnectionLayout = any[]
@@ -117,6 +119,14 @@ export const mutations: MutationTree<IBuilderState> = {
 
   deactivateConnection(state, {connectionContext}) {
     state.activeConnectionsContext = filter(state.activeConnectionsContext, (context) => context !== connectionContext)
+  },
+
+  deactivateConnectionFromExitUuid(state, {exitUuid}: {exitUuid: IBlockExit['uuid']}) {
+    state.activeConnectionsContext = reject(state.activeConnectionsContext, (context) => context.exitId === exitUuid)
+  },
+
+  setIsConnectionCreationInProgress(state, {value}: {value: boolean}) {
+    state.isConnectionCreationInProgress = value
   },
 
   setOperation({operations}: { operations: any }, {operation}: { operation: SupportedOperation }) {

@@ -10,6 +10,9 @@ import {Component, Prop, Watch} from 'vue-property-decorator'
 import PlainDraggableLib from 'plain-draggable'
 import Lang from '@/lib/filters/lang'
 import {IPositionLeftTop} from '@/lib/types'
+import {namespace} from 'vuex-class'
+
+const builderNamespace = namespace('builder')
 
 @Component({})
 export class PlainDraggable extends mixins(Lang) {
@@ -17,6 +20,7 @@ export class PlainDraggable extends mixins(Lang) {
   @Prop(Number) startY?: number
   @Prop({type: Boolean, required: true}) isEditable!: boolean
   @Prop(String) dragHandleId?: string
+  @Prop({type: String, required: true}) contentType!: string
 
   // The plain-draggable library has no types yet
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -83,21 +87,28 @@ export class PlainDraggable extends mixins(Lang) {
     const {draggable} = this
     this.$emit('dragged', {draggable, position})
   }
+  @builderNamespace.Mutation setIsConnectionCreationInProgress!: ({value}: {value: boolean}) => void
 
   handleDragStarted(position: IPositionLeftTop): void {
     const {draggable} = this
+    if (this.contentType === 'exit') {
+      this.setIsConnectionCreationInProgress({value: true});
+    }
     this.$emit('dragStarted', {draggable, position})
-  }
-
-  handleDragEnded(position: IPositionLeftTop): void {
-    const {draggable} = this
-    this.$emit('dragEnded', {draggable, position})
   }
 
   // handleMoved(position): void {
   //   const {draggable} = this
   //   this.$emit('moved', {draggable, position})
   // }
+
+  handleDragEnded(position: IPositionLeftTop): void {
+    const {draggable} = this
+    if (this.contentType === 'exit') {
+      this.setIsConnectionCreationInProgress({value: false});
+    }
+    this.$emit('dragEnded', {draggable, position})
+  }
 }
 
 export default PlainDraggable
