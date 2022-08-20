@@ -429,14 +429,12 @@ export class Block extends mixins(Lang) {
   setLineHovered(exit: IBlockExit, value: boolean): void {
     this.$nextTick(() => {
       this.$set(this.lineHovers, exit.uuid, value)
-      this.UpdateShouldShowBlockToolBar()
     })
   }
 
   setLineClicked(exit: IBlockExit, value: boolean): void {
     this.$nextTick(() => {
       this.$set(this.linePermanentlyActive, exit.uuid, value)
-      this.UpdateShouldShowBlockToolBar()
     })
   }
 
