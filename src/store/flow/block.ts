@@ -359,6 +359,14 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     // remove it
     state.selectedBlocks = state.selectedBlocks.filter((item) => item !== blockId)
   },
+
+  block_updateShouldShowBlockToolBar({state, commit}, {blockId, value}: { blockId: string, path: string, value: boolean }): void {
+    commit('block_updateVendorMetadataByPath', {
+      blockId,
+      path: 'floip.ui_metadata.should_show_block_tool_bar',
+      value,
+    })
+  },
 }
 
 export interface IDeepBlockExitIdWithinFlow {

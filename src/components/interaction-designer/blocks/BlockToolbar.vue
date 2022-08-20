@@ -209,7 +209,7 @@ export default BlockToolbar
 
   .target-block-toolbar-activated-by-connection {
     color: #fff;
-    background: red;
+    background: $primary-600;
     border: none;
     //margin-right: -6.5px !important;
     //margin-left: -6.5px !important;

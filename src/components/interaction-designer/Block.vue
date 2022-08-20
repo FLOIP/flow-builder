@@ -45,7 +45,7 @@
           'activated': isBlockActivated,
         }">
         <block-toolbar
-          v-if="isMouseOnBlock || isWaitingForConnection || isAssociatedWithActiveConnectionAsTargetBlock"
+          v-if="shouldShowBlockToolBar"
           :block="block"
           :is-activated-by-connection="isAssociatedWithActiveConnectionAsTargetBlock"
           :is-block-selected="isBlockSelected"
@@ -366,6 +366,14 @@ export class Block extends mixins(Lang) {
     return this.isBlockEditorOpen && this.activeBlockId === this.block.uuid
   }
 
+  @flowNamespace.Action block_updateShouldShowBlockToolBar!: (
+    {blockId, value}: { blockId: string, value: boolean }
+  ) => void
+
+  get shouldShowBlockToolBar(): boolean {
+    return this.block?.vendor_metadata?.floip?.ui_metadata?.should_show_block_tool_bar ?? false
+  }
+
   // todo: how do we decide whether or not this should be an action or a vanilla domain function?
   generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): ConnectionLayout {
     return generateConnectionLayoutKeyFor(source, target)
@@ -391,27 +399,39 @@ export class Block extends mixins(Lang) {
   @builderNamespace.Action setConnectionCreateTargetBlockToNullFrom!: BlockAction
   @builderNamespace.Action applyConnectionCreate!: () => void
 
+  UpdateShouldShowBlockToolBar(): void {
+    this.block_updateShouldShowBlockToolBar({
+      blockId: this.block.uuid,
+      value: this.isMouseOnBlock || this.isWaitingForConnection || this.isAssociatedWithActiveConnectionAsTargetBlock,
+    })
+  }
+
   setIsMouseOnBlock(value: boolean):void {
     this.isMouseOnBlock = value
+    this.UpdateShouldShowBlockToolBar()
   }
 
   exitMouseEnter(exit: IBlockExit): void {
     this.$set(this.exitHovers, exit.uuid, true)
+    this.UpdateShouldShowBlockToolBar()
   }
 
   exitMouseLeave(exit: IBlockExit): void {
     this.$set(this.exitHovers, exit.uuid, false)
+    this.UpdateShouldShowBlockToolBar()
   }
 
   setLineHovered(exit: IBlockExit, value: boolean): void {
     this.$nextTick(() => {
       this.$set(this.lineHovers, exit.uuid, value)
+      this.UpdateShouldShowBlockToolBar()
     })
   }
 
   setLineClicked(exit: IBlockExit, value: boolean): void {
     this.$nextTick(() => {
       this.$set(this.linePermanentlyActive, exit.uuid, value)
+      this.UpdateShouldShowBlockToolBar()
     })
   }
 

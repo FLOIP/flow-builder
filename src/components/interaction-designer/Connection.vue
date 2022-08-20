@@ -47,6 +47,8 @@ export class Connection extends mixins(Lang) {
   @Prop({type: Object}) readonly target!: IBlock
   @Prop({type: Object}) readonly position!: { x: number, y: number }
   @Prop({type: String}) readonly color!: string
+  // We need to track if the block height has changed, so we can reposition the connection correctly
+  // @Prop({type: String}) readonly didBlockHeightChange!: boolean
 
   // The leader-line library has no types yet
   // No need to set up observers over this
