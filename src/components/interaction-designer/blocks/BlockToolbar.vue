@@ -30,7 +30,8 @@
           </button>
           <button
             :class="{
-              'text-danger': !isWaitingForConnection && !isActivatedByConnection,
+              'btn-danger': !isWaitingForConnection && !isActivatedByConnection,
+              'btn-secondary': isWaitingForConnection || isActivatedByConnection,
             }"
             class="btn btn-xs ml-1"
             @click.prevent="handleDeleteBlock">
