@@ -351,8 +351,9 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     ]
   },
 
-  async block_select({state}, {blockId}: { blockId: IBlock['uuid'] }) {
+  async block_select({state, dispatch}, {blockId}: { blockId: IBlock['uuid'] }) {
     state.selectedBlocks.push(blockId)
+    dispatch('block_updateShouldShowBlockToolBar', {blockId, value: true})
   },
 
   async block_deselect({state}, {blockId}: { blockId: IBlock['uuid'] }) {

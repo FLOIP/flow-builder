@@ -402,7 +402,10 @@ export class Block extends mixins(Lang) {
   UpdateShouldShowBlockToolBar(): void {
     this.block_updateShouldShowBlockToolBar({
       blockId: this.block.uuid,
-      value: this.isMouseOnBlock || this.isWaitingForConnection || this.isAssociatedWithActiveConnectionAsTargetBlock,
+      value: this.isBlockSelected
+        || this.isMouseOnBlock
+        || this.isWaitingForConnection
+        || this.isAssociatedWithActiveConnectionAsTargetBlock,
     })
   }
 
