@@ -442,6 +442,7 @@ export class Block extends mixins(Lang) {
     const {block} = this
     this.$nextTick(() => {
       this.setBlockPositionTo({position: {x, y}, block})
+      this.updateTranslatedBlockEditorPosition()
 
       forEach(this.draggableForExitsByUuid, (draggable, key) => {
         try {
@@ -558,6 +559,10 @@ export class Block extends mixins(Lang) {
         }
       },
     )
+
+    this.$nextTick(() => {
+      this.updateTranslatedBlockEditorPosition()
+    })
   }
 
   handleDraggableEndedForBlock(): void {
