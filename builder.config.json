@@ -30,6 +30,11 @@
           "path": "\/flows\/import",
           "methods": ["GET"]
         },
+        "persistFlowImport": {
+          "name": "persistFlowImport",
+          "path": "\/backend\/flows\/import",
+          "methods": ["POST", "PUT"]
+        },
         "fetchFlow": {
           "name": "fetchFlow",
           "path": "\/flows\/{flowId}",
@@ -78,6 +83,7 @@
         }
       }
     },
+    "supportedFlowSpecVersionsForImport": ["1.0.0-rc4"],
     "languages": [
       {
         "id": "22",
