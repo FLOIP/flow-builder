@@ -86,7 +86,7 @@
                 : 'flow-builder.tooltip-new-connection'
             )
           "
-          class="block-exit mr-2 flex-grow-1"
+          class="block-exit flex-grow-1"
           :class="{
             'initial': false,
             'pending': isConnectionSourceRelocateActive,
