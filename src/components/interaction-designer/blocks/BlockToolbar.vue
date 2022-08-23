@@ -1,9 +1,5 @@
 <template>
-  <div :class="{
-      'target-block-toolbar-waiting-for-connection': isWaitingForConnection,
-      'target-block-toolbar-activated-by-connection': isActivatedByConnection
-    }"
-    class="block-toolbar d-flex justify-content-between">
+  <div class="block-toolbar d-flex justify-content-between">
     <div class="header-actions-left">
       <template v-if="isEditable">
         <!--Selection-->
@@ -34,7 +30,8 @@
           </button>
           <button
             :class="{
-              'text-danger': !isWaitingForConnection && !isActivatedByConnection,
+              'btn-danger': !isWaitingForConnection && !isActivatedByConnection,
+              'btn-secondary': isWaitingForConnection || isActivatedByConnection,
             }"
             class="btn btn-xs ml-1"
             @click.prevent="handleDeleteBlock">
@@ -151,68 +148,3 @@ export class BlockToolbar extends mixins(Lang) {
 }
 export default BlockToolbar
 </script>
-
-<style lang="scss">
-@import "../../../scss/custom_variables";
-
-.block-draggable {
-  .block-toolbar {
-    transition: opacity 100ms ease-in-out;
-    background: white;
-    opacity: 0; // default state of hidden
-
-    margin-top: -37.25px;
-    margin-right: -7.5px;
-    margin-left: -7.5px;
-    padding: 5px;
-
-    border-top: inherit;
-    border-right: inherit;
-    border-left: inherit;
-    border-top-right-radius: inherit;
-    border-top-left-radius: inherit;
-  }
-
-  &.has-multiple-exits {
-    .block-toolbar {
-      margin-right: -7.5px;
-    }
-  }
-
-  &.has-toolbar,
-  &:hover {
-    .block-toolbar {
-      opacity: 1;
-    }
-  }
-
-  &.active {
-    .block-toolbar {
-      margin-left: -8.5px;
-      margin-right: -8.5px;
-    }
-
-    &.has-multiple-exits {
-      .block-toolbar {
-        margin-right: -8.5px;
-      }
-    }
-  }
-
-  .target-block-toolbar-waiting-for-connection {
-    color: #fff;
-    background: $success-600;
-    border: none;
-    margin-right: -6.5px !important;
-    margin-left: -6.5px !important;
-  }
-
-  .target-block-toolbar-activated-by-connection {
-    color: #fff;
-    background: $primary-600;
-    border: none;
-    margin-right: -6.5px !important;
-    margin-left: -6.5px !important;
-  }
-}
-</style>
