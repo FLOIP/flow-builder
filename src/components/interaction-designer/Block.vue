@@ -398,7 +398,7 @@ export class Block extends mixins(Lang) {
   @builderNamespace.Action setConnectionCreateTargetBlockToNullFrom!: BlockAction
   @builderNamespace.Action applyConnectionCreate!: () => void
 
-  UpdateShouldShowBlockToolBar(): void {
+  updateShouldShowBlockToolBar(): void {
     //do not show the block toolbar when waiting for connection
     if (this.isWaitingForConnection) {
       return
@@ -412,17 +412,17 @@ export class Block extends mixins(Lang) {
 
   setIsMouseOnBlock(value: boolean):void {
     this.isMouseOnBlock = value
-    this.UpdateShouldShowBlockToolBar()
+    this.updateShouldShowBlockToolBar()
   }
 
   exitMouseEnter(exit: IBlockExit): void {
     this.$set(this.exitHovers, exit.uuid, true)
-    this.UpdateShouldShowBlockToolBar()
+    this.updateShouldShowBlockToolBar()
   }
 
   exitMouseLeave(exit: IBlockExit): void {
     this.$set(this.exitHovers, exit.uuid, false)
-    this.UpdateShouldShowBlockToolBar()
+    this.updateShouldShowBlockToolBar()
   }
 
   setLineHovered(exit: IBlockExit, value: boolean): void {
