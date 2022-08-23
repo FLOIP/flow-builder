@@ -5,7 +5,7 @@
     <block-editor
       v-if="shouldShowBlockEditor"
       class="block-editor"
-      :style="{transform: translatedBlockEditorPosition}" />
+      :style="{transform: translatedBlockPosition}" />
 
     <plain-draggable
       v-if="hasLayout"
@@ -194,6 +194,10 @@ import {BlockClasses, IPositionLeftTop} from '@/lib/types'
 
 const LABEL_CONTAINER_MAX_WIDTH = 650
 
+const SIDEBAR_POSITION_SETTLE_TIME_MS = 1500
+const SIDEBAR_POSITION_UPDATE_INTERVAL_MS = 100
+const SIDEBAR_POSITION_UPDATE_COUNT = SIDEBAR_POSITION_SETTLE_TIME_MS / SIDEBAR_POSITION_UPDATE_INTERVAL_MS
+
 const flowNamespace = namespace('flow')
 const builderNamespace = namespace('builder')
 
@@ -219,6 +223,7 @@ export class Block extends mixins(Lang) {
   exitHovers = {}
   cursorPosition: { x: number, y: number } | null = null
   lineHovers: Record<IBlockExit['uuid'], boolean> = {}
+  translatedBlockPosition = ''
 
   created(): void {
     this.initDraggableForExitsByUuid()
@@ -233,6 +238,7 @@ export class Block extends mixins(Lang) {
   mounted(): void {
     this.$nextTick(function onMounted() {
       this.updateLabelContainerMaxWidth()
+      this.updateTranslatedBlockEditorPosition()
     })
   }
 
@@ -240,6 +246,7 @@ export class Block extends mixins(Lang) {
   onBlockExitsLengthChanged(newValue: number, oldValue: number): void {
     this.$nextTick(() => {
       this.updateLabelContainerMaxWidth(newValue, newValue < oldValue)
+      this.updateTranslatedBlockEditorPosition()
     })
   }
 
@@ -311,13 +318,30 @@ export class Block extends mixins(Lang) {
     return data?.targetId === block.uuid
   }
 
-  get translatedBlockEditorPosition(): string {
-    const xOffset = 5
-    // Block toolbar height
-    const yOffset = 32
-    const left = this.x + this.blockWidth + xOffset - this.interactionDesignerBoundingClientRect.left
-    const top = this.y - yOffset
-    return `translate(${left}px, ${top}px)`
+  updateTranslatedBlockEditorPosition(): void {
+    let count = 0
+
+    const to = setInterval(() => {
+      const xOffset = 10
+
+      const headerRect = document.querySelector('header.interaction-designer-header')?.getBoundingClientRect()
+      const headerOffset = (headerRect?.height ?? 0) + (headerRect?.top ?? 0)
+      const scroll = document.querySelector('html')?.scrollTop ?? 0
+
+      const left = this.x + this.blockWidth + xOffset - this.interactionDesignerBoundingClientRect.left
+      const top = headerOffset + scroll
+
+      const translatedBlockPosition = `translate(${left}px, ${top}px)`
+
+      if (this.translatedBlockPosition !== translatedBlockPosition) {
+        this.translatedBlockPosition = translatedBlockPosition
+      } else {
+        count += 1
+        if (count > SIDEBAR_POSITION_UPDATE_COUNT) {
+          clearInterval(to)
+        }
+      }
+    }, SIDEBAR_POSITION_UPDATE_INTERVAL_MS)
   }
 
   get shouldShowBlockEditor(): boolean {
@@ -433,6 +457,7 @@ export class Block extends mixins(Lang) {
     const {block} = this
     this.$nextTick(() => {
       this.setBlockPositionTo({position: {x, y}, block})
+      this.updateTranslatedBlockEditorPosition()
 
       forEach(this.draggableForExitsByUuid, (draggable, key) => {
         try {
@@ -543,6 +568,10 @@ export class Block extends mixins(Lang) {
         }
       },
     )
+
+    this.$nextTick(() => {
+      this.updateTranslatedBlockEditorPosition()
+    })
   }
 
   handleDraggableEndedForBlock(): void {
