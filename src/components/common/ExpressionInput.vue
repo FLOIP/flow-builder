@@ -40,6 +40,15 @@ import {IExpressionContext, ISubscriberPropertyField, ISuggestion, ISuggestionVa
 
 const defaultContactPropertyFields = [
   'phone',
+  'urns',
+  'preferred_mode',
+  'preferred_urn',
+  'active_urn',
+  'created_at',
+  'timezone',
+  'language',
+  'groups',
+  'properties',
 ]
 
 const defaultDateFields = [
@@ -105,13 +114,51 @@ export class ExpressionInput extends mixins(Lang) {
   }
 
   get expressionContext(): IExpressionContext {
-    const contactFields = this.subscriberPropertyFields.map((prop) => prop.name).concat(defaultContactPropertyFields)
     const blocks = this.activeFlow?.blocks.flatMap((b: IBlock) => [b.name, b.uuid])
     return {
-      contact: contactFields,
+      contact: [],
       flow: blocks,
       date: defaultDateFields,
     }
+  }
+
+  get contactSuggestions(): ISuggestion[] {
+    const rootSuggestion: ISuggestion = {
+      trigger: 'contact.',
+      values: defaultContactPropertyFields.map(name => `contact.${name}`),
+    }
+
+    const propertiesSuggestion: ISuggestion = {
+      trigger: 'contact.properties.',
+      values: [],
+    }
+
+    const otherSuggestions: ISuggestion[] = []
+
+    this.subscriberPropertyFields.forEach(field => {
+      if (!defaultContactPropertyFields.includes(field.name)) {
+        console.log('default property fields does not include', field.name)
+        rootSuggestion.values.push(`contact.${field.name}`)
+
+        otherSuggestions.push({
+          trigger: `contact.${field.name}.`,
+          values: Object.keys(field).map(key => `contact.${field.name}.${key}`),
+        })
+      }
+
+      propertiesSuggestion.values.push(`contact.properties.${field.name}`)
+
+      otherSuggestions.push({
+        trigger: `contact.properties.${field.name}.`,
+        values: Object.keys(field).map(key => `contact.properties.${field.name}.${key}`),
+      })
+    })
+
+    return [
+      rootSuggestion,
+      propertiesSuggestion,
+      ...otherSuggestions,
+    ]
   }
 
   get topLevelSuggestions(): ISuggestion[] {
@@ -174,6 +221,7 @@ export class ExpressionInput extends mixins(Lang) {
       ...this.contextSuggestions,
       ...this.methodSuggestions,
       ...this.topLevelSuggestions,
+      ...this.contactSuggestions,
     ]
   }
 
@@ -208,9 +256,9 @@ export class ExpressionInput extends mixins(Lang) {
   mounted(): void {
     const input = this.refInputElement
     this.suggest = new AutoSuggest({
-      caseSensitive: false,
-      suggestions: this.suggestions,
-      onChange: () => input.dispatchEvent(new Event('input')),
+        caseSensitive: false,
+        suggestions: this.suggestions,
+        onChange: () => input.dispatchEvent(new Event('input')),
     }, input)
 
     // Unfortunately there is no `updated()` hook in AutoSuggest, so we will wait a bit
