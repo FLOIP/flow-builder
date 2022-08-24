@@ -54,7 +54,6 @@ import {
 } from '@floip/flow-runner'
 
 import Lang from '@/lib/filters/lang'
-import Vue from 'vue'
 import {Component, Prop} from 'vue-property-decorator'
 import {get, isEmpty, omit} from 'lodash'
 import {mixins} from 'vue-class-component'
@@ -102,13 +101,13 @@ export class ImportMatcher extends mixins(Lang) {
     }
   }
 
-  async onLanguageAddition(): Promise<void> {
-    return await this.validateLanguages(this.flowContainer)
-  }
+  @importVuexNamespace.Action tryToFixLanguages!: (flowContainer: IContext) => Promise<void>
 
   @Getter isFeatureAddLanguageOnImportEnabled!: boolean
 
-  @importVuexNamespace.Action validateLanguages!: (flowContainer: IContext) => Promise<void>
+  async onLanguageAddition(): Promise<void> {
+    await this.tryToFixLanguages(this.flowContainer)
+  }
 
   @importVuexNamespace.State flowContainer!: IContext
 }
