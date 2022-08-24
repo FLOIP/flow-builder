@@ -5,7 +5,7 @@
     <block-editor
       v-if="shouldShowBlockEditor"
       class="block-editor"
-      :style="{transform: translatedBlockEditorPosition}" />
+      :style="{transform: translatedBlockPosition}" />
 
     <plain-draggable
       v-if="hasLayout"
@@ -25,7 +25,9 @@
       @dragged="onMoved"
       @dragStarted="selectBlock"
       @dragEnded="handleDraggableEndedForBlock"
-      @destroyed="handleDraggableDestroyedForBlock">
+      @destroyed="handleDraggableDestroyedForBlock"
+      @mouseenter.native="isConnectionCreateActive && activateBlockAsDropZone($event)"
+      @mouseleave.native="isConnectionCreateActive && deactivateBlockAsDropZone($event)">
       <block-toolbar
         :block="block"
         :is-editor-visible="shouldShowBlockEditor"
@@ -40,9 +42,7 @@
           'fulfilled': false,
           'rejected': false,
           'activated': isBlockActivated,
-        }"
-        @mouseenter="isConnectionCreateActive && activateBlockAsDropZone($event)"
-        @mouseleave="isConnectionCreateActive && deactivateBlockAsDropZone($event)">
+        }">
         <div class="d-flex justify-content-between">
           <p class="block-type text-muted">
             {{ trans(`flow-builder.${block.type}`) }}
@@ -67,8 +67,17 @@
         class="block-exits d-flex mt-1">
         <div
           v-for="(exit) in block.exits"
+          :id="exit.uuid"
           :key="exit.uuid"
-          class="block-exit mr-2 flex-shrink-1"
+          v-b-tooltip.hover.bottom="
+            transIf(
+              isEditable,
+              exit.destination_block
+                ? 'flow-builder.tooltip-remove-connection'
+                : 'flow-builder.tooltip-new-connection'
+            )
+          "
+          class="block-exit mr-2 flex-grow-1"
           :class="{
             'initial': false,
             'pending': isConnectionSourceRelocateActive,
@@ -77,14 +86,15 @@
             'activated': isExitActivatedForRelocate(exit),
           }"
           @mouseenter="isConnectionSourceRelocateActive && activateExitAsDropZone($event, exit)"
-          @mouseleave="isConnectionSourceRelocateActive && deactivateExitAsDropZone($event, exit)">
+          @mouseleave="isConnectionSourceRelocateActive && deactivateExitAsDropZone($event, exit)"
+          @mousemove="updateCursorPosition"
+          @click="exit.destination_block && handleRemoveConnectionFrom(exit)">
           <div class="visible-exits">
             <div class="total-label-container">
               <span class="badge badge-primary tree-block-item-label tree-block-item-output-subscribers-1" />
             </div>
-
             <div
-              class="block-exit-name badge badge-warning is-connected"
+              class="block-exit-name badge badge-warning is-connected w-100"
               :class="{
                 'is-connected': exit.destination_block != null,
                 'is-disconnected': exit.destination_block == null,
@@ -105,7 +115,7 @@
                     v-if="exitHovers[exit.uuid] || isExitActivatedForCreate(exit)"
                     :id="`exit/${exit.uuid}/pseudo-block-handle`"
                     :key="`exit/${exit.uuid}/pseudo-block-handle`"
-                    v-b-tooltip.hover.bottom="transIf(isEditable, 'flow-builder.tooltip-new-connection')"
+                    :drag-handle-id="exit.uuid"
                     class="btn btn-xs btn-flat p-0"
                     :is-editable="isEditable"
                     @initialized="handleDraggableInitializedFor(exit, $event)"
@@ -139,11 +149,9 @@
                     class="btn btn-xs btn-flat">
                     <font-awesome-icon
                       v-if="exitHovers[exit.uuid]"
-                      v-b-tooltip.hover.bottom="trans('flow-builder.tooltip-remove-connection')"
                       class="text-danger"
                       title="Click to remove this connection"
-                      :icon="['far', 'times-circle']"
-                      @click="handleRemoveConnectionFrom(exit)" />
+                      :icon="['far', 'times-circle']" />
                   </div>
 
                   <connection
@@ -186,6 +194,10 @@ import {BlockClasses, IPositionLeftTop} from '@/lib/types'
 
 const LABEL_CONTAINER_MAX_WIDTH = 650
 
+const SIDEBAR_POSITION_SETTLE_TIME_MS = 1500
+const SIDEBAR_POSITION_UPDATE_INTERVAL_MS = 100
+const SIDEBAR_POSITION_UPDATE_COUNT = SIDEBAR_POSITION_SETTLE_TIME_MS / SIDEBAR_POSITION_UPDATE_INTERVAL_MS
+
 const flowNamespace = namespace('flow')
 const builderNamespace = namespace('builder')
 
@@ -195,6 +207,8 @@ type BlockAction = ({block}: { block: IBlock }) => void;
 type BlockExitAction = ({block, exit}: { block: IBlock, exit: IBlockExit }) => void;
 type BlockPositionAction = ({block, position}: { block: IBlock, position: IPosition }) => void;
 type BlockExitPositionAction = ({block, exit, position}: { block: IBlock, exit: IBlockExit, position: IPosition }) => void;
+
+const ICON_SIZE = 10
 
 @Component({})
 export class Block extends mixins(Lang) {
@@ -207,7 +221,9 @@ export class Block extends mixins(Lang) {
   blockWidth = 0
   blockHeight = 0
   exitHovers = {}
+  cursorPosition: { x: number, y: number } | null = null
   lineHovers: Record<IBlockExit['uuid'], boolean> = {}
+  translatedBlockPosition = ''
 
   created(): void {
     this.initDraggableForExitsByUuid()
@@ -222,6 +238,7 @@ export class Block extends mixins(Lang) {
   mounted(): void {
     this.$nextTick(function onMounted() {
       this.updateLabelContainerMaxWidth()
+      this.updateTranslatedBlockEditorPosition()
     })
   }
 
@@ -229,6 +246,7 @@ export class Block extends mixins(Lang) {
   onBlockExitsLengthChanged(newValue: number, oldValue: number): void {
     this.$nextTick(() => {
       this.updateLabelContainerMaxWidth(newValue, newValue < oldValue)
+      this.updateTranslatedBlockEditorPosition()
     })
   }
 
@@ -300,13 +318,30 @@ export class Block extends mixins(Lang) {
     return data?.targetId === block.uuid
   }
 
-  get translatedBlockEditorPosition(): string {
-    const xOffset = 5
-    // Block toolbar height
-    const yOffset = 32
-    const left = this.x + this.blockWidth + xOffset - this.interactionDesignerBoundingClientRect.left
-    const top = this.y - yOffset
-    return `translate(${left}px, ${top}px)`
+  updateTranslatedBlockEditorPosition(): void {
+    let count = 0
+
+    const to = setInterval(() => {
+      const xOffset = 10
+
+      const headerRect = document.querySelector('header.interaction-designer-header')?.getBoundingClientRect()
+      const headerOffset = (headerRect?.height ?? 0) + (headerRect?.top ?? 0)
+      const scroll = document.querySelector('html')?.scrollTop ?? 0
+
+      const left = this.x + this.blockWidth + xOffset - this.interactionDesignerBoundingClientRect.left
+      const top = headerOffset + scroll
+
+      const translatedBlockPosition = `translate(${left}px, ${top}px)`
+
+      if (this.translatedBlockPosition !== translatedBlockPosition) {
+        this.translatedBlockPosition = translatedBlockPosition
+      } else {
+        count += 1
+        if (count > SIDEBAR_POSITION_UPDATE_COUNT) {
+          clearInterval(to)
+        }
+      }
+    }, SIDEBAR_POSITION_UPDATE_INTERVAL_MS)
   }
 
   get shouldShowBlockEditor(): boolean {
@@ -410,7 +445,10 @@ export class Block extends mixins(Lang) {
   // eslint-disable-next-line no-unused-vars
   deactivateBlockAsDropZone(): void {
     const {block} = this
-    this.setConnectionCreateTargetBlockToNullFrom({block})
+
+    if ((this.operations[OperationKind.CONNECTION_CREATE] as IConnectionCreateOperation).data?.targetId !== null) {
+      this.setConnectionCreateTargetBlockToNullFrom({block})
+    }
   }
 
   onMoved({position: {left: x, top: y}}: {position: {left: number, top: number}}): void {
@@ -419,6 +457,7 @@ export class Block extends mixins(Lang) {
     const {block} = this
     this.$nextTick(() => {
       this.setBlockPositionTo({position: {x, y}, block})
+      this.updateTranslatedBlockEditorPosition()
 
       forEach(this.draggableForExitsByUuid, (draggable, key) => {
         try {
@@ -461,10 +500,7 @@ export class Block extends mixins(Lang) {
       position: {x, y},
     })
 
-    // since mouseenter + mouseleave will not occur when draggable is below cursor
-    // we simply snap the draggable out from under the cursor during this operation
-    draggable.left += 30
-    draggable.top += 25
+    this.adjustDraggablePosition(draggable)
   }
 
   onCreateExitDragged({position: {left: x, top: y}}: {position: {left: number, top: number}}): void {
@@ -494,10 +530,7 @@ export class Block extends mixins(Lang) {
       position: {x, y},
     })
 
-    // since mouseenter + mouseleave will not occur when draggable is below cursor
-    // we simply snap the draggable out from under the cursor during this operation
-    draggable.left += 30
-    draggable.top += 25
+    this.adjustDraggablePosition(draggable)
   }
 
   onMoveExitDragged({position: {left: x, top: y}}: {position: {left: number, top: number}}): void {
@@ -535,6 +568,10 @@ export class Block extends mixins(Lang) {
         }
       },
     )
+
+    this.$nextTick(() => {
+      this.updateTranslatedBlockEditorPosition()
+    })
   }
 
   handleDraggableEndedForBlock(): void {
@@ -550,16 +587,27 @@ export class Block extends mixins(Lang) {
       delete this.draggableForExitsByUuid[exit.uuid]
     })
   }
+
+  updateCursorPosition(e: MouseEvent): void {
+    this.cursorPosition = {
+      x: e.clientX + window.scrollX,
+      y: e.clientY + window.scrollY,
+    }
+  }
+
+  adjustDraggablePosition(draggable: Draggable): void {
+    const dx = this.cursorPosition!.x - draggable.left - ICON_SIZE
+    const dy = this.cursorPosition!.y - draggable.top - ICON_SIZE
+
+    draggable.left += dx
+    draggable.top += dy
+  }
 }
 
 export default Block
 </script>
 
 <style lang="scss">
-.fa-btn {
-  cursor: pointer;
-}
-
 .btn-secondary.btn-flat {
   @extend .btn-secondary;
   background: transparent;
@@ -629,17 +677,20 @@ export default Block
     white-space: nowrap;
     position: relative;
     top: 0em;
+    gap: 0.4rem;
+    margin-bottom: 0.4rem;
 
     .block-exit {
       display: inline-block;
       border: 1px dashed transparent;
       transition: border-radius 200ms ease-in-out;
+      cursor: pointer;
 
       .block-exit-name {
         display: flex;
         justify-content: center;
 
-        width: 100px;
+        min-width: 100px;
         height: 28px;
 
         padding: 0.4em;
@@ -649,6 +700,8 @@ export default Block
         font-size: 12px;
 
         .block-exit-name-text {
+          display: inline-block;
+          max-width: calc(100px - 0.8em);
           text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;

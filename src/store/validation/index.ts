@@ -225,8 +225,26 @@ export const actions: ActionTree<IValidationState, IRootState> = {
   async validate_resource({state, rootGetters}, {resource}: {resource: IResource}): Promise<IValidationStatus> {
     const validate = getOrCreateResourceValidator(rootGetters['flow/activeFlowContainer'].specification_version)
     const key = `resource/${resource.uuid}`
+
+    const isValid = validate(resource)
+
+    if (validate.errors) {
+      for (let i = 0; i < validate.errors.length; i += 1) {
+        const {keyword, dataPath} = validate.errors[i]
+
+        if (keyword === 'pattern') {
+          const index = /^\/values\/(?<index>\d+)/.exec(dataPath)?.groups?.index
+          const {content_type: contentType} = resource.values[Number(index)]
+
+          if (contentType === 'AUDIO') {
+            validate.errors[i].keyword = 'pattern-ivr'
+          }
+        }
+      }
+    }
+
     Vue.set(state.validationStatuses, key, {
-      isValid: validate(resource),
+      isValid,
       ajvErrors: getLocalizedAjvErrors(key, validate.errors),
       type: 'resource',
     })
