@@ -21,6 +21,7 @@ export const getters: GetterTree<IEmptyState, IRootState> = {
 
 export const mutations: MutationTree<IEmptyState> = {}
 
+// noinspection JSUnusedLocalSymbols
 export const actions = {
   async createWith(
     {getters, dispatch}: ActionContext<IEmptyState, IRootState>,
@@ -160,6 +161,19 @@ export const actions = {
 
     return validationStatus
   },
+
+  /**
+   * Override this method on the consumer side to react to another block's changes,
+   * e.g. to update expressions that reference the modified block: "@(flow.myBlockNameThatChanged)"
+   * @param context
+   * @param thisBlock, listening block
+   * @param oldBlock, deep clone of the modified block before the change
+   * @param newBlock, deep clone of the modified block after the change, null if the block was deleted
+   */
+  async maybeHandleAnotherBlockChange(
+    context: ActionContext<IEmptyState, IRootState>,
+    {thisBlock, oldBlock, newBlock}: {thisBlock: IBlock, oldBlock: IBlock, newBlock: IBlock | null},
+  ): Promise<void> {},
 }
 
 const BaseBlockStore: Module<IEmptyState, IRootState> = {
