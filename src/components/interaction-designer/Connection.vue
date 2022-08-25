@@ -93,7 +93,7 @@ export class Connection extends mixins(Lang) {
   }
 
   get sourceElementId(): string {
-    return `exit/${this.exit.uuid}/handle`
+    return `exit/${this.exit.uuid}`
   }
 
   get targetElementId(): string {

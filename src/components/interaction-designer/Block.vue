@@ -76,7 +76,7 @@
         class="block-exits d-flex mt-1">
         <div
           v-for="(exit) in block.exits"
-          :id="exit.uuid"
+          :id="`exit/${exit.uuid}`"
           :key="exit.uuid"
           v-b-tooltip.hover.bottom="
             transIf(
@@ -128,7 +128,7 @@
                     v-if="exitHovers[exit.uuid] || isExitActivatedForCreate(exit)"
                     :id="`exit/${exit.uuid}/pseudo-block-handle`"
                     :key="`exit/${exit.uuid}/pseudo-block-handle`"
-                    :drag-handle-id="exit.uuid"
+                    :drag-handle-id="`exit/${exit.uuid}`"
                     class="btn btn-xs btn-flat p-0"
                     :is-editable="isEditable"
                     content-type="exit"
