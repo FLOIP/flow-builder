@@ -172,6 +172,7 @@ export class ExpressionInput extends mixins(Lang) {
         ...Array.from(Object.entries(this.expressionContext)).map((item) => `@${item[0]}`),
         ...[
           '@block',
+          '@run',
         ],
       ],
     }]
@@ -226,6 +227,7 @@ export class ExpressionInput extends mixins(Lang) {
       ...this.topLevelSuggestions,
       ...this.contactSuggestions,
       ...this.blockSuggestions,
+      ...this.runSuggestions,
     ]
   }
 
@@ -238,6 +240,53 @@ export class ExpressionInput extends mixins(Lang) {
           'block.response',
           'block.value',
         ],
+      },
+    ]
+  }
+
+  get runSuggestions(): ISuggestion[] {
+    return [
+      {
+        trigger: 'run.',
+        values: [
+          'run.language',
+          'run.localization',
+          'run.entered_at',
+          'run.exited_at',
+          'run.flow',
+          'run.mode',
+          'run.results',
+          'run.parent',
+          'run.child',
+        ],
+      },
+      {
+        trigger: 'run.language.',
+        values: [
+          'run.language.id',
+          'run.language.label',
+          'run.language.variant',
+          'run.language.iso_639_3',
+        ],
+      },
+      {
+        trigger: 'run.flow.',
+        values: [
+          'run.flow.id',
+          'run.flow.name',
+        ],
+      },
+      {
+        trigger: 'run.results.',
+        values: [],
+      },
+      {
+        trigger: 'run.parent.',
+        values: [],
+      },
+      {
+        trigger: 'run.child.',
+        values: [],
       },
     ]
   }
