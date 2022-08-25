@@ -245,6 +245,10 @@ export class ExpressionInput extends mixins(Lang) {
   }
 
   get runSuggestions(): ISuggestion[] {
+    const blockNames = this.activeFlow?.blocks
+      .map(block => block.name)
+      .filter(Boolean) ?? []
+
     return [
       {
         trigger: 'run.',
@@ -278,8 +282,36 @@ export class ExpressionInput extends mixins(Lang) {
       },
       {
         trigger: 'run.results.',
-        values: [],
+        values: blockNames.map(name => `run.results.${name}`),
       },
+      ...blockNames.flatMap(name => ([
+        {
+          trigger: `run.results.${name}.`,
+          values: [
+            `run.results.${name}.entered_at`,
+            `run.results.${name}.exited_at`,
+            `run.results.${name}.response`,
+            `run.results.${name}.value`,
+            `run.results.${name}.block`,
+            `run.results.${name}.exit`,
+          ],
+        },
+        {
+          trigger: `run.results.${name}.block.`,
+          values: [
+            `run.results.${name}.block.id`,
+            `run.results.${name}.block.name`,
+            `run.results.${name}.block.label`,
+          ],
+        },
+        {
+          trigger: `run.results.${name}.exit.`,
+          values: [
+            `run.results.${name}.exit.name`,
+            `run.results.${name}.exit.id`,
+          ],
+        },
+      ])) as ISuggestion[],
       {
         trigger: 'run.parent.',
         values: [],
