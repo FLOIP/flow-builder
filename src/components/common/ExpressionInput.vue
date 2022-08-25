@@ -170,6 +170,9 @@ export class ExpressionInput extends mixins(Lang) {
           focusText: [-1, -1],
         },
         ...Array.from(Object.entries(this.expressionContext)).map((item) => `@${item[0]}`),
+        ...[
+          '@block',
+        ],
       ],
     }]
   }
@@ -222,6 +225,20 @@ export class ExpressionInput extends mixins(Lang) {
       ...this.methodSuggestions,
       ...this.topLevelSuggestions,
       ...this.contactSuggestions,
+      ...this.blockSuggestions,
+    ]
+  }
+
+  get blockSuggestions(): ISuggestion[] {
+    return [
+      {
+        trigger: 'block.',
+        values: [
+          'block.entered_at',
+          'block.response',
+          'block.value',
+        ],
+      },
     ]
   }
 
