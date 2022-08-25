@@ -1,5 +1,5 @@
 <template>
-  <div class="mobile-primitive-select-one-response-block">
+  <div class="mobile-primitives-select-one-response-block">
     <base-block
       :block="block"
       :flow="flow"
@@ -12,7 +12,6 @@
         name="resource-editors">
         <resource-editor
           v-if="promptResource"
-          :label="'flow-builder.prompt' | trans"
           :resource="promptResource"
           :block="block"
           :flow="flow" />
@@ -38,7 +37,9 @@
       </slot>
       <slot
         slot="contact-props"
-        name="contact-props" />
+        name="contact-props">
+        <select-one-response-block-contact-property-editor :block="block" />
+      </slot>
       <slot
         slot="vendor"
         name="vendor" />
@@ -52,7 +53,6 @@ import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelec
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 import {includes} from 'lodash'
-
 import SelectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import Lang from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'

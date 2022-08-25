@@ -44,9 +44,7 @@ export * from '@/router/helpers'
 
 // We may need those validation helpers to customize the validation in the consumer side
 export * from '@/store/validation'
-export * from '@/store/validation/validationHelpers'
-
-export * from './lib/validations/ExtendedValidatorBase'
+export * from './lib/validations'
 
 const Components = registerCustomComponents({
   InteractionDesigner: InteractionDesignerComponent,

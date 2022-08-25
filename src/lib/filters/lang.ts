@@ -23,6 +23,11 @@ class Lang extends Vue {
     return thisGlobal.Lang.trans(translation, interpolations)
   }
 
+  // Useful when calling Lang.trans in a store for eg.
+  static trans(translation: string, interpolations?: object) {
+    return thisGlobal.Lang.trans(translation, interpolations)
+  }
+
   /**
    * `transIf(condition, ...)` should only be used when we encounter an issue with `:disabled="!condition"` approach
    * eg: for v-b-tooltip, we may need to remove completely the tooltip on block view mode

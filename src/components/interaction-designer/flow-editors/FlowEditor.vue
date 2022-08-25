@@ -40,7 +40,9 @@
           :should-hide-validation="!didUserSubmit">
           <languages-editor
             :flow="flow"
-            @commitFlowLanguagesChange="updateFlowLanguages" />
+            @commitFlowLanguagesChange="updateFlowLanguages"
+            @flowLanguagesAdded="handleFlowLanguagesAdded"
+            @flowLanguagesRemoved="handleFlowLanguagesRemoved" />
         </validation-message>
 
         <validation-message
@@ -107,6 +109,9 @@ export class FlowEditor extends mixins(Lang) {
     })
   }
 
+  @flowVuexNamespace.Action block_updateAllBlocksAfterAddingFlowLanguage!: ({language}: {language: ILanguage}) => void
+  @flowVuexNamespace.Action block_updateAllBlocksAfterDeletingFlowLanguage!: ({language}: {language: ILanguage}) => void
+
   async updateFlowModes(value: SupportedMode[] | SupportedMode): Promise<void> {
     this.flow_setSupportedMode({flowId: this.flow.uuid, value})
     // flow modes/languages could have been changed, so
@@ -124,6 +129,15 @@ export class FlowEditor extends mixins(Lang) {
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Mutation flow_setLanguages!: ({flowId, value}: {flowId: string, value: ILanguage | ILanguage[]}) => void
   @flowVuexNamespace.Mutation flow_setSupportedMode!: any
+
+  handleFlowLanguagesAdded(value: ILanguage): void {
+    this.block_updateAllBlocksAfterAddingFlowLanguage({language: value})
+  }
+
+  handleFlowLanguagesRemoved(value: ILanguage): void {
+    this.block_updateAllBlocksAfterDeletingFlowLanguage({language: value})
+  }
+
   @builderVuexNamespace.Getter isEditable!: boolean
 
   @validationVuexNamespace.Action validate_allBlocksWithinFlow!: () => Promise<void>

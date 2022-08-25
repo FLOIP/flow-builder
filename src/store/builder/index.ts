@@ -335,8 +335,16 @@ export function createDefaultBlockTypeInstallerFor(
   blockType: IBlock['type'],
   storeForBlockType: Module<any, IRootState>,
 ) {
-  return (builder: Vue) => builder.$store.hasModule(['flow', blockType])
-    || builder.$store.registerModule(['flow', blockType], storeForBlockType)
+  return (builder: Vue) => {
+    if (storeForBlockType === undefined || blockType === undefined) {
+      // If this error happens, try to not import function from '@/lib' but directly from the file
+      console.error('createDefaultBlockTypeInstallerFor',
+        'something weird is happening: the store is undefined',
+        'which might cause',
+        '"TypeError: rawModule is undefined"')
+    }
+    return builder.$store.hasModule(['flow', blockType]) || builder.$store.registerModule(['flow', blockType], storeForBlockType)
+  }
 }
 
 export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): ConnectionLayout {
