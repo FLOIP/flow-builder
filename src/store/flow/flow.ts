@@ -19,10 +19,9 @@ import {IRootState} from '@/store'
 import {cloneDeep, defaults, every, forEach, get, has, includes, merge, omit, sortBy} from 'lodash'
 import {discoverContentTypesFor} from '@/store/flow/resource'
 import {computeBlockCanvasCoordinates} from '@/store/builder'
+import {ErrorObject} from 'ajv'
 import {IFlowsState} from '.'
 import {mergeFlowContainer} from './utils/importHelpers'
-import Lang from '@/lib/filters/lang'
-import {ErrorObject} from 'ajv'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   //We allow for an attempt to get a flow which doesn't yet exist in the state - e.g. the first_flow_id doesn't correspond to a flow
@@ -353,6 +352,39 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         uuid: await (new IdGeneratorUuidV4()).generate(),
         values,
       },
+    })
+  },
+
+  flow_addMissingResourceValues({getters, dispatch}): void {
+    const activeFlow: IFlow = getters.activeFlow
+    const resources = activeFlow.resources
+    const modes = activeFlow.supported_modes
+    const languages = activeFlow.languages.map(language => language.id)
+
+    resources.forEach(resource => {
+      modes.forEach(mode => {
+        languages.forEach(language => {
+          const resourceValue = resource.values.find(value => value.language_id === language && value.modes.includes(mode))
+
+          if (resourceValue === undefined) {
+            console.warn(`Adding missing variant: lang ${language}, mode: ${mode} for resource ${resource.uuid}`)
+
+            discoverContentTypesFor(mode)?.forEach((content_type) => {
+              dispatch('resource_createVariant', {
+                resourceId: resource.uuid,
+                variant: {
+                  content_type,
+                  language_id: language,
+                  modes: [
+                    mode,
+                  ],
+                  value: '',
+                },
+              })
+            })
+          }
+        })
+      })
     })
   },
 
