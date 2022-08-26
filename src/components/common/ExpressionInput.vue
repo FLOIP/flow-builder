@@ -252,37 +252,41 @@ export class ExpressionInput extends mixins(Lang) {
       .map(block => block.name)
       .filter(Boolean) ?? []
 
+    const temp = (prefix: string): ISuggestion[] => [
+      {
+        trigger: `${prefix}.`,
+        values: [
+          `${prefix}.language`,
+          `${prefix}.localization`,
+          `${prefix}.entered_at`,
+          `${prefix}.exited_at`,
+          `${prefix}.flow`,
+          `${prefix}.mode`,
+          `${prefix}.results`,
+          `${prefix}.parent`,
+          `${prefix}.child`,
+        ],
+      },
+      {
+        trigger: `${prefix}.language.`,
+        values: [
+          `${prefix}.language.id`,
+          `${prefix}.language.label`,
+          `${prefix}.language.variant`,
+          `${prefix}.language.iso_639_3`,
+        ],
+      },
+      {
+        trigger: `${prefix}.flow.`,
+        values: [
+          `${prefix}.flow.id`,
+          `${prefix}.flow.name`,
+        ],
+      },
+    ]
+
     return [
-      {
-        trigger: 'run.',
-        values: [
-          'run.language',
-          'run.localization',
-          'run.entered_at',
-          'run.exited_at',
-          'run.flow',
-          'run.mode',
-          'run.results',
-          'run.parent',
-          'run.child',
-        ],
-      },
-      {
-        trigger: 'run.language.',
-        values: [
-          'run.language.id',
-          'run.language.label',
-          'run.language.variant',
-          'run.language.iso_639_3',
-        ],
-      },
-      {
-        trigger: 'run.flow.',
-        values: [
-          'run.flow.id',
-          'run.flow.name',
-        ],
-      },
+      ...temp('run'),
       {
         trigger: 'run.results.',
         values: blockNames.map(name => `run.results.${name}`),
@@ -315,14 +319,8 @@ export class ExpressionInput extends mixins(Lang) {
           ],
         },
       ])) as ISuggestion[],
-      {
-        trigger: 'run.parent.',
-        values: [],
-      },
-      {
-        trigger: 'run.child.',
-        values: [],
-      },
+      ...temp('run.parent'),
+      ...temp('run.child'),
     ]
   }
 
