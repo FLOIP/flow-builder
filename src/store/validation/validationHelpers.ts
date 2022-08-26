@@ -209,6 +209,19 @@ export function getOrCreateFlowValidator(schemaVersion: string): ValidateFunctio
   return validators.get(validationType)!
 }
 
+/**
+ * Validator for the container and its content (flows, blocks, etc)
+ */
+export function getOrCreateContainerImportValidator(schemaVersion: string): ValidateFunction {
+  const validationType = 'container_import'
+  if (isEmpty(validators) || !validators.has(validationType)) {
+    const flowJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`)
+
+    validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowJsonSchema, '#/definitions/IContainer'))
+  }
+  return validators.get(validationType)!
+}
+
 export function getOrCreateLanguageValidator(schemaVersion: string): ValidateFunction {
   const validationType = 'language'
   if (isEmpty(validators) || !validators.has(validationType)) {
