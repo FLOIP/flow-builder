@@ -84,5 +84,14 @@ export function getRunSuggestions(context: IExpressionContext): ISuggestion[] {
     ])) as ISuggestion[],
     ...getRunSuggestionsWithPrefix('@run.parent'),
     ...getRunSuggestionsWithPrefix('@run.child'),
+    {
+      trigger: '@',
+      values: [
+        '@parent',
+        '@child',
+      ],
+    },
+    ...getRunSuggestionsWithPrefix('@parent'),
+    ...getRunSuggestionsWithPrefix('@child'),
   ]
 }
