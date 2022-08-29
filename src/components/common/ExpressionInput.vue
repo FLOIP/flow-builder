@@ -34,30 +34,10 @@ import '@avcs/autosuggest/dropdown.css'
 import {mixins} from 'vue-class-component'
 import {Component, Prop} from 'vue-property-decorator'
 import {Getter, namespace} from 'vuex-class'
-import {MethodNodeEvaluatorFactory} from '@floip/expression-evaluator/dist/Evaluator/NodeEvaluator/MethodNodeEvaluator/Factory'
 import Lang from '@/lib/filters/lang'
-import {IBlock, IFlow} from '@floip/flow-runner'
-import {IExpressionContext, ISubscriberPropertyField, ISuggestion, ISuggestionValue} from '@/lib/types'
-
-const defaultContactPropertyFields = [
-  'phone',
-  'urns',
-  'preferred_mode',
-  'preferred_urn',
-  'active_urn',
-  'created_at',
-  'timezone',
-  'language',
-  'groups',
-  'properties',
-]
-
-const defaultDateFields = [
-  'now',
-  'yesterday',
-  'today',
-  'tomorrow',
-]
+import {IFlow} from '@floip/flow-runner'
+import {ISubscriberPropertyField, ISuggestion} from '@/lib/types'
+import {getSuggestions} from '@/lib/suggestions'
 
 interface IAutoSuggest {
   dropdown: {
@@ -116,212 +96,11 @@ export class ExpressionInput extends mixins(Lang) {
     }
   }
 
-  get expressionContext(): IExpressionContext {
-    const blocks = this.activeFlow?.blocks.flatMap((b: IBlock) => [b.name, b.uuid])
-    return {
-      contact: [],
-      flow: blocks,
-      date: defaultDateFields,
-    }
-  }
-
-  get contactSuggestions(): ISuggestion[] {
-    const rootSuggestion: ISuggestion = {
-      trigger: 'contact.',
-      values: defaultContactPropertyFields.map(name => `contact.${name}`),
-    }
-
-    const propertiesSuggestion: ISuggestion = {
-      trigger: 'contact.properties.',
-      values: [],
-    }
-
-    const otherSuggestions: ISuggestion[] = []
-
-    this.subscriberPropertyFields.forEach(field => {
-      if (!defaultContactPropertyFields.includes(field.name)) {
-        console.log('default property fields does not include', field.name)
-        rootSuggestion.values.push(`contact.${field.name}`)
-
-        otherSuggestions.push({
-          trigger: `contact.${field.name}.`,
-          values: Object.keys(field).map(key => `contact.${field.name}.${key}`),
-        })
-      }
-
-      propertiesSuggestion.values.push(`contact.properties.${field.name}`)
-
-      otherSuggestions.push({
-        trigger: `contact.properties.${field.name}.`,
-        values: Object.keys(field).map(key => `contact.properties.${field.name}.${key}`),
-      })
-    })
-
-    return [
-      rootSuggestion,
-      propertiesSuggestion,
-      ...otherSuggestions,
-    ]
-  }
-
-  get topLevelSuggestions(): ISuggestion[] {
-    return [{
-      trigger: '@',
-      values: [
-        {
-          value: '@()',
-          focusText: [-1, -1],
-        },
-        ...Array.from(Object.entries(this.expressionContext)).map((item) => `@${item[0]}`),
-        ...[
-          '@block',
-          '@run',
-        ],
-      ],
-    }]
-  }
-
-  get contextSuggestions(): ISuggestion[] {
-    return Array.from(Object.entries(this.expressionContext)).map((item) => {
-      const name = item[0]
-      return {
-        trigger: `${name}.`,
-        values: item[1].map((val: ISuggestionValue) => `${name}.${val}`),
-      }
-    })
-  }
-
-  get methodSuggestions(): ISuggestion[] {
-    return Array.from(this.evaluatorMethods.entries()).map((item) => ({
-      trigger: item[0],
-      values: item[1].map((i) => ({
-        value: `${i}()`,
-        focusText: [-1, -1],
-      })),
-    }))
-  }
-
-  get evaluatorMethods(): Map<string, Function[]> {
-    const methods = new Map()
-
-    /* eslint-disable no-restricted-syntax */
-    for (const handler of MethodNodeEvaluatorFactory.defaultHandlers()) {
-      for (const method of handler.handles()) {
-        const trigger = method.substr(0, 2)
-        const upperTrigger = trigger.toUpperCase()
-        const upperMethod = method.toUpperCase()
-        if (methods.has(trigger)) {
-          methods.set(trigger, [...methods.get(trigger), method])
-          methods.set(upperTrigger, [...methods.get(upperTrigger), upperMethod])
-        } else {
-          methods.set(trigger, [method])
-          methods.set(upperTrigger, [upperMethod])
-        }
-      }
-    }
-    /* eslint-enable no-restricted-syntax */
-    return methods
-  }
-
   get suggestions(): ISuggestion[] {
-    return [
-      ...this.contextSuggestions,
-      ...this.methodSuggestions,
-      ...this.topLevelSuggestions,
-      ...this.contactSuggestions,
-      ...this.blockSuggestions,
-      ...this.runSuggestions,
-    ]
-  }
-
-  get blockSuggestions(): ISuggestion[] {
-    return [
-      {
-        trigger: 'block.',
-        values: [
-          'block.entered_at',
-          'block.response',
-          'block.value',
-        ],
-      },
-    ]
-  }
-
-  get runSuggestions(): ISuggestion[] {
-    const blockNames = this.activeFlow?.blocks
-      .map(block => block.name)
-      .filter(Boolean) ?? []
-
-    const temp = (prefix: string): ISuggestion[] => [
-      {
-        trigger: `${prefix}.`,
-        values: [
-          `${prefix}.language`,
-          `${prefix}.localization`,
-          `${prefix}.entered_at`,
-          `${prefix}.exited_at`,
-          `${prefix}.flow`,
-          `${prefix}.mode`,
-          `${prefix}.results`,
-          `${prefix}.parent`,
-          `${prefix}.child`,
-        ],
-      },
-      {
-        trigger: `${prefix}.language.`,
-        values: [
-          `${prefix}.language.id`,
-          `${prefix}.language.label`,
-          `${prefix}.language.variant`,
-          `${prefix}.language.iso_639_3`,
-        ],
-      },
-      {
-        trigger: `${prefix}.flow.`,
-        values: [
-          `${prefix}.flow.id`,
-          `${prefix}.flow.name`,
-        ],
-      },
-    ]
-
-    return [
-      ...temp('run'),
-      {
-        trigger: 'run.results.',
-        values: blockNames.map(name => `run.results.${name}`),
-      },
-      ...blockNames.flatMap(name => ([
-        {
-          trigger: `run.results.${name}.`,
-          values: [
-            `run.results.${name}.entered_at`,
-            `run.results.${name}.exited_at`,
-            `run.results.${name}.response`,
-            `run.results.${name}.value`,
-            `run.results.${name}.block`,
-            `run.results.${name}.exit`,
-          ],
-        },
-        {
-          trigger: `run.results.${name}.block.`,
-          values: [
-            `run.results.${name}.block.id`,
-            `run.results.${name}.block.name`,
-            `run.results.${name}.block.label`,
-          ],
-        },
-        {
-          trigger: `run.results.${name}.exit.`,
-          values: [
-            `run.results.${name}.exit.name`,
-            `run.results.${name}.exit.id`,
-          ],
-        },
-      ])) as ISuggestion[],
-      ...temp('run.parent'),
-      ...temp('run.child'),
-    ]
+    return getSuggestions({
+      blocks: this.activeFlow?.blocks ?? [],
+      subscriberPropertyFields: this.subscriberPropertyFields,
+    })
   }
 
   /**
@@ -358,7 +137,7 @@ export class ExpressionInput extends mixins(Lang) {
 
   mounted(): void {
     if (this.disabledAutoComplete === false) {
-      const input = this.refInputElement;
+      const input = this.refInputElement
       this.suggest = new AutoSuggest({
         caseSensitive: false,
         suggestions: this.suggestions,
