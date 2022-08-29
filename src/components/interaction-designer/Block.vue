@@ -229,6 +229,8 @@ type BlockExitPositionAction = ({block, exit, position}: { block: IBlock, exit: 
 
 const ICON_SIZE = 10
 
+export const BLOCK_RESET_CONNECTIONS = 'BLOCK_RESET_CONNECTIONS'
+
 @Component({})
 export class Block extends mixins(Lang) {
   @Prop({type: Object, required: true}) readonly block!: IBlock
@@ -263,6 +265,17 @@ export class Block extends mixins(Lang) {
     this.$nextTick(function onMounted() {
       this.updateLabelContainerMaxWidth()
       this.updateTranslatedBlockEditorPosition()
+    })
+
+    window.addEventListener('message', message => {
+      if (message.data === BLOCK_RESET_CONNECTIONS) {
+        this.activeConnectionsContext.forEach((context) => {
+          this.deactivateConnectionFromExitUuid({exitUuid: context.exitId})
+        })
+
+        this.lineHovers = {}
+        this.linePermanentlyActive = {}
+      }
     })
   }
 
@@ -570,6 +583,8 @@ export class Block extends mixins(Lang) {
   onCreateExitDragStarted({draggable}: {draggable: Draggable}, exit: IBlockExit): void {
     const {block} = this
     const {left: x, top: y} = draggable
+
+    window.postMessage(BLOCK_RESET_CONNECTIONS, '*')
 
     this.$set(this.exitOnDragged, exit.uuid, true)
     this.isConnectionSource = true

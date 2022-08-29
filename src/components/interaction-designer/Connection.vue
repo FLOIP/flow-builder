@@ -14,6 +14,7 @@ import {set} from 'lodash'
 import {IBlock, IBlockExit} from '@floip/flow-runner'
 import Lang from '@/lib/filters/lang'
 import {IConnectionContext} from '@/store/builder'
+import {BLOCK_RESET_CONNECTIONS} from './Block.vue'
 
 export const colorStates = {
   ON_HOVER: '#A31E65',
@@ -170,6 +171,12 @@ export class Connection extends mixins(Lang) {
     // stop listening to scroll and window resize hooks
     // LeaderLine.positionByWindowResize = false
     // this.line.positionByWindowResize = false
+
+    window.addEventListener('message', message => {
+      if (message.data === BLOCK_RESET_CONNECTIONS) {
+        this.line.setOptions(this.options)
+      }
+    })
   }
 
   beforeDestroy(): void {
@@ -202,7 +209,7 @@ export class Connection extends mixins(Lang) {
       return
     }
 
-    this.line.setOptions(this.onHoverOptions);
+    this.line.setOptions(this.onHoverOptions)
     this.activateConnection({connectionContext: this.connectionContext})
     this.$emit('lineMouseIn')
   }
