@@ -363,7 +363,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     resources.forEach(resource => {
       for (let i = 0; i < resource.values.length; i += 1) {
-        if (resource.values[i].mime_type === rootGetters.validation.choiceMimeType) {
+        if (resource.values[i].mime_type === rootGetters['validation/choiceMimeType']) {
           // Choices are a special case, we should not add variants
           return
         }
