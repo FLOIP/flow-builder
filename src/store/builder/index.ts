@@ -1,4 +1,4 @@
-import {filter, flatMap, isEqual, keyBy, map, mapValues, union} from 'lodash'
+import {filter, flatMap, isEqual, keyBy, map, mapValues, union, reject} from 'lodash'
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
@@ -59,6 +59,7 @@ export interface IBuilderState {
   draggableForExitsByUuid: object,
   isBlockEditorOpen: boolean,
   interactionDesignerBoundingClientRect: DOMRect,
+  isConnectionCreationInProgress: boolean,
 }
 
 export const stateFactory = (): IBuilderState => ({
@@ -80,6 +81,7 @@ export const stateFactory = (): IBuilderState => ({
   draggableForExitsByUuid: {},
   isBlockEditorOpen: false,
   interactionDesignerBoundingClientRect: {} as DOMRect,
+  isConnectionCreationInProgress: false,
 })
 
 export type ConnectionLayout = any[]
@@ -117,6 +119,14 @@ export const mutations: MutationTree<IBuilderState> = {
 
   deactivateConnection(state, {connectionContext}) {
     state.activeConnectionsContext = filter(state.activeConnectionsContext, (context) => context !== connectionContext)
+  },
+
+  deactivateConnectionFromExitUuid(state, {exitUuid}: {exitUuid: IBlockExit['uuid']}) {
+    state.activeConnectionsContext = reject(state.activeConnectionsContext, (context) => context.exitId === exitUuid)
+  },
+
+  setIsConnectionCreationInProgress(state, {value}: {value: boolean}) {
+    state.isConnectionCreationInProgress = value
   },
 
   setOperation({operations}: { operations: any }, {operation}: { operation: SupportedOperation }) {
@@ -325,8 +335,16 @@ export function createDefaultBlockTypeInstallerFor(
   blockType: IBlock['type'],
   storeForBlockType: Module<any, IRootState>,
 ) {
-  return (builder: Vue) => builder.$store.hasModule(['flow', blockType])
-    || builder.$store.registerModule(['flow', blockType], storeForBlockType)
+  return (builder: Vue) => {
+    if (storeForBlockType === undefined || blockType === undefined) {
+      // If this error happens, try to not import function from '@/lib' but directly from the file
+      console.error('createDefaultBlockTypeInstallerFor',
+        'something weird is happening: the store is undefined',
+        'which might cause',
+        '"TypeError: rawModule is undefined"')
+    }
+    return builder.$store.hasModule(['flow', blockType]) || builder.$store.registerModule(['flow', blockType], storeForBlockType)
+  }
 }
 
 export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): ConnectionLayout {
@@ -339,6 +357,9 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): 
     // block titles
     source.label,
     target.label,
+
+    // states that would affect block heights
+    source?.vendor_metadata?.floip?.ui_metadata?.should_show_block_tool_bar,
 
     // todo: this needs to be a computed prop // possibly on store as getter by blockId ?
 

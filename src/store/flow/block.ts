@@ -5,16 +5,19 @@ import {
   IBlock,
   IBlockExit,
   IContext,
+  ILanguage,
 } from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, has, isArray, isNil, last, reject, snakeCase} from 'lodash'
+import {cloneDeep, defaults, has, isArray, isNil, last, reject, snakeCase} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
+import {BLOCK_TYPE as SelectOneBlockType} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
+import {BLOCK_TYPE as SelectManyBlockType} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
+import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
+import * as SetContactPropertyModule from './block/set-contact-property'
 import {IFlowsState} from '.'
 import {removeBlockValueByPath, updateBlockValueByPath} from './utils/vuexBlockHelpers'
-
-import * as SetContactPropertyModule from './block/set-contact-property'
-import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   ...SetContactPropertyModule.getters,
@@ -133,7 +136,10 @@ export const mutations: MutationTree<IFlowsState> = {
     findBlockExitWith(exitId, block)
       .destination_block = destinationBlockId
   },
-  block_updateVendorMetadataByPath(state, {blockId, path, value}: { blockId: string, path: string, value: object | string }) {
+  block_updateVendorMetadataByPath(
+    state,
+    {blockId, path, value}: {blockId: string, path: string, value: boolean | number | string | object | null | undefined},
+  ) {
     updateBlockValueByPath(state, blockId, `vendor_metadata.${path}`, value)
   },
   block_removeVendorMetadataByPath(state, {blockId, path}: { blockId: string, path: string }) {
@@ -154,18 +160,24 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   /**
    * Set block name
+   * @param commit
+   * @param dispatch
+   * @param state
    * @param blockId
    * @param value
    * @param lockAutoUpdate, true if user overrides auto-generated name
    */
   block_setName(
-    {commit, state},
+    {commit, dispatch, state},
     {blockId, value, lockAutoUpdate = false}: {blockId: IBlock['uuid'], value: string, lockAutoUpdate: boolean},
   ) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
 
     if (block.vendor_metadata?.floip.ui_metadata?.should_auto_update_name === true || lockAutoUpdate) {
+      const oldBlock = cloneDeep(block)
       commit('block_setName', {blockId, value})
+      const newBlock = cloneDeep(block)
+      dispatch('block_notifyOtherBlocksAboutBlockChange', {oldBlock, newBlock})
     }
 
     if (lockAutoUpdate) {
@@ -175,6 +187,28 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         value: false,
       })
     }
+  },
+
+  /**
+   * We can use this to update expressions located in other blocks' configs
+   * if they are referencing the modified block, e.g. "@(flow.myBlockNameThatChanged)"
+   * @param dispatch
+   * @param rootGetters
+   * @param oldBlock, deep clone of the modified block before the change
+   * @param newBlock, deep clone of the modified block after the change, null if the block was deleted
+   */
+  block_notifyOtherBlocksAboutBlockChange(
+    {dispatch, rootGetters},
+    {oldBlock, newBlock}: {oldBlock: IBlock, newBlock: IBlock | null},
+  ) {
+    return Promise.all(
+      rootGetters['flow/activeFlow']?.blocks.map((blockToNotify: IBlock) =>
+        dispatch(
+          `flow/${blockToNotify.type}/maybeHandleAnotherBlockChange`,
+          {thisBlock: blockToNotify, oldBlock, newBlock},
+          {root: true},
+        )) ?? [],
+    )
   },
 
   block_resetName({commit, state}, {blockId}) {
@@ -351,13 +385,59 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     ]
   },
 
-  async block_select({state}, {blockId}: { blockId: IBlock['uuid'] }) {
+  async block_select({state, dispatch}, {blockId}: { blockId: IBlock['uuid'] }) {
     state.selectedBlocks.push(blockId)
+    dispatch('block_updateShouldShowBlockToolBar', {blockId, value: true})
   },
 
   async block_deselect({state}, {blockId}: { blockId: IBlock['uuid'] }) {
     // remove it
     state.selectedBlocks = state.selectedBlocks.filter((item) => item !== blockId)
+  },
+
+  block_updateShouldShowBlockToolBar({state, commit}, {blockId, value}: { blockId: string, path: string, value: boolean }): void {
+    commit('block_updateVendorMetadataByPath', {
+      blockId,
+      path: 'floip.ui_metadata.should_show_block_tool_bar',
+      value,
+    })
+  },
+
+  block_updateAllBlocksAfterAddingFlowLanguage({rootGetters, dispatch}, {language}: {language: ILanguage}): void {
+    rootGetters['flow/activeFlow'].blocks.map((currentBlock: IBlock) => {
+      if (currentBlock.type === SelectOneBlockType || currentBlock.type === SelectManyBlockType) {
+        const hasTextMode = rootGetters['flow/hasTextMode']
+        if (hasTextMode === true) {
+          (currentBlock as ISelectOneResponseBlock).config.choices.map((choice) => {
+            choice.text_tests?.push({
+              language: language.id,
+              test_expression: `@block.response = '${choice.name}'`,
+            })
+
+            return choice
+          })
+        }
+      }
+
+      return currentBlock
+    })
+  },
+
+  block_updateAllBlocksAfterDeletingFlowLanguage({rootGetters, dispatch}, {language}: {language: ILanguage}): void {
+    rootGetters['flow/activeFlow'].blocks.map((currentBlock: IBlock) => {
+      if (currentBlock.type === SelectOneBlockType || currentBlock.type === SelectManyBlockType) {
+        const hasTextMode = rootGetters['flow/hasTextMode']
+        if (hasTextMode === true) {
+          (currentBlock as ISelectOneResponseBlock).config.choices.map((choice) => {
+            choice.text_tests = choice.text_tests?.filter((test) => test.language !== language.id)
+
+            return choice
+          })
+        }
+      }
+
+      return currentBlock
+    })
   },
 }
 

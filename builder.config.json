@@ -30,6 +30,11 @@
           "path": "\/flows\/import",
           "methods": ["GET"]
         },
+        "persistFlowImport": {
+          "name": "persistFlowImport",
+          "path": "\/backend\/flows\/import",
+          "methods": ["POST", "PUT"]
+        },
         "fetchFlow": {
           "name": "fetchFlow",
           "path": "\/flows\/{flowId}",
@@ -78,6 +83,7 @@
         }
       }
     },
+    "supportedFlowSpecVersionsForImport": ["1.0.0-rc4"],
     "languages": [
       {
         "id": "22",
@@ -331,7 +337,21 @@
         "id": "14",
         "name": "favourite_fruits",
         "display_label": "Favourite fruits (multiple_choice)",
-        "data_type": "multiple_choice"
+        "data_type": "multiple_choice",
+        "choices": [
+          {
+            "description": "Apple",
+            "value": "apple"
+          },
+          {
+            "description": "Banana",
+            "value": "banana"
+          },
+          {
+            "description": "Mango",
+            "value": "mango"
+          }
+        ]
       },
       {
         "id": "15",
@@ -349,9 +369,9 @@
     "subscriberPropertyFieldDataTypesMapping": {
       "text": ["MobilePrimitives.OpenResponse", "SmartDevices.LocationResponse", "MobilePrimitives.NumericResponse", "MobilePrimitives.SelectOneResponse", "MobilePrimitives.SelectManyResponse"],
       "location": ["SmartDevices.LocationResponse"],
-      "number": ["MobilePrimitives.NumericResponse", "MobilePrimitives.OpenResponse"],
+      "number": ["MobilePrimitives.NumericResponse", "MobilePrimitives.OpenResponse", "MobilePrimitives.SelectOneResponse", "MobilePrimitives.SelectManyResponse"],
       "phone": ["MobilePrimitives.NumericResponse"],
-      "multiple_choice": ["MobilePrimitives.SelectOneResponse", "MobilePrimitives.SelectManyResponse"],
+      "multiple_choice": ["MobilePrimitives.SelectManyResponse"],
       "media": ["SmartDevices.PhotoResponse"]
     },
     "treeTitles": {},

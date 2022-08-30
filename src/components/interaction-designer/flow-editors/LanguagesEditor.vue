@@ -15,12 +15,12 @@
 
 <script lang="ts">
 import VueMultiselect from 'vue-multiselect'
-import {Component, Prop} from 'vue-property-decorator'
+import {Component, Prop, Watch} from 'vue-property-decorator'
 import {IFlow} from '@floip/flow-runner'
 import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
 import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
-import {sortBy} from 'lodash'
+import {difference, sortBy} from 'lodash'
 import {State} from 'vuex-class'
 
 @Component({
@@ -30,6 +30,17 @@ import {State} from 'vuex-class'
 })
 export class LanguagesEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
+
+  @Watch('flowSelectedLanguages')
+  onLanguagesChange(newValue: ILanguage[], oldValue: ILanguage[]) {
+    if (newValue.length > oldValue.length) {
+      const newAddedLanguage = difference(newValue, oldValue)
+      this.$emit('flowLanguagesAdded', newAddedLanguage[0])
+    } else if (newValue.length < oldValue.length) {
+      const newRemovedLanguage = difference(oldValue, newValue)
+      this.$emit('flowLanguagesRemoved', newRemovedLanguage[0])
+    }
+  }
 
   get languages(): ILanguage[] {
     // Make sure to follow order when populating languages, because the order may affect indexes during resource validation
