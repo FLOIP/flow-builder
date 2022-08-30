@@ -355,13 +355,20 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
-  flow_addMissingResourceValues({getters, dispatch}): void {
+  flow_addMissingResourceValues({getters, rootGetters, dispatch}): void {
     const activeFlow: IFlow = getters.activeFlow
     const resources = activeFlow.resources
     const modes = activeFlow.supported_modes
     const languages = activeFlow.languages.map(language => language.id)
 
     resources.forEach(resource => {
+      for (let i = 0; i < resource.values.length; i += 1) {
+        if (resource.values[i].mime_type === rootGetters.validation.choiceMimeType) {
+          // Choices are a special case, we should not add variants
+          return
+        }
+      }
+
       modes.forEach(mode => {
         languages.forEach(language => {
           const resourceValue = resource.values.find(value => value.language_id === language && value.modes.includes(mode))
