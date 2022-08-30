@@ -1,7 +1,9 @@
 <template>
   <div
     class="block"
-    @click="selectBlock">
+    @click="selectBlock"
+    @mouseenter="setIsMouseOnBlock(true)"
+    @mouseleave="setIsMouseOnBlock(false)">
     <block-editor
       v-if="shouldShowBlockEditor"
       class="block-editor"
@@ -12,7 +14,10 @@
       ref="draggable"
       class="block-draggable"
       :class="{
-        active: isBlockActivated,
+        'is-active': isBlockActivated,
+        'source-block-having-active-connection': isAssociatedWithActiveConnectionAsSourceBlock,
+        'target-block-having-active-connection': isAssociatedWithActiveConnectionAsTargetBlock,
+        'target-block-waiting-for-connection': isWaitingForConnection,
         'has-toolbar': isBlockSelected || shouldShowBlockEditor,
         ['has-exits']: hasExitsShown,
         ['has-multiple-exits']: hasMultipleExitsShown,
@@ -21,6 +26,7 @@
       }"
       :start-x="x"
       :start-y="y"
+      content-type="block"
       :is-editable="isEditable"
       @dragged="onMoved"
       @dragStarted="selectBlock"
@@ -28,11 +34,6 @@
       @destroyed="handleDraggableDestroyedForBlock"
       @mouseenter.native="isConnectionCreateActive && activateBlockAsDropZone($event)"
       @mouseleave.native="isConnectionCreateActive && deactivateBlockAsDropZone($event)">
-      <block-toolbar
-        :block="block"
-        :is-editor-visible="shouldShowBlockEditor"
-        :is-block-selected="isBlockSelected" />
-
       <header
         :id="`block/${block.uuid}/handle`"
         class="block-target draggable-handle"
@@ -43,8 +44,16 @@
           'rejected': false,
           'activated': isBlockActivated,
         }">
+        <block-toolbar
+          v-if="shouldShowBlockToolBar"
+          :block="block"
+          :is-activated-by-connection="isAssociatedWithActiveConnectionAsTargetBlock"
+          :is-block-selected="isBlockSelected"
+          :is-editor-visible="shouldShowBlockEditor"
+          :is-waiting-for-connection="isWaitingForConnection" />
+
         <div class="d-flex justify-content-between">
-          <p class="block-type text-muted">
+          <p class="block-type">
             {{ trans(`flow-builder.${block.type}`) }}
           </p>
           <i
@@ -67,7 +76,7 @@
         class="block-exits d-flex mt-1">
         <div
           v-for="(exit) in block.exits"
-          :id="exit.uuid"
+          :id="`exit/${exit.uuid}`"
           :key="exit.uuid"
           v-b-tooltip.hover.bottom="
             transIf(
@@ -77,7 +86,7 @@
                 : 'flow-builder.tooltip-new-connection'
             )
           "
-          class="block-exit mr-2 flex-grow-1"
+          class="block-exit flex-grow-1"
           :class="{
             'initial': false,
             'pending': isConnectionSourceRelocateActive,
@@ -94,11 +103,15 @@
               <span class="badge badge-primary tree-block-item-label tree-block-item-output-subscribers-1" />
             </div>
             <div
-              class="block-exit-name badge badge-warning is-connected w-100"
+              class="block-exit-name badge badge-warning w-100"
               :class="{
+                'is-new': exit.destination_block == null && exitOnDragged[exit.uuid] === undefined,
+                'is-initiating': exit.destination_block == null && exitOnDragged[exit.uuid] === true,
                 'is-connected': exit.destination_block != null,
-                'is-disconnected': exit.destination_block == null,
-                'is-connected-and-hovered': (exit.destination_block != null && exitHovers[exit.uuid]) || (exit.destination_block != null && lineHovers[exit.uuid]),
+                'is-disconnected': exit.destination_block == null && exitOnDragged[exit.uuid] === false,
+                'is-highlighted-from-connection': exit.destination_block != null
+                 && (lineHovers[exit.uuid] === true || linePermanentlyActive[exit.uuid] === true),
+                'is-connected-and-on-hover': exit.destination_block != null && exitHovers[exit.uuid] === true,
               }"
               @mouseenter="exitMouseEnter(exit)"
               @mouseleave="exitMouseLeave(exit)">
@@ -115,9 +128,10 @@
                     v-if="exitHovers[exit.uuid] || isExitActivatedForCreate(exit)"
                     :id="`exit/${exit.uuid}/pseudo-block-handle`"
                     :key="`exit/${exit.uuid}/pseudo-block-handle`"
-                    :drag-handle-id="exit.uuid"
+                    :drag-handle-id="`exit/${exit.uuid}`"
                     class="btn btn-xs btn-flat p-0"
                     :is-editable="isEditable"
+                    content-type="exit"
                     @initialized="handleDraggableInitializedFor(exit, $event)"
                     @dragStarted="onCreateExitDragStarted($event, exit)"
                     @dragged="onCreateExitDragged($event)"
@@ -129,11 +143,12 @@
                   <template v-if="isConnectionCreateActive && isExitActivatedForCreate(exit) && livePosition">
                     <div
                       :id="`exit/${exit.uuid}/handle`"
-                      class="btn btn-xs p-0">
+                      class="btn btn-xs p-0 text-white">
                       <i class="glyphicon glyphicon-move" />
                     </div>
                     <connection
                       :key="`exit/${exit.uuid}/line-for-draft`"
+                      :color="connectionColorAtSourceDragged"
                       :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
                       :source="block"
                       :target="blocksById[exit.destination_block]"
@@ -156,12 +171,15 @@
 
                   <connection
                     :key="`exit/${exit.uuid}/line`"
+                    :color="connectionColorForKnowDestination"
                     :repaint-cache-key-generator="generateConnectionLayoutKeyFor"
                     :source="livePosition ? null : block"
                     :target="blocksById[exit.destination_block]"
                     :exit="exit"
                     :position="livePosition"
                     @lineMouseIn="setLineHovered(exit, true)"
+                    @lineMouseClickedIn="setLineClicked(exit, true)"
+                    @lineMouseClickedOut="setLineClicked(exit, false)"
                     @lineMouseOut="setLineHovered(exit, false)" />
                 </template>
               </span>
@@ -191,6 +209,7 @@ import {
 } from '@/store/builder'
 import Lang from '@/lib/filters/lang'
 import {BlockClasses, IPositionLeftTop} from '@/lib/types'
+import {colorStates} from '@/components/interaction-designer/Connection.vue'
 
 const LABEL_CONTAINER_MAX_WIDTH = 650
 
@@ -210,6 +229,8 @@ type BlockExitPositionAction = ({block, exit, position}: { block: IBlock, exit: 
 
 const ICON_SIZE = 10
 
+export const BLOCK_RESET_CONNECTIONS = 'BLOCK_RESET_CONNECTIONS'
+
 @Component({})
 export class Block extends mixins(Lang) {
   @Prop({type: Object, required: true}) readonly block!: IBlock
@@ -221,8 +242,13 @@ export class Block extends mixins(Lang) {
   blockWidth = 0
   blockHeight = 0
   exitHovers = {}
-  cursorPosition: { x: number, y: number } | null = null
+  exitOnDragged: Record<IBlockExit['uuid'], boolean> = {}
   lineHovers: Record<IBlockExit['uuid'], boolean> = {}
+  linePermanentlyActive: Record<IBlockExit['uuid'], boolean> = {}
+  cursorPosition: { x: number, y: number } | null = null
+  connectionColorAtSourceDragged = colorStates.CONNECTING
+  connectionColorForKnowDestination = colorStates.DEFAULT
+  isConnectionSource = false
   translatedBlockPosition = ''
 
   created(): void {
@@ -240,6 +266,17 @@ export class Block extends mixins(Lang) {
       this.updateLabelContainerMaxWidth()
       this.updateTranslatedBlockEditorPosition()
     })
+
+    window.addEventListener('message', message => {
+      if (message.data === BLOCK_RESET_CONNECTIONS) {
+        this.activeConnectionsContext.forEach((context) => {
+          this.deactivateConnectionFromExitUuid({exitUuid: context.exitId})
+        })
+
+        this.lineHovers = {}
+        this.linePermanentlyActive = {}
+      }
+    })
   }
 
   @Watch('blockExitsLength')
@@ -256,6 +293,7 @@ export class Block extends mixins(Lang) {
   @builderNamespace.State activeConnectionsContext!: IConnectionContext[]
   @builderNamespace.State draggableForExitsByUuid!: Record<string, Draggable>
   @builderNamespace.State isBlockEditorOpen!: boolean
+  @builderNamespace.State isConnectionCreationInProgress!: boolean
   @State(({trees: {ui}}) => ui.blockClasses) blockClasses!: BlockClasses
 
   @builderNamespace.Getter blocksById!: Record<IBlock['uuid'], IBlock>
@@ -263,6 +301,8 @@ export class Block extends mixins(Lang) {
   @builderNamespace.Getter interactionDesignerBoundingClientRect!: DOMRect
 
   @flowNamespace.Getter activeFlow?: IFlow
+
+  isMouseOnBlock = false
 
   get blockExitsLength(): number {
     return this.block.exits.length
@@ -289,6 +329,20 @@ export class Block extends mixins(Lang) {
   get isAssociatedWithActiveConnection(): boolean {
     const {block, activeConnectionsContext} = this
     return !!filter(activeConnectionsContext, (context) => context.sourceId === block.uuid || context.targetId === block.uuid).length
+  }
+
+  get isAssociatedWithActiveConnectionAsSourceBlock(): boolean {
+    const {block, activeConnectionsContext} = this
+    return !!filter(activeConnectionsContext, (context) => context.sourceId === block.uuid).length
+  }
+
+  get isAssociatedWithActiveConnectionAsTargetBlock(): boolean {
+    const {block, activeConnectionsContext} = this
+    return !!filter(activeConnectionsContext, (context) => context.targetId === block.uuid).length
+  }
+
+  get isWaitingForConnection(): boolean {
+    return !this.isConnectionSource && this.isMouseOnBlock === true && this.isConnectionCreationInProgress
   }
 
   get isBlockSelected(): boolean {
@@ -348,6 +402,14 @@ export class Block extends mixins(Lang) {
     return this.isBlockEditorOpen && this.activeBlockId === this.block.uuid
   }
 
+  @flowNamespace.Action block_updateShouldShowBlockToolBar!: (
+    {blockId, value}: { blockId: string, value: boolean }
+  ) => void
+
+  get shouldShowBlockToolBar(): boolean {
+    return this.block?.vendor_metadata?.floip?.ui_metadata?.should_show_block_tool_bar ?? false
+  }
+
   // todo: how do we decide whether or not this should be an action or a vanilla domain function?
   generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): ConnectionLayout {
     return generateConnectionLayoutKeyFor(source, target)
@@ -357,6 +419,7 @@ export class Block extends mixins(Lang) {
   @builderNamespace.Mutation setBlockPositionTo!: BlockPositionAction
   @builderNamespace.Mutation initDraggableForExitsByUuid!: () => void
   @builderNamespace.Mutation setIsBlockEditorOpen!: () => void
+  @builderNamespace.Mutation deactivateConnectionFromExitUuid!: ({exitUuid}: {exitUuid: IBlockExit['uuid']}) => void
 
   @builderNamespace.Action removeConnectionFrom!: BlockExitAction
 
@@ -372,17 +435,42 @@ export class Block extends mixins(Lang) {
   @builderNamespace.Action setConnectionCreateTargetBlockToNullFrom!: BlockAction
   @builderNamespace.Action applyConnectionCreate!: () => void
 
+  updateShouldShowBlockToolBar(): void {
+    //do not show the block toolbar when waiting for connection
+    if (this.isWaitingForConnection) {
+      return
+    }
+
+    this.block_updateShouldShowBlockToolBar({
+      blockId: this.block.uuid,
+      value: this.isBlockSelected || this.isMouseOnBlock,
+    });
+  }
+
+  setIsMouseOnBlock(value: boolean):void {
+    this.isMouseOnBlock = value
+    this.updateShouldShowBlockToolBar()
+  }
+
   exitMouseEnter(exit: IBlockExit): void {
     this.$set(this.exitHovers, exit.uuid, true)
+    this.updateShouldShowBlockToolBar()
   }
 
   exitMouseLeave(exit: IBlockExit): void {
     this.$set(this.exitHovers, exit.uuid, false)
+    this.updateShouldShowBlockToolBar()
   }
 
   setLineHovered(exit: IBlockExit, value: boolean): void {
     this.$nextTick(() => {
       this.$set(this.lineHovers, exit.uuid, value)
+    })
+  }
+
+  setLineClicked(exit: IBlockExit, value: boolean): void {
+    this.$nextTick(() => {
+      this.$set(this.linePermanentlyActive, exit.uuid, value)
     })
   }
 
@@ -472,6 +560,8 @@ export class Block extends mixins(Lang) {
 
   handleRemoveConnectionFrom(exit: IBlockExit): void {
     const {block} = this
+    this.setLineClicked(exit, false)
+    this.deactivateConnectionFromExitUuid({exitUuid: exit.uuid})
     this.removeConnectionFrom({block, exit})
     // force render, useful if the exit label is very short
     this.labelContainerMaxWidth += 0
@@ -494,6 +584,11 @@ export class Block extends mixins(Lang) {
     const {block} = this
     const {left: x, top: y} = draggable
 
+    window.postMessage(BLOCK_RESET_CONNECTIONS, '*')
+
+    this.$set(this.exitOnDragged, exit.uuid, true)
+    this.isConnectionSource = true
+
     this.initializeConnectionCreateWith({
       block,
       exit,
@@ -507,8 +602,11 @@ export class Block extends mixins(Lang) {
     this.livePosition = {x, y}
   }
 
-  onCreateExitDragEnded({draggable}: {draggable: Draggable}): void {
+  onCreateExitDragEnded({draggable}: {draggable: Draggable}, exit: IBlockExit): void {
     const {x: left, y: top} = this.operations[OperationKind.CONNECTION_CREATE]!.data!.position
+
+    this.$set(this.exitOnDragged, exit.uuid, false)
+    this.isConnectionSource = false
 
     console.debug('Block', 'onCreateExitDragEnded', 'operation.data.position', {left, top})
     console.debug('Block', 'onCreateExitDragEnded', 'reset', {left: draggable.left, top: draggable.top})
@@ -608,6 +706,8 @@ export default Block
 </script>
 
 <style lang="scss">
+@import "../../scss/custom_variables";
+
 .btn-secondary.btn-flat {
   @extend .btn-secondary;
   background: transparent;
@@ -707,38 +807,80 @@ export default Block
           overflow: hidden;
         }
 
-        &.is-connected {
+        &.is-new {
           color: #fff;
-          background: #418BCA;
+          background: $neutral-600;
+        }
+
+        &.is-connected {
+          color: #000;
+          background: #D6D6D6;
+        }
+
+        &.is-initiating {
+          color: #fff;
+          background: $success-600;
         }
 
         &.is-disconnected {
           color: #fff;
-          background: #858585;
+          background: $neutral-600;
         }
 
-        &.is-connected-and-hovered {
-          color: #dc3545;
-          background: #FFECEC;
+        &.is-highlighted-from-connection {
+          color: #fff;
+          background: $primary-600;
+        }
+
+        &.is-connected-and-on-hover {
+          background: $primary-50;
         }
       }
 
       &.activated {
         border-radius: 0.3em;
-        border-color: #333333;
       }
     }
   }
 
   // state mutations
 
-  &.active {
-    border-width: 2px;
+  &.is-active {
     box-shadow: 0 3px 6px #CACACA;
   }
 
+  &.target-block-having-active-connection {
+    color: #fff;
+    background: $primary-600;
+    border: none;
+
+    .block-label.empty {
+      color: #fff;
+    }
+
+    .block-exit-name {
+      color: $primary-600 !important;
+      background: #fff !important;
+    }
+  }
+
+  &.target-block-waiting-for-connection {
+    color: #fff;
+    background: $success-600;
+    border: none;
+
+    .block-label.empty {
+      color: #fff;
+    }
+
+    .block-exit-name {
+      color: $success-600 !important;
+      background: #fff !important;
+    }
+  }
+
   // block exit states
-  &.active,
+  &.is-active,
   &:hover {
     .block-exit .block-exit-remove {
       opacity: 1;

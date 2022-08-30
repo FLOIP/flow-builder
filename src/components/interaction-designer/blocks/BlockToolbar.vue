@@ -29,7 +29,11 @@
             <small>{{ trans('flow-builder.cancel') }}</small>
           </button>
           <button
-            class="btn btn-danger btn-xs ml-1"
+            :class="{
+              'btn-danger': !isWaitingForConnection && !isActivatedByConnection,
+              'btn-secondary': isWaitingForConnection || isActivatedByConnection,
+            }"
+            class="btn btn-xs ml-1"
             @click.prevent="handleDeleteBlock">
             <small>{{ trans('flow-builder.delete-block') }}</small>
           </button>
@@ -38,7 +42,10 @@
           v-if="!isDeleting"
           v-b-tooltip.hover="trans('flow-builder.tooltip-delete-block')"
           :icon="['far', 'trash-alt']"
-          class="fa-btn text-danger"
+          :class="{
+              'text-danger': !isWaitingForConnection && !isActivatedByConnection,
+            }"
+          class="fa-btn"
           @click.prevent="isDeleting = true" />
       </div>
       <!--Duplicate-->
@@ -79,6 +86,8 @@ export class BlockToolbar extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly isBlockSelected!: boolean
   @Prop() readonly isEditorVisible!: boolean
+  @Prop() readonly isWaitingForConnection!: boolean
+  @Prop() readonly isActivatedByConnection!: boolean
 
   isDeleting = false
 
@@ -139,50 +148,3 @@ export class BlockToolbar extends mixins(Lang) {
 }
 export default BlockToolbar
 </script>
-
-<style lang="scss">
-.block-draggable {
-  .block-toolbar {
-    transition: opacity 100ms ease-in-out;
-    background: white;
-    opacity: 0; // default state of hidden
-
-    margin-top: -39.25px;
-    margin-right: -7.5px;
-    margin-left: -7.5px;
-    padding: 5px;
-
-    border-top: inherit;
-    border-right: inherit;
-    border-left: inherit;
-    border-top-right-radius: inherit;
-    border-top-left-radius: inherit;
-  }
-
-  &.has-multiple-exits {
-    .block-toolbar {
-      margin-right: -7.5px;
-    }
-  }
-
-  &.has-toolbar,
-  &:hover {
-    .block-toolbar {
-      opacity: 1;
-    }
-  }
-
-  &.active {
-    .block-toolbar {
-      margin-left: -8.5px;
-      margin-right: -8.5px;
-    }
-
-    &.has-multiple-exits {
-      .block-toolbar {
-        margin-right: -8.5px;
-      }
-    }
-  }
-}
-</style>
