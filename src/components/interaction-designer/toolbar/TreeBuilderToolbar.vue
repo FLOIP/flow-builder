@@ -270,7 +270,7 @@
                 aria-haspopup="true"
                 aria-expanded="false"
                 @mouseover="openDropdownMenu($event.target)">
-                <span class="nav-link-text">{{ 'flow-builder.developer' | trans }}</span>
+                <span class="nav-link-text">{{ 'flow-builder.advanced' | trans }}</span>
               </a>
               <div class="dropdown-menu mt-0">
                 <template v-for="(classDetails, className) in blockClassesForDeveloperCategory">

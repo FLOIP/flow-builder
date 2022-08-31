@@ -119,7 +119,7 @@
         "is_interactive": false,
         "is_branching": false,
         "category":  0,
-        "menu_category": 3
+        "menu_category": 5
       },
       "Core.RunFlow": {
         "name": "Core.RunFlow",
@@ -127,7 +127,7 @@
         "is_interactive": false,
         "is_branching": false,
         "category":  0,
-        "menu_category": 3
+        "menu_category": 5
       },
       "Core.SetContactProperty": {
         "name": "Core.SetContactProperty",
