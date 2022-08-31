@@ -20,6 +20,7 @@ import {cloneDeep, defaults, every, forEach, get, has, includes, merge, omit, so
 import {discoverContentTypesFor} from '@/store/flow/resource'
 import {computeBlockCanvasCoordinates} from '@/store/builder'
 import {ErrorObject} from 'ajv'
+import {cleanupFlowResources} from '@/lib/flow-resources'
 import {IFlowsState} from '.'
 import {mergeFlowContainer} from './utils/importHelpers'
 
@@ -193,7 +194,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       return getters.activeFlowContainer
     }
     try {
-      const {data} = await axios[restVerb](persistRoute, omit(flowContainer, ['isCreated']))
+      const {data} = await axios[restVerb](persistRoute, omit(cleanupFlowResources(flowContainer), ['isCreated']))
       commit('flow_setFlowContainer', data)
       commit('flow_updateCreatedState', true)
       dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
