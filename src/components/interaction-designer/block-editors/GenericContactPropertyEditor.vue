@@ -57,39 +57,9 @@
         <div
           v-if="isBlockInteractive(block)"
           class="form-group">
-          <div class="custom-control custom-radio">
-            <input
-              id="setProp"
-              type="radio"
-              name="contactPropAction"
-              :checked="propertyValueAction === PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
-              :value="PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
-              class="custom-control-input"
-              @change="updatePropertyValueAction">
-            <label
-              class="custom-control-label font-weight-normal"
-              for="setProp">
-              {{ 'flow-builder.entry-from-this-block' | trans }}
-            </label>
-          </div>
           <slot
             v-if="propertyValueAction === PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
             name="entry-from-this-block" />
-          <div class="custom-control custom-radio">
-            <input
-              id="clearProp"
-              type="radio"
-              name="contactPropAction"
-              :checked="propertyValueAction === PROPERTY_VALUE_ACTION.OPEN_EXPRESSION"
-              :value="PROPERTY_VALUE_ACTION.OPEN_EXPRESSION"
-              class="custom-control-input"
-              @change="updatePropertyValueAction">
-            <label
-              class="custom-control-label font-weight-normal"
-              for="clearProp">
-              {{ 'flow-builder.expression' | trans }}
-            </label>
-          </div>
         </div>
 
         <validation-message
@@ -150,16 +120,16 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
     this.shouldSetContactProperty = has(this.block.config, 'set_contact_property')
     this.propertyKey = this.firstContactPropertyKey
     this.propertyValue = this.firstContactPropertyValue
-    if (this.propertyValue === undefined) {
-      // default setting
-      if (this.isBlockInteractive(this.block)) {
-        // interactive blocks will have `Entry from this block` option by default
-        this.propertyValue = BLOCK_RESPONSE_EXPRESSION
-      } else {
-        // non interactive blocks will have `Expression` option by default
-        this.propertyValue = EMPTY_STRING_EXPRESSION
-      }
+
+    // default setting
+    if (this.isBlockInteractive(this.block)) {
+      // interactive blocks will have `Entry from this block` option by default
+      this.propertyValue = BLOCK_RESPONSE_EXPRESSION
+    } else {
+      // non interactive blocks will have `Expression` option by default
+      this.propertyValue = EMPTY_STRING_EXPRESSION
     }
+
     this.initPropertyValueAction()
   }
 
