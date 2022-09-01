@@ -119,11 +119,15 @@ export const SelectOneResponseBlockContactPropertyEditor = {
     },
 
     choiceValueOptions() {
-      return this.contactProperty?.choices ?? []
+      return [
+        {value: '', description: this.trans('flow-builder.no-value')},
+        ...(this.contactProperty?.choices ?? []),
+      ]
     },
 
     booleanChoiceValueOptions() {
       return [
+        {value: '', description: this.trans('flow-builder.no-value')},
         {value: 'TRUE', description: this.trans('flow-builder.true')},
         {value: 'FALSE', description: this.trans('flow-builder.false')},
       ]
