@@ -364,6 +364,12 @@
         "name": "avatar",
         "display_label": "Avatar (media)",
         "data_type": "media"
+      },
+      {
+        "id": "17",
+        "name": "newsletter",
+        "display_label": "Newsletter (boolean)",
+        "data_type": "boolean"
       }
     ],
     "subscriberPropertyFieldDataTypesMapping": {
@@ -372,7 +378,8 @@
       "number": ["MobilePrimitives.NumericResponse", "MobilePrimitives.OpenResponse", "MobilePrimitives.SelectOneResponse", "MobilePrimitives.SelectManyResponse"],
       "phone": ["MobilePrimitives.NumericResponse"],
       "multiple_choice": ["MobilePrimitives.SelectOneResponse"],
-      "media": ["SmartDevices.PhotoResponse"]
+      "media": ["SmartDevices.PhotoResponse"],
+      "boolean": ["MobilePrimitives.SelectOneResponse"]
     },
     "treeTitles": {},
     "treeSetTitles": {},

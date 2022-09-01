@@ -39,6 +39,15 @@
                 :placeholder="trans('flow-builder.enter-value')"
                 @input="setChoiceValue(Number($event.target.value), choicePrompt)">
               <vue-multiselect
+                v-if="isBooleanProperty"
+                :value="getBooleanChoiceValueOption(choicePrompt)"
+                :options="booleanChoiceValueOptions"
+                :show-labels="false"
+                :placeholder="trans('flow-builder.select-a-value')"
+                track-by="value"
+                label="description"
+                @input="setBooleanChoiceValueOption($event, choicePrompt)" />
+              <vue-multiselect
                 v-if="isMultipleChoiceProperty"
                 :value="getChoiceValueOption(choicePrompt)"
                 :options="choiceValueOptions"
@@ -97,6 +106,10 @@ export const SelectOneResponseBlockContactPropertyEditor = {
       return this.contactProperty?.data_type === 'number'
     },
 
+    isBooleanProperty() {
+      return this.contactProperty?.data_type === 'boolean'
+    },
+
     choices() {
       return this.block.config.choices
     },
@@ -107,6 +120,13 @@ export const SelectOneResponseBlockContactPropertyEditor = {
 
     choiceValueOptions() {
       return this.contactProperty?.choices ?? []
+    },
+
+    booleanChoiceValueOptions() {
+      return [
+        {value: 'TRUE', description: this.trans('flow-builder.true')},
+        {value: 'FALSE', description: this.trans('flow-builder.false')},
+      ]
     },
   },
 
@@ -174,7 +194,15 @@ export const SelectOneResponseBlockContactPropertyEditor = {
     },
 
     setChoiceValueOption(choiceValueOption, choicePrompt) {
-      console.assert(choicePrompt !== undefined, 'Choice name must be defined')
+      this.setChoiceValue(choiceValueOption.value, choicePrompt)
+    },
+
+    getBooleanChoiceValueOption(choicePrompt) {
+      const choiceValue = this.getChoiceValue(choicePrompt)
+      return this.booleanChoiceValueOptions.find(option => option.value === choiceValue)
+    },
+
+    setBooleanChoiceValueOption(choiceValueOption, choicePrompt) {
       this.setChoiceValue(choiceValueOption.value, choicePrompt)
     },
   },
