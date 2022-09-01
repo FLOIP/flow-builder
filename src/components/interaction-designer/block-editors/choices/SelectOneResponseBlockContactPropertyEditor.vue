@@ -13,7 +13,10 @@
             {{ trans('flow-builder.enter-at-least-one-choice-above') }}
           </div>
           <template v-else>
-            <div>
+            <div v-if="isMultipleChoiceProperty">
+              {{ trans('flow-builder.select-value-for-choices-for-selected-property') }}
+            </div>
+            <div v-else>
               {{ trans('flow-builder.enter-value-for-choices-for-selected-property') }}
             </div>
             <div
@@ -35,6 +38,15 @@
                 class="form-control"
                 :placeholder="trans('flow-builder.enter-value')"
                 @input="setChoiceValue(Number($event.target.value), choicePrompt)">
+              <vue-multiselect
+                v-if="isMultipleChoiceProperty"
+                :value="getChoiceValueOption(choicePrompt)"
+                :options="choiceValueOptions"
+                :show-labels="false"
+                :placeholder="trans('flow-builder.select-a-value')"
+                track-by="value"
+                label="description"
+                @input="setChoiceValueOption($event, choicePrompt)" />
             </div>
           </template>
         </div>
@@ -87,6 +99,14 @@ export const SelectOneResponseBlockContactPropertyEditor = {
 
     choices() {
       return this.block.config.choices
+    },
+
+    isMultipleChoiceProperty() {
+      return this.contactProperty?.data_type === 'multiple_choice'
+    },
+
+    choiceValueOptions() {
+      return this.contactProperty?.choices ?? []
     },
   },
 
@@ -146,6 +166,16 @@ export const SelectOneResponseBlockContactPropertyEditor = {
         blockId: this.block.uuid,
         path: 'floip.ui_metadata.set_contact_property',
       })
+    },
+
+    getChoiceValueOption(choicePrompt) {
+      const choiceValue = this.getChoiceValue(choicePrompt)
+      return this.choiceValueOptions.find(option => option.value === choiceValue)
+    },
+
+    setChoiceValueOption(choiceValueOption, choicePrompt) {
+      console.assert(choicePrompt !== undefined, 'Choice name must be defined')
+      this.setChoiceValue(choiceValueOption.value, choicePrompt)
     },
   },
 }

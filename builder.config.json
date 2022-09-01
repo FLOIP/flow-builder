@@ -371,7 +371,7 @@
       "location": ["SmartDevices.LocationResponse"],
       "number": ["MobilePrimitives.NumericResponse", "MobilePrimitives.OpenResponse", "MobilePrimitives.SelectOneResponse", "MobilePrimitives.SelectManyResponse"],
       "phone": ["MobilePrimitives.NumericResponse"],
-      "multiple_choice": ["MobilePrimitives.SelectManyResponse"],
+      "multiple_choice": ["MobilePrimitives.SelectOneResponse"],
       "media": ["SmartDevices.PhotoResponse"]
     },
     "treeTitles": {},
