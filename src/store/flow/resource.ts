@@ -311,39 +311,22 @@ export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourc
   return Object.assign(defaultModeMappings, contentTypeOverrides)[mode]
 }
 
-function createSetValidator<T>(allowedValues: T[]) {
-  return (lookup: T | T[]) => {
-    const lookupValues = castArray(lookup)
-
-    for (let i = 0; i < lookupValues.length; i += 1) {
-      if (allowedValues.includes(lookupValues[i])) {
-        return true
-      }
-    }
-    return false
-  }
-}
-
 export function cleanupFlowResources(container: IContext): IContext {
-  const result = cloneDeep(container)
+  return {
+    ...container,
+    flows: container.flows.map((flow) => ({
+      ...flow,
+      resources: flow.resources
+        .map(resource => ({
+          ...resource,
+          values: resource.values.filter(value => {
+            const hasAllowedMode = flow.supported_modes.some(mode => value.modes.includes(mode))
+            const hasSupportedLanguage = flow.languages.some(lang => value.language_id === lang.id)
 
-  for (let i = 0; i < result.flows.length; i += 1) {
-    const flow = result.flows[i]
-
-    const hasAllowedMode = createSetValidator(flow.supported_modes)
-    const hasSupportedLanguage = createSetValidator(flow.languages.map(lang => lang.id))
-
-    // TODO: VMO-3531 - Also remove unreferenced resources
-    flow.resources = flow.resources
-      .map(resource => ({
-        ...resource,
-        values: resource.values.filter(value => (
-          hasAllowedMode(value.modes)
-          && hasSupportedLanguage(value.language_id)
-        )),
-      }))
-      .filter(resource => !isEmpty(resource.values))
+            return hasAllowedMode && hasSupportedLanguage
+          }),
+        }))
+        .filter(resource => !isEmpty(resource.values)),
+    })),
   }
-
-  return result
 }
