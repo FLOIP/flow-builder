@@ -2,6 +2,7 @@
   <div class="select-one-response-block-contact-property-editor">
     <generic-contact-property-editor
       :block="block"
+      :disable-expression-input="true"
       @toggleSetContactProperty="onSetContactPropertyToggle"
       @changeContactPropertyType="resetMapping"
       @updateShouldUseCurrentBlockResponse="onShouldUseCurrentBlockResponseUpdate">
