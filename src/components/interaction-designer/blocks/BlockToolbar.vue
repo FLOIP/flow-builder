@@ -43,8 +43,8 @@
           v-b-tooltip.hover="trans('flow-builder.tooltip-delete-block')"
           :icon="['far', 'trash-alt']"
           :class="{
-              'text-danger': !isWaitingForConnection && !isActivatedByConnection,
-            }"
+            'text-danger': !isWaitingForConnection && !isActivatedByConnection,
+          }"
           class="fa-btn"
           @click.prevent="isDeleting = true" />
       </div>
@@ -58,12 +58,14 @@
           @click.prevent="handleDuplicateBlock" />
       </div>
       <!--Expand block editor-->
-      <div class="mr-1 ml-2">
-        <font-awesome-icon
-          v-b-tooltip.hover="trans('flow-builder.toggle-block-editor-tooltip')"
-          :icon="isEditorVisible ? ['fac', 'minimize'] : ['fac', 'expand']"
-          class="fa-btn"
-          @click.prevent="handleExpandMinimizeBlockEditor" />
+      <div
+        v-b-tooltip.hover="trans('flow-builder.toggle-block-editor-tooltip')"
+        class="mr-1 ml-2 fa-btn icon-container"
+        @click.prevent="handleExpandMinimizeBlockEditor">
+        <span class="icon-text">
+          {{ isEditorVisible ? trans('flow-builder.hide') : trans('flow-builder.show') }}
+        </span>
+        <font-awesome-icon :icon="isEditorVisible ? ['fac', 'minimize'] : ['fac', 'expand']" />
       </div>
     </div>
   </div>
@@ -148,3 +150,14 @@ export class BlockToolbar extends mixins(Lang) {
 }
 export default BlockToolbar
 </script>
+
+<style scoped>
+.icon-container {
+  display: flex;
+  align-items: center;
+}
+.icon-text {
+  font-size: 0.8rem;
+  margin-right: 0.15rem;
+}
+</style>
