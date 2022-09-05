@@ -361,38 +361,34 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const modes = activeFlow.supported_modes
     const languages = activeFlow.languages.map(language => language.id)
 
-    resources.forEach(resource => {
-      for (let i = 0; i < resource.values.length; i += 1) {
-        if (resource.values[i].mime_type === rootGetters['validation/choiceMimeType']) {
-          // Choices are a special case, we should not add variants
-          return
-        }
-      }
+    resources
+      // Choices are a special case, we should not add variants
+      .filter(resource => resource.values.every(value => value.mime_type !== rootGetters['validation/textMimeType']))
+      .forEach(resource => {
+        modes.forEach(mode => {
+          languages.forEach(language => {
+            const resourceValue = resource.values.find(value => value.language_id === language && value.modes.includes(mode))
 
-      modes.forEach(mode => {
-        languages.forEach(language => {
-          const resourceValue = resource.values.find(value => value.language_id === language && value.modes.includes(mode))
+            if (resourceValue === undefined) {
+              console.warn(`Adding missing variant: lang ${language}, mode: ${mode} for resource ${resource.uuid}`)
 
-          if (resourceValue === undefined) {
-            console.warn(`Adding missing variant: lang ${language}, mode: ${mode} for resource ${resource.uuid}`)
-
-            discoverContentTypesFor(mode)?.forEach((content_type) => {
-              dispatch('resource_createVariant', {
-                resourceId: resource.uuid,
-                variant: {
-                  content_type,
-                  language_id: language,
-                  modes: [
-                    mode,
-                  ],
-                  value: '',
-                },
+              discoverContentTypesFor(mode)?.forEach((content_type) => {
+                dispatch('resource_createVariant', {
+                  resourceId: resource.uuid,
+                  variant: {
+                    content_type,
+                    language_id: language,
+                    modes: [
+                      mode,
+                    ],
+                    value: '',
+                  },
+                })
               })
-            })
-          }
+            }
+          })
         })
       })
-    })
   },
 
   async flow_createWith({rootState}, {props}: { props: { uuid: string } & Partial<IFlow> }): Promise<IFlow> {
