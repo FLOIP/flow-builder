@@ -311,7 +311,7 @@ export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourc
   return Object.assign(defaultModeMappings, contentTypeOverrides)[mode]
 }
 
-export function cleanupFlowResources(container: IContext): IContext {
+export function cleanupFlowResources(container: IContext, choiceMimeType: string): IContext {
   return {
     ...container,
     flows: container.flows.map((flow) => ({
@@ -320,10 +320,11 @@ export function cleanupFlowResources(container: IContext): IContext {
         .map(resource => ({
           ...resource,
           values: resource.values.filter(value => {
+            const isChoice = value.mime_type === choiceMimeType
             const hasAllowedMode = flow.supported_modes.some(mode => value.modes.includes(mode))
             const hasSupportedLanguage = flow.languages.some(lang => value.language_id === lang.id)
 
-            return hasAllowedMode && hasSupportedLanguage
+            return isChoice || (hasAllowedMode && hasSupportedLanguage)
           }),
         }))
         .filter(resource => !isEmpty(resource.values)),

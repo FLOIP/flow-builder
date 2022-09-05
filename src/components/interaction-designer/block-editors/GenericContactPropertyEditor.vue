@@ -139,7 +139,7 @@ const BLOCK_RESPONSE_EXPRESSION = '@block.value'
 })
 export class GenericContactPropertyEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
-  @Prop() readonly disableExpressionInput: boolean = false
+  @Prop({default: false}) readonly disableExpressionInput!: boolean
 
   shouldSetContactProperty = false
   PROPERTY_VALUE_ACTION = {
