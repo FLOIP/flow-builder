@@ -166,7 +166,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       commit('flow_updateCreatedState', true)
       dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
       return getters.activeFlowContainer
-    } catch (error) {
+    } catch (error: any) {
       commit('flow_updateCreatedState', oldCreatedState)
       commit('validation/pushAjvErrorToValidationStatuses', {
         key: 'container_import',

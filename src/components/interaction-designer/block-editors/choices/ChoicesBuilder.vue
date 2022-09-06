@@ -106,7 +106,7 @@ export class ChoicesBuilder extends mixins(Lang) {
     this.resource_add({resource: this.draftResource})
     this.addChoiceByResourceIdTo({blockId: this.block.uuid, resourceId: this.draftResource.uuid})
     this.$nextTick(() =>
-      this.focusInputElFor(last(this.$refs.choices as Vue[])))
+      this.focusInputElFor(last(this.$refs.choices as any[])))
     await this.generateDraftResource()
   }
   focusInputElFor(editor:any): void {
@@ -141,7 +141,7 @@ export class ChoicesBuilder extends mixins(Lang) {
         previousIndex -= 1
         previousLastChoice = this.block.config.choices[previousIndex]
       }
-      this.focusInputElFor(this.$refs.draftChoice as Vue)
+      this.focusInputElFor(this.$refs.draftChoice as any)
       this.$emit('choiceChanged', {resourceId})
       return
     }

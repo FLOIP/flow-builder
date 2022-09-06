@@ -35,7 +35,7 @@ export function deleteChoiceValueByPath(
   path: string,
 ): void {
   const [pointer, key] = makePath(choice, path)
-  Vue.delete(pointer, key)
+  delete pointer[key]
 }
 
 export function removeBlockValueByPath(

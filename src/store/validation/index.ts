@@ -86,7 +86,7 @@ export const mutations: MutationTree<IValidationState> = {
   removeValidationStatusesFor(state:any, {key}:any) {
     delete state.validationStatuses[key]
   },
-  resetValidationStatuses(state, {key}): void {
+  resetValidationStatuses(state: any, {key}): void {
     state.validationStatuses[key] = {ajvErrors: undefined}
     state.validationStatuses[key]['ajvErrors'] = []
   },

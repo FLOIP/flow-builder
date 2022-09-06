@@ -452,12 +452,12 @@ export class Block extends mixins(Lang) {
   }
 
   exitMouseEnter(exit: IBlockExit): void {
-    this.$set(this.exitHovers, exit.uuid, true)
+    this.exitHovers[exit.uuid] = true
     this.updateShouldShowBlockToolBar()
   }
 
   exitMouseLeave(exit: IBlockExit): void {
-    this.$set(this.exitHovers, exit.uuid, false)
+    this.exitHovers[exit.uuid] = false
     this.updateShouldShowBlockToolBar()
   }
 
@@ -469,7 +469,7 @@ export class Block extends mixins(Lang) {
 
   setLineClicked(exit: IBlockExit, value: boolean): void {
     this.$nextTick(() => {
-      this.$set(this.linePermanentlyActive, exit.uuid, value)
+      this.linePermanentlyActive[exit.uuid] value
     })
   }
 
@@ -585,7 +585,7 @@ export class Block extends mixins(Lang) {
 
     window.postMessage(BLOCK_RESET_CONNECTIONS, '*')
 
-    this.$set(this.exitOnDragged, exit.uuid, true)
+    this.exitOnDragged[exit.uuid] = true
     this.isConnectionSource = true
 
     this.initializeConnectionCreateWith({
@@ -604,7 +604,7 @@ export class Block extends mixins(Lang) {
   onCreateExitDragEnded({draggable}: {draggable: Draggable}, exit: IBlockExit): void {
     const {x: left, y: top} = this.operations[OperationKind.CONNECTION_CREATE]!.data!.position
 
-    this.$set(this.exitOnDragged, exit.uuid, false)
+    this.exitOnDragged[exit.uuid] = false
     this.isConnectionSource = false
 
     console.debug('Block', 'onCreateExitDragEnded', 'operation.data.position', {left, top})

@@ -4,7 +4,7 @@ import {IRootState} from '@/store'
 import {IBlock, IContainer, IContext} from '@floip/flow-runner'
 import {cloneDeep, difference, differenceWith, find, findIndex, get, isEmpty, isEqual, join, keys, reject, set, uniq} from 'lodash'
 import {ErrorObject} from 'ajv'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {IContactPropertyMultipleChoice} from '../block-types/Core_SetContactPropertyStore'
 import {IGroupOption} from '../block-types/Core_SetGroupMembershipStore'
 import {
@@ -264,7 +264,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
       const supportedSpecVersions = rootGetters?.supportedFlowSpecVersionsForImport
       if (supportedSpecVersions === undefined
         || !Array.isArray(supportedSpecVersions)
-        || (Array.isArray(supportedSpecVersions) && supportedSpecVersions === [])) {
+        || (Array.isArray(supportedSpecVersions) && !supportedSpecVersions.length)) {
         throw new Error('Please set the supportedFlowSpecVersionsForImport in flow config')
       }
 
