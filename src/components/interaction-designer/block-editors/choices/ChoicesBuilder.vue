@@ -3,12 +3,11 @@
     <label class="text-primary">{{ 'flow-builder.choices' | trans }}</label>
 
     <!-- Show non-empty choices -->
-    <template v-for="(resource, i) in choiceResourcesOrderedByResourcesList">
+    <template v-for="(resource, i) in choiceResourcesOrderedByResourcesList" :key="resource.uuid">
       <!--the index for resource-variant-text-editor will always be `0` because we have only 01 text resource.
       This will make sure we have the right validation message displayed -->
       <resource-variant-text-editor
         ref="choices"
-        :key="resource.uuid"
         :index="0"
         class="choices-builder-item"
         :prepend-text="(i + 1).toString()"

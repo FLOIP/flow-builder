@@ -226,15 +226,11 @@ type BlockExitAction = ({block, exit}: { block: IBlock, exit: IBlockExit }) => v
 type BlockPositionAction = ({block, position}: { block: IBlock, position: IPosition }) => void;
 type BlockExitPositionAction = ({block, exit, position}: { block: IBlock, exit: IBlockExit, position: IPosition }) => void;
 
-<<<<<<< HEAD
-@Options({})
-=======
 const ICON_SIZE = 10
 
 export const BLOCK_RESET_CONNECTIONS = 'BLOCK_RESET_CONNECTIONS'
 
-@Component({})
->>>>>>> 85fb3aee1c5e676657363ee8317ffd26b040a70e
+@Options({})
 export class Block extends mixins(Lang) {
   @Prop({type: Object, required: true}) readonly block!: IBlock
   @Prop({type: Number, required: true}) readonly x!: number
@@ -456,13 +452,6 @@ export class Block extends mixins(Lang) {
   }
 
   exitMouseEnter(exit: IBlockExit): void {
-<<<<<<< HEAD
-    this.exitHovers[exit.uuid] = true
-  }
-
-  exitMouseLeave(exit: IBlockExit): void {
-    this.exitHovers[exit.uuid] = false
-=======
     this.$set(this.exitHovers, exit.uuid, true)
     this.updateShouldShowBlockToolBar()
   }
@@ -470,7 +459,6 @@ export class Block extends mixins(Lang) {
   exitMouseLeave(exit: IBlockExit): void {
     this.$set(this.exitHovers, exit.uuid, false)
     this.updateShouldShowBlockToolBar()
->>>>>>> 85fb3aee1c5e676657363ee8317ffd26b040a70e
   }
 
   setLineHovered(exit: IBlockExit, value: boolean): void {

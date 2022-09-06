@@ -50,12 +50,8 @@
     "backbone": "^1.4.0",
     "bootstrap": "^4.5.3",
     "bootstrap-datetimepicker": "^0.0.7",
-<<<<<<< HEAD
     "bootstrap-vue-3": "^0.3.0",
-=======
-    "bootstrap-vue": "^2.21.1",
     "caniuse-lite": "^1.0.30001377",
->>>>>>> 85fb3aee1c5e676657363ee8317ffd26b040a70e
     "core-js": "^3.6.5",
     "cssprefix": "^2.0.16",
     "floating-vue": "^2.0.0-beta.19",

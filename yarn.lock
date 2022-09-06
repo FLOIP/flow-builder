@@ -2657,7 +2657,7 @@
   resolved "https://registry.yarnpkg.com/@storybook/babel-plugin-require-context-hook/-/babel-plugin-require-context-hook-1.0.1.tgz#0a4ec9816f6c7296ebc97dd8de3d2b7ae76f2e26"
   integrity sha512-WM4vjgSVi8epvGiYfru7BtC3f0tGwNs7QK3Uc4xQn4t5hHQvISnCqbNrHdDYmNW56Do+bBztE8SwP6NGUvd7ww==
 
-"@storybook/builder-webpack4@6.5.10", "@storybook/builder-webpack4@^6.5.10":
+"@storybook/builder-webpack4@6.5.10":
   version "6.5.10"
   resolved "https://registry.yarnpkg.com/@storybook/builder-webpack4/-/builder-webpack4-6.5.10.tgz#79e95323577a37349ab3c81193fa249ac5c50173"
   integrity sha512-AoKjsCNoQQoZXYwBDxO8s+yVEd5FjBJAaysEuUTHq2fb81jwLrGcEOo6hjw4jqfugZQIzYUEjPazlvubS78zpw==
@@ -3088,7 +3088,7 @@
     core-js "^3.8.2"
     global "^4.4.0"
 
-"@storybook/manager-webpack4@6.5.10", "@storybook/manager-webpack4@^6.5.10":
+"@storybook/manager-webpack4@6.5.10":
   version "6.5.10"
   resolved "https://registry.yarnpkg.com/@storybook/manager-webpack4/-/manager-webpack4-6.5.10.tgz#41bae252b863484f293954ef2d2dc80bf3e028f1"
   integrity sha512-N/TlNDhuhARuFipR/ZJ/xEVESz23iIbCsZ4VNehLHm8PpiGlQUehk+jMjWmz5XV0bJItwjRclY+CU3GjZKblfQ==
@@ -6454,10 +6454,10 @@ bootstrap-datetimepicker@^0.0.7:
   resolved "https://registry.yarnpkg.com/bootstrap-datetimepicker/-/bootstrap-datetimepicker-0.0.7.tgz#a98312648894b81915531b057ff742835843f971"
   integrity sha512-quEKB8tN5vmgKvo9/JifZCytxi1GieHsOlbkUxAnKFkc/4fQJOxTDiZUr5u7HqlP41BeUpjM4ll1euOefh31ig==
 
-bootstrap-vue-3@^0.2.13:
-  version "0.2.14"
-  resolved "https://registry.yarnpkg.com/bootstrap-vue-3/-/bootstrap-vue-3-0.2.14.tgz#fe9216d560833b6a74dc568c8716252dfbe96053"
-  integrity sha512-sPtRq+vhehvY0ksUNSIOdgoWc6mJZ75LyrG40JGkH+nfU2dthcCWS2m/1RAiJSk3vO9uSDK3OujIziTPwn6D3g==
+bootstrap-vue-3@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/bootstrap-vue-3/-/bootstrap-vue-3-0.3.0.tgz#7bccfaf174c2f171f0b4b47a2a9a079f25925a10"
+  integrity sha512-PvBLc5jTcBTGdsTFxykg9bWXfR+dUyi3gT7oRk0myHaLldVBV50Z/NWnqto3d5wYl+gSNTh3aJSlQ/Cxd9F48g==
 
 bootstrap@^4.5.3:
   version "4.6.2"
