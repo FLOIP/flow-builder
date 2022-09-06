@@ -1,12 +1,12 @@
 <template>
   <div class="choices-builder form-group">
-    <h4>{{ 'flow-builder.choices' | trans }}</h4>
+    <h4>{{ trans('flow-builder.choices') }}</h4>
 
     <!-- Show non-empty choices -->
-    <template v-for="(resource, i) in choiceResourcesOrderedByResourcesList">
+    <template v-for="(resource, i) in choiceResourcesOrderedByResourcesList" :key="resource.uuid">
       <resource-variant-text-editor
         ref="choices"
-        :key="resource.uuid"
+        
         :index="i"
         class="choices-builder-item"
         :label="(i + 1).toString()"
@@ -45,21 +45,20 @@
 <script lang="ts">
 import {get, intersectionWith, isEmpty, last} from 'lodash'
 import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
-import {Component, Prop} from 'vue-property-decorator'
-import {mixins} from 'vue-class-component'
-import Lang from '@/lib/filters/lang'
+import {Prop} from 'vue-property-decorator'
+import {mixins, Options} from 'vue-class-component'
+import {Lang} from '@/lib/filters/lang'
 import {IBlock, IFlow, IResource, SupportedContentType, SupportedMode} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import Vue from 'vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const validationVuexNamespace = namespace('validation')
 
-@Component({})
+@Options({})
 export class ChoicesBuilder extends mixins(Lang) {
   @Prop() readonly block!: ISelectOneResponseBlock
 
@@ -100,12 +99,12 @@ export class ChoicesBuilder extends mixins(Lang) {
     this.addChoiceByResourceIdTo({blockId: this.block.uuid, resourceId: this.draftResource.uuid})
 
     this.$nextTick(() =>
-      this.focusInputElFor(last(this.$refs.choices as Vue[])))
+      this.focusInputElFor(last(this.$refs.choices as any[])))
 
     await this.generateDraftResource()
   }
 
-  focusInputElFor(editor?: Vue): void {
+  focusInputElFor(editor?: any): void {
     if (editor) {
       // Target input may be nested inside another Vue component
       (editor.$el.querySelector('input, textarea') as HTMLElement)?.focus()
@@ -120,7 +119,7 @@ export class ChoicesBuilder extends mixins(Lang) {
       // todo: clean up resource, but should we first check for references?
       // this.resource_delete({resourceId: resource.uuid})
       this.deleteChoiceByResourceIdFrom({blockId: this.block.uuid, resourceId})
-      this.focusInputElFor(this.$refs.draftChoice as Vue)
+      this.focusInputElFor(this.$refs.draftChoice as any)
       return
     }
 

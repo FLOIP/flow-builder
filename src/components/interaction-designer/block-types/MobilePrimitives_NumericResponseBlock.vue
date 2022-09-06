@@ -48,15 +48,15 @@
 
 <script lang="ts">
 import {namespace} from 'vuex-class'
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 
 import {IBlock, IBlockExit, IFlow, IResource} from '@floip/flow-runner'
 import {INumericResponseBlock} from '@floip/flow-runner/src/model/block/INumericResponseBlock'
 
 import NumericStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
-import {mixins} from 'vue-class-component'
+import {mixins, Options} from 'vue-class-component'
 import {
   IBlockWithBranchingType,
   OutputBranchingType,
@@ -66,7 +66,7 @@ const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component({})
+@Options({})
 class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: INumericResponseBlock
   @Prop() readonly flow!: IFlow

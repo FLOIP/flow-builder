@@ -1,13 +1,9 @@
 import RunAnotherFlowBlock from '@/components/interaction-designer/block-types/Core_RunFlowBlock.vue'
 import runAnotherFlowBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_RunFlowBlockStore'
-import {Component, Vue} from 'vue-property-decorator'
+import {Options} from 'vue-class-component'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import Vuex from 'vuex'
-import {IRootState, store} from '@/store'
 import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-
-Vue.use(Vuex)
 
 export default {
   title: 'Core/Run Another Flow Block Styled',
@@ -25,11 +21,10 @@ const RunAnotherFlowBlockTemplate = `
 const BaseOptions: IBaseOptions = {
   components: {RunAnotherFlowBlock, FlowBuilderSidebarEditorContainer},
   template: RunAnotherFlowBlockTemplate,
-  store: new Vuex.Store<IRootState>(store),
 }
 
 // default state
-@Component({
+@Options({
   ...BaseOptions,
 })
 class DefaultClass extends BaseMountedVueClass {

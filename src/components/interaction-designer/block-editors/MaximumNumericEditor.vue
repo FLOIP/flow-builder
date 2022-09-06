@@ -6,8 +6,8 @@
       <numeric-editor
         v-model.number="maxValue"
         :regex-numeric-filtering="'[0-9]'"
-        :label="'flow-builder.maximum-value-(inclusive)' | trans"
-        :placeholder="'flow-builder.enter-value' | trans"
+        :label="trans('flow-builder.maximum-value-(inclusive)')"
+        :placeholder="trans('flow-builder.enter-value')"
         :valid-state="isValid" />
     </div>
   </validation-message>
@@ -15,12 +15,12 @@
 
 <script lang="ts">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import Lang from '@/lib/filters/lang'
-import Component, {mixins} from 'vue-class-component'
+import {Lang} from '@/lib/filters/lang'
+import {mixins, Options} from 'vue-class-component'
 import {Prop} from 'vue-property-decorator'
 import {IBlock} from '@floip/flow-runner'
 
-@Component({})
+@Options({})
 export class MaximumNumericEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 

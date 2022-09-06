@@ -6,8 +6,8 @@
         <numeric-editor
           v-model.number="timeout"
           :regex-numeric-filtering="'[0-9]'"
-          :label="'flow-builder.accuracy-timeout-in-seconds' | trans"
-          :placeholder="'flow-builder.enter-value' | trans"
+          :label="trans('flow-builder.accuracy-timeout-in-seconds')"
+          :placeholder="trans('flow-builder.enter-value')"
           :valid-state="isValid" />
       </div>
     </template>
@@ -16,12 +16,12 @@
 
 <script lang="ts">
 import {get} from 'lodash'
-import {mixins} from 'vue-class-component'
-import {Component, Prop} from 'vue-property-decorator'
-import Lang from '@/lib/filters/lang'
+import {mixins, Options} from 'vue-class-component'
+import {Prop} from 'vue-property-decorator'
+import {Lang} from '@/lib/filters/lang'
 import {IBlock} from '@floip/flow-runner'
 
-@Component({})
+@Options({})
 export class TimeoutEditor extends mixins(Lang) {
   @Prop({type: Object, required: true}) readonly block!: IBlock
 

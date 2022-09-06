@@ -17,7 +17,7 @@
           :block="block"
           @commitFormatStringChange="setFormatString" />
         <div>
-          <h6>{{ 'flow-builder.destination-variable' | trans }}</h6>
+          <h6>{{ trans('flow-builder.destination-variable') }}</h6>
           <div
             v-for="(variableStringFormat,i) in destinationVariablesFields"
             :key="i"
@@ -27,7 +27,7 @@
               :message-key="`block/${block.uuid}/config/destination_variables/${i}`">
               <text-editor
                 :label="''"
-                :placeholder="'flow-builder.destination-variable-placeholder' | trans"
+                :placeholder="trans('flow-builder.destination-variable-placeholder')"
                 :valid-state="isValid"
                 value=""
                 @keydown="filterVariableName"
@@ -54,19 +54,19 @@
 
 <script lang="ts">
 import {namespace} from 'vuex-class'
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 
 import {IBlock, IFlow} from '@floip/flow-runner'
 import {IReadBlock} from '@floip/flow-runner/src/model/block/IReadBlock'
 import ReadStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
-import {mixins} from 'vue-class-component'
+import {mixins, Options} from 'vue-class-component'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component({})
+@Options({})
 class ConsoleIO_ReadBlock extends mixins(Lang) {
   @Prop() readonly declare block: IReadBlock
   @Prop() readonly declare flow: IFlow

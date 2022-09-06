@@ -18,13 +18,13 @@
           :message-key="`block/${block.uuid}/config/flow_id`">
           <div class="form-group">
             <!--
-            <label class="text-primary">{{ 'flow-builder.destination-flow' | trans }}</label>
+            <label class="text-primary">{{ trans('flow-builder.destination-flow') }}</label>
             <select
               v-model="destinationFlowId"
               class="form-control"
               :class="{ 'is-invalid': isValid === false }">
               <option value="">
-                {{ 'flow-builder.none-selected' | trans }}
+                {{ trans('flow-builder.none-selected') }}
               </option>
               <option
                 v-for="(flow, i) in otherFlows"
@@ -36,8 +36,8 @@
           -->
             <text-editor
               v-model="destinationFlowId"
-              :label="'flow-builder.destination-flow' | trans"
-              :placeholder="'flow-builder.enter-destination-flow-id' | trans"
+              :label="trans('flow-builder.destination-flow')"
+              :placeholder="trans('flow-builder.enter-destination-flow-id')"
               :valid-state="isValid" />
           </div>
         </validation-message>
@@ -60,19 +60,19 @@
 
 <script lang="ts">
 import {namespace} from 'vuex-class'
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 
 import {IRunFlowBlock} from '@floip/flow-runner/src/model/block/IRunFlowBlock'
 import {IBlock, IFlow} from '@floip/flow-runner'
 import RunAnotherFlowStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_RunFlowBlockStore'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
-import {mixins} from 'vue-class-component'
+import {mixins, Options} from 'vue-class-component'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component({})
+@Options({})
 class Core_RunAnotherFlowBlock extends mixins(Lang) {
   @Prop() readonly block!: IRunFlowBlock
   @Prop() readonly flow!: IFlow

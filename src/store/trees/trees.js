@@ -1,8 +1,6 @@
 import axios from 'axios'
 import lodash, {get, set} from 'lodash'
 
-import Vue from 'vue'
-
 import {routeFrom} from '@/lib/mixins/Routes'
 import flights from '@/store/common/flight-monitor'
 
@@ -246,7 +244,7 @@ export default {
 
     updateBlockCustomDataFor({tree, ui}, {jsKey, key, value}) {
       const block = lodash.find(tree.blocks, {jsKey})
-      Vue.set(block.customData, key, value)
+      block.customData[key] = value
     },
 
     updateBlockCustomDataWithNestedKeyFor({tree, ui}, {jsKey, nestedKey, value}) {
@@ -258,12 +256,12 @@ export default {
 
     updateBlockUiDataFor({tree, ui}, {jsKey, key, value}) {
       const block = lodash.find(tree.blocks, {jsKey})
-      Vue.set(block.uiData, key, value)
+      block.uiData[key] = value
     },
 
     updateMaxNumericDigits({tree, ui}, {value}) {
       const selectedBlock = lodash.find(tree.blocks, {jsKey: ui.selectedBlock})
-      Vue.set(selectedBlock, 'customData.maxNumericDigits', value)
+      selectedBlock['customData.maxNumericDigits'] = value
     },
 
     updateBlockContentFor({tree, ui}, {
@@ -273,9 +271,9 @@ export default {
       // social has nested text content
       if (type === 'social') {
         if (!block.socialContent[langId]) {
-          Vue.set(block.socialContent, langId, {})
+          block.socialContent[langId] = {}
         }
-        Vue.set(block.socialContent[langId], 'text', value)
+        block.socialContent[langId].text = value
       } else {
         block[`${type}Content`] = {
           ...block[`${type}Content`],
@@ -291,12 +289,12 @@ export default {
 
       const content = lodash.get(block, `${contentType}Content`)
       if (content[langId] === undefined) {
-        Vue.set(content, langId, {})
+        content[langId] = {}
       }
-      Vue.set(content[langId], 'fileUrl', fileUrl)
-      Vue.set(content[langId], 'fileId', fileId)
-      Vue.set(content[langId], 'fileType', fileType)
-      Vue.set(content[langId], 'mimeType', mimeType)
+      content[langId].fileUrl = fileUrl
+      content[langId].fileId = fileId
+      content[langId].fileType = fileType
+      content[langId].mimeType = mimeType
     },
 
     updateBlockFileContentForAllLanguages({tree, ui}, {
@@ -306,15 +304,15 @@ export default {
 
       const content = lodash.get(block, `${contentType}Content`)
 
-      Vue.set(content, 'allLanguagesFileUrl', fileUrl)
-      Vue.set(content, 'allLanguagesFileId', fileId)
-      Vue.set(content, 'allLanguagesFileType', fileType)
-      Vue.set(content, 'allLanguagesMimeType', mimeType)
+      content.allLanguagesFileUrl = fileUrl
+      content.allLanguagesFileId = fileId
+      content.allLanguagesFileType = fileType
+      content.allLanguagesMimeType = mimeType
     },
 
     initBlockAutoGenStateFor({tree, ui}, {type, jsKey}) {
       const block = lodash.find(tree.blocks, {jsKey})
-      Vue.set(block, `${type}AutogenLangs`, [])
+      block[`${type}AutogenLangs`] = []
     },
 
     updateBlockAutoGenStateFor({tree, ui}, {
@@ -403,7 +401,7 @@ export default {
     },
 
     setInteractionTotals(state, {interactionTotals}) {
-      Vue.set(state.ui, 'interactionTotals', interactionTotals)
+      state.ui.interactionTotals = interactionTotals
     },
   },
 

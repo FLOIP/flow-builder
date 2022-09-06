@@ -6,13 +6,13 @@
 
 <script lang="ts">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import {mixins} from 'vue-class-component'
-import {Component, Prop} from 'vue-property-decorator'
+import {mixins, Options} from 'vue-class-component'
+import {Prop} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 import LeaderLine from 'leader-line'
 import {set} from 'lodash'
 import {IBlock, IBlockExit} from '@floip/flow-runner'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {IConnectionContext} from '@/store/builder'
 
 const lightColor = '#6897BB'
@@ -35,7 +35,7 @@ interface ILeaderLineOptions {
   startSocket: string,
 }
 
-@Component({})
+@Options({})
 export class Connection extends mixins(Lang) {
   @Prop({type: Object, required: true}) readonly exit!: IBlockExit
   @Prop({type: Function, required: true}) readonly repaintCacheKeyGenerator!: Function

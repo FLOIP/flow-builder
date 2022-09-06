@@ -1,6 +1,6 @@
 import moment, {DurationInputArg1, DurationInputArg2, MomentInput} from 'moment'
 
-import {Component, Vue} from 'vue-property-decorator'
+import {Vue, Options} from 'vue-class-component'
 
 export function formatDate(date: MomentInput, format = 'llll'): string {
   if (date === null || date === undefined) {
@@ -39,8 +39,8 @@ export function formatDurationLocalized(
   return result
 }
 
-@Component({
-  filters: {
+@Options({
+  methods: {
     formatDate,
     fromNow,
     formatDuration,

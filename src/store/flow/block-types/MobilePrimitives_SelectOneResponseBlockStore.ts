@@ -3,7 +3,6 @@ import {IRootState} from '@/store'
 import {findBlockWith, IBlock, IBlockExit, IResource, ValidationException} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
-import Vue from 'vue'
 import {cloneDeep, findKey, get, map, omit, snakeCase} from 'lodash'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 
@@ -39,13 +38,13 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     const doesChoiceKeyAlreadyExist = desiredChoiceKey in block.config.choices
     // apply suffix as resourceId when duplicated to prevent overwriting as input is received
     const suffix = doesChoiceKeyAlreadyExist ? `-${resource.uuid}` : ''
-    Vue.set(block.config.choices, `${desiredChoiceKey}${suffix}`, resource.uuid)
+    block.config.choices[`${desiredChoiceKey}${suffix}`] = resource.uuid
   },
 
   deleteChoiceByResourceIdFrom({rootGetters}, {blockId, resourceId}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'] }) {
     const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
     const choiceKey = String(findKey(block.config.choices, (v) => v === resourceId))
-    Vue.delete(block.config.choices, choiceKey)
+    delete block.config.choices[choiceKey]
   },
 
   async reflowExitsFromChoices({dispatch, rootGetters}, {blockId}: { blockId: IBlock['uuid'] }) {

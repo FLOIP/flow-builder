@@ -3,22 +3,22 @@
     <numeric-editor
       v-model.number="interactionTimeout"
       :regex-numeric-filtering="'[0-9]'"
-      :label="'flow-builder.Interaction-timeout' | trans"
-      :placeholder="'flow-builder.enter-value' | trans"
+      :label="trans('flow-builder.Interaction-timeout')"
+      :placeholder="trans('flow-builder.enter-value')"
       :valid-state="validState" />
   </div>
 </template>
 
 <script lang="ts">
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 import {IFlow} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
-import Lang from '@/lib/filters/lang'
-import {mixins} from 'vue-class-component'
+import {Lang} from '@/lib/filters/lang'
+import {mixins, Options} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component({})
+@Options({})
 export class InteractionTimeoutEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
   @Prop() validState?: boolean

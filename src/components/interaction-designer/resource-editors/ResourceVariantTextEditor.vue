@@ -17,9 +17,9 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop} from 'vue-property-decorator'
-import {mixins} from 'vue-class-component'
-import Lang from '@/lib/filters/lang'
+import {Prop} from 'vue-property-decorator'
+import {mixins, Options} from 'vue-class-component'
+import {Lang} from '@/lib/filters/lang'
 import {IResource, IResourceValue} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 import ExpressionInput from '@/components/common/ExpressionInput.vue'
@@ -27,7 +27,7 @@ import {SupportedMode} from '@floip/flow-runner/src/flow-spec/SupportedMode'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component({
+@Options({
   components: {ExpressionInput},
 })
 export class ResourceVariantTextEditor extends mixins(Lang) {

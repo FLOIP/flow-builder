@@ -12,7 +12,7 @@
         name="resource-editors">
         <resource-editor
           v-if="promptResource"
-          :label="'flow-builder.prompt' | trans"
+          :label="trans('flow-builder.prompt')"
           :resource="promptResource"
           :block="block"
           :flow="flow" />
@@ -50,17 +50,17 @@
 </template>
 
 <script lang="ts">
-import {Component} from 'vue-property-decorator'
 import SelectManyResponseStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 import {namespace} from 'vuex-class'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {IBlock} from '@floip/flow-runner'
 import SelectOneResponseBlock from './MobilePrimitives_SelectOneResponseBlock.vue'
+import {Options} from 'vue-class-component'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component({})
+@Options({})
 export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {
   //Important: Even we extends from SelectOneResponseBlock, to avoid conflict
   // we SHOULD re-declare @blockVuexNamespace based getter, state, action, mutation

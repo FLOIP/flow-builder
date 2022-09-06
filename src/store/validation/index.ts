@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {ErrorObject} from 'ajv'
@@ -65,7 +64,7 @@ export const getters: GetterTree<IValidationState, IRootState> = {
    *
    * Note that indexedErrors has more elements than validationStatuses.
    */
-  flattenErrorMessages(state): IIndexedString {
+  flattenErrorMessages(state:any): IIndexedString {
     const accumulator: IIndexedString = {}
     forIn(state.validationStatuses, (validationStatus: IValidationStatus, index: string) => {
       flatValidationStatuses({
@@ -83,21 +82,21 @@ export const getters: GetterTree<IValidationState, IRootState> = {
 }
 
 export const mutations: MutationTree<IValidationState> = {
-  removeValidationStatusesFor(state, {key}) {
+  removeValidationStatusesFor(state:any, {key}:any) {
     delete state.validationStatuses[key]
   },
 }
 
 export const actions: ActionTree<IValidationState, IRootState> = {
-  async validate_block({state, commit, rootGetters, dispatch}, {block}: {block: IBlock}): Promise<IValidationStatus> {
+  async validate_block({state, commit, rootGetters, dispatch}: any, {block}: {block: IBlock}): Promise<IValidationStatus> {
     const schemaVersion = rootGetters['flow/activeFlowContainer'].specification_version
     const status = await dispatch(`flow/${block.type}/validate`, {block, schemaVersion}, {root: true})
 
     const key = `block/${block.uuid}`
-    Vue.set(state.validationStatuses, key, {
+    state.validationStatuses[key] = {
       ...status,
       ajvErrors: getLocalizedAjvErrors(key, status.ajvErrors),
-    })
+    }
     if (status.ajvErrors === null) {
       commit('removeValidationStatusesFor', {key})
     }
@@ -108,7 +107,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
   /**
    * Validate blocks from backend SAVE action.
    */
-  async validate_allBlocksFromBackend({dispatch}): Promise<void> {
+  async validate_allBlocksFromBackend({dispatch}: any): Promise<void> {
     await dispatch('validate_fromBackend', {type: 'block'})
     await dispatch('validate_fromBackend', {type: 'resource'})
   },
@@ -128,7 +127,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
    *   }
    * }
    */
-  async validate_fromBackend({state, rootGetters}, {type}: {type: 'block' | 'resource'}): Promise<void> {
+  async validate_fromBackend({state, rootGetters}: any, {type}: {type: 'block' | 'resource'}): Promise<void> {
     const backendErrorsList = get(
     rootGetters['flow/activeFlow']?.vendor_metadata?.floip?.ui_metadata?.validation_results,
       `${type}s`,
@@ -139,10 +138,10 @@ export const actions: ActionTree<IValidationState, IRootState> = {
       const key = `backend/${type}/${currentUuid}`
       const currentErrors = backendErrorsList[currentUuid]
 
-      Vue.set(state.validationStatuses, key, {
+      state.validationStatuses[key] = {
         isValid: currentErrors === undefined || currentErrors.length === 0,
         ajvErrors: getLocalizedBackendErrors(key, currentErrors),
-      })
+      }
 
       debugValidationStatus(state.validationStatuses[key], `${type} validation based on backend action`)
     })
@@ -152,7 +151,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
    * Validate all existing blocks in current flow
    * This is useful when the flow has changed, and may affect blocks' validation
    */
-  async validate_allBlocksWithinFlow({rootGetters, dispatch}): Promise<void> {
+  async validate_allBlocksWithinFlow({rootGetters, dispatch}: any): Promise<void> {
     await Promise.all(
       rootGetters['flow/activeFlow'].blocks.map(async (currentBlock: IBlock) => {
         await dispatch('validate_block', {block: currentBlock})
@@ -160,55 +159,55 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     )
   },
 
-  async validate_flow({state, rootGetters}, {flow}: {flow: IFlow}): Promise<IValidationStatus> {
+  async validate_flow({state, rootGetters}: any, {flow}: {flow: IFlow}): Promise<IValidationStatus> {
     const validate = getOrCreateFlowValidator(rootGetters['flow/activeFlowContainer'].specification_version)
     const key = `flow/${flow.uuid}`
-    Vue.set(state.validationStatuses, key, {
+    state.validationStatuses[key] = {
       isValid: validate(flow),
       ajvErrors: getLocalizedAjvErrors(key, validate.errors),
       type: 'flow',
-    })
+    }
 
     debugValidationStatus(state.validationStatuses[key], 'flow validation status')
     return state.validationStatuses[key]
   },
 
-  async validate_flowContainer({state}, {flowContainer}: { flowContainer: IContainer }): Promise<IValidationStatus> {
+  async validate_flowContainer({state}:any, {flowContainer}: { flowContainer: IContainer }): Promise<IValidationStatus> {
     const key = `flowContainer/${flowContainer.uuid}`
     const errors = getFlowStructureErrors(flowContainer, false)
-    Vue.set(state.validationStatuses, key, {
+    state.validationStatuses[key] = {
       isValid: !errors,
       ajvErrors: getLocalizedAjvErrors(key, errors),
-    })
+    }
 
     debugValidationStatus(state.validationStatuses[key], 'flow container validation status')
     return state.validationStatuses[key]
   },
 
-  async validate_new_language({state, rootGetters}, {language}: { language: ILanguage }): Promise<IValidationStatus> {
+  async validate_new_language({state, rootGetters}: any, {language}: { language: ILanguage }): Promise<IValidationStatus> {
     const validate = getOrCreateLanguageValidator(rootGetters['flow/activeFlowContainer'].specification_version)
     const index = 'language/new_language'
-    Vue.set(state.validationStatuses, index, {
+    state.validationStatuses[index] = {
       isValid: validate(language),
       ajvErrors: validate.errors,
-    })
+    }
 
     debugValidationStatus(state.validationStatuses[index], 'language validation status')
     return state.validationStatuses[index]
   },
-  validation_removeNewLanguageValidation({state}): void {
+  validation_removeNewLanguageValidation({state}: any): void {
     const index = 'language/new_language'
-    Vue.delete(state.validationStatuses, index)
+    delete state.validationStatuses[index]
   },
 
-  async validate_resource({state, rootGetters}, {resource}: {resource: IResource}): Promise<IValidationStatus> {
+  async validate_resource({state, rootGetters}: any, {resource}: {resource: IResource}): Promise<IValidationStatus> {
     const validate = getOrCreateResourceValidator(rootGetters['flow/activeFlowContainer'].specification_version)
     const key = `resource/${resource.uuid}`
-    Vue.set(state.validationStatuses, key, {
+    state.validationStatuses[key] = {
       isValid: validate(resource),
       ajvErrors: getLocalizedAjvErrors(key, validate.errors),
       type: 'resource',
-    })
+    }
 
     debugValidationStatus(state.validationStatuses[key], 'resource validation status')
     return state.validationStatuses[key]
@@ -222,7 +221,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
    *
    */
   async validate_resourcesOnSupportedValues(
-    {dispatch, getters},
+    {dispatch, getters}: any,
     {resources, supportedModes, supportedLanguages}: {resources: IResource[], supportedModes: SupportedMode[], supportedLanguages: ILanguage[]},
   ): Promise<void> {
     if (!resources) {
@@ -234,7 +233,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
       // only get values having supported modes and values which content type is supported by the UI
       resourceWithNewValues.values = filter(
         resource.values,
-        (v) => {
+        (v: any) => {
           const hasSupportedLang = includes(map(supportedLanguages, 'id'), v.language_id)
           const isChoiceResource = v.mime_type === getters.choiceMimeType
           const hasSupportedMode = !isEmpty(intersection(supportedModes, v.modes))
@@ -248,7 +247,7 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     })
 
     await Promise.all(
-      each(resourcesWithSupportedValues, async (currentResource) => {
+      each(resourcesWithSupportedValues, async (currentResource: any) => {
         await dispatch('validate_resource', {resource: currentResource})
       }),
     )

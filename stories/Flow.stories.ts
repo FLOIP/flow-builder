@@ -1,15 +1,11 @@
-import {Component, Vue} from 'vue-property-decorator'
 import FlowEditor from '@/components/interaction-designer/flow-editors/FlowEditor.vue'
 import {namespace} from 'vuex-class'
 import {ILanguage, SupportedMode} from '@floip/flow-runner'
-import Vuex from 'vuex'
-import {IRootState, store} from '@/store'
 import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
+import {Options, Vue} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
-
-Vue.use(Vuex)
 
 export default {
   title: 'Flow/Flow Editor',
@@ -26,11 +22,10 @@ const FlowEditorTemplate = `
 const BaseOptions: IBaseOptions = {
   components: {FlowBuilderSidebarEditorContainer, FlowEditor},
   template: FlowEditorTemplate,
-  store: new Vuex.Store<IRootState>(store),
 }
 
 // Stories
-@Component({
+@Options({
   ...BaseOptions,
 })
 class CurrentClass extends BaseMountedVueClass {
@@ -45,7 +40,7 @@ class CurrentClass extends BaseMountedVueClass {
 export const Default = () => (CurrentClass)
 
 //ExistingDataPreFilled
-@Component({
+@Options({
   ...BaseOptions,
 })
 class CurrentClass2 extends BaseMountedVueClass {

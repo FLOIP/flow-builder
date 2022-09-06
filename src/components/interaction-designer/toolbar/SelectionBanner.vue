@@ -6,7 +6,7 @@
       class="alert alert-primary mb-0 d-flex py-sm-2 px-3"
       role="alert">
       <div class="mr-3">
-        {{ 'flow-builder.selected-x-blocks' | trans({x: countSelectedBlocks}) }}.
+        {{ trans('flow-builder.selected-x-blocks', {x: countSelectedBlocks}) }}.
       </div>
 
       <!--Main multiselect actions-->
@@ -15,37 +15,37 @@
           class="btn btn-danger btn-sm mr-2"
           @click="deleting = true">
           <font-awesome-icon :icon="['far', 'trash-alt']" />
-          {{ 'flow-builder.delete' | trans }}
+          {{ trans('flow-builder.delete', ) }}
         </button>
 
         <button
           class="btn btn-outline-dark btn-sm mr-2"
           @click.prevent="handleMultipleDuplicate">
           <font-awesome-icon :icon="['fac', 'copy']" />
-          {{ 'flow-builder.duplicate' | trans }}
+          {{ trans('flow-builder.duplicate', ) }}
         </button>
 
         <button
           class="btn btn-outline-dark btn-sm ml-4"
           @click="flow_clearMultiSelection">
-          {{ 'flow-builder.clear-selection' | trans }}
+          {{ trans('flow-builder.clear-selection') }}
         </button>
       </div>
 
       <!--Delete confirmation-->
       <div v-if="deleting">
-        <b class="mr-3">{{ 'flow-builder.confirmation-for-delete-selection' | trans }}</b>
+        <b class="mr-3">{{ trans('flow-builder.confirmation-for-delete-selection') }}</b>
 
         <button
           class="btn btn-outline-dark btn-sm mr-2"
           @click="deleting = false">
-          {{ 'flow-builder.no-cancel' | trans }}
+          {{ trans('flow-builder.no-cancel') }}
         </button>
 
         <button
           class="btn btn-danger btn-sm mr-2"
           @click="confirmMultipleDeletion">
-          {{ 'flow-builder.yes-delete' | trans }}
+          {{ trans('flow-builder.yes-delete') }}
         </button>
       </div>
     </div>
@@ -53,15 +53,15 @@
 </template>
 
 <script lang="ts">
-import Lang from '@/lib/filters/lang'
-import Component, {mixins} from 'vue-class-component'
+import {Lang} from '@/lib/filters/lang'
+import {mixins, Options} from 'vue-class-component'
 import {namespace} from 'vuex-class'
 import {IBlock} from '@floip/flow-runner'
 import {size} from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component({})
+@Options({})
 export class SelectionBanner extends mixins(Lang) {
   deleting = false
 

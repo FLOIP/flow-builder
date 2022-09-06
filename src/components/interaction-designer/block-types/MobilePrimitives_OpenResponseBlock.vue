@@ -46,20 +46,20 @@
 
 <script lang="ts">
 import {namespace} from 'vuex-class'
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 
 import {IBlock, IFlow, IResource} from '@floip/flow-runner'
 import {IOpenResponseBlock} from '@floip/flow-runner/src/model/block/IOpenResponseBlock'
 import OpenResponseStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
-import {mixins} from 'vue-class-component'
+import {mixins, Options} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component({})
+@Options({})
 class MobilePrimitives_OpenResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: IOpenResponseBlock
   @Prop() readonly flow!: IFlow

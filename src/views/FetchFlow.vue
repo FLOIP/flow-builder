@@ -3,20 +3,20 @@
     <div class="d-flex h-100 text-center">
       <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <main class="px-3">
-          <h2>{{ message | trans }}</h2>
+          <h2>{{ trans(message) }}</h2>
           <router-link
             v-if="showNewButton"
             :to="route('flows.newFlow')"
             :title="trans('flow-builder.create-a-new-flow')"
             class="mt-3 btn btn-outline-secondary mr-2 active">
-            {{ 'flow-builder.new-flow' | trans }}
+            {{ trans('flow-builder.new-flow') }}
           </router-link>
           <router-link
             v-if="flowLink"
             :to="flowLink"
             :title="trans('flow-builder.flow-details')"
             class="mt-3 btn btn-outline-secondary mr-2 active">
-            {{ 'flow-builder.go-to-flow' | trans }}
+            {{ trans('flow-builder.go-to-flow') }}
           </router-link>
         </main>
       </div>
@@ -27,20 +27,20 @@
 <script lang="ts">
 
 import {forEach, isEmpty} from 'lodash'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 import {Getter, Mutation, namespace} from 'vuex-class'
 import {store} from '@/store'
 import {IFlow} from '@floip/flow-runner'
-import {mixins} from 'vue-class-component'
-import {RawLocation} from 'vue-router'
+import {mixins, Options} from 'vue-class-component'
+// import {RawLocation} from 'vue-router'
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
 
-@Component({})
-class FetchFlow extends mixins(Routes, Lang) {
+@Options({})
+class FetchFlow extends mixins(Lang, Routes) {
   @Prop({required: true}) readonly uuid!: string
   @Prop({default: () => ({})}) readonly appConfig!: object
   @Prop({default: () => ({})}) readonly builderConfig!: object
@@ -59,7 +59,7 @@ class FetchFlow extends mixins(Routes, Lang) {
   @Getter isConfigured!: boolean
 
   async mounted(): Promise<void> {
-    const nextUrl: RawLocation = this.$route.query.nextUrl as RawLocation
+    const nextUrl: any = this.$route.query.nextUrl as any
     const url = new URL(nextUrl as string, window.location.origin)
     const urlParams = url.searchParams.toString()
     const baseFetchRoute = this.route('flows.fetchFlowServer', {flowId: this.uuid})
@@ -82,7 +82,7 @@ class FetchFlow extends mixins(Routes, Lang) {
   }
 
   async beforeCreate(): Promise<void> {
-    const {$store} = this
+    const {$store}: any = this
 
     forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
   }

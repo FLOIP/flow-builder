@@ -28,18 +28,17 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop} from 'vue-property-decorator'
-import {mixins} from 'vue-class-component'
-import Lang from '@/lib/filters/lang'
+import {Prop} from 'vue-property-decorator'
+import {mixins, Options} from 'vue-class-component'
+import {Lang} from '@/lib/filters/lang'
 import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {isEmpty, last} from 'lodash'
-import Vue from 'vue'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component({})
+@Options({})
 export class AdvancedExitsBuilder extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
@@ -68,7 +67,7 @@ export class AdvancedExitsBuilder extends mixins(Lang) {
 
     this.$nextTick(() => {
       const isNamePopulated = !isEmpty(this.draftExit?.name)
-      const lastExitEditor = last(this.$refs.exitEditors as Vue[])
+      const lastExitEditor = last(this.$refs.exitEditors as any)
       // sadly defeats Demeter's law -- :/
       this.focusInputEl(isNamePopulated
         ? this.getNameInputFrom(lastExitEditor)
@@ -86,7 +85,7 @@ export class AdvancedExitsBuilder extends mixins(Lang) {
     }
 
     this.block_removeExit({blockId: this.block.uuid, exit})
-    this.focusInputEl(this.getTestInputFrom(this.$refs.draftExitEditor as Vue))
+    this.focusInputEl(this.getTestInputFrom(this.$refs.draftExitEditor as any))
   }
 
   hasEmptyValues(exit: IBlockExit): boolean {
@@ -97,12 +96,12 @@ export class AdvancedExitsBuilder extends mixins(Lang) {
     input?.focus()
   }
 
-  getNameInputFrom(exitEditor?: Vue): HTMLInputElement {
+  getNameInputFrom(exitEditor?: any): HTMLInputElement {
     return exitEditor?.$refs.name as HTMLInputElement
   }
 
-  getTestInputFrom(exitEditor?: Vue): HTMLInputElement {
-    return (exitEditor?.$refs.testExpressionInput as Vue).$refs.input as HTMLInputElement
+  getTestInputFrom(exitEditor?: any): HTMLInputElement {
+    return (exitEditor?.$refs.testExpressionInput as any).$refs.input as HTMLInputElement
   }
 
   @flowVuexNamespace.Mutation block_addExit!: ({blockId, exit}: {blockId: IBlock['uuid'], exit: IBlockExit}) => void

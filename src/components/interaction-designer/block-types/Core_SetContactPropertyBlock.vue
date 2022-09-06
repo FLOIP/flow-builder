@@ -33,16 +33,16 @@
 
 <script lang="ts">
 import {namespace} from 'vuex-class'
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 import {IBlock, IFlow} from '@floip/flow-runner'
 import SetContactPropertyStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_SetContactPropertyStore'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
-import {mixins} from 'vue-class-component'
+import {mixins, Options} from 'vue-class-component'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
-@Component({})
+@Options({})
 class Core_SetContactPropertyBlock extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly flow!: IFlow

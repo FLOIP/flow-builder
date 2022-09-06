@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import {Component} from 'vue-property-decorator'
+import { Vue } from 'vue-class-component'
+// import LangJs from 'lang.js'
 
 type globalType = typeof global & {
   Lang: any,
@@ -7,26 +7,44 @@ type globalType = typeof global & {
 const thisGlobal: globalType = global as globalType
 
 const proxy = (name: string, args: any) => (thisGlobal.Lang ? thisGlobal.Lang[name].apply(thisGlobal.Lang, args) : args[0])
-const createProxy = (name: string) => function () {
-  return proxy(name, arguments)
+// const createProxy = (name: string) => function () {
+//   return proxy(name, arguments)
+// }
+
+// // For vue-class based components
+// @Options({
+//   filters: {
+//     trans: createProxy('trans'),
+//     choice: createProxy('choice'),
+//   },
+// })
+
+interface StringReplacements {
+  [key: string]: string,
 }
 
-// For vue-class based components
-@Component({
-  filters: {
-    trans: createProxy('trans'),
-    choice: createProxy('choice'),
-  },
-})
-class Lang extends Vue {
-  trans(translation: string, interpolations?: object) {
-    return thisGlobal.Lang.trans(translation, interpolations)
-  }
+export const trans = (translation: string, replacements?: StringReplacements): string =>
+  thisGlobal.Lang.trans(translation, replacements)
 
-  /**
-   * `transIf(condition, ...)` should only be used when we encounter an issue with `:disabled="!condition"` approach
-   * eg: for v-b-tooltip, we may need to remove completely the tooltip on block view mode
-   */
+export const choice = (key: string, number?: number, replacements?: StringReplacements, locale?: string): string =>
+  thisGlobal.Lang.choice(key, number, replacements, locale)  
+// global.langJs.choice(key, number, {...replacements}, locale)
+
+export default {
+  methods: {
+    trans(translation: string, replacements?: StringReplacements):string {
+      return trans(translation, replacements)
+    },
+    choice(key: string, number?: number, replacements?: StringReplacements, locale?: string): string {
+      return choice(key, number, replacements, locale)
+    }
+  },
+}
+
+export class Lang extends Vue {
+  trans(translation: string, interpolations?: StringReplacements): string {
+    return trans(translation, interpolations)
+  }
   transIf(condition: boolean, translation: string) {
     if (condition) {
       return this.trans(translation)
@@ -34,8 +52,3 @@ class Lang extends Vue {
     return ''
   }
 }
-
-export default Lang
-
-// For non vue-class based components
-export const lang = Lang

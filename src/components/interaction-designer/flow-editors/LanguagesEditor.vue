@@ -1,11 +1,11 @@
 <template>
   <div class="languages-editor form-group">
-    <label class="text-primary">{{ 'flow-builder.languages' | trans }}</label>
+    <label class="text-primary">{{ trans('flow-builder.languages') }}</label>
     <vue-multiselect
       v-model="flowSelectedLanguages"
       track-by="id"
       label="label"
-      :placeholder="'flow-builder.select-languages' | trans"
+      :placeholder="trans('flow-builder.select-languages')"
       :options="languages"
       :multiple="true"
       :show-labels="false"
@@ -15,15 +15,15 @@
 
 <script lang="ts">
 import VueMultiselect from 'vue-multiselect'
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 import {IFlow} from '@floip/flow-runner'
 import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
-import Lang from '@/lib/filters/lang'
-import {mixins} from 'vue-class-component'
+import {Lang} from '@/lib/filters/lang'
+import {mixins, Options} from 'vue-class-component'
 import {sortBy} from 'lodash'
 import {State} from 'vuex-class'
 
-@Component({
+@Options({
   components: {
     VueMultiselect,
   },

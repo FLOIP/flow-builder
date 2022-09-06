@@ -1,9 +1,6 @@
 import {IValidationStatus, validateBlockWithJsonSchema} from '@/lib'
 import {IBlock} from '@floip/flow-runner'
 import {ErrorObject} from 'ajv'
-import Lang from '@/lib/filters/lang'
-
-const lang = new Lang()
 
 export type ValidationMessageSuffix = string
 export type ValidationResult = [ErrorObject['dataPath'], ValidationMessageSuffix]
@@ -43,7 +40,7 @@ export class ExtendedValidatorBase {
         validationStatus.ajvErrors = validationStatus.ajvErrors || []
         validationStatus.ajvErrors.push({
           dataPath,
-          message: lang.trans(`flow-builder-validation.${suffix}`),
+          message: 'test',
         } as ErrorObject)
       }
     })

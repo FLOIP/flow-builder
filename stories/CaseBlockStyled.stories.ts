@@ -1,17 +1,13 @@
-import {Component, Vue} from 'vue-property-decorator'
 import CaseBlock from '@/components/interaction-designer/block-types/Core_CaseBlock.vue'
 import caseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 import {namespace, State} from 'vuex-class'
-import Vuex from 'vuex'
-import {IRootState, store} from '@/store'
 import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {IBlockExit} from '@floip/flow-runner'
+import {Options, Vue} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
-
-Vue.use(Vuex)
 
 export default {
   title: 'Core/Case Block Styled',
@@ -30,11 +26,10 @@ const CaseBlockTemplate = `
 const BaseOptions: IBaseOptions = {
   components: {CaseBlock, FlowBuilderSidebarEditorContainer},
   template: CaseBlockTemplate,
-  store: new Vuex.Store<IRootState>(store),
 }
 
 // default case block state
-@Component({
+@Options({
   ...BaseOptions,
 })
 class DefaultClass extends BaseMountedVueClass {
@@ -46,7 +41,7 @@ class DefaultClass extends BaseMountedVueClass {
 export const Default = () => (DefaultClass)
 
 //ExistingDataBlock
-@Component({
+@Options({
   ...BaseOptions,
 })
 class CurrentClass2 extends BaseMountedVueClass {

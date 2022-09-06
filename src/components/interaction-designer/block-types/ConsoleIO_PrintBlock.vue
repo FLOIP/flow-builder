@@ -17,8 +17,8 @@
           #input-control="{ isValid }"
           :message-key="`block/${block.uuid}/config/message`">
           <expression-input
-            :label="'flow-builder.print-message' | trans"
-            :placeholder="'flow-builder.enter-message' | trans"
+            :label="trans('flow-builder.print-message')"
+            :placeholder="trans('flow-builder.enter-message')"
             :current-expression="value"
             :valid-state="isValid"
             @commitExpressionChange="commitMessageChange" />
@@ -42,20 +42,20 @@
 
 <script lang="ts">
 import {namespace} from 'vuex-class'
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 
 import {IBlock, IFlow} from '@floip/flow-runner'
 import {IPrintBlock} from '@floip/flow-runner/src/model/block/IPrintBlock'
 
 import PrintStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_PrintBlockStore'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
-import {mixins} from 'vue-class-component'
-import Lang from '@/lib/filters/lang'
+import {mixins, Options} from 'vue-class-component'
+import {Lang} from '@/lib/filters/lang'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component({})
+@Options({})
 class ConsoleIO_PrintBlock extends mixins(Lang) {
   @Prop() readonly block!: IPrintBlock
   @Prop() readonly flow!: IFlow

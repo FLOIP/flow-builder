@@ -94,7 +94,7 @@
               @mouseleave="exitMouseLeave(exit)">
               <span
                 v-if="!(exitHovers[exit.uuid] || isExitActivatedForCreate(exit))"
-                v-b-tooltip.hover.bottom="exit.test"
+                v-tooltip.bottom="exit.test"
                 class="block-exit-name-text align-self-center">
                 {{ exit.name || '(untitled)' }}
               </span>
@@ -105,7 +105,7 @@
                     v-if="exitHovers[exit.uuid] || isExitActivatedForCreate(exit)"
                     :id="`exit/${exit.uuid}/pseudo-block-handle`"
                     :key="`exit/${exit.uuid}/pseudo-block-handle`"
-                    v-b-tooltip.hover.bottom="transIf(isEditable, 'flow-builder.tooltip-new-connection')"
+                    v-tooltip.bottom="transIf(isEditable, 'flow-builder.tooltip-new-connection')"
                     class="btn btn-xs btn-flat p-0"
                     :is-editable="isEditable"
                     @initialized="handleDraggableInitializedFor(exit, $event)"
@@ -139,7 +139,7 @@
                     class="btn btn-xs btn-flat">
                     <font-awesome-icon
                       v-if="exitHovers[exit.uuid]"
-                      v-b-tooltip.hover.bottom="trans('flow-builder.tooltip-remove-connection')"
+                      v-tooltip.bottom="trans('flow-builder.tooltip-remove-connection')"
                       class="text-danger"
                       title="Click to remove this connection"
                       :icon="['far', 'times-circle']"
@@ -167,10 +167,9 @@
 
 <script lang="ts">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import Vue from 'vue'
 import {filter, forEach, get, includes, isNumber} from 'lodash'
-import {mixins} from 'vue-class-component'
-import {Component, Prop, Watch} from 'vue-property-decorator'
+import {Options, mixins} from 'vue-class-component'
+import {Prop, Watch} from 'vue-property-decorator'
 import {namespace, State} from 'vuex-class'
 import {IBlock, IBlockExit, IFlow} from '@floip/flow-runner'
 import {
@@ -181,7 +180,7 @@ import {
   OperationKind,
   SupportedOperation,
 } from '@/store/builder'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {BlockClasses, IPositionLeftTop} from '@/lib/types'
 
 const LABEL_CONTAINER_MAX_WIDTH = 650
@@ -196,7 +195,7 @@ type BlockExitAction = ({block, exit}: { block: IBlock, exit: IBlockExit }) => v
 type BlockPositionAction = ({block, position}: { block: IBlock, position: IPosition }) => void;
 type BlockExitPositionAction = ({block, exit, position}: { block: IBlock, exit: IBlockExit, position: IPosition }) => void;
 
-@Component({})
+@Options({})
 export class Block extends mixins(Lang) {
   @Prop({type: Object, required: true}) readonly block!: IBlock
   @Prop({type: Number, required: true}) readonly x!: number
@@ -215,7 +214,7 @@ export class Block extends mixins(Lang) {
 
   updated(): void {
     if (this.$refs.draggable) {
-      this.blockWidth = (this.$refs.draggable as Vue).$el.clientWidth
+      this.blockWidth = (this.$refs.draggable as any).$el.clientWidth
     }
   }
 
@@ -338,16 +337,16 @@ export class Block extends mixins(Lang) {
   @builderNamespace.Action applyConnectionCreate!: () => void
 
   exitMouseEnter(exit: IBlockExit): void {
-    this.$set(this.exitHovers, exit.uuid, true)
+    this.exitHovers[exit.uuid] = true
   }
 
   exitMouseLeave(exit: IBlockExit): void {
-    this.$set(this.exitHovers, exit.uuid, false)
+    this.exitHovers[exit.uuid] = false
   }
 
   setLineHovered(exit: IBlockExit, value: boolean): void {
     this.$nextTick(() => {
-      this.$set(this.lineHovers, exit.uuid, value)
+      this.lineHovers[exit.uuid] = value
     })
   }
 
@@ -525,15 +524,16 @@ export class Block extends mixins(Lang) {
       {
         name: routerName,
         params: {blockId: this.block.uuid},
-      },
-      undefined,
-      (err) => {
-        if (err == null) {
-          console.warn('Unknown navigation error has occurred when selecting a block')
-        } else if (err.name !== 'NavigationDuplicated') {
-          console.warn(err)
-        }
-      },
+      }
+      // ,
+      // undefined,
+      // (err) => {
+      //   if (err == null) {
+      //     console.warn('Unknown navigation error has occurred when selecting a block')
+      //   } else if (err.name !== 'NavigationDuplicated') {
+      //     console.warn(err)
+      //   }
+      // },
     )
   }
 

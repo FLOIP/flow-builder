@@ -26,11 +26,11 @@
 <script lang="ts">
 import AutoSuggest from '@avcs/autosuggest'
 import '@avcs/autosuggest/dropdown.css'
-import {mixins} from 'vue-class-component'
-import {Component, Prop} from 'vue-property-decorator'
+import {mixins, Options} from 'vue-class-component'
+import {Prop} from 'vue-property-decorator'
 import {Getter, namespace} from 'vuex-class'
 import {MethodNodeEvaluatorFactory} from '@floip/expression-evaluator/dist/Evaluator/NodeEvaluator/MethodNodeEvaluator/Factory'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {IBlock, IFlow} from '@floip/flow-runner'
 import {IExpressionContext, ISubscriberPropertyField, ISuggestion, ISuggestionValue} from '@/lib/types'
 
@@ -47,7 +47,7 @@ const defaultDateFields = [
 
 const flowNamespace = namespace('flow')
 
-@Component({})
+@Options({})
 export class ExpressionInput extends mixins(Lang) {
   @Prop({type: [String, Number], required: true}) readonly label!: string | number
   @Prop({type: String, default: 'text-primary'}) readonly labelClass!: string

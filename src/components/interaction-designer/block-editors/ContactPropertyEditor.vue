@@ -1,8 +1,8 @@
 <template>
   <div class="contact-property-editor">
     <div class="form-group">
-      <label class="text-primary">{{ 'flow-builder.action-label' | trans }}</label>
-      <p>{{ 'flow-builder.contact-property-action-hint' | trans }}</p>
+      <label class="text-primary">{{ trans('flow-builder.action-label') }}</label>
+      <p>{{ trans('flow-builder.contact-property-action-hint') }}</p>
       <div class="form-group">
         <div class="custom-control custom-radio">
           <input
@@ -15,7 +15,7 @@
           <label
             class="custom-control-label font-weight-normal"
             for="setProp">
-            {{ 'flow-builder.set-contact-property' | trans }}
+            {{ trans('flow-builder.set-contact-property') }}
           </label>
         </div>
         <div class="custom-control custom-radio">
@@ -29,7 +29,7 @@
           <label
             class="custom-control-label font-weight-normal"
             for="clearProp">
-            {{ 'flow-builder.clear-contact-property' | trans }}
+            {{ trans('flow-builder.clear-contact-property') }}
           </label>
         </div>
       </div>
@@ -40,9 +40,9 @@
         <div class="block-contact-property-key">
           <text-editor
             v-model="propertyKey"
-            :label="'flow-builder.contact-property-label' | trans"
+            :label="trans('flow-builder.contact-property-label')"
             :label-class="'font-weight-bold'"
-            :placeholder="'flow-builder.enter-contact-property-label' | trans"
+            :placeholder="trans('flow-builder.enter-contact-property-label')"
             :valid-state="isValid" />
         </div>
       </validation-message>
@@ -52,8 +52,8 @@
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
         <expression-input
-          :label="'flow-builder.value-expression' | trans"
-          :placeholder="'flow-builder.enter-expression' | trans"
+          :label="trans('flow-builder.value-expression')"
+          :placeholder="trans('flow-builder.enter-expression')"
           :label-class="'font-weight-bold'"
           :current-expression="propertyValue"
           :valid-state="isValid"
@@ -65,18 +65,18 @@
 
 <script lang="ts">
 import {IBlock} from '@floip/flow-runner'
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {get} from 'lodash'
-import {mixins} from 'vue-class-component'
+import {mixins, Options} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 
 const NULL_STRING_EXPRESSION = '@(null)'
 const EMPTY_STRING_EXPRESSION = ''
 
-@Component({})
+@Options({})
 export class ContactPropertyEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 

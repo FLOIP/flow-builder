@@ -8,7 +8,7 @@
       <button
         class="btn btn-secondary btn-block sm-room-below"
         @click.stop="clickCancel">
-        {{ 'flow-builder.cancel' | trans }}
+        {{ trans('flow-builder.cancel') }}
       </button>
     </div>
     <div
@@ -25,11 +25,11 @@
 </template>
 
 <script lang="ts">
-import {mixins} from 'vue-class-component'
-import {Component, Prop} from 'vue-property-decorator'
-import Lang from '@/lib/filters/lang'
+import {mixins, Options} from 'vue-class-component'
+import {Prop} from 'vue-property-decorator'
+import {Lang} from '@/lib/filters/lang'
 
-@Component({})
+@Options({})
 export class BlockActionButtons extends mixins(Lang) {
   @Prop({type: Boolean, required: true}) readonly isFocused!: boolean
   @Prop({type: Boolean, required: true}) readonly isDisabled!: boolean

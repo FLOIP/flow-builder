@@ -1,12 +1,12 @@
-import Vue from 'vue'
-import Component from 'vue-class-component'
+
+import {Options, Vue} from 'vue-class-component'
 import {Prop} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 import {IContext, IPrompt} from '@floip/flow-runner'
 
 const clipboardVuexNamespace = namespace('clipboard')
 
-@Component
+@Options({})
 export class PromptKindMixin extends Vue {
   @Prop() index!: number
   @Prop() isComplete!: boolean
@@ -29,7 +29,7 @@ export class PromptKindMixin extends Vue {
     try {
       this.prompt.validate(value)
       this.errorMsg = ''
-    } catch (e) {
+    } catch (e: any) {
       this.errorMsg = e.message
     }
   }

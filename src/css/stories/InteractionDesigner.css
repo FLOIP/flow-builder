@@ -345,7 +345,7 @@ textarea.form-control {
 }
 
 .tree-sidebar-menu-container {
-    position: absolute;
+    /* TODO: check if this is needed remove to test component on storybook - position: absolute; */
     top: 0;
     right: 0;
 }

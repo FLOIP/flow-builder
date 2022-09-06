@@ -5,7 +5,7 @@
       class="alert alert-danger d-flex mb-0 py-sm-1 px-2"
       role="alert">
       <span class="align-self-center ml-2">
-        {{ 'flow-builder.flow-error-message' | trans }}
+        {{ trans('flow-builder.flow-error-message') }}
       </span>
       <div class="dropdown">
         <button
@@ -15,7 +15,7 @@
           data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="true">
-          {{ 'flow-builder.show-issues' | trans }}
+          {{ trans('flow-builder.show-issues') }}
           <span class="caret" />
         </button>
         <ul
@@ -31,7 +31,7 @@
                 type="button"
                 class="btn btn-link btn-link-text"
                 @click="fixFlowError()">
-                {{ 'flow-builder.fix-issue' | trans }}
+                {{ trans('flow-builder.fix-issue') }}
               </button>
             </div>
           </li>
@@ -44,7 +44,7 @@
       class="alert alert-danger d-flex py-sm-1 px-2"
       role="alert">
       <span class="align-self-center ml-2">
-        {{ 'flow-builder.block-error-message' | trans({block_count: numberOfBlocksWithErrors}) }}
+        {{ trans('flow-builder.block-error-message') }}
       </span>
       <div class="dropdown">
         <button
@@ -54,7 +54,7 @@
           data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="true">
-          {{ 'flow-builder.locate-block-issue' | trans }}
+          {{ trans('flow-builder.locate-block-issue') }}
           <span class="caret" />
         </button>
         <ul
@@ -74,11 +74,11 @@
 </template>
 
 <script lang="ts">
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {castArray, filter, has, pickBy, size} from 'lodash'
 import {IValidationStatus} from '@/store/validation'
 import Routes from '@/lib/mixins/Routes'
-import Component, {mixins} from 'vue-class-component'
+import {mixins, Options} from 'vue-class-component'
 import {namespace} from 'vuex-class'
 import {IBlock, IFlow, IResource} from '@floip/flow-runner'
 import {ErrorObject} from 'ajv'
@@ -86,7 +86,7 @@ import {ErrorObject} from 'ajv'
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
 
-@Component({})
+@Options({})
 export class ErrorNotifications extends mixins(Routes, Lang) {
   updated(): void {
     this.$emit('updated')
@@ -145,7 +145,7 @@ export class ErrorNotifications extends mixins(Routes, Lang) {
       await this.$router.push({
         name: 'flow-details',
       })
-    } catch (err) {
+    } catch (err: any) {
       if (err.name !== 'NavigationDuplicated') {
         console.error(err)
       }
@@ -161,7 +161,7 @@ export class ErrorNotifications extends mixins(Routes, Lang) {
           field: dataPath,
         },
       })
-    } catch (err) {
+    } catch (err: any) {
       if (err.name !== 'NavigationDuplicated') {
         console.error(err)
       }

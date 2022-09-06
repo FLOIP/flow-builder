@@ -12,10 +12,10 @@
             :icon="['fac', 'enter']"
             class="fa-btn" />
           <template v-if="isStartBlock">
-            {{ 'flow-builder.currently-set-as-starting-block' | trans }}
+            {{ trans('flow-builder.currently-set-as-starting-block') }}
           </template>
           <template v-else>
-            {{ 'flow-builder.set-as-starting-block' | trans }}
+            {{ trans('flow-builder.set-as-starting-block') }}
           </template>
         </button>
       </div>
@@ -24,15 +24,15 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 import {IBlock, IFlow} from '@floip/flow-runner'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {namespace} from 'vuex-class'
-import {mixins} from 'vue-class-component'
+import {mixins, Options} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component({})
+@Options({})
 export class FirstBlockEditorButton extends mixins(Lang) {
   @Prop({default: true}) readonly isEditable!: boolean
 

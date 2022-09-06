@@ -4,7 +4,7 @@
       {{ label }}
       <font-awesome-icon
         v-if="tooltipHint"
-        v-b-tooltip.hover="tooltipHint"
+        v-tooltip="tooltipHint"
         :icon="['fas', 'info-circle']"
         class="fa-btn text-primary" />
     </label>
@@ -28,11 +28,11 @@
 </template>
 
 <script lang="ts">
-import {mixins} from 'vue-class-component'
-import {Component, Prop} from 'vue-property-decorator'
-import Lang from '@/lib/filters/lang'
+import {mixins, Options} from 'vue-class-component'
+import {Prop} from 'vue-property-decorator'
+import {Lang} from '@/lib/filters/lang'
 
-@Component({})
+@Options({})
 export class NumericEditor extends mixins(Lang) {
   @Prop({type: Boolean}) readonly validState?: boolean
   @Prop({type: [String, Number], required: true}) readonly label!: string | number

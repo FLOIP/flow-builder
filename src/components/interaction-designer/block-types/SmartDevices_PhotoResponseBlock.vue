@@ -37,19 +37,19 @@
 
 <script lang="ts">
 import {namespace} from 'vuex-class'
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 // import IPhotoResponseBlock from '@floip/flow-runner/src/model/block/IPhotoResponseBlock' // TODO: to be created in flow-runner
 import {IBlock, IFlow, IResource} from '@floip/flow-runner'
 import PhotoStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
-import {mixins} from 'vue-class-component'
+import {mixins, Options} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
-@Component({})
+@Options({})
 class SmartDevices_PhotoResponseBlock extends mixins(Lang) {
   // @Prop()readonly block!: IPhotoResponseBlock
   @Prop() readonly block!: IBlock

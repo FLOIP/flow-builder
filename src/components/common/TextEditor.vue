@@ -16,9 +16,10 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator'
+import {Options, Vue} from 'vue-class-component'
+import {Prop} from 'vue-property-decorator'
 
-@Component({})
+@Options({})
 export class TextEditor extends Vue {
   @Prop({type: [String, Number], required: true}) readonly label!: string | number
   @Prop({type: String, default: 'text-primary'}) readonly labelClass!: string

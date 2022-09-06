@@ -11,6 +11,7 @@ declare global {
     }
 
     interface IntrinsicElements {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       [elem: string]: any,
     }
   }

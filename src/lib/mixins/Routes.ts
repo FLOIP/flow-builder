@@ -1,6 +1,5 @@
-import Vue from 'vue'
 import {get, isEmpty} from 'lodash'
-import Component from 'vue-class-component'
+import {Options, Vue} from 'vue-class-component'
 import {State} from 'vuex-class'
 
 const PATH_PARAM_DISCOVERER = /(\/){(.*?)(\?)?}/g
@@ -44,7 +43,7 @@ export function routeFrom(routeKey: string, context: any, routes: any) {
   return interpolateRouteWith(context, get(routes, routeKey))
 }
 
-@Component
+@Options({})
 export default class Routes extends Vue {
   @State((s) => s.trees.ui.routes) routes: any
 

@@ -45,8 +45,9 @@ export * from '@/router/helpers'
 // We may need those validation helpers to customize the validation in the consumer side
 export * from '@/store/validation'
 export * from '@/store/validation/validationHelpers'
+import {app} from './main'
 
-const Components = registerCustomComponents({
+const Components = registerCustomComponents(app, {
   InteractionDesigner: InteractionDesignerComponent,
   FetchFlow: FetchFlowComponent,
   NewFlow: NewFlowComponent,

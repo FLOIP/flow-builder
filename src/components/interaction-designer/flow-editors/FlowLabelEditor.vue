@@ -3,22 +3,22 @@
     <text-editor
       v-model="label"
       :valid-state="validState"
-      :label="'flow-builder.flow-label' | trans"
-      :placeholder="'flow-builder.enter-flow-label' | trans"
+      :label="trans('flow-builder.flow-label')"
+      :placeholder="trans('flow-builder.enter-flow-label')"
       :class="{ 'is-invalid': isInvalid }" />
   </div>
 </template>
 
 <script lang="ts">
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 import {IBlock, IFlow} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
-import Lang from '@/lib/filters/lang'
-import {mixins} from 'vue-class-component'
+import {Lang} from '@/lib/filters/lang'
+import {mixins, Options} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component
+@Options({})
 export class FlowLabelEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
   @Prop() validState?: boolean

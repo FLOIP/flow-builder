@@ -7,12 +7,12 @@
             :to="`/trees/${id}/interaction-designer`"
             class="btn btn-secondary"
             @click.native="handleTreeEditorSelected">
-            {{ 'trees.tree-view' | trans }}
+            {{ trans('trees.tree-view') }}
           </router-link>
           <router-link
             :to="`/trees/${id}/resource-viewer`"
             class="btn btn-secondary active">
-            {{ 'trees.resource-view' | trans }}
+            {{ trans('trees.resource-view') }}
           </router-link>
         </div>
 
@@ -22,7 +22,7 @@
           :class="{active: batchMatchAudioDialogShown}"
           @click="toggleBatchMatchAudioDialog">
           <i class="glyphicon glyphicon-random" />
-          &nbsp;{{ 'trees.auto-link-audio-files' | trans }}
+          &nbsp;{{ trans('trees.auto-link-audio-files') }}
           <i
             v-if="batchMatchAudioDialogShown"
             class="glyphicon glyphicon-chevron-up" />
@@ -36,7 +36,7 @@
           :to="`/trees/${id}/interaction-designer`"
           class="btn btn-warning">
           <i class="glyphicon glyphicon-info-sign" />
-          {{ 'trees.view-issues' | trans }}
+          {{ trans('trees.view-issues') }}
         </router-link>
 
         <button
@@ -44,14 +44,14 @@
           class="btn btn-info"
           @click="toggleShowEmptyBlocks">
           <i class="fa fa-eye" />
-          {{ 'trees.show-all' | trans }}
+          {{ trans('trees.show-all') }}
         </button>
         <button
           v-else
           class="btn btn-warning"
           @click="toggleShowEmptyBlocks">
           <i class="fa fa-eye-slash" />
-          {{ 'trees.show-empty-only' | trans }}
+          {{ trans('trees.show-empty-only') }}
         </button>
       </div>
 
@@ -75,7 +75,7 @@
                 href="#"
                 @click.prevent="">
                 {{ percentagePiecesWithContent }}%
-                <small>{{ 'trees.X-of-resources-populated' | trans({count: ''}) }}</small>
+                <small>{{ trans('trees.X-of-resources-populated', {count: ''}) }}</small>
               </a>
             </li>
             <li v-if="tree.details.hasVoice">
@@ -87,7 +87,7 @@
                   :class="{
                     'label-warning': totalPiecesOfBlockContentWithVoice !== totalPiecesOfBlockContent,
                     'label-success': totalPiecesOfBlockContentWithVoice === totalPiecesOfBlockContent}">
-                  {{ 'trees.voice' | trans }}
+                  {{ trans('trees.voice') }}
                   <!--<i class="glyphicon glyphicon-alert"></i>-->
                   {{ totalPiecesOfBlockContentWithVoice }}
                   <small>/ {{ totalPiecesOfBlockContent }}</small>
@@ -103,7 +103,7 @@
                   :class="{
                     'label-warning': totalPiecesOfBlockContentWithSms !== totalPiecesOfBlockContent,
                     'label-success': totalPiecesOfBlockContentWithSms === totalPiecesOfBlockContent}">
-                  {{ 'trees.sms' | trans }}
+                  {{ trans('trees.sms') }}
                   <!--<i class="glyphicon glyphicon-alert"></i>-->
                   {{ totalPiecesOfBlockContentWithSms }}
                   <small>/ {{ totalPiecesOfBlockContent }}</small>
@@ -119,7 +119,7 @@
                   :class="{
                     'label-warning': totalPiecesOfBlockContentWithUssd !== totalPiecesOfBlockContent,
                     'label-success': totalPiecesOfBlockContentWithUssd === totalPiecesOfBlockContent}">
-                  {{ 'trees.ussd' | trans }}
+                  {{ trans('trees.ussd') }}
                   <!--<i class="glyphicon glyphicon-alert"></i>-->
                   {{ totalPiecesOfBlockContentWithUssd }}
                   <small>/ {{ totalPiecesOfBlockContent }}</small>
@@ -154,7 +154,7 @@
               <input
                 v-model="query"
                 class="form-control"
-                :placeholder="'trees.filter-block-content' | trans">
+                :placeholder="trans('trees.filter-block-content')">
             </div>
           </form>
         </div>
@@ -170,7 +170,7 @@
               @click="clearSearch">
               &times;
             </button>
-            <strong>{{ 'trees.filter-enabled' | trans }}</strong> &mdash; {{ 'trees.showing-block-content-filtered-by-X' | trans }}
+            <strong>{{ trans('trees.filter-enabled') }}</strong> &mdash; {{ trans('trees.showing-block-content-filtered-by-X') }}
             "<em>{{ query }}</em>".
           </p>
         </div>
@@ -186,7 +186,7 @@
               @click="clearSearch">
               &times;
             </button>
-            <strong>{{ 'trees.filter-validation' | trans }}</strong> &mdash; {{ 'trees.enter-at-least-three-chars-to-search' | trans }}
+            <strong>{{ trans('trees.filter-validation') }}</strong> &mdash; {{ trans('trees.enter-at-least-three-chars-to-search') }}
           </p>
         </div>
       </div>
@@ -207,15 +207,15 @@
           class="alert alert-info">
           <h4>
             <i class="glyphicon glyphicon-warning-sign" />
-            <strong>{{ 'trees.no-blocks-for-content' | trans }}</strong>
-            {{ 'trees.use-tree-view-to-add-blocks' | trans }}
+            <strong>{{ trans('trees.no-blocks-for-content') }}</strong>
+            {{ trans('trees.use-tree-view-to-add-blocks') }}
           </h4>
 
           <div class="text-right">
             <router-link
               :to="`/trees/${id}/interaction-designer`"
               class="btn btn-primary">
-              {{ 'trees.switch-to-tree-view-to-add-blocks' | trans }}
+              {{ trans('trees.switch-to-tree-view-to-add-blocks') }}
             </router-link>
           </div>
         </div>
@@ -225,16 +225,16 @@
           class="alert alert-info">
           <h4>
             <i class="glyphicon glyphicon-warning-sign" />
-            <strong>{{ 'trees.no-content-blocks' | trans }}</strong>
-            {{ 'trees.no-content-blocks-to-populate-content-onto' | trans }}
-            {{ 'trees.use-tree-view-to-add-blocks' | trans }}
+            <strong>{{ trans('trees.no-content-blocks') }}</strong>
+            {{ trans('trees.no-content-blocks-to-populate-content-onto') }}
+            {{ trans('trees.use-tree-view-to-add-blocks') }}
           </h4>
 
           <div class="text-right">
             <router-link
               :to="`/trees/${id}/interaction-designer`"
               class="btn btn-primary">
-              {{ 'trees.switch-to-tree-view-to-add-blocks' | trans }}
+              {{ trans('trees.switch-to-tree-view-to-add-blocks') }}
             </router-link>
           </div>
         </div>
@@ -286,23 +286,27 @@
 
 import Fuse from 'fuse.js'
 import {filter, forEach, get, identity, includes, isEmpty, pickBy, reduce, size} from 'lodash'
-import {mixins} from 'vue-class-component'
-import {Component} from 'vue-property-decorator'
+import {Vue, Options} from 'vue-class-component'
 import {Action, Getter} from 'vuex-class'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {IBatchMatchAudioData, IBlockExtended} from '@/lib/types'
 import {IBlock, IBlockConfig} from '@floip/flow-runner'
 import stores from '../store'
 import FuseResult = Fuse.FuseResult;
 
-@Component({})
-export class ResourceViewer extends mixins(Lang) {
+@Options({
+  mixins: [
+    Lang, 
+  ]
+})
+export class ResourceViewer extends Vue {
   batchMatchAudioDialogShown = false
   showEmptyBlocksOnly = false
   query = ''
 
   created(): void {
-    if (!this.$store.state.trees) {
+    if (!this.$store.state["trees"]) {
+      // @ts-ignore
       forEach(stores.modules, (v, k) => this.$store.registerModule(k, v))
       this.initializeTreeModel()
     }
@@ -315,7 +319,7 @@ export class ResourceViewer extends mixins(Lang) {
   @Getter hasIssues!: boolean
   @Getter isFeatureTreesBatchLinkAudioEnabled!: boolean
 
-  get id(): string {
+  get id(): any {
     return this.$route.params.id
   }
 
@@ -324,23 +328,23 @@ export class ResourceViewer extends mixins(Lang) {
   }
 
   get isEditableLocked(): boolean {
-    return this.$store.state.trees.ui.isEditableLocked === 1
+    return this.$store.state["trees"].ui.isEditableLocked === 1
   }
 
   get languageNames(): string[] {
-    return this.$store.state.trees.ui.languageNames
+    return this.$store.state["trees"].ui.languageNames
   }
 
   get enabledLanguages(): string[] {
-    return this.$store.state.trees.tree.details.enabledLanguages
+    return this.$store.state["trees"].tree.details.enabledLanguages
   }
 
   get contentBlockTypes(): string[] {
-    return this.$store.state.trees.ui.contentBlockTypes
+    return this.$store.state["trees"].ui.contentBlockTypes
   }
 
   get tree(): any {
-    return this.$store.state.trees.tree
+    return this.$store.state["trees"].tree
   }
 
   get blocks(): IBlockExtended[] {
@@ -349,33 +353,33 @@ export class ResourceViewer extends mixins(Lang) {
       // Empty content could be like: {} or {smsContent:{44:''}
       // Generally, if a block is missing any of the content for all the content types
       // that are enabled for the tree, the block should be considered “empty” and show up using this filter.
-      return filter(this.$store.state.trees.tree.blocks, (item) => {
+      return filter(this.$store.state["trees"].tree.blocks, (item) => {
         if (!this.hasContent(item.type)) {
           return false
         }
-        const isEmptyVoice = this.$store.state.trees.tree.hasVoice && (isEmpty(item.audioFiles) || isEmpty(pickBy(
+        const isEmptyVoice = this.$store.state["trees"].tree.hasVoice && (isEmpty(item.audioFiles) || isEmpty(pickBy(
           item.audioFiles,
           identity,
         )))
-        const isEmptySMS = this.$store.state.trees.tree.hasSms && (isEmpty(item.smsContent) || isEmpty(pickBy(
+        const isEmptySMS = this.$store.state["trees"].tree.hasSms && (isEmpty(item.smsContent) || isEmpty(pickBy(
           item.smsContent,
           identity,
         )))
-        const isEmptyUssd = this.$store.state.trees.tree.hasUssd && (isEmpty(item.ussdContent) || isEmpty(pickBy(
+        const isEmptyUssd = this.$store.state["trees"].tree.hasUssd && (isEmpty(item.ussdContent) || isEmpty(pickBy(
           item.ussdContent,
           identity,
         )))
-        const isEmptyClipboard = this.$store.state.trees.tree.hasClipboard && (isEmpty(item.clipboardContent) || isEmpty(
+        const isEmptyClipboard = this.$store.state["trees"].tree.hasClipboard && (isEmpty(item.clipboardContent) || isEmpty(
           pickBy(item.clipboardContent, identity),
         ))
-        const isEmptySocial = this.$store.state.trees.tree.hasSocial && (isEmpty(item.socialContent) || isEmpty(pickBy(
+        const isEmptySocial = this.$store.state["trees"].tree.hasSocial && (isEmpty(item.socialContent) || isEmpty(pickBy(
           item.socialContent,
           identity,
         )))
         return isEmptyVoice || isEmptySMS || isEmptyUssd || isEmptyClipboard || isEmptySocial
       })
     }
-    return this.$store.state.trees.tree.blocks
+    return this.$store.state["trees"].tree.blocks
   }
 
   get blocksWithContent(): IBlock[] {
@@ -383,11 +387,11 @@ export class ResourceViewer extends mixins(Lang) {
   }
 
   get batchMatchAudioData(): IBatchMatchAudioData {
-    return this.$store.state.trees.ui.batchMatchAudio
+    return this.$store.state["trees"].ui.batchMatchAudio
   }
 
   get isAudioLibraryEmpty(): boolean {
-    return !this.$store.state.audio.library.length
+    return !this.$store.state["audio"].library.length
   }
 
   get totalPiecesOfBlockContent(): number {
@@ -497,7 +501,7 @@ export class ResourceViewer extends mixins(Lang) {
 
   search(query: string): FuseResult<IBlockExtended>[] {
     const
-      {enabledLanguages: languages} = this.$store.state.trees.tree.details
+      {enabledLanguages: languages} = this.$store.state["trees"].tree.details
     const keys = [
       // todo: how can we get tags in here?
       'customData.title',

@@ -58,17 +58,17 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 import {IFlow, IResource, ILanguage, SupportedMode} from '@floip/flow-runner'
 import {namespace, State} from 'vuex-class'
-import Lang from '@/lib/filters/lang'
-import {mixins} from 'vue-class-component'
+import {Lang} from '@/lib/filters/lang'
+import {mixins, Options} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 const validationVuexNamespace = namespace('validation')
 
-@Component({})
+@Options({})
 export class FlowEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
   @Prop({default: ''}) readonly flowHeader!: string

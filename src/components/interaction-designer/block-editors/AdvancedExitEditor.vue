@@ -9,7 +9,7 @@
           <expression-input
             ref="testExpressionInput"
             label=""
-            :placeholder="'flow-builder.advanced-exit-expression-placeholder' | trans"
+            :placeholder="trans('flow-builder.advanced-exit-expression-placeholder')"
             :current-expression="test"
             :rows="1"
             :prepend-text="label"
@@ -18,12 +18,12 @@
       </validation-message>
 
       <h6 class="mt-2">
-        {{ 'flow-builder.advanced-exit-name' | trans }}
+        {{ trans('flow-builder.advanced-exit-name') }}
       </h6>
       <textarea
         ref="name"
         v-model="name"
-        :placeholder="'flow-builder.advanced-exit-name-placeholder' | trans"
+        :placeholder="trans('flow-builder.advanced-exit-name-placeholder')"
         class="form-control"
         rows="1" />
     </div>
@@ -31,15 +31,15 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop} from 'vue-property-decorator'
-import {mixins} from 'vue-class-component'
-import Lang from '@/lib/filters/lang'
+import {Prop} from 'vue-property-decorator'
+import {mixins, Options} from 'vue-class-component'
+import {Lang} from '@/lib/filters/lang'
 import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component({})
+@Options({})
 export class AdvancedExitEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly exit!: IBlockExit

@@ -1,13 +1,13 @@
 <template>
-  <b-modal
+  <BModal
     size="lg"
     class="phone-recording-recorder-selector"
     no-close-on-backdrop
     no-close-on-esc
-    :title="'flow-builder.select-a-caller-from-the-list-below'|trans"
+    :title="trans('flow-builder.select-a-caller-from-the-list-below')"
     :visible="isModalVisible"
-    :ok-title="'flow-builder.call-this-phone-number'|trans"
-    :cancel-title="'flow-builder.close'|trans"
+    :ok-title="trans('flow-builder.call-this-phone-number')"
+    :cancel-title="trans('flow-builder.close')"
     @ok="handleModalClosed"
     @cancel="handleModalCancelled"
     @close="handleModalCancelled">
@@ -16,86 +16,23 @@
         <thead>
           <tr>
             <th class="recorder-selector-field" />
-            <th>{{ 'flow-builder.name'|trans }}</th>
-            <th>{{ 'flow-builder.phone-number'|trans }}</th>
+            <th>{{ trans('flow-builder.name') }}</th>
+            <th>{{ trans('flow-builder.phone-number') }}</th>
           </tr>
         </thead>
-        <tbody id="call-to-record-modal-list">
-          <tr
-            v-for="(recorder, i) in recorders"
-            :key="i"
-            class="call-to-record-item">
-            <td class="recorder-selector-field">
-              <input
-                :id="`call-to-record-caller-${recorder.id}`"
-                v-model="selectedRecorder"
-                type="radio"
-                x-name="calltorecord_caller_select"
-                :value="recorder">
-            </td>
-            <td>
-              <label
-                :for="`call-to-record-caller-${recorder.id}`"
-                @click="setSelectedRecorder(recorder)">{{ recorder.name }}</label>
-            </td>
-            <td>
-              <label
-                :for="`call-to-record-caller-${recorder.id}`"
-                @click="setSelectedRecorder(recorder)">{{ recorder.phone }}</label>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h4>{{ 'flow-builder.add-a-description-to-this-recording'|trans }}</h4>
-      <input
-        v-model="description"
-        type="text"
-        class="form-control"
-        rows="2"
-        :placeholder="'flow-builder.optional-description'|trans">
-
-      <h4>{{ 'flow-builder.add-a-new-recorder'|trans }}</h4>
-      <table class="table">
-        <tbody>
-          <tr>
-            <td class="recorder-selector-field">
-              <input
-                id="new_recorder_radio"
-                v-model="selectedRecorder"
-                type="radio"
-                name="calltorecord_caller_select"
-                :value="draft">
-            </td>
-            <td>
-              <input
-                v-model="draft.name"
-                type="text"
-                :placeholder="'flow-builder.name'|trans"
-                class="form-control"
-                @click="selectNewRecorder">
-            </td>
-            <td>
-              <input
-                v-model="draft.phone"
-                type="text"
-                :placeholder="'flow-builder.phone-number'|trans"
-                class="form-control"
-                @click="selectNewRecorder">
-            </td>
-          </tr>
-        </tbody>
+ 
       </table>
     </div>
-  </b-modal>
+  </BModal>
 </template>
 
 <script lang="ts">
-import {BModal} from 'bootstrap-vue'
+import { ref, reactive, defineComponent, onBeforeMount } from 'vue'
+import {BModal} from 'bootstrap-vue-3'
 import {clone} from 'lodash'
-import {mixins} from 'vue-class-component'
-import {Component, Prop} from 'vue-property-decorator'
-import {State} from 'vuex-class'
+// import {mixins, Options} from 'vue-class-component'
+// import {Prop} from 'vue-property-decorator'
+// import {State} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 
 export type Recorder = {
@@ -104,70 +41,151 @@ export type Recorder = {
   isNew: boolean,
 } | null
 
-@Component({
-  components: {BModal},
-})
-export class PhoneRecordingRecorderSelector extends mixins(Lang) {
-  @Prop({type: Boolean, required: true}) readonly isModalVisible!: boolean
-
-  description = null
-  draft: Recorder = null
-  selectedRecorder: Recorder = null
-
-  created(): void {
-    this.reset()
-  }
-
-  selectNewRecorder(): void {
-    this.draft!.isNew = true
-    this.selectedRecorder = this.draft
-  }
-
-  setSelectedRecorder(recorder: Recorder): void {
-    this.selectedRecorder = recorder
-  }
-
-  reset(): void {
-    this.draft = {
-      name: null,
-      phone: null,
-      isNew: true,
+export default defineComponent({
+  props: {
+    isModalVisible: {
+      required: true,
+      default: Boolean,
     }
-    this.description = null
-    this.selectedRecorder = null
-  }
-
-  handleModalClosed(): void {
-    const
-      {description} = this
-    const value = clone(this.selectedRecorder)
-
-    this.reset()
-    this.$emit('input', {
-      value,
-      recorder: value,
-      description,
+  },
+  emits: ["input"],
+  components: {BModal},
+  mixins: [Lang],
+  setup(props, { emit }){
+    let description: any = ref<any>(null)
+    let selectedRecorder:any = reactive<any>({
+      name: "",
+      phone: "",
+      isNew: true,
     })
-  }
-
-  handleModalCancelled(): void {
-    this.reset()
-
-    const
-      {description} = this
-    const value = clone(this.selectedRecorder)
-
-    this.$emit('input', {
-      value,
-      recorder: value,
-      description,
+    let draft = reactive<any>({
+      name: "",
+      phone: "",
+      isNew: true,
     })
-  }
 
-  @State(({audio: {recording: {recorders}}}) => recorders) recorders: unknown
-}
+    function reset() {
+      draft = {
+        name: "",
+        phone: "",
+        isNew: true,
+      }
+      description = 
+      selectedRecorder = ""
+      }
 
-export default PhoneRecordingRecorderSelector
+    onBeforeMount(() => {
+      reset()
+    })
+
+    function selectNewRecorder(): void {
+      draft!.isNew = true
+      selectedRecorder = draft
+    }
+
+    function setSelectedRecorder(recorder: Recorder): void {
+      selectedRecorder = recorder
+    }
+
+    function handleModalClosed(): void {
+      const value = clone(selectedRecorder)
+
+      reset()
+      emit('input', {
+        value,
+        recorder: value,
+        description,
+      })
+    }
+
+    function handleModalCancelled(){
+      reset()
+      const value = clone(selectedRecorder)
+
+      emit('input', {
+        value,
+        recorder: value,
+        description,
+      })
+    }
+
+    return {
+      description,
+      selectedRecorder,
+      selectNewRecorder,
+      setSelectedRecorder,
+      handleModalClosed,
+      handleModalCancelled
+    }
+  },
+});
+
+// @Options({
+//   data(){
+//     return {
+//       draft: null
+//     }
+//   },
+//   components: {BModal},
+// })
+// export class PhoneRecordingRecorderSelector extends mixins(Lang) {
+//   // description = null
+//   // selectedRecorder: Recorder = null
+
+//   created(): void {
+//     this.reset()
+//   }
+
+//   selectNewRecorder(): void {
+//     this.draft!.isNew = true
+//     this.selectedRecorder = this.draft
+//   }
+
+//   setSelectedRecorder(recorder: Recorder): void {
+//     this.selectedRecorder = recorder
+//   }
+
+//   reset(): void {
+//     this.draft = {
+//       name: null,
+//       phone: null,
+//       isNew: true,
+//     }
+//     this.description = null
+//     this.selectedRecorder = null
+//   }
+
+//   handleModalClosed(): void {
+//     const
+//       {description} = this
+//     const value = clone(this.selectedRecorder)
+
+//     this.reset()
+//     this.$emit('input', {
+//       value,
+//       recorder: value,
+//       description,
+//     })
+//   }
+
+//   handleModalCancelled(): void {
+//     this.reset()
+
+//     const
+//       {description} = this
+//     const value = clone(this.selectedRecorder)
+
+//     this.$emit('input', {
+//       value,
+//       recorder: value,
+//       description,
+//     })
+//   }
+  
+//   // @State(({audio: {recording: {recorders}}}) => recorders) recorders: unknown
+// }
+
+// export default PhoneRecordingRecorderSelector
 </script>
 
 <style lang="scss" scoped>

@@ -3,7 +3,7 @@
     <div
       v-if="hasProgress"
       class="upload-monitor-progress">
-      <h6>{{ 'flow-builder.uploading' | trans }}&hellip; {{ upload.file.name }}</h6>
+      <h6>{{ trans('flow-builder.uploading') }}&hellip; {{ upload.file.name }}</h6>
 
       <div class="progress">
         <b-progress
@@ -17,10 +17,10 @@
     <p
       v-if="isFailure"
       class="text-danger small">
-      {{ 'flow-builder.error-uploading-file-try-again' | trans }}
+      {{ trans('flow-builder.error-uploading-file-try-again') }}
       <span
-        v-if="upload.message"
-        class="details">({{ upload.message }})</span>
+        v-if="upload?.message"
+        class="details">({{ upload?.message }})</span>
     </p>
 
     <slot v-if="!hasProgress" />
@@ -28,22 +28,23 @@
 </template>
 
 <script lang="ts">
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {get} from 'lodash'
-import {mixins} from 'vue-class-component'
-import {Component, Prop} from 'vue-property-decorator'
+import {mixins, Options} from 'vue-class-component'
+import {Prop} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
-import {BProgress} from 'bootstrap-vue'
+import {BProgress} from 'bootstrap-vue-3'
 import multimediaUpload, {Statuses as UploadStatuses} from '@/store/trees/multimediaUpload'
 
 const multimediaUploadNamespace = namespace('multimediaUpload')
 
 type Upload = {
+  message: string,
   progress: number,
   status: Map<string, number>,
 }
 
-@Component({
+@Options({
   components: {
     BProgress,
   },

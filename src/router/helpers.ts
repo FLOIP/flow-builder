@@ -1,6 +1,6 @@
-import {Route} from 'vue-router'
+// import {Route} from 'vue-router'
 
-export const scrollBehavior = (to: Route): void => {
+export const scrollBehavior = (to: any): void => {
   if (to.params.field) {
     const anchor = to.params.field
     const domElement = document.getElementById(anchor)

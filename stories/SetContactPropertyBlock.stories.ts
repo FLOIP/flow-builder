@@ -1,16 +1,10 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-
 import SetContactPropertyBlock from '@/components/interaction-designer/block-types/Core_SetContactPropertyBlock.vue'
 
-import {IRootState, store} from '@/store'
 import SetContactPropertyStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_SetContactPropertyStore'
-import {Component} from 'vue-property-decorator'
+import {Options} from 'vue-class-component'
 import {Mutation, namespace} from 'vuex-class'
 import {BaseMountedVueClass} from './story-utils/storeSetup'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-
-Vue.use(Vuex)
 
 const flowVuexNamespace = namespace('flow')
 
@@ -34,9 +28,8 @@ const baseOptions = {
 }
 
 // default state
-@Component<any>({
+@Options<any>({
   ...baseOptions,
-  store: new Vuex.Store<IRootState>(store),
 })
 class DefaultClass extends BaseMountedVueClass {
   async mounted() {
@@ -46,9 +39,8 @@ class DefaultClass extends BaseMountedVueClass {
 
 export const Default = () => (DefaultClass)
 
-@Component<any>({
+@Options<any>({
   ...baseOptions,
-  store: new Vuex.Store<IRootState>(store),
 })
 class ExistingDataBlockClass extends BaseMountedVueClass {
   async mounted() {
@@ -70,9 +62,8 @@ class ExistingDataBlockClass extends BaseMountedVueClass {
 
 export const ExistingDataBlock = () => (ExistingDataBlockClass)
 
-@Component<any>({
+@Options<any>({
   ...baseOptions,
-  store: new Vuex.Store<IRootState>(store),
 })
 class ClearActionClass extends BaseMountedVueClass {
   async mounted() {

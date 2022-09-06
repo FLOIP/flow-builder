@@ -1,12 +1,8 @@
 import LogBlock from '@/components/interaction-designer/block-types/Core_LogBlock.vue'
 import logBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_LogBlockStore'
-import {Component, Vue} from 'vue-property-decorator'
-import Vuex from 'vuex'
-import {IRootState, store} from '@/store'
+import {Options} from 'vue-class-component'
 import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-
-Vue.use(Vuex)
 
 export default {
   title: 'Core/Log Block Styled',
@@ -24,11 +20,10 @@ const LogBlockTemplate = `
 const BaseOptions: IBaseOptions = {
   components: {LogBlock, FlowBuilderSidebarEditorContainer},
   template: LogBlockTemplate,
-  store: new Vuex.Store<IRootState>(store),
 }
 
 // default case block state
-@Component({
+@Options({
   ...BaseOptions,
 })
 class DefaultClass extends BaseMountedVueClass {
@@ -39,7 +34,7 @@ class DefaultClass extends BaseMountedVueClass {
 
 export const Default = () => (DefaultClass)
 
-@Component({
+@Options({
   ...BaseOptions,
 })
 class CurrentClass2 extends BaseMountedVueClass {
@@ -52,7 +47,7 @@ class CurrentClass2 extends BaseMountedVueClass {
 
 export const ExistingDataBlock = () => (CurrentClass2)
 
-@Component({
+@Options({
   ...BaseOptions,
 })
 class CurrentClass3 extends BaseMountedVueClass {

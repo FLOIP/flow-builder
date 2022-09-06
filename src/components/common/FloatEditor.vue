@@ -19,11 +19,11 @@
 </template>
 
 <script lang="ts">
-import {mixins} from 'vue-class-component'
-import {Component, Prop} from 'vue-property-decorator'
-import Lang from '@/lib/filters/lang'
+import {mixins, Options} from 'vue-class-component'
+import {Prop} from 'vue-property-decorator'
+import {Lang} from '@/lib/filters/lang'
 
-@Component({})
+@Options({})
 export class FloatEditor extends mixins(Lang) {
   @Prop({type: [String, Number], required: true}) readonly label!: string | number
   @Prop({type: String, default: ''}) readonly placeholder!: string

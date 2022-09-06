@@ -10,11 +10,12 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator'
+import {Options, Vue} from 'vue-class-component'
+import {Prop} from 'vue-property-decorator'
 import {Getter, State} from 'vuex-class'
 import {Recorder} from '@/components/interaction-designer/block-editors/PhoneRecordingRecorderSelector.vue'
 
-@Component({})
+@Options({})
 export class PhoneRecorder extends Vue {
   @Prop({type: String, required: true}) readonly recordingKey!: string
 

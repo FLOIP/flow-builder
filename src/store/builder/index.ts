@@ -1,5 +1,4 @@
 import {filter, flatMap, isEqual, keyBy, map, mapValues, union} from 'lodash'
-import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlock, IBlockExit, IBlockUIMetadataCanvasCoordinates, IFloipUIMetadata, ValidationException} from '@floip/flow-runner'
@@ -313,7 +312,7 @@ export function createDefaultBlockTypeInstallerFor(
   blockType: IBlock['type'],
   storeForBlockType: Module<any, IRootState>,
 ) {
-  return (builder: Vue) => builder.$store.hasModule(['flow', blockType])
+  return (builder: any) => builder.$store.hasModule(['flow', blockType])
     || builder.$store.registerModule(['flow', blockType], storeForBlockType)
 }
 

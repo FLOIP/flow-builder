@@ -16,12 +16,12 @@
 
 <script lang="ts">
 import {get} from 'lodash'
-import {mixins} from 'vue-class-component'
-import {Component, Prop} from 'vue-property-decorator'
-import Lang from '@/lib/filters/lang'
+import {mixins, Options} from 'vue-class-component'
+import {Prop} from 'vue-property-decorator'
+import {Lang} from '@/lib/filters/lang'
 import {IBlock} from '@floip/flow-runner'
 
-@Component({})
+@Options({})
 export class MaxDurationSecondsEditor extends mixins(Lang) {
   @Prop({type: Object, required: true}) readonly block!: IBlock
   @Prop({type: Boolean, default: true}) readonly hasIvr!: boolean

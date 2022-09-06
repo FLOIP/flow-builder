@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import axios from 'axios'
 import {
   findBlockWith,
@@ -116,7 +115,7 @@ export const mutations: MutationTree<IFlowsState> = {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
     // @throws ValidationException when block absent
     const block: IBlock = findBlockWith(blockId, flow)
-    Vue.set(flow, 'first_block_id', block.uuid)
+    flow.first_block_id = block.uuid
   },
   flow_setNameFromLabel(state, {flowId, label}) {
     findFlowWith(flowId, state as unknown as IContext).name = label.replace(/\W+/g, '')
@@ -164,7 +163,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       commit('flow_updateCreatedState', true)
       dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
       return getters.activeFlowContainer
-    } catch (error) {
+    } catch (error: any) {
       commit('flow_updateCreatedState', oldCreatedState)
       console.info(`Server error persisting flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
       return null
@@ -182,7 +181,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       commit('flow_setFlowContainer', data)
       commit('flow_updateCreatedState', true)
       return data
-    } catch (error) {
+    } catch (error: any) {
       console.info(`Server error fetching flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
       return null
     }
@@ -364,7 +363,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
       duplicatedResource.uuid = targetResourceUuid
       dispatch('resource_add', {resource: duplicatedResource})
-      Vue.set(duplicatedBlock.config, 'prompt', targetResourceUuid)
+      duplicatedBlock.config.prompt = targetResourceUuid
     }
 
     // Set UI positions

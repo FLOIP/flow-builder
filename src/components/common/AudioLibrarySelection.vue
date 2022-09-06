@@ -27,7 +27,7 @@
           class="dropdown-item"
           :href="audioFileUrl"
           target="_blank">
-          {{ 'flow-builder.original-file' | trans }}
+          {{ trans('flow-builder.original-file') }}
         </a>
       </div>
     </div>
@@ -52,13 +52,13 @@
 </template>
 
 <script lang="ts">
-import {mixins} from 'vue-class-component'
-import {Component, Prop} from 'vue-property-decorator'
-import Lang from '@/lib/filters/lang'
+import {mixins, Options} from 'vue-class-component'
+import {Prop} from 'vue-property-decorator'
+import {Lang} from '@/lib/filters/lang'
 import Moment from '@/lib/filters/moment'
 import {IAudioFile} from '../interaction-designer/resource-editors'
 
-@Component({})
+@Options({})
 export class AudioLibrarySelection extends mixins(Lang, Moment) {
   @Prop({type: Object, required: true}) audioFile!: IAudioFile
   @Prop() selectable?: boolean

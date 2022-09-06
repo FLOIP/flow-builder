@@ -1,13 +1,9 @@
 import ReadBlock from '@/components/interaction-designer/block-types/ConsoleIO_ReadBlock.vue'
 import readBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_ReadBlockStore'
-import {Component, Vue} from 'vue-property-decorator'
+import {Options} from 'vue-class-component'
 import {namespace} from 'vuex-class'
-import Vuex from 'vuex'
-import {IRootState, store} from '@/store'
 import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-
-Vue.use(Vuex)
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
@@ -28,11 +24,10 @@ const readBlockTemplate = `
 const BaseOptions: IBaseOptions = {
   components: {ReadBlock, FlowBuilderSidebarEditorContainer},
   template: readBlockTemplate,
-  store: new Vuex.Store<IRootState>(store),
 }
 
 // default state
-@Component(
+@Options(
   {
     ...BaseOptions,
   },
@@ -45,7 +40,7 @@ class DefaultClass extends BaseMountedVueClass {
 
 export const Default = () => (DefaultClass)
 
-@Component(
+@Options(
   {
     ...BaseOptions,
   },
@@ -64,7 +59,7 @@ class ExistingDataClass extends BaseMountedVueClass {
 
 export const ExistingDataBlock = () => (ExistingDataClass)
 
-@Component(
+@Options(
   {
     ...BaseOptions,
   },

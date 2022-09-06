@@ -35,18 +35,18 @@
 
 <script lang="ts">
 import {namespace} from 'vuex-class'
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 import {ICaseBlock} from '@floip/flow-runner/src/model/block/ICaseBlock'
 import {IBlockExit, IFlow} from '@floip/flow-runner'
 import CaseStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
-import {mixins} from 'vue-class-component'
+import {mixins, Options} from 'vue-class-component'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component({})
+@Options({})
 class Core_CaseBlock extends mixins(Lang) {
   @Prop() readonly block!: ICaseBlock
   @Prop() readonly flow!: IFlow

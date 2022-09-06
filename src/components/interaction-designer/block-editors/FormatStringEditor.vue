@@ -4,11 +4,11 @@
       <div class="format-string-editor">
         <text-editor
           v-model="formatString"
-          :label="'flow-builder.format-string' | trans"
-          :placeholder="'flow-builder.enter-format-string' | trans"
+          :label="trans('flow-builder.format-string')"
+          :placeholder="trans('flow-builder.enter-format-string')"
           :valid-state="isValid" />
         <small class="text-muted">
-          {{ 'flow-builder.format-string-hint' | trans }}
+          {{ trans('flow-builder.format-string-hint') }}
         </small>
       </div>
     </template>
@@ -16,12 +16,12 @@
 </template>
 
 <script lang="ts">
-import {mixins} from 'vue-class-component'
-import {Component, Prop} from 'vue-property-decorator'
-import Lang from '@/lib/filters/lang'
+import {mixins, Options} from 'vue-class-component'
+import {Prop} from 'vue-property-decorator'
+import {Lang} from '@/lib/filters/lang'
 import {IBlock} from '@floip/flow-runner'
 
-@Component({})
+@Options({})
 export class FormatStringEditor extends mixins(Lang) {
   @Prop({type: Object, required: true}) readonly block!: IBlock
 

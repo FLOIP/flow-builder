@@ -41,25 +41,26 @@
 
 <script lang="ts">
 import {endsWith, forEach, get, includes, invoke, isEmpty, values} from 'lodash'
-import {mixins} from 'vue-class-component'
-import {Component, Prop, Vue, Watch} from 'vue-property-decorator'
+import {mixins, Options, Vue} from 'vue-class-component'
+import {Prop, Watch} from 'vue-property-decorator'
 import {Action, Getter, Mutation, namespace, State} from 'vuex-class'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import {scrollBehavior, scrollBlockIntoView} from '@/router/helpers'
 import {store} from '@/store'
 import ClipboardRoot from '@/components/interaction-designer/clipboard/ClipboardRoot.vue'
-import {Route} from 'vue-router'
+// import {Route} from 'vue-router'
 import {IBlock, IFlow} from '@floip/flow-runner'
 import {ErrorObject} from 'ajv'
+import {app} from '@/main'
 
-Component.registerHooks(['beforeRouteUpdate'])
+// Options.registerHooks(['beforeRouteUpdate'])
 
 const flowNamespace = namespace('flow')
 const builderNamespace = namespace('builder')
 const clipboardNamespace = namespace('clipboard')
 
-@Component({
+@Options({
   components: {
     ClipboardRoot,
   },
@@ -141,7 +142,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   }
 
   async beforeCreate(): Promise<void> {
-    const {$store} = this
+    const {$store}: any = this
 
     forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
   }
@@ -194,7 +195,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     this.discoverTallestBlockForDesignerWorkspaceHeight({aboveTallest: true})
 
     setTimeout(() => {
-      const {blockId, field} = this.$route.params
+      const {blockId, field}: any = this.$route.params
       if (blockId) {
         this.activateBlock({blockId})
         scrollBlockIntoView(blockId)
@@ -215,7 +216,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   }
 
   @Watch('$route', {deep: true})
-  handleRouteUpdate(to: Route): void {
+  handleRouteUpdate(to: any): void {
     this.activateBlock({blockId: to.params.blockId || null})
     if (to.meta?.isBlockEditorShown as boolean) {
       scrollBlockIntoView(to.params.blockId)
@@ -249,7 +250,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
         uiComponent = exported.default
       }
       invoke(blockClass, 'install', this)
-      Vue.component(`Flow${typeWithoutSeparators}`, uiComponent)
+      app.component(`Flow${typeWithoutSeparators}`, uiComponent)
     })
     return Promise.all(blockInstallers)
   }

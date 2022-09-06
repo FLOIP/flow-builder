@@ -1,7 +1,6 @@
 import axios, {CancelToken} from 'axios'
 import lodash from 'lodash'
 import qs from 'qs'
-import Vue from 'vue'
 
 // todo: are these values odd?
 
@@ -28,13 +27,13 @@ export default {
 
   mutations: {
     create({flights}, {key, promise, cancellation}) {
-      Vue.set(flights, key, {
+      flights[key] = {
         status: Statuses.PENDING,
         progress: 0,
         error: null,
         promise,
         cancel: cancellation,
-      })
+      }
     },
 
     cancel({flights}, {key}) {

@@ -20,14 +20,14 @@
           <div class="btn-toolbar">
             <h4
               v-if="hasToolbarFlowTitle"
-              v-b-tooltip.hover="activeFlow.label"
+              v-tooltip="activeFlow.label"
               class="text-primary mr-4 mb-0 flow-label">
               {{ activeFlow.label }}
             </h4>
             <div>
               <router-link
                 v-if="hasToolbarHomeButton"
-                v-b-tooltip.hover="trans('flow-builder.home')"
+                v-tooltip="trans('flow-builder.home')"
                 :to="route('flows.home')"
                 class="mr-2">
                 <font-awesome-icon
@@ -47,16 +47,16 @@
                   'btn-primary': !hasToolbarNewFlowButton }
                 "
                 @click="showOrHideEditFlowModal">
-                {{ 'flow-builder.flow-details' | trans }}
+                {{ trans('flow-builder.flow-details') }}
               </button>
               <b-modal
                 ref="edit-flow-modal"
                 ok-only
-                :ok-title="'flow-builder.done' | trans"
+                :ok-title="trans('flow-builder.done')"
                 @ok="showOrHideEditFlowModal">
                 <template slot="modal-header">
                   <h2 class="mb-0">
-                    {{ 'flow-builder.flow-details' | trans }}
+                    {{ trans('flow-builder.flow-details') }}
                   </h2>
                   <button
                     type="button"
@@ -89,7 +89,7 @@
                 v-if="!ui.isEditableLocked"
                 class="btn-group">
                 <router-link
-                  v-b-tooltip.hover="trans('flow-builder.click-to-toggle-editing')"
+                  v-tooltip="trans('flow-builder.click-to-toggle-editing')"
                   :to="viewTreeUrl"
                   event=""
                   class="btn btn-outline-primary btn-sm"
@@ -100,7 +100,7 @@
                   {{ trans('flow-builder.view-mode') }}
                 </router-link>
                 <router-link
-                  v-b-tooltip.hover="trans('flow-builder.click-to-toggle-editing')"
+                  v-tooltip="trans('flow-builder.click-to-toggle-editing')"
                   :to="editTreeUrl"
                   event=""
                   class="btn btn-outline-primary btn-sm"
@@ -139,7 +139,7 @@
               <!--TODO - do disable if no changes logic-->
               <button
                 v-if="isEditable && isFeatureTreeSaveEnabled"
-                v-b-tooltip.hover="trans('flow-builder.save-changes-to-the-flow')"
+                v-tooltip="trans('flow-builder.save-changes-to-the-flow')"
                 type="button"
                 class="btn btn-outline-primary btn-sm ml-4 save-button"
                 :disabled="!!isTreeSaving"
@@ -171,7 +171,7 @@
                 aria-haspopup="true"
                 aria-expanded="false"
                 @mouseover="openDropdownMenu($event.target)">
-                <span class="nav-link-text">{{ 'flow-builder.content' | trans }}</span>
+                <span class="nav-link-text">{{ trans('flow-builder.content') }}</span>
               </a>
               <div class="dropdown-menu mt-0">
                 <template v-for="(classDetails, className) in blockClassesForContentCategory">
@@ -204,7 +204,7 @@
                 aria-haspopup="true"
                 aria-expanded="false"
                 @mouseover="openDropdownMenu($event.target)">
-                <span class="nav-link-text">{{ 'flow-builder.contact' | trans }}</span>
+                <span class="nav-link-text">{{ trans('flow-builder.contact') }}</span>
               </a>
               <div class="dropdown-menu mt-0">
                 <template v-for="(classDetails, className) in blockClassesForContactCategory">
@@ -237,7 +237,7 @@
                 aria-haspopup="true"
                 aria-expanded="false"
                 @mouseover="openDropdownMenu($event.target)">
-                <span class="nav-link-text">{{ 'flow-builder.branching' | trans }}</span>
+                <span class="nav-link-text">{{ trans('flow-builder.branching') }}</span>
               </a>
               <div class="dropdown-menu mt-0">
                 <template v-for="(classDetails, className) in blockClassesForBranchingCategory">
@@ -270,7 +270,7 @@
                 aria-haspopup="true"
                 aria-expanded="false"
                 @mouseover="openDropdownMenu($event.target)">
-                <span class="nav-link-text">{{ 'flow-builder.developer' | trans }}</span>
+                <span class="nav-link-text">{{ trans('flow-builder.developer') }}</span>
               </a>
               <div class="dropdown-menu mt-0">
                 <template v-for="(classDetails, className) in blockClassesForDeveloperCategory">
@@ -305,31 +305,27 @@
   </div>
 </template>
 <script lang="ts">
-import {BModal, BootstrapVue, BTooltip} from 'bootstrap-vue'
-import Vue from 'vue'
-import Lang from '@/lib/filters/lang'
+import {BModal} from 'bootstrap-vue-3'
+import {Lang} from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
 import {identity, isEmpty, isNil, pickBy as _pickBy, reduce, omit} from 'lodash'
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
 import {computeBlockCanvasCoordinates} from '@/store/builder'
-import Component, {mixins} from 'vue-class-component'
+import {mixins, Options, Vue} from 'vue-class-component'
 import {Action, Getter, Mutation, namespace, State} from 'vuex-class'
 import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
-import {RawLocation} from 'vue-router'
-import {Dictionary} from 'vue-router/types/router'
+// import {RawLocation} from 'vue-router'
+// import {Dictionary} from 'vue-router/types/router'
 import {Watch} from 'vue-property-decorator'
-
-Vue.use(BootstrapVue)
-Vue.component('BTooltip', BTooltip)
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 const clipboardVuexNamespace = namespace('clipboard')
 const validationVuexNamespace = namespace('validation')
 
-@Component({
+@Options({
   components: {
     BModal,
   },
@@ -342,10 +338,10 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   private readonly SAVING_ANIMATION_DURATION = 1000
 
   async mounted(): Promise<void> {
-    const routeMeta = this.$route.meta ? this.$route.meta : {}
+    const routeMeta: any = this.$route.meta ? this.$route.meta : {}
     this.onMetaChanged(routeMeta)
 
-    const editFlowModal = this.$refs['edit-flow-modal'] as BModal | undefined
+    const editFlowModal = this.$refs['edit-flow-modal'] as any | undefined
     if (editFlowModal) {
       editFlowModal.$on('shown', () => {
         const routeMeta = this.$route.meta
@@ -370,7 +366,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
 
   @Watch('$route.meta', {immediate: true, deep: true})
   onMetaChanged(meta: {[key: string]: string}): void {
-    const editFlowModal = this.$refs['edit-flow-modal'] as BModal | undefined
+    const editFlowModal = this.$refs['edit-flow-modal'] as any | undefined
     if (editFlowModal) {
       if (meta.isFlowEditorShown) {
         editFlowModal.show()
@@ -481,7 +477,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     })
   }
 
-  async handlePersistFlow(route: RawLocation): Promise<void> {
+  async handlePersistFlow(route: any): Promise<void> {
     //TODO - hook into validation system when we have it - block the logic here if invalid.
 
     // Handle redundant navigation
@@ -571,7 +567,8 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   }
 
   // This could be extracted to a helper mixin of some sort so it can be used in other places
-  removeNilValues(obj: any): Dictionary<unknown> {
+  // removeNilValues(obj: any): Dictionary<unknown> {
+  removeNilValues(obj: any): any {
     return _pickBy(obj, identity)
   }
 

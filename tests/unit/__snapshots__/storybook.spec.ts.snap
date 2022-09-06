@@ -1,5 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Storyshots Components/Test Default 1`] = `
+<h1>
+  test
+</h1>
+`;
+
 exports[`Storyshots InteractionDesigner/Toolbar Default 1`] = `
 <div>
   <!---->

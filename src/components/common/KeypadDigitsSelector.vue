@@ -15,10 +15,10 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop} from 'vue-property-decorator'
-import {mixins} from 'vue-class-component'
+import {Prop} from 'vue-property-decorator'
+import {mixins, Options} from 'vue-class-component'
 import VueMultiselect from 'vue-multiselect'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 
 const KEYS = '1234567890#*'
 
@@ -27,7 +27,7 @@ type MultiselectOption = {
   label: string,
 };
 
-@Component({
+@Options({
   components: {VueMultiselect},
 })
 export class KeypadDigitsSelector extends mixins(Lang) {

@@ -5,7 +5,7 @@
       <div
         class="spinner-border"
         role="status">
-        <span class="sr-only">{{ 'flow-builder.loading' | trans }}</span>
+        <span class="sr-only">{{ trans('flow-builder.loading') }}</span>
       </div>
     </div>
     <div
@@ -13,7 +13,7 @@
       class="alert alert-success mt-3"
       role="alert">
       <font-awesome-icon :icon="['far', 'check-circle']" />
-      {{ 'flow-builder.import-success' | trans }}
+      {{ trans('flow-builder.import-success') }}
     </div>
     <div
       v-if="flowError"
@@ -63,11 +63,9 @@
 </template>
 
 <script lang="ts">
-import Lang from '@/lib/filters/lang'
-import {Component} from 'vue-property-decorator'
-import Vue from 'vue'
+import {Lang} from '@/lib/filters/lang'
 import {Getter, namespace} from 'vuex-class'
-import {mixins} from 'vue-class-component'
+import {mixins, Options, Vue} from 'vue-class-component'
 import {IContext} from '@floip/flow-runner'
 import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
 import {IContactPropertyOption} from '@/store/flow/block-types/Core_SetContactPropertyStore'
@@ -76,7 +74,7 @@ import {BlockClasses} from '@/lib/types'
 
 const importVuexNamespace = namespace('flow/import')
 
-@Component({})
+@Options({})
 export class ErrorHandler extends mixins(Lang) {
   handleMatchLanguage(oldLanguage: ILanguage, matchingNewLanguage: ILanguage): void {
     this.matchLanguage({oldLanguage, matchingNewLanguage})

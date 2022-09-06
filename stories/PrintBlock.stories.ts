@@ -1,8 +1,6 @@
 import PrintBlock from '@/components/interaction-designer/block-types/ConsoleIO_PrintBlock.vue'
 import printBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/ConsoleIO_PrintBlockStore'
-import {Component, Vue} from 'vue-property-decorator'
-import Vuex from 'vuex'
-import {IRootState, store} from '@/store'
+import {Options} from 'vue-class-component'
 import {BaseMountedVueClass, BaseMountedVueClassWithResourceAndMode, IBaseOptions} from './story-utils/storeSetup'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
 import {namespace} from 'vuex-class'
@@ -15,8 +13,6 @@ export default {
   excludeStories: /.*Data$/,
 }
 
-Vue.use(Vuex)
-
 const PrintBlockTemplate = `
   <flow-builder-sidebar-editor-container :block="activeBlock">
     <print-block
@@ -28,11 +24,10 @@ const PrintBlockTemplate = `
 const BaseOptions: IBaseOptions = {
   components: {PrintBlock, FlowBuilderSidebarEditorContainer},
   template: PrintBlockTemplate,
-  store: new Vuex.Store<IRootState>(store),
 }
 
 // default state
-@Component({
+@Options({
   ...BaseOptions,
 })
 class DefaultClass extends BaseMountedVueClass {
@@ -43,7 +38,7 @@ class DefaultClass extends BaseMountedVueClass {
 
 export const Default = () => DefaultClass
 
-@Component({
+@Options({
   ...BaseOptions,
 })
 class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMode {
@@ -60,7 +55,7 @@ class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMode {
 
 export const ExistingDataBlock = () => (ExistingDataBlockClass)
 
-@Component(
+@Options(
   {
     ...BaseOptions,
   },

@@ -7,8 +7,8 @@
       <template #input-control="{ isValid }">
         <keypad-digits-selector
           v-model="endRecordingDigits"
-          :label="'flow-builder.end-recording-by-pressing' | trans"
-          :placeholder="'flow-builder.enter-value' | trans"
+          :label="trans('flow-builder.end-recording-by-pressing')"
+          :placeholder="trans('flow-builder.enter-value')"
           :valid-state="isValid" />
       </template>
     </validation-message>
@@ -16,12 +16,12 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop} from 'vue-property-decorator'
-import {mixins} from 'vue-class-component'
+import {Prop} from 'vue-property-decorator'
+import {mixins, Options} from 'vue-class-component'
 import {IBlock} from '@floip/flow-runner'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 
-@Component({})
+@Options({})
 export class EndRecordingDigitsEditor extends mixins(Lang) {
   @Prop({type: Boolean, default: true}) hasIvr!: boolean;
   @Prop({type: Object, required: true}) block!: IBlock;
