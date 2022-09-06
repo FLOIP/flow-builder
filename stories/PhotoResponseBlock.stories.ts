@@ -1,12 +1,8 @@
 import PhotoResponseBlock from '@/components/interaction-designer/block-types/SmartDevices_PhotoResponseBlock.vue'
 import photoResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_PhotoResponseBlockStore'
-import {Component, Vue} from 'vue-property-decorator'
-import Vuex from 'vuex'
-import {IRootState, store} from '@/store'
+import {Options, Vue} from 'vue-class-component'
 import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-
-Vue.use(Vuex)
 
 export default {
   title: 'SmartDevices/Photo Response Block',
@@ -25,11 +21,10 @@ const PhotoResponseBlockTemplate = `
 const BaseOptions: IBaseOptions = {
   components: {PhotoResponseBlock, FlowBuilderSidebarEditorContainer},
   template: PhotoResponseBlockTemplate,
-  store: new Vuex.Store<IRootState>(store),
 }
 
 // default photo-response block state
-@Component(
+@Options(
   {
     ...BaseOptions,
   },
@@ -43,7 +38,7 @@ class CurrentClass1 extends BaseMountedVueClass {
 export const Default = () => (CurrentClass1)
 
 //ExistingDataPreFilled
-@Component({
+@Options({
   ...BaseOptions,
 })
 class CurrentClass2 extends BaseMountedVueClass {
@@ -58,7 +53,7 @@ class CurrentClass2 extends BaseMountedVueClass {
 export const ExistingDataPreFilled = () => (CurrentClass2)
 
 //NonStartingBlock
-@Component(
+@Options(
   {
     ...BaseOptions,
   },

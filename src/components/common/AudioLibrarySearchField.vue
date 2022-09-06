@@ -4,7 +4,7 @@
       <input
         v-model="rawQuery"
         type="text"
-        :placeholder="'flow-builder.search-audio-library' | trans"
+        :placeholder="trans('flow-builder.search-audio-library')"
         :disabled="isEntireLibraryModeEnabled"
         class="form-control"
         @focus="activate"
@@ -35,7 +35,7 @@
           </button>
 
           <i class="glyphicon glyphicon-info-sign" />
-          {{ 'flow-builder.showing-entire-audio-library'|trans }}&hellip;
+          {{ trans('flow-builder.showing-entire-audio-library') }}&hellip;
         </a>
         <div
           role="separator"
@@ -56,14 +56,14 @@
           class="disabled dropdown-item"
           href="#"
           @click.prevent="">
-          {{ 'flow-builder.no-audio-files-found-for-X' | trans }} "<em>{{ query }}</em>".
+          {{ trans('flow-builder.no-audio-files-found-for-X') }} "<em>{{ query }}</em>".
         </a>
         <a
           v-if="query && query.length < 3"
           class="disabled dropdown-item"
           href="#"
           @click.prevent="">
-          {{ 'flow-builder.enter-at-least-three-chars' | trans }}
+          {{ trans('flow-builder.enter-at-least-three-chars') }}
         </a>
 
         <template v-if="hasPrevious || hasNext">
@@ -78,7 +78,7 @@
               class="col-md-6"
               @click.prevent="decrementPage">
               <i class="glyphicon glyphicon-chevron-left" />
-              {{ 'flow-builder.previous' | trans }}
+              {{ trans('flow-builder.previous') }}
             </a>
 
             <a
@@ -86,7 +86,7 @@
               :class="{disabled: !hasNext}"
               class="col-md-6 text-right"
               @click.prevent="incrementPage">
-              {{ 'flow-builder.next' | trans }}
+              {{ trans('flow-builder.next') }}
               <i class="glyphicon glyphicon-chevron-right" />
             </a>
           </div>
@@ -99,7 +99,7 @@
         href="#"
         @click.prevent="">
         <i class="glyphicon glyphicon-warning-sign" />
-        {{ 'flow-builder.audio-lib-empty-for-this-org' | trans }}
+        {{ trans('flow-builder.audio-lib-empty-for-this-org') }}
       </a>
     </div>
   </div>
@@ -108,15 +108,17 @@
 <script lang="ts">
 import Fuse from 'fuse.js'
 import {trim} from 'lodash'
-import VueFocus from 'vue-focus'
-import {mixins} from 'vue-class-component'
-import {Component, Prop} from 'vue-property-decorator'
-import Lang from '@/lib/filters/lang'
+// import VueFocus from 'vue-focus'
+import {mixins, Options} from 'vue-class-component'
+import {Prop} from 'vue-property-decorator'
+import {Lang} from '@/lib/filters/lang'
 import {IAudioFileSelection} from '@/lib/types'
 import {IAudioFile} from '../interaction-designer/resource-editors'
 
-@Component({})
-export class AudioLibrarySearchField extends mixins(Lang, VueFocus.mixin) {
+// export class AudioLibrarySearchField extends mixins(Lang, VueFocus.mixin) {
+
+@Options({})
+export class AudioLibrarySearchField extends mixins(Lang) {
   @Prop() readonly langId?: string
   @Prop({required: true}) readonly audioFiles!: IAudioFile[]
 

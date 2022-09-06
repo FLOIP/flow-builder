@@ -2,7 +2,7 @@
   <!--Contact property editor for all block types-->
   <div class="generic-contact-property-editor">
     <hr>
-    <label class="text-primary">{{ 'flow-builder.contact-properties' | trans }}</label>
+    <label class="text-primary">{{ trans('flow-builder.contact-properties') }}</label>
     <div class="custom-control custom-checkbox">
       <input
         id="setContactProperty"
@@ -15,7 +15,7 @@
       <label
         class="custom-control-label font-weight-normal"
         for="setContactProperty">
-        {{ 'flow-builder.set-contact-property-with-response' | trans }}
+        {{ trans('flow-builder.set-contact-property-with-response') }}
       </label>
     </div>
 
@@ -34,7 +34,7 @@
               v-model="flowSelectedContactPropertyField"
               track-by="id"
               label="display_label"
-              :placeholder="'flow-builder.select-a-property' | trans"
+              :placeholder="trans('flow-builder.select-a-property')"
               :options="subscriberPropertyFieldsForSelector"
               :multiple="false"
               :show-labels="false"
@@ -43,9 +43,9 @@
           <text-editor
             v-else
             :value="propertyKey"
-            :label="'flow-builder.property' | trans"
+            :label="trans('flow-builder.property')"
             :label-class="''"
-            :placeholder="'flow-builder.enter-contact-property-label' | trans"
+            :placeholder="trans('flow-builder.enter-contact-property-label')"
             :valid-state="isValid"
             @input="updateFirstContactPropertyKey" />
         </div>
@@ -53,7 +53,7 @@
 
       <!--Contact property value editor with actions-->
       <template v-if="flowSelectedContactPropertyField !== null">
-        <label>{{ 'flow-builder.value' | trans }}</label>
+        <label>{{ trans('flow-builder.value') }}</label>
         <div
           v-if="isBlockInteractive(block)"
           class="form-group">
@@ -69,7 +69,7 @@
             <label
               class="custom-control-label font-weight-normal"
               for="setProp">
-              {{ 'flow-builder.entry-from-this-block' | trans }}
+              {{ trans('flow-builder.entry-from-this-block') }}
             </label>
           </div>
           <slot
@@ -87,7 +87,7 @@
             <label
               class="custom-control-label font-weight-normal"
               for="clearProp">
-              {{ 'flow-builder.expression' | trans }}
+              {{ trans('flow-builder.expression') }}
             </label>
           </div>
         </div>
@@ -99,7 +99,7 @@
           <expression-input
             class="mb-1"
             :label="''"
-            :placeholder="'flow-builder.enter-expression' | trans"
+            :placeholder="trans('flow-builder.enter-expression')"
             :current-expression="propertyValue"
             :valid-state="isValid"
             @commitExpressionChange="updateFirstContactPropertyValue" />
@@ -114,11 +114,11 @@
 
 <script lang="ts">
 import {IBlock} from '@floip/flow-runner'
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 import {Getter, namespace} from 'vuex-class'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {find, has, isEmpty, map} from 'lodash'
-import {mixins} from 'vue-class-component'
+import {mixins, Options} from 'vue-class-component'
 import {isBlockInteractive} from '@/store/flow/block.ts'
 import VueMultiselect from 'vue-multiselect'
 import {IContactPropertyOption, IContactPropertyOptionForUISelector} from '@/store/flow/block-types/Core_SetContactPropertyStore'
@@ -128,7 +128,7 @@ const flowVuexNamespace = namespace('flow')
 const EMPTY_STRING_EXPRESSION = ''
 const BLOCK_RESPONSE_EXPRESSION = '@block.value'
 
-@Component({
+@Options({
   components: {
     VueMultiselect,
   },

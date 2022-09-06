@@ -1,14 +1,10 @@
 import NumericResponseBlock from '@/components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue'
 import numericResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
 import {SupportedMode} from '@floip/flow-runner'
-import {Component, Vue} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
-import Vuex from 'vuex'
-import {IRootState, store} from '@/store'
 import {BaseMountedVueClass, BaseMountedVueClassWithResourceAndMode, IBaseOptions} from './story-utils/storeSetup'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-
-Vue.use(Vuex)
+import {Options} from 'vue-class-component'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
@@ -29,11 +25,10 @@ const NumericResponseBlockTemplate = `
 const BaseOptions: IBaseOptions = {
   components: {NumericResponseBlock, FlowBuilderSidebarEditorContainer},
   template: NumericResponseBlockTemplate,
-  store: new Vuex.Store<IRootState>(store),
 }
 
 // default numeric-response block state
-@Component(
+@Options(
   {
     ...BaseOptions,
   },
@@ -47,7 +42,7 @@ class CurrentClass1 extends BaseMountedVueClass {
 export const Default = () => (CurrentClass1)
 
 // ExistingDataForAllModes
-@Component({
+@Options({
   ...BaseOptions,
 })
 class CurrentClass2 extends BaseMountedVueClassWithResourceAndMode {
@@ -73,7 +68,7 @@ class CurrentClass2 extends BaseMountedVueClassWithResourceAndMode {
 export const ExistingDataForAllModes = () => (CurrentClass2)
 
 // ExistingDataForIvrOnly
-@Component({
+@Options({
   ...BaseOptions,
 })
 class CurrentClass3 extends BaseMountedVueClassWithResourceAndMode {
@@ -99,7 +94,7 @@ class CurrentClass3 extends BaseMountedVueClassWithResourceAndMode {
 export const ExistingDataForIvrOnly = () => (CurrentClass3)
 
 //ExistingDataForTextOnly
-@Component({
+@Options({
   ...BaseOptions,
 })
 class CurrentClass4 extends BaseMountedVueClassWithResourceAndMode {
@@ -123,7 +118,7 @@ class CurrentClass4 extends BaseMountedVueClassWithResourceAndMode {
 export const ExistingDataForTextOnly = () => (CurrentClass4)
 
 //NonStartingBlock
-@Component(
+@Options(
   {
     ...BaseOptions,
   },

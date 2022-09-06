@@ -1,7 +1,7 @@
 <template>
   <div class="label-editor">
     <section class="mb-3">
-      <label class="text-primary">{{ 'flow-builder.title' | trans }}</label>
+      <label class="text-primary">{{ trans('flow-builder.title') }}</label>
       <validation-message
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/label`">
@@ -10,7 +10,7 @@
             v-model="blockLabel"
             class="w-100"
             :label="''"
-            :placeholder="'flow-builder.enter-title' | trans"
+            :placeholder="trans('flow-builder.enter-title')"
             :valid-state="isValid" />
           <span
             class="btn btn-outline-primary btn-xs align-self-center ml-2"
@@ -26,15 +26,15 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop} from 'vue-property-decorator'
-import {mixins} from 'vue-class-component'
-import Lang from '@/lib/filters/lang'
+import {Prop} from 'vue-property-decorator'
+import {mixins, Options} from 'vue-class-component'
+import {Lang} from '@/lib/filters/lang'
 import {IBlock} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component
+@Options({})
 export class LabelEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 

@@ -15,7 +15,8 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue, Watch} from 'vue-property-decorator'
+import {Vue, Options} from 'vue-class-component'
+import {Prop, Watch} from 'vue-property-decorator'
 import {cloneDeep, debounce, maxBy} from 'lodash'
 import {namespace} from 'vuex-class'
 import {IBlock, IFlow, ILanguage, IResource, IResources, SupportedMode} from '@floip/flow-runner'
@@ -33,7 +34,7 @@ const MARGIN_WIDTH_CORRECTION_PX = 120
 const DEBOUNCE_SCROLL_TIMER_MS = 300
 const DEBOUNCE_VALIDATION_TIMER_MS = 300
 
-@Component({})
+@Options({})
 export class BuilderCanvas extends Vue {
   @Prop() block!: IBlock
   @Prop({default: 0}) widthAdjustment!: number
@@ -108,7 +109,7 @@ export class BuilderCanvas extends Vue {
 
   get blockHeight(): number {
     // it returns array as we loop blocks inside v-for
-    const blockElementRef = this.$refs[`block/${this.blockAtTheLowestPosition?.uuid}`] as Vue[]
+    const blockElementRef = this.$refs[`block/${this.blockAtTheLowestPosition?.uuid}`] as any[]
     if (!blockElementRef) {
       console.debug(
         'Interaction Designer',
@@ -124,7 +125,7 @@ export class BuilderCanvas extends Vue {
 
   get blockWidth(): number {
     // it returns array as we loop blocks inside v-for
-    const blockElementRef = this.$refs[`block/${this.blockAtTheFurthestRightPosition?.uuid}`] as Vue[]
+    const blockElementRef = this.$refs[`block/${this.blockAtTheFurthestRightPosition?.uuid}`] as any[]
 
     if (!blockElementRef) {
       console.debug(
@@ -137,7 +138,7 @@ export class BuilderCanvas extends Vue {
       return temporaryDummyWidth
     }
 
-    return ((blockElementRef[0].$refs.draggable as Vue).$el as HTMLElement).offsetWidth
+    return ((blockElementRef[0].$refs.draggable as any).$el as HTMLElement).offsetWidth
   }
 
   get blockAtTheLowestPosition(): any {

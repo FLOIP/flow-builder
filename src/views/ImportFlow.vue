@@ -8,12 +8,12 @@
               <h2 v-if="hasImportFlowTitle">
                 {{ trans('flow-builder.import-flow') }}
               </h2>
-              <p>{{ 'flow-builder.create-flow-from-json' | trans }}</p>
+              <p>{{ trans('flow-builder.create-flow-from-json') }}</p>
               <div
                 v-if="trans('flow-builder.import-note')"
                 class="alert alert-info"
                 role="alert">
-                {{ 'flow-builder.import-note'| trans }}
+                {{ trans('flow-builder.import-note') }}
               </div>
             </div>
             <div>
@@ -21,7 +21,7 @@
                 <input
                   v-model="uploadOrPaste"
                   type="radio"
-                  value="upload"> {{ 'flow-builder.import-json-file' | trans }}
+                  value="upload"> {{ trans('flow-builder.import-json-file') }}
               </label>
               <div
                 v-if="uploadOrPaste === 'upload'"
@@ -31,7 +31,7 @@
                     <a
                       class="btn btn-outline-secondary"
                       @click="chooseFile">
-                      {{ (!flowJsonText ? 'flow-builder.import-file' : 'flow-builder.replace-file') | trans }}
+                      {{ trans(!flowJsonText ? 'flow-builder.import-file' : 'flow-builder.replace-file') }}
                     </a>
                     <input
                       id="flowUpload"
@@ -41,7 +41,7 @@
                       @change="handleFileUpload">
                     <strong
                       v-if="fileName"
-                      class="ml-1">{{ 'flow-builder.uploaded-file' | trans }}</strong> {{ fileName }}
+                      class="ml-1">{{ trans('flow-builder.uploaded-file') }}</strong> {{ fileName }}
                   </span>
                 </div>
                 <text-editor
@@ -49,7 +49,7 @@
                   :value="flowJson"
                   label=""
                   class="tall-text"
-                  :placeholder="'flow-builder.edit-flow-json' | trans"
+                  :placeholder="trans('flow-builder.edit-flow-json')"
                   @input="setUpdatingAndHandleFlowJsonTextChange" />
               </div>
             </div>
@@ -58,7 +58,7 @@
                 <input
                   v-model="uploadOrPaste"
                   type="radio"
-                  value="paste"> {{ 'flow-builder.paste-json-directly' | trans }}
+                  value="paste"> {{ trans('flow-builder.paste-json-directly') }}
               </label>
               <div
                 v-if="uploadOrPaste === 'paste'"
@@ -67,7 +67,7 @@
                   :value="flowJson"
                   label=""
                   class="tall-text"
-                  :placeholder="'flow-builder.paste-flow-json' | trans"
+                  :placeholder="trans('flow-builder.paste-flow-json')"
                   @input="setUpdatingAndHandleFlowJsonTextChange" />
               </div>
             </div>
@@ -84,7 +84,7 @@
                 class="btn btn-primary"
                 :class="{'disabled': disableContinue}"
                 @click.prevent="handleImportFlow(route('flows.editFlow', {flowId: flowUUID, component: 'designer', mode: 'edit'}))">
-                {{ 'flow-builder.create-flow' | trans }}
+                {{ trans('flow-builder.create-flow') }}
               </a>
             </div>
           </div>
@@ -96,12 +96,12 @@
 
 <script lang="ts">
 
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 import {Getter, Mutation, namespace, State} from 'vuex-class'
 import {debounce, forEach, get, isEmpty} from 'lodash'
-import {mixins} from 'vue-class-component'
+import {mixins, Options} from 'vue-class-component'
 import {store} from '@/store'
 import {IContext} from '@floip/flow-runner'
 import ErrorHandlerV2 from '@/components/interaction-designer/flow-editors/import/ErrorHandlerV2.vue'
@@ -113,7 +113,7 @@ const flowVuexNamespace = namespace('flow')
 const importVuexNamespace = namespace('flow/import')
 const validationVuexNamespace = namespace('validation')
 
-@Component({
+@Options({
   components: {
     ErrorHandlerV2,
   },
@@ -128,7 +128,7 @@ class ImportFlow extends mixins(Lang, Routes) {
   fileName = ''
 
   async beforeCreate(): Promise<void> {
-    const {$store} = this
+    const {$store}: any = this
 
     forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
 

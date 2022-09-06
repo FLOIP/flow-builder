@@ -1,6 +1,5 @@
-import Vue from 'vue'
 import {every, find, isArray} from 'lodash'
-import Component from 'vue-class-component'
+import {Options, Vue} from 'vue-class-component'
 import {State} from 'vuex-class'
 
 export function can(userPermissions: { [key: string]: any }, permissionOrPermissions: string[] | string, requireAll = false) {
@@ -13,7 +12,7 @@ export function can(userPermissions: { [key: string]: any }, permissionOrPermiss
   return userPermissions[permissionOrPermissions]
 }
 
-@Component
+@Options({})
 export default class Permissions extends Vue {
   @State permissions!: { [key: string]: any }
 

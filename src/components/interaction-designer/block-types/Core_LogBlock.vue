@@ -17,8 +17,8 @@
           #input-control="{ isValid }"
           :message-key="`block/${block.uuid}/config/message`">
           <expression-input
-            :label="'flow-builder.log-message' | trans"
-            :placeholder="'flow-builder.enter-message' | trans"
+            :label="trans('flow-builder.log-message')"
+            :placeholder="trans('flow-builder.enter-message')"
             :current-expression="value"
             :valid-state="isValid"
             @commitExpressionChange="commitMessageChange" />
@@ -42,20 +42,20 @@
 
 <script lang="ts">
 import {namespace} from 'vuex-class'
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 
 import {IFlow, IBlock} from '@floip/flow-runner'
 import {ILogBlock} from '@floip/flow-runner/src/model/block/ILogBlock'
 
 import LogStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_LogBlockStore'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
-import Lang from '@/lib/filters/lang'
-import {mixins} from 'vue-class-component'
+import {Lang} from '@/lib/filters/lang'
+import {mixins, Options} from 'vue-class-component'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component({})
+@Options({})
 class Core_LogBlock extends mixins(Lang) {
   @Prop() readonly block!: ILogBlock
   @Prop() readonly flow!: IFlow

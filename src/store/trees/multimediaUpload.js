@@ -1,6 +1,5 @@
 import axios from 'axios'
 import lodash from 'lodash'
-import Vue from 'vue'
 
 export const Statuses = {
   UPLOADING: -1,
@@ -29,11 +28,11 @@ export default {
 
   mutations: {
     setErrorMessage({errorMessageByKey}, {key, errorMessage}) {
-      Vue.set(errorMessageByKey, key, errorMessage)
+      errorMessageByKey[key] = errorMessage
     },
 
     setUploadProgress({uploadProgressByKey}, {key, uploadProgress}) {
-      Vue.set(uploadProgressByKey, key, uploadProgress)
+      uploadProgressByKey[key] = uploadProgress
     },
 
     setUploadStatusFor({uploadsById, uploadIdsByKey}, {
@@ -43,10 +42,10 @@ export default {
         fileWithRefs,
         ['averageSpeed', 'currentSpeed', 'error', 'name', 'paused', 'relativePath', 'size', 'uniqueIdentifier'],
       )
-      Vue.set(uploadsById, file.uniqueIdentifier, {
+      uploadsById[file.uniqueIdentifier] = {
         key, status, progress, message, cancel, file,
-      })
-      Vue.set(uploadIdsByKey, key, file.uniqueIdentifier)
+      }
+      uploadIdsByKey[key] = file.uniqueIdentifier
     },
   },
 

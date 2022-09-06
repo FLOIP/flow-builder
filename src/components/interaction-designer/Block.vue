@@ -117,7 +117,7 @@
               @mouseleave="exitMouseLeave(exit)">
               <span
                 v-if="!(exitHovers[exit.uuid] || isExitActivatedForCreate(exit))"
-                v-b-tooltip.hover.bottom="exit.test"
+                v-tooltip.bottom="exit.test"
                 class="block-exit-name-text align-self-center">
                 {{ exit.name || '(untitled)' }}
               </span>
@@ -193,10 +193,9 @@
 
 <script lang="ts">
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/strict-boolean-expressions */
-import Vue from 'vue'
 import {filter, forEach, get, includes, isNumber} from 'lodash'
-import {mixins} from 'vue-class-component'
-import {Component, Prop, Watch} from 'vue-property-decorator'
+import {Options, mixins} from 'vue-class-component'
+import {Prop, Watch} from 'vue-property-decorator'
 import {namespace, State} from 'vuex-class'
 import {IBlock, IBlockExit, IFlow} from '@floip/flow-runner'
 import {
@@ -207,7 +206,7 @@ import {
   OperationKind,
   SupportedOperation,
 } from '@/store/builder'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {BlockClasses, IPositionLeftTop} from '@/lib/types'
 import {colorStates} from '@/components/interaction-designer/Connection.vue'
 
@@ -231,7 +230,7 @@ const ICON_SIZE = 10
 
 export const BLOCK_RESET_CONNECTIONS = 'BLOCK_RESET_CONNECTIONS'
 
-@Component({})
+@Options({})
 export class Block extends mixins(Lang) {
   @Prop({type: Object, required: true}) readonly block!: IBlock
   @Prop({type: Number, required: true}) readonly x!: number
@@ -257,7 +256,7 @@ export class Block extends mixins(Lang) {
 
   updated(): void {
     if (this.$refs.draggable) {
-      this.blockWidth = (this.$refs.draggable as Vue).$el.clientWidth
+      this.blockWidth = (this.$refs.draggable as any).$el.clientWidth
     }
   }
 
@@ -453,24 +452,24 @@ export class Block extends mixins(Lang) {
   }
 
   exitMouseEnter(exit: IBlockExit): void {
-    this.$set(this.exitHovers, exit.uuid, true)
+    this.exitHovers[exit.uuid] = true
     this.updateShouldShowBlockToolBar()
   }
 
   exitMouseLeave(exit: IBlockExit): void {
-    this.$set(this.exitHovers, exit.uuid, false)
+    this.exitHovers[exit.uuid] = false
     this.updateShouldShowBlockToolBar()
   }
 
   setLineHovered(exit: IBlockExit, value: boolean): void {
     this.$nextTick(() => {
-      this.$set(this.lineHovers, exit.uuid, value)
+      this.lineHovers[exit.uuid] = value
     })
   }
 
   setLineClicked(exit: IBlockExit, value: boolean): void {
     this.$nextTick(() => {
-      this.$set(this.linePermanentlyActive, exit.uuid, value)
+      this.linePermanentlyActive[exit.uuid] value
     })
   }
 
@@ -586,7 +585,7 @@ export class Block extends mixins(Lang) {
 
     window.postMessage(BLOCK_RESET_CONNECTIONS, '*')
 
-    this.$set(this.exitOnDragged, exit.uuid, true)
+    this.exitOnDragged[exit.uuid] = true
     this.isConnectionSource = true
 
     this.initializeConnectionCreateWith({
@@ -605,7 +604,7 @@ export class Block extends mixins(Lang) {
   onCreateExitDragEnded({draggable}: {draggable: Draggable}, exit: IBlockExit): void {
     const {x: left, y: top} = this.operations[OperationKind.CONNECTION_CREATE]!.data!.position
 
-    this.$set(this.exitOnDragged, exit.uuid, false)
+    this.exitOnDragged[exit.uuid] = false
     this.isConnectionSource = false
 
     console.debug('Block', 'onCreateExitDragEnded', 'operation.data.position', {left, top})
@@ -656,15 +655,16 @@ export class Block extends mixins(Lang) {
       {
         name: routerName,
         params: {blockId: this.block.uuid},
-      },
-      undefined,
-      (err) => {
-        if (err == null) {
-          console.warn('Unknown navigation error has occurred when selecting a block')
-        } else if (err.name !== 'NavigationDuplicated') {
-          console.warn(err)
-        }
-      },
+      }
+      // ,
+      // undefined,
+      // (err) => {
+      //   if (err == null) {
+      //     console.warn('Unknown navigation error has occurred when selecting a block')
+      //   } else if (err.name !== 'NavigationDuplicated') {
+      //     console.warn(err)
+      //   }
+      // },
     )
 
     this.$nextTick(() => {

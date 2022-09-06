@@ -2,7 +2,7 @@
   <div class="clipboard-root">
     <header class="d-flex justify-content-between">
       <h3>
-        {{ 'flow-builder.clipboard-simulator' | trans }}
+        {{ trans('flow-builder.clipboard-simulator') }}
       </h3>
       <i
         class="glyphicon glyphicon-remove cursor-pointer align-self-center h4"
@@ -28,7 +28,7 @@
                 <h4
                   v-if="!cursorChangeInProgress"
                   class="card-title font-weight-regular pl-0 text-color-title">
-                  {{ blockData.prompt.block.label }}
+                  {{ blockData?.prompt?.block?.label }}
                 </h4>
               </template>
               <template #content>
@@ -52,7 +52,7 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">
-            {{ 'flow-builder.completed' | trans }}!
+            {{ trans('flow-builder.completed') }}!
           </h5>
         </div>
       </div>
@@ -72,8 +72,8 @@ import {
   BasicBacktrackingBehaviour,
 } from '@floip/flow-runner'
 import {IFlowsState} from '@/store/flow'
-import Component, {mixins} from 'vue-class-component'
-import Lang from '@/lib/filters/lang'
+import {mixins, Options} from 'vue-class-component'
+import {Lang} from '@/lib/filters/lang'
 import {namespace} from 'vuex-class'
 import {BlocksData} from '@/store/clipboard'
 import Message from './prompt-kinds/Message.vue'
@@ -86,7 +86,7 @@ import UnsupportedBlock from './shared/UnsupportedBlock.vue'
 const flowVuexNamespace = namespace('flow')
 const clipboardVuexNamespace = namespace('clipboard')
 
-@Component({
+@Options({
   components: {
     Message,
     Numeric,
@@ -150,7 +150,7 @@ export default class ClipboardRoot extends mixins(Lang) {
       }
       const {prompt}: IRichCursorInputRequired = cursor
       this.addToBlocksData({prompt, isFocused: true})
-    } catch (e) {
+    } catch (e: any) {
       if ((e as Error).message.includes('Unable to find factory for block type')) {
         [, this.unsupportedBlockName] = e.message.split(': ')
       }

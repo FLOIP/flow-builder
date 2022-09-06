@@ -51,7 +51,7 @@ export const routes = [
     ],
   },
   {
-    path: '*',
+    path: "/:pathMatch(.*)*",
     redirect: '/',
   },
 ]

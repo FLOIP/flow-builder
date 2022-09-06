@@ -7,7 +7,7 @@
         <span class="badge badge-default">{{ tag }}</span>
       </li>
       <li>
-        <span class="badge badge-info">{{ 'flow-builder.block-type-unsupported-in-resource-view' | trans }}</span>
+        <span class="badge badge-info">{{ trans('flow-builder.block-type-unsupported-in-resource-view') }}</span>
       </li>
     </ul>
 
@@ -22,12 +22,12 @@
 </template>
 
 <script lang="ts">
-import {mixins} from 'vue-class-component'
-import {Component, Prop} from 'vue-property-decorator'
-import Lang from '@/lib/filters/lang'
+import {mixins, Options} from 'vue-class-component'
+import {Prop} from 'vue-property-decorator'
+import {Lang} from '@/lib/filters/lang'
 import {IBlock} from '@floip/flow-runner'
 
-@Component({})
+@Options({})
 export class BlockContentEditorUnsupported extends mixins(Lang) {
   @Prop() readonly block?: IBlock
 }

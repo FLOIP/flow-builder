@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import {
   findBlockExitWith,
   findBlockOnActiveFlowWith,
@@ -112,7 +111,7 @@ export const mutations: MutationTree<IFlowsState> = {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
 
     if (!block.ui_metadata) {
-      Vue.set(block, 'ui_metadata', {})
+      block.ui_metadata = {}
     }
     const base = block.ui_metadata!
 
@@ -121,12 +120,11 @@ export const mutations: MutationTree<IFlowsState> = {
       const name = chunks.shift()!
 
       if (typeof pointer[name] === 'undefined') {
-        Vue.set(pointer, name, {})
+        pointer[name] = {}
       }
       pointer = pointer[name]
     }
-
-    Vue.set(pointer, chunks[0], value)
+    pointer.chunks[0] = value
   },
   block_setBlockExitDestinationBlockId(state, {blockId, exitId, destinationBlockId}) {
     if (isNil(destinationBlockId)) {

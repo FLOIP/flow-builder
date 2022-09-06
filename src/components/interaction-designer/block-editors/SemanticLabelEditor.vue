@@ -5,8 +5,8 @@
       <div class="semantic-label-editor">
         <text-editor
           v-model="semanticLabel"
-          :label="'flow-builder.block-exit-semantic-label' | trans"
-          :placeholder="'flow-builder.enter-block-semantic-label' | trans"
+          :label="trans('flow-builder.block-exit-semantic-label')"
+          :placeholder="trans('flow-builder.enter-block-semantic-label')"
           :valid-state="isValid" />
       </div>
     </template>
@@ -14,15 +14,15 @@
 </template>
 
 <script lang="ts">
-import {mixins} from 'vue-class-component'
+import {mixins, Options} from 'vue-class-component'
 import {namespace} from 'vuex-class'
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 import {IBlock} from '@floip/flow-runner'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component({})
+@Options({})
 export class SemanticLabelEditor extends mixins(Lang) {
   @Prop({type: Object, required: true}) readonly block!: IBlock
 

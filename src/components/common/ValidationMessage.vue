@@ -14,16 +14,16 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop} from 'vue-property-decorator'
-import {mixins} from 'vue-class-component'
-import Lang from '@/lib/filters/lang'
-import {BAlert} from 'bootstrap-vue'
+import {Prop} from 'vue-property-decorator'
+import {mixins, Options} from 'vue-class-component'
+import {Lang} from '@/lib/filters/lang'
+import {BAlert} from 'bootstrap-vue-3'
 import {namespace} from 'vuex-class'
 import {IIndexedString} from '@/store/validation'
 
 const validationVuexNamespace = namespace('validation')
 
-@Component({
+@Options({
   components: {
     BAlert,
   },

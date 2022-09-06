@@ -1,6 +1,4 @@
-import Vue from 'vue'
 
-import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
 import {library} from '@fortawesome/fontawesome-svg-core'
 
 import {
@@ -34,6 +32,7 @@ import {
 import CustomIcons from './lib/custom-icons/index'
 
 library.add(
+  // @ts-ignore
   faCheck,
   faCheckCircle,
   faChevronDown,
@@ -52,5 +51,3 @@ library.add(
   faExclamationTriangle,
   ...CustomIcons,
 )
-
-Vue.component('FontAwesomeIcon', FontAwesomeIcon)

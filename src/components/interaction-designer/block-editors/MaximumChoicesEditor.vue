@@ -6,17 +6,17 @@
       <numeric-editor
         v-model.number="maxChoices"
         :regex-numeric-filtering="'[0-9]'"
-        :label="'flow-builder.maximum-choices' | trans"
-        :placeholder="'flow-builder.enter-value' | trans"
+        :label="trans('flow-builder.maximum-choices')"
+        :placeholder="trans('flow-builder.enter-value')"
         :valid-state="isValid" />
     </div>
   </validation-message>
 </template>
 
 <script lang="ts">
-import {mixins} from 'vue-class-component'
-import Lang from '@/lib/filters/lang'
-import {Component, Prop} from 'vue-property-decorator'
+import {mixins, Options} from 'vue-class-component'
+import {Lang} from '@/lib/filters/lang'
+import {Prop} from 'vue-property-decorator'
 import {ISelectManyResponseBlock} from '@floip/flow-runner/src/model/block/ISelectManyResponseBlock'
 import {namespace} from 'vuex-class'
 import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
@@ -27,7 +27,7 @@ import {IBlock} from '@floip/flow-runner'
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
-@Component({})
+@Options({})
 export class MaximumChoicesEditor extends mixins(Lang) {
   @Prop() readonly block!: ISelectManyResponseBlock
 

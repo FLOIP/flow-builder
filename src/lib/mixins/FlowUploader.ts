@@ -1,10 +1,11 @@
-import Vue from 'vue'
-import {chain, extend} from 'lodash'
-import Component from 'vue-class-component'
+import {chain as lodashChain, extend} from 'lodash'
 
 // For now we're using flowjs 2.0.0 to match with existing backend server of Viamo
 // see readme to see an example of resumeableAudioUpload() controller implementation to handle GET & POST requests from flowjs
 import Flow from '@flowjs/flow.js'
+
+// TODO: fix this typing issue
+const chain: any = lodashChain
 
 const dispatch = (el: HTMLElement, name: string, data: {}): void => {
   el.dispatchEvent(extend(new Event(name, {
@@ -13,13 +14,13 @@ const dispatch = (el: HTMLElement, name: string, data: {}): void => {
   }), {data}))
 }
 
-@Component({
+export const FlowUploader = {
   directives: {
     'flow-uploader': {
       /**
        * This binding provides a bridge between Flow and vuejs such that we can continue using our resumable backend
        */
-      bind(el, binding) {
+      bind(el: any, binding: any) {
         const {
           accept,
           target,
@@ -78,9 +79,10 @@ const dispatch = (el: HTMLElement, name: string, data: {}): void => {
         }))
       },
 
-      unbind(el, binding) {
+      unbind(el: any, binding: any) {
       },
     },
   },
-})
-export default class FlowUploader extends Vue {}
+}
+
+export default FlowUploader

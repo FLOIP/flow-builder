@@ -13,7 +13,7 @@
         <b-tab
           v-for="({id: languageId, label: language}, langIndex) in flow.languages"
           :key="languageId"
-          :title="language || 'flow-builder.unknown-language' | trans">
+          :title="language || trans('flow-builder.unknown-language')">
           <div
             v-for="(mode, modeIndex) in flow.supported_modes"
             :key="modeIndex"
@@ -74,7 +74,7 @@
                       <font-awesome-icon
                         :icon="['fac', 'upload']"
                         class="fa-btn" />
-                      {{ 'flow-builder.upload-audio' | trans }}
+                      {{ trans('flow-builder.upload-audio') }}
                     </button>
                     <button
                       v-if="can(['edit-content', 'send-call-to-records'], true) && isFeatureAudioUploadEnabled"
@@ -83,7 +83,7 @@
                       <font-awesome-icon
                         :icon="['fac', 'record-audio']"
                         class="fa-btn" />
-                      {{ 'flow-builder.record-audio' | trans }}
+                      {{ trans('flow-builder.record-audio') }}
                     </button>
                   </div>
                 </template>
@@ -97,7 +97,6 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import {Getter, Mutation, namespace} from 'vuex-class'
 import {
   IBlock,
@@ -107,11 +106,11 @@ import {
   SupportedContentType,
   SupportedMode,
 } from '@floip/flow-runner'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
 import FlowUploader from '@/lib/mixins/FlowUploader'
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 import {
   discoverContentTypesFor,
   findOrGenerateStubbedVariantOn,
@@ -120,10 +119,7 @@ import {
 } from '@/store/flow/resource'
 import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/ValidationException'
 import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
-import {mixins} from 'vue-class-component'
-import {TabsPlugin} from 'bootstrap-vue'
-
-Vue.use(TabsPlugin)
+import {Vue, Options} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
@@ -144,8 +140,10 @@ interface IResourceDefinitionVariantOverModesWithOptionalValue extends Partial<I
   value?: IResourceDefinitionVariantOverModes['value'],
 }
 
-@Component({})
-export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, Lang) {
+@Options({
+  mixins: [FlowUploader, Permissions, Routes, Lang],
+})
+export class ResourceEditor extends Vue {
   @Prop({required: true}) block!: IBlock
 
   @Prop({required: true}) flow!: IFlow

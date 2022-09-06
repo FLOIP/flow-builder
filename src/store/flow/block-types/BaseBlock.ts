@@ -5,7 +5,7 @@ import {defaultsDeep} from 'lodash'
 import {IValidationStatus, validateBlockWithJsonSchema} from '@/store/validation'
 import {ValidationResults} from '@/lib/validations'
 import {ErrorObject} from 'ajv'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 
 export interface IEmptyState {}
 

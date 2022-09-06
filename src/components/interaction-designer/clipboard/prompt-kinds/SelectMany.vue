@@ -46,13 +46,13 @@
 </template>
 
 <script lang="ts">
-import Component, {mixins} from 'vue-class-component'
-import Lang from '@/lib/filters/lang'
+import {mixins, Options} from 'vue-class-component'
+import {Lang} from '@/lib/filters/lang'
 import {Context} from '@floip/flow-runner'
 import {PromptKindMixin} from '@/components/interaction-designer/clipboard/shared/PromptKindMixin'
 import BlockActionButtons from '../shared/BlockActionButtons.vue'
 
-@Component({
+@Options({
   components: {
     BlockActionButtons,
   },

@@ -15,7 +15,7 @@
         type="button"
         class="btn btn-link btn-link-text"
         @click="$emit('fixBlockError', block.uuid, error.dataPath)">
-        {{ 'flow-builder.fix-issue' | trans }}
+        {{ trans('flow-builder.fix-issue') }}
       </button>
     </div>
     <div
@@ -26,19 +26,19 @@
       <font-awesome-icon
         v-if="!isExpanded"
         :icon="['fas', 'chevron-down']"
-        :aria-label="'flow-builder.show-more' | trans" />
+        :aria-label="trans('flow-builder.show-more')" />
       <font-awesome-icon
         v-else
         :icon="['fas', 'chevron-up']"
-        :aria-label="'flow-builder.show-less' | trans" />
+        :aria-label="trans('flow-builder.show-less')" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import Component, {mixins} from 'vue-class-component'
+import {mixins, Options} from 'vue-class-component'
 import {IValidationStatus} from '@/store/validation'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {ErrorObject} from 'ajv'
 import {Prop} from 'vue-property-decorator'
 import {IBlock, IFlow, IResource, IResources} from '@floip/flow-runner'
@@ -50,7 +50,7 @@ const validationVuexNamespace = namespace('validation')
 
 const DEFAULT_LIST_SIZE = 3
 
-@Component({})
+@Options({})
 export class BlockErrorsExpandable extends mixins(Lang) {
   @Prop({required: true}) readonly block!: IBlock
 

@@ -3,13 +3,13 @@
     #input-control="{ isValid }"
     :message-key="`block/${block.uuid}/config/group_key`">
     <div class="group-selector block-group">
-      <label class="text-primary">{{ 'flow-builder.group-label' | trans }}</label>
+      <label class="text-primary">{{ trans('flow-builder.group-label') }}</label>
       <vue-multiselect
         v-model="selectedGroup"
         track-by="id"
         label="name"
         :class="{invalid: isValid === false}"
-        :placeholder="'flow-builder.group-selector-placeholder' | trans"
+        :placeholder="trans('flow-builder.group-selector-placeholder')"
         :options="groups"
         :allow-empty="false"
         :show-labels="false"
@@ -21,16 +21,16 @@
 <script lang="ts">
 import VueMultiselect from 'vue-multiselect'
 import {IBlock, ISetGroupMembershipBlockConfig} from '@floip/flow-runner'
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 import {Getter, namespace} from 'vuex-class'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {find} from 'lodash'
-import {mixins} from 'vue-class-component'
+import {mixins, Options} from 'vue-class-component'
 import {IGroupOption} from '../../../store/flow/block-types/Core_SetGroupMembershipStore'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component({
+@Options({
   components: {
     VueMultiselect,
   },

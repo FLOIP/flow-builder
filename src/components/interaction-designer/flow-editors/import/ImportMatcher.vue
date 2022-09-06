@@ -1,6 +1,6 @@
 <template>
   <div class="import-matcher">
-    <label>{{ matchNotFoundText | trans }}</label>
+    <label>{{ trans(matchNotFoundText)  }}</label>
     <div
       v-for="missingMatch in missingMatches"
       :key="`${getIdentifier(missingMatch)}-missing`">
@@ -17,7 +17,7 @@
                 key="default"
                 value=""
                 :selected="mappingsEmpty">
-                {{ 'flow-builder.none-selected' | trans }}
+                {{ trans('flow-builder.none-selected') }}
               </option>
               <option
                 v-for="option in existingOptionsWithoutMatch"
@@ -31,7 +31,7 @@
             <button
               class="btn btn-primary full-width"
               @click="handleMatch(missingMatch)">
-              {{ 'flow-builder.update' | trans }}
+              {{ trans('flow-builder.update') }}
             </button>
           </div>
         </div>
@@ -53,15 +53,15 @@ import {
   IContext,
 } from '@floip/flow-runner'
 
-import Lang from '@/lib/filters/lang'
-import {Component, Prop} from 'vue-property-decorator'
+import {Lang} from '@/lib/filters/lang'
+import {Prop} from 'vue-property-decorator'
 import {get, isEmpty, omit} from 'lodash'
-import {mixins} from 'vue-class-component'
+import {mixins, Options, Vue} from 'vue-class-component'
 import {Getter, namespace} from 'vuex-class'
 
 const importVuexNamespace = namespace('flow/import')
 
-@Component({})
+@Options({})
 export class ImportMatcher extends mixins(Lang) {
   @Prop({default: ''}) readonly matchNotFoundText!: string
 

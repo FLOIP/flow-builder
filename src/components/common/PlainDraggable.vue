@@ -5,16 +5,16 @@
 </template>
 
 <script lang="ts">
-import {mixins} from 'vue-class-component'
-import {Component, Prop, Watch} from 'vue-property-decorator'
+import {mixins, Options} from 'vue-class-component'
+import {Prop, Watch} from 'vue-property-decorator'
 import PlainDraggableLib from 'plain-draggable'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {IPositionLeftTop} from '@/lib/types'
 import {namespace} from 'vuex-class'
 
 const builderNamespace = namespace('builder')
 
-@Component({})
+@Options({})
 export class PlainDraggable extends mixins(Lang) {
   @Prop(Number) startX?: number
   @Prop(Number) startY?: number

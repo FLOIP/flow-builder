@@ -4,14 +4,14 @@
       <button
         class="btn btn-primary"
         @click="showAddLanguageModal">
-        {{ 'flow-builder.add-language' | trans }}
+        {{ trans('flow-builder.add-language') }}
       </button>
     </slot>
     <b-modal
       ref="add-language-modal"
-      :title="'flow-builder.add-language' | trans"
-      :ok-title="'flow-builder.create' | trans"
-      :cancel-title="'flow-builder.cancel' | trans"
+      :title="trans('flow-builder.add-language')"
+      :ok-title="trans('flow-builder.create')"
+      :cancel-title="trans('flow-builder.cancel')"
       @ok.prevent="handleCreateLanguage">
       <div class="form-group">
         <validation-message
@@ -19,8 +19,8 @@
           message-key="language/new_language/label">
           <text-editor
             v-model="newLanguage.label"
-            :placeholder="'flow-builder.enter-label' | trans"
-            :label="'flow-builder.label' | trans"
+            :placeholder="trans('flow-builder.enter-label')"
+            :label="trans('flow-builder.label')"
             :valid-state="isValid" />
         </validation-message>
       </div>
@@ -29,11 +29,11 @@
         <validation-message
           #input-control="{ isValid }"
           message-key="language/new_language/iso_639_3">
-          <label class="text-primary">{{ 'flow-builder.iso-639-3-label' | trans }}</label>
+          <label class="text-primary">{{ trans('flow-builder.iso-639-3-label') }}</label>
           <vue-multiselect
             v-model="iso_639_3"
             :class="{invalid: isValid === false}"
-            :placeholder="'flow-builder.language-tag-selector-placeholder' | trans"
+            :placeholder="trans('flow-builder.language-tag-selector-placeholder')"
             :options="iso_639_3Tags"
             :allow-empty="false"
             :custom-label="customLanguageLabel"
@@ -47,17 +47,17 @@
           message-key="language/new_language/variant">
           <text-editor
             v-model="variant"
-            :placeholder="'flow-builder.enter-variant' | trans"
-            :label="'flow-builder.language-variant' | trans"
+            :placeholder="trans('flow-builder.enter-variant')"
+            :label="trans('flow-builder.language-variant')"
             :valid-state="isValid"
             @keydown="filterVariant" />
         </validation-message>
       </div>
       <div class="form-group">
-        <label class="text-primary">{{ 'flow-builder.iso-3166-1-label' | trans }}</label>
+        <label class="text-primary">{{ trans('flow-builder.iso-3166-1-label') }}</label>
         <vue-multiselect
           v-model="iso_3166_1"
-          :placeholder="'flow-builder.language-locale-selector-placeholder' | trans"
+          :placeholder="trans('flow-builder.language-locale-selector-placeholder')"
           :options="iso_3166_1Locales()"
           :allow-empty="false"
           track-by="locale"
@@ -65,7 +65,7 @@
           :searchable="true" />
       </div>
       <div class="form-group">
-        <label class="text-primary">{{ 'flow-builder.bcp-47-label' | trans }}</label>
+        <label class="text-primary">{{ trans('flow-builder.bcp-47-label') }}</label>
         <validation-message
           #input-control="{ isValid }"
           message-key="language/new_language/bcp_47">
@@ -83,11 +83,10 @@
 
 <script lang="ts">
 
-import {BModal} from 'bootstrap-vue'
-import Lang from '@/lib/filters/lang'
+import {BModal} from 'bootstrap-vue-3'
+import {Lang} from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
-import {Component} from 'vue-property-decorator'
-import {mixins} from 'vue-class-component'
+import {mixins, Options} from 'vue-class-component'
 import {iso6393} from 'iso-639-3'
 
 import {
@@ -112,7 +111,7 @@ countries.registerLocale(require('i18n-iso-countries/langs/fr.json'))
 const importVuexNamespace = namespace('flow/import')
 const validationVuexNamespace = namespace('validation')
 
-@Component({
+@Options({
   components: {
     BModal,
     VueMultiselect,

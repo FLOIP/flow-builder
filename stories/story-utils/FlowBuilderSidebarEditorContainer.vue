@@ -27,15 +27,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import {Component, Prop} from 'vue-property-decorator'
 
+import {Prop} from 'vue-property-decorator'
+import {Options, Vue} from 'vue-class-component'
 import {Mutation} from 'vuex-class'
 
 import {IBlock, IFlow} from '@floip/flow-runner'
 import FlowBuilderContainer from './FlowBuilderContainer.vue'
 
-@Component({
+@Options({
   components: {
     FlowBuilderContainer,
   },

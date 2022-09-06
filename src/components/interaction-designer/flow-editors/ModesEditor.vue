@@ -1,9 +1,9 @@
 <template>
   <div class="modes-editor form-group">
-    <label class="text-primary">{{ 'flow-builder.modes' | trans }}</label>
+    <label class="text-primary">{{ trans('flow-builder.modes') }}</label>
     <vue-multiselect
       v-model="flowSelectedModes"
-      :placeholder="'flow-builder.select-modes' | trans"
+      :placeholder="trans('flow-builder.select-modes')"
       :options="supportedModes"
       :multiple="true"
       :show-labels="false"
@@ -13,14 +13,14 @@
 
 <script lang="ts">
 import VueMultiselect from 'vue-multiselect'
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 import {IFlow, SupportedMode} from '@floip/flow-runner'
 
-import Lang from '@/lib/filters/lang'
-import {mixins} from 'vue-class-component'
+import {Lang} from '@/lib/filters/lang'
+import {mixins, Options} from 'vue-class-component'
 import {Getter} from 'vuex-class'
 
-@Component({
+@Options({
   components: {
     VueMultiselect,
   },

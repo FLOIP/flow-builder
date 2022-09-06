@@ -5,13 +5,13 @@
         <!--Selection-->
         <font-awesome-icon
           v-if="isBlockSelected"
-          v-b-tooltip.hover="trans('flow-builder.deselect-block')"
+          v-tooltip="trans('flow-builder.deselect-block')"
           :icon="['far', 'check-circle']"
           class="cursor-pointer text-info"
           @click="isEditable && block_deselect({ blockId: block.uuid })" />
         <font-awesome-icon
           v-if="!isBlockSelected"
-          v-b-tooltip.hover="trans('flow-builder.select-block')"
+          v-tooltip="trans('flow-builder.select-block')"
           :icon="['far', 'circle']"
           class="cursor-pointer"
           @click="isEditable && block_select({ blockId: block.uuid })" />
@@ -40,7 +40,7 @@
         </div>
         <font-awesome-icon
           v-if="!isDeleting"
-          v-b-tooltip.hover="trans('flow-builder.tooltip-delete-block')"
+          v-tooltip="trans('flow-builder.tooltip-delete-block')"
           :icon="['far', 'trash-alt']"
           :class="{
             'text-danger': !isWaitingForConnection && !isActivatedByConnection,
@@ -52,14 +52,14 @@
       <div class="mr-1 ml-2">
         <font-awesome-icon
           v-if="isEditable"
-          v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
+          v-tooltip="trans('flow-builder.tooltip-duplicate-block')"
           :icon="['fac', 'copy']"
           class="cursor-pointer"
           @click.prevent="handleDuplicateBlock" />
       </div>
       <!--Expand block editor-->
       <div
-        v-b-tooltip.hover="trans('flow-builder.toggle-block-editor-tooltip')"
+        v-tooltip.hover="trans('flow-builder.toggle-block-editor-tooltip')"
         class="mr-1 ml-2 cursor-pointer icon-container"
         @click.prevent="handleExpandMinimizeBlockEditor">
         <span class="icon-text">
@@ -73,8 +73,8 @@
 
 <script lang="ts">
 
-import Component, {mixins} from 'vue-class-component'
-import Lang from '@/lib/filters/lang'
+import {mixins, Options} from 'vue-class-component'
+import {Lang} from '@/lib/filters/lang'
 import {Prop} from 'vue-property-decorator'
 import {IBlock} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
@@ -83,7 +83,7 @@ const builderVuexNamespace = namespace('builder')
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
 
-@Component({})
+@Options({})
 export class BlockToolbar extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly isBlockSelected!: boolean
@@ -126,15 +126,16 @@ export class BlockToolbar extends mixins(Lang) {
       {
         name: routerName,
         params: {blockId: this.block.uuid},
-      },
-      undefined,
-      (err) => {
-        if (err == null) {
-          console.warn('Unknown navigation error has occurred when expanding/minimizing a block editor')
-        } else if (err.name !== 'NavigationDuplicated') {
-          console.warn(err)
-        }
-      },
+      }
+      ,
+      // undefined,
+      // (err) => {
+      //   if (err == null) {
+      //     console.warn('Unknown navigation error has occurred when expanding/minimizing a block editor')
+      //   } else if (err.name !== 'NavigationDuplicated') {
+      //     console.warn(err)
+      //   }
+      // },
     )
   }
 

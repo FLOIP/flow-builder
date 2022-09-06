@@ -46,11 +46,11 @@
 
 <script lang="ts">
 import {IBlock, ISetGroupMembershipBlockConfig, IGroupMembership} from '@floip/flow-runner'
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 import VueMultiselect from 'vue-multiselect'
-import Lang from '@/lib/filters/lang'
-import {mixins} from 'vue-class-component'
+import {Lang} from '@/lib/filters/lang'
+import {mixins, Options} from 'vue-class-component'
 import ValidationMessage from '../../common/ValidationMessage.vue'
 
 const flowVuexNamespace = namespace('flow')
@@ -67,7 +67,7 @@ enum MEMBERSHIP_ACTION {
   CLEAR = 'clear',
 }
 
-@Component({
+@Options({
   components: {VueMultiselect},
 })
 export class GroupMembershipEditor extends mixins(Lang) {

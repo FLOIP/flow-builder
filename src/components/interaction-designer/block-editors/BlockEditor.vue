@@ -16,16 +16,15 @@
 </template>
 
 <script lang="ts">
-import {mixins} from 'vue-class-component'
-import {Component} from 'vue-property-decorator'
+import {mixins, Options} from 'vue-class-component'
 import {namespace} from 'vuex-class'
 import {IBlock, IFlow} from '@floip/flow-runner'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 
 const builderNamespace = namespace('builder')
 const flowNamespace = namespace('flow')
 
-@Component({})
+@Options({})
 export class BlockEditor extends mixins(Lang) {
   @builderNamespace.Getter activeBlock?: IBlock
   @flowNamespace.Getter activeFlow?: IFlow

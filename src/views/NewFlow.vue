@@ -28,7 +28,7 @@
                 :href="route('flows.editFlow', {flowId: activeFlow.uuid, component: 'designer', mode: 'edit'})"
                 class="btn btn-primary"
                 @click.prevent="handlePersistFlow(route('flows.editFlow', {flowId: activeFlow.uuid, component: 'designer', mode: 'edit'}))">
-                {{ 'flow-builder.create' | trans }}
+                {{ trans('flow-builder.create') }}
               </a>
             </div>
           </div>
@@ -39,23 +39,22 @@
 </template>
 
 <script lang="ts">
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
-import {Component, Prop, Watch} from 'vue-property-decorator'
-import Vue from 'vue'
+import {Prop, Watch} from 'vue-property-decorator'
 import {Getter, Mutation, namespace, State} from 'vuex-class'
 import {forEach, isEmpty} from 'lodash'
-import {mixins} from 'vue-class-component'
+import {mixins, Options} from 'vue-class-component'
 import {store} from '@/store'
 import {IContext, IFlow} from '@floip/flow-runner'
-import {RawLocation} from 'vue-router'
+// import {RawLocation} from 'vue-router'
 import {IValidationStatus} from '@/store/validation'
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
 
-@Component({})
-class NewFlow extends mixins(Lang, Routes) {
+@Options({})
+class NewFlow extends mixins(Lang, Routes)  {
   @Prop({default: () => ({})}) readonly appConfig!: object
   @Prop({default: () => ({})}) readonly builderConfig!: object
 
@@ -81,7 +80,7 @@ class NewFlow extends mixins(Lang, Routes) {
   }
 
   async beforeCreate(): Promise<void> {
-    const {$store} = this
+    const {$store}: any = this
 
     forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
   }
@@ -92,7 +91,7 @@ class NewFlow extends mixins(Lang, Routes) {
     }
   }
 
-  async handlePersistFlow(route: RawLocation): Promise<void> {
+  async handlePersistFlow(route: any): Promise<void> {
     this.didUserSubmit = true
     if (!this.isActiveFlowConsideredValidOnCreationForm) {
       return

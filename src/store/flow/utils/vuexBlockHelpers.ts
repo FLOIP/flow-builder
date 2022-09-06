@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import {toPath} from 'lodash'
 import {IContext, findBlockOnActiveFlowWith, IBlock, IChoice, IResource} from '@floip/flow-runner'
 
@@ -11,7 +10,7 @@ function makePath(block: any, rawPath: string): [object, string] {
     const name = path.shift()!
 
     if (typeof pointer[name] === 'undefined') {
-      Vue.set(pointer, name, {})
+      pointer[name] = {}
     }
     pointer = pointer[name]
   }
@@ -27,7 +26,7 @@ export function updateBlockValueByPath(
 ): void {
   const base = findBlockOnActiveFlowWith(blockId, state as IContext)
   const [pointer, key] = makePath(base, path)
-  Vue.set(pointer, key, value)
+  pointer[key] = value
 }
 
 export function deleteChoiceValueByPath(
@@ -36,7 +35,7 @@ export function deleteChoiceValueByPath(
   path: string,
 ): void {
   const [pointer, key] = makePath(choice, path)
-  Vue.delete(pointer, key)
+  delete pointer[key]
 }
 
 export function removeBlockValueByPath(
@@ -47,5 +46,5 @@ export function removeBlockValueByPath(
   const base = findBlockOnActiveFlowWith(blockId, state as IContext)
   const [pointer, key] = makePath(base, path)
 
-  Vue.delete(pointer, key)
+  delete pointer[key]
 }

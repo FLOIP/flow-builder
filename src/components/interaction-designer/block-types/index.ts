@@ -10,10 +10,10 @@ export {
   default as MobilePrimitives_SelectOneResponseBlock,
   install as selectOneResponseBlockInstaller,
 } from './MobilePrimitives_SelectOneResponseBlock.vue'
-export {
-  default as MobilePrimitives_SelectManyResponseBlock,
-  install as selectManyResponseBlockInstaller,
-} from './MobilePrimitives_SelectManyResponseBlock.vue'
+// export {
+//   default as MobilePrimitives_SelectManyResponseBlock,
+//   install as selectManyResponseBlockInstaller,
+// } from './MobilePrimitives_SelectManyResponseBlock.vue'
 export {
   default as MobilePrimitives_OpenResponseBlock,
   install as openResponseBlockInstaller,

@@ -8,10 +8,10 @@
           :class="{active: isExitBlock}"
           @click="toggleExitBlock">
           <template v-if="isExitBlock">
-            {{ 'flow-builder.unset-as-exit-block' | trans }}
+            {{ trans('flow-builder.unset-as-exit-block') }}
           </template>
           <template v-else>
-            {{ 'flow-builder.set-as-exit-block' | trans }}
+            {{ trans('flow-builder.set-as-exit-block') }}
           </template>
         </button>
       </div>
@@ -20,15 +20,15 @@
 </template>
 
 <script lang="ts">
-import {mixins} from 'vue-class-component'
-import {Component, Prop} from 'vue-property-decorator'
-import Lang from '@/lib/filters/lang'
+import {mixins, Options} from 'vue-class-component'
+import {Prop} from 'vue-property-decorator'
+import {Lang} from '@/lib/filters/lang'
 import {namespace} from 'vuex-class'
 import {IBlock, IFlow} from '@floip/flow-runner'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component({})
+@Options({})
 export class ExitBlockEditorToggle extends mixins(Lang) {
   @Prop({type: Object, required: true}) readonly flow!: IFlow
   // Toggle for particular block

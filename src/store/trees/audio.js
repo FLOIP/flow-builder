@@ -1,6 +1,5 @@
 import {chain, keyBy, uniqBy, union} from 'lodash'
 import axios from 'axios'
-import Vue from 'vue'
 import {SupportedContentType, SupportedMode} from '@floip/flow-runner'
 import {routeFrom} from '@/lib/mixins/Routes'
 
@@ -33,7 +32,7 @@ export default {
     },
 
     setRecordingStatusFor({recording: {isCalling}}, {key, value: status}) {
-      Vue.set(isCalling, key, status)
+      isCalling[key] = status
     },
 
     setAudioRecordingConfigVisibilityForSelectedBlock({recording}, {langId, isVisible}) {

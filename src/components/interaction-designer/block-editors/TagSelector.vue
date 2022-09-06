@@ -3,14 +3,14 @@
     #input-control="{isValid}"
     :message-key="`block/${block.uuid}/tags`">
     <div class="tag-selector">
-      <label>{{ 'flow-builder.tags-label' | trans }}</label>
+      <label>{{ trans('flow-builder.tags-label') }}</label>
       <vue-multiselect
         v-model="selectedTags"
         track-by="name"
         label="name"
         :class="{invalid: isValid === false}"
         :multiple="true"
-        :placeholder="'flow-builder.tags-selector-placeholder' | trans"
+        :placeholder="trans('flow-builder.tags-selector-placeholder')"
         :options="availableTagOptions"
         :searchable="true"
         :show-labels="false"
@@ -25,15 +25,15 @@
 <script lang="ts">
 import VueMultiselect from 'vue-multiselect'
 import {IBlock} from '@floip/flow-runner'
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 import {State, namespace} from 'vuex-class'
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {map} from 'lodash'
-import {mixins} from 'vue-class-component'
+import {mixins, Options} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component({
+@Options({
   components: {
     VueMultiselect,
   },

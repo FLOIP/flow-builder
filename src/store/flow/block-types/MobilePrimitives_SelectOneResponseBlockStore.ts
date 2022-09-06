@@ -3,7 +3,6 @@ import {IRootState} from '@/store'
 import {IChoice, findBlockWith, IBlock, IBlockExit, IResource, ValidationException} from '@floip/flow-runner'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
-import Vue from 'vue'
 import {cloneDeep, find, reject} from 'lodash'
 import BaseStore, {
   actions as baseActions,
@@ -48,14 +47,13 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       } as IChoice)
     }
   },
-
   deleteChoiceByResourceIdFrom({dispatch, rootGetters}, {blockId, resourceId}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'] }) {
     const block: ISelectOneResponseBlock = findBlockWith(blockId, rootGetters['flow/activeFlow']) as ISelectOneResponseBlock
     const newChoices = reject(block.config.choices, v => v.prompt === resourceId)
-    Vue.set(block.config, 'choices', newChoices)
+    block.config.choices = newChoices
 
     if (block.vendor_metadata?.floip?.ui_metadata?.set_contact_property?.property_value_mapping !== undefined) {
-      Vue.delete(block.vendor_metadata.floip.ui_metadata.set_contact_property.property_value_mapping, resourceId)
+      delete block.vendor_metadata.floip.ui_metadata.set_contact_property.property_value_mapping[resourceId]
     }
 
     dispatch('flow/block_updateContactPropertyAfterChoicesChange', {

@@ -1,19 +1,15 @@
-import Vue from 'vue'
-import VueRouter, {RouteConfig} from 'vue-router'
-// @ts-ignore
-import {routes as treesRoutes} from './trees'
+import {createWebHistory, createRouter, RouterOptions} from 'vue-router'
+import {routes as treesRoutes} from '@/router/trees.js'
+import {scrollBehavior} from '@/router/helpers'
 
-Vue.use(VueRouter)
-
-export const routes: Array<RouteConfig> = [
+export const routes: Array<any> = [
   // todo: rename trees module + url path to builder + add extensible children as intx-design & resource-viewer
   ...treesRoutes,
 ]
-
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
+export const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
   routes,
-})
+  scrollBehavior,
+} as RouterOptions)
 
 export default router

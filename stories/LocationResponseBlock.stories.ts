@@ -1,13 +1,10 @@
 import LocationResponseBlock from '@/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue'
 import locationResponseBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/SmartDevices_LocationResponseBlockStore'
-import {Component, Vue} from 'vue-property-decorator'
+
 import {namespace} from 'vuex-class'
-import Vuex from 'vuex'
-import {IRootState, store} from '@/store'
 import {BaseMountedVueClass, IBaseOptions} from './story-utils/storeSetup'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-
-Vue.use(Vuex)
+import {Options} from 'vue-class-component'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
@@ -28,11 +25,10 @@ const LocationResponseBlockTemplate = `
 const BaseOptions: IBaseOptions = {
   components: {LocationResponseBlock, FlowBuilderSidebarEditorContainer},
   template: LocationResponseBlockTemplate,
-  store: new Vuex.Store<IRootState>(store),
 }
 
 // default location-response block state
-@Component({
+@Options({
   ...BaseOptions,
 })
 class CurrentClass1 extends BaseMountedVueClass {
@@ -44,7 +40,7 @@ class CurrentClass1 extends BaseMountedVueClass {
 export const Default = () => (CurrentClass1)
 
 //ExistingDataPreFilled
-@Component({
+@Options({
   ...BaseOptions,
 })
 class CurrentClass2 extends BaseMountedVueClass {
@@ -64,7 +60,7 @@ class CurrentClass2 extends BaseMountedVueClass {
 export const ExistingDataPreFilled = () => (CurrentClass2)
 
 //NonStartingBlock
-@Component({
+@Options({
   ...BaseOptions,
 })
 class CurrentClass3 extends BaseMountedVueClass {

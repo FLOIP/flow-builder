@@ -6,7 +6,7 @@
           <div class="card-deck mb-3">
             <div class="card mb-4 box-shadow">
               <div class="card-body">
-                <h3>{{ 'flow-builder.flow-builder' | trans }}</h3>
+                <h3>{{ trans('flow-builder.flow-builder') }}</h3>
                 <div class="row mt-5 mb-5">
                   <div class="col-sm-5 border-right">
                     <div class="d-flex h-100 text-center">
@@ -16,14 +16,14 @@
                             :to="route('flows.newFlow')"
                             :title="trans('flow-builder.create-flow')"
                             class="btn btn-primary mr-2">
-                            {{ 'flow-builder.create-flow' | trans }}
+                            {{ trans('flow-builder.create-flow') }}
                           </router-link>
                           <div class="mt-4">
                             <router-link
                               :to="route('flows.importFlow')"
                               :title="trans('flow-builder.import-flow')"
                               class="mt-3 mr-2 active">
-                              {{ 'flow-builder.import-flow' | trans }}
+                              {{ trans('flow-builder.import-flow') }}
                             </router-link>
                           </div>
                           <div class="mt-4">
@@ -31,13 +31,13 @@
                               <button
                                 class="btn btn-outline-primary"
                                 @click="scope.showAddLanguageModal">
-                                {{ 'flow-builder.add-language' | trans }}
+                                {{ trans('flow-builder.add-language') }}
                               </button>
                             </language-adder>
                           </div>
                           <div class="mt-4">
                             <h4 v-if="!!flows.length">
-                              {{ 'flow-builder.existing-flows' | trans }}:
+                              {{ trans('flow-builder.existing-flows') }}:
                             </h4>
                             <div
                               v-for="flow in flows"
@@ -57,31 +57,31 @@
                   <div class="col-sm-7">
                     <p>
                       <span>
-                        {{ 'flow-builder.flow-builder-info-1' | trans }}
+                        {{ trans('flow-builder.flow-builder-info-1') }}
                       </span>
                       <span>
                         <a
                           :class="{'d-none': !isExtraContentHidden}"
                           class="blue-link"
                           href="#"
-                          @click="showExtraContent">{{ 'flow-builder.learn-more' | trans }}</a>
+                          @click="showExtraContent">{{ trans('flow-builder.learn-more') }}</a>
                       </span>
                       <span
                         ref="extra-content-1"
                         :class="{'d-none': isExtraContentHidden}">
-                        {{ 'flow-builder.flow-builder-info-2' | trans }}
+                        {{ trans('flow-builder.flow-builder-info-2') }}
                       </span>
                     </p>
                     <p
                       ref="extra-content-2"
                       :class="{'d-none': isExtraContentHidden}">
-                      <span>{{ 'flow-builder.flow-builder-info-3-pt-1' | trans }}</span>
+                      <span>{{ trans('flow-builder.flow-builder-info-3-pt-1') }}</span>
                       <b><a href="https://flowinterop.org/">https://flowinterop.org/</a></b>
-                      <span>{{ 'flow-builder.flow-builder-info-3-pt-2' | trans }}</span>
+                      <span>{{ trans('flow-builder.flow-builder-info-3-pt-2') }}</span>
                       <a
                         href="#"
                         class="blue-link"
-                        @click="hideExtraContent">{{ 'flow-builder.less' | trans }}</a>
+                        @click="hideExtraContent">{{ trans('flow-builder.less') }}</a>
                     </p>
                     <p>
                       <b>
@@ -89,12 +89,12 @@
                           href="https://github.com/FLOIP/flow-builder"
                           :title="trans('flow-builder.flow-builder-documentation')"
                           class="mt-3 mr-2 active">
-                          {{ 'flow-builder.flow-builder-documentation' | trans }}
+                          {{ trans('flow-builder.flow-builder-documentation') }}
                         </a>
                       </b>
                     </p>
                     <p>
-                      {{ 'flow-builder.flow-builder-info-4' | trans }}
+                      {{ trans('flow-builder.flow-builder-info-4') }}
                       <b><a href="https://flowinteroperability.slack.com">flowinteroperability.slack.com</a></b>
                     </p>
                   </div>
@@ -109,18 +109,18 @@
 </template>
 
 <script lang="ts">
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
-import {Component, Prop} from 'vue-property-decorator'
+import {Prop} from 'vue-property-decorator'
 import {forEach, isEmpty} from 'lodash'
-import {mixins} from 'vue-class-component'
+import {mixins, Options} from 'vue-class-component'
 import {store} from '@/store'
 import {Getter, Mutation, namespace} from 'vuex-class'
 import {IFlow} from '@floip/flow-runner'
 
 const flowVuexNamespace = namespace('flow')
 
-@Component({})
+@Options({})
 class Home extends mixins(Lang, Routes) {
   @Prop({default: () => ({})}) readonly appConfig!: object
   @Prop({default: () => ({})}) readonly builderConfig!: object
@@ -142,7 +142,7 @@ class Home extends mixins(Lang, Routes) {
   @Getter isConfigured!: boolean
 
   async beforeCreate(): Promise<void> {
-    const {$store} = this
+    const {$store}: any = this
 
     forEach(store.modules, (v, k) => !$store.hasModule(k) && $store.registerModule(k, v))
   }

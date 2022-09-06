@@ -1,12 +1,12 @@
 <template>
   <div class="block-output-branching-config">
     <div class="form-group">
-      <label :class="labelClass">{{ 'flow-builder.output-branching' | trans }}</label>
+      <label :class="labelClass">{{ trans('flow-builder.output-branching') }}</label>
 
       <div class="btn-group d-block">
         <button
           v-if="hasExitPerChoice"
-          v-b-tooltip.hover.bottom="trans('flow-builder.separate-output-for-each-choice')"
+          v-tooltip.bottom="trans('flow-builder.separate-output-for-each-choice')"
           :class="{
             active: isBranchingTypeExitPerChoice,
             'btn-primary': isBranchingTypeExitPerChoice,
@@ -21,7 +21,7 @@
 
         <button
           v-if="hasUnifiedExit"
-          v-b-tooltip.hover.bottom="trans('flow-builder.one-output-for-all-choices')"
+          v-tooltip.bottom="trans('flow-builder.one-output-for-all-choices')"
           :class="{
             active: isBranchingTypeUnified,
             'btn-primary': isBranchingTypeUnified,
@@ -35,7 +35,7 @@
         </button>
 
         <button
-          v-b-tooltip.hover.bottom="trans('flow-builder.advanced-configuration-of-outputs')"
+          v-tooltip.bottom="trans('flow-builder.advanced-configuration-of-outputs')"
           :class="{
             active: isBranchingTypeAdvanced,
             'btn-primary': isBranchingTypeAdvanced,
@@ -59,10 +59,10 @@
 
 <script lang="ts">
   import {get, isEmpty} from 'lodash'
-  import {Component, Prop} from 'vue-property-decorator'
+  import {Prop} from 'vue-property-decorator'
+  import {mixins, Options} from 'vue-class-component'
   import {IBlock, IBlockExit} from '@floip/flow-runner'
-  import {mixins} from 'vue-class-component'
-  import Lang from '@/lib/filters/lang'
+  import {Lang} from '@/lib/filters/lang'
   import {namespace} from 'vuex-class'
 
   const flowVuexNamespace = namespace('flow')
@@ -85,7 +85,7 @@
     vendor_metadata: IVendorMetadataWithBranchingType,
   }
 
-  @Component({})
+  @Options({})
   export class BlockOutputBranchingConfig extends mixins(Lang) {
     @Prop() readonly block!: IBlock
     @Prop() readonly hasExitPerChoice!: boolean

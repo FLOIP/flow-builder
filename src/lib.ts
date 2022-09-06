@@ -1,4 +1,5 @@
-import Vue from 'vue'
+import {app} from './main'
+
 import {createDefaultBlockTypeInstallerFor as createDefaultBlockTypeInstallerForFunction} from '@/store/builder'
 
 import registerCustomComponents from '@/common-imports'
@@ -46,7 +47,7 @@ export * from '@/router/helpers'
 export * from '@/store/validation'
 export * from './lib/validations'
 
-const Components = registerCustomComponents({
+const Components = registerCustomComponents(app, {
   InteractionDesigner: InteractionDesignerComponent,
   FetchFlow: FetchFlowComponent,
   NewFlow: NewFlowComponent,

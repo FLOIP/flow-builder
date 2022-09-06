@@ -1,16 +1,10 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-
 import SetGroupMembershipBlock from '@/components/interaction-designer/block-types/Core_SetGroupMembershipBlock.vue'
 
-import {IRootState, store} from '@/store'
 import SetGroupMembershipStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_SetGroupMembershipStore'
-import {Component} from 'vue-property-decorator'
+import {Options} from 'vue-class-component'
 import {Mutation} from 'vuex-class'
 import {BaseMountedVueClass} from './story-utils/storeSetup'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-
-Vue.use(Vuex)
 
 export default {
   title: 'Core/Set Group Membership',
@@ -28,11 +22,10 @@ const SetGroupMembershipBlockTemplate = `
 const baseOptions = {
   components: {SetGroupMembershipBlock, FlowBuilderSidebarEditorContainer},
   template: SetGroupMembershipBlockTemplate,
-  store: new Vuex.Store<IRootState>(store),
 }
 
 // default state
-@Component<any>({
+@Options<any>({
   ...baseOptions,
   async mounted() {
     await this.baseMounted(BLOCK_TYPE, SetGroupMembershipStore)
@@ -44,7 +37,7 @@ class DefaultClass extends BaseMountedVueClass {
 
 export const Default = () => (DefaultClass)
 
-@Component<any>({
+@Options<any>({
   ...baseOptions,
 })
 class ExistingDataBlockClass extends BaseMountedVueClass {

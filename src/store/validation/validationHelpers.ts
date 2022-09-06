@@ -5,7 +5,7 @@ import {get, isEmpty} from 'lodash'
 import {JSONSchema7} from 'json-schema'
 import ajvFormat from 'ajv-formats'
 import {parse as floipExpressionParser} from '@floip/expression-parser'
-import Lang from '@/lib/filters/lang'
+import {trans} from '@/lib/filters/lang'
 
 const DEV_ERROR_KEYWORDS = [
   // unwanted extra props
@@ -13,8 +13,6 @@ const DEV_ERROR_KEYWORDS = [
   // missing props
   'required',
 ]
-
-const lang = new Lang()
 
 // AJV validators, keys are types
 const validators = new Map<string, ValidateFunction>()
@@ -132,7 +130,7 @@ function getLocalizedErrorMessage(keyPrefix: string, ajvErrorObject: ErrorObject
   // Normal AJV errors
   const localizationKey = getErrorMessageLocalizationKey(keyPrefix, ajvErrorObject)
 
-  const localizedMessage = lang.trans(localizationKey)
+  const localizedMessage = trans(localizationKey)
   const hasTranslation = localizedMessage !== localizationKey
 
   if (!hasTranslation) {
@@ -162,7 +160,7 @@ export function getLocalizedBackendErrors(keyPrefix: string, blockErrors: { mess
 
   return blockErrors.map((error: { message: string }) => {
     const errorWithRightSchema: ErrorObject = {
-      message: lang.trans(`flow-builder-validation.${error.message}`),
+      message: trans(`flow-builder-validation.${error.message}`),
       keyword: 'backend',
       dataPath: error.message,
       schemaPath: error.message,
@@ -248,7 +246,7 @@ export function getOrCreateResourceValidator(schemaVersion: string): ValidateFun
  * @param customBlockJsonSchema,
  */
 export function validateBlockWithJsonSchema({block, schemaVersion, customBlockJsonSchema}: {block: IBlock, schemaVersion: string, customBlockJsonSchema?: JSONSchema7}): IValidationStatus {
-  let validate = null
+  let validate: any = null
   if (isEmpty(validators) || !validators.has(block.type)) {
     const blockTypeWithoutNameSpace = block.type.split('.')[block.type.split('.').length - 1]
     let blockJsonSchema
@@ -260,7 +258,7 @@ export function validateBlockWithJsonSchema({block, schemaVersion, customBlockJs
       } else {
         validate = createDefaultJsonSchemaValidatorFactoryFor(customBlockJsonSchema)
       }
-    } catch (e) {
+    } catch (e: any) {
       if (e.code === 'MODULE_NOT_FOUND') {
         console.warn(`A Specific Validator for the ${blockTypeWithoutNameSpace}Block could not be found. `
           + `Falling back the generic Block validator for ${schemaVersion}`)

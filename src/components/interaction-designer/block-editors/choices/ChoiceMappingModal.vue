@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import {BModal} from 'bootstrap-vue'
+import {BModal} from 'bootstrap-vue-3'
 import Lang from '@/lib/filters/lang'
 import {mapGetters} from 'vuex'
 import {ISelectOneResponseBlock} from '@floip/flow-runner'

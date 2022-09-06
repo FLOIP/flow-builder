@@ -1,13 +1,9 @@
 import MessageBlock from '@/components/interaction-designer/block-types/MobilePrimitives_MessageBlock.vue'
 import messageBlockStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_MessageBlockStore'
 
-import {Component, Vue} from 'vue-property-decorator'
-import Vuex from 'vuex'
-import {IRootState, store} from '@/store'
 import {BaseMountedVueClass, BaseMountedVueClassWithResourceAndMode, IBaseOptions} from './story-utils/storeSetup'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
-
-Vue.use(Vuex)
+import {Options} from 'vue-class-component'
 
 export default {
   title: 'MobilePrimitives/Message Block',
@@ -25,10 +21,9 @@ const MessageBlockTemplate = `
 const BaseOptions: IBaseOptions = {
   components: {MessageBlock, FlowBuilderSidebarEditorContainer},
   template: MessageBlockTemplate,
-  store: new Vuex.Store<IRootState>(store),
 }
 
-@Component({
+@Options({
   ...BaseOptions,
 })
 class DefaultClass extends BaseMountedVueClass {
@@ -40,7 +35,7 @@ class DefaultClass extends BaseMountedVueClass {
 // default log block state
 export const Default = () => (DefaultClass)
 
-@Component(
+@Options(
   {
     ...BaseOptions,
   },
@@ -60,7 +55,7 @@ class ExistingDataBlockClass extends BaseMountedVueClassWithResourceAndMode {
 
 export const ExistingDataBlock = () => (ExistingDataBlockClass)
 
-@Component(
+@Options(
   {
     ...BaseOptions,
   },

@@ -71,15 +71,15 @@
 </template>
 
 <script lang="ts">
-import {mixins} from 'vue-class-component'
-import {Component, Prop} from 'vue-property-decorator'
+import {mixins, Options} from 'vue-class-component'
+import {Prop} from 'vue-property-decorator'
 import {Getter, State} from 'vuex-class'
 import {debounce} from 'lodash'
 
-import Lang from '@/lib/filters/lang'
+import {Lang} from '@/lib/filters/lang'
 import {IBlockExtended} from '@/lib/types'
 
-@Component({})
+@Options({})
 export class HorizontalBlockContentEditor extends mixins(Lang) {
   @Prop() alternateAudioFileSelections: unknown
   @Prop() tree: unknown
