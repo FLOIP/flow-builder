@@ -1,4 +1,5 @@
-import Vue from 'vue'
+import {app} from './main'
+
 import {createDefaultBlockTypeInstallerFor as createDefaultBlockTypeInstallerForFunction} from '@/store/builder'
 
 import registerCustomComponents from '@/common-imports'
@@ -44,8 +45,7 @@ export * from '@/router/helpers'
 
 // We may need those validation helpers to customize the validation in the consumer side
 export * from '@/store/validation'
-export * from '@/store/validation/validationHelpers'
-import {app} from './main'
+export * from './lib/validations'
 
 const Components = registerCustomComponents(app, {
   InteractionDesigner: InteractionDesignerComponent,

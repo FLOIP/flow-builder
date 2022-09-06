@@ -6,10 +6,12 @@
         <expression-input
           ref="input"
           :label="label"
+          :prepend-text="prependText"
           :placeholder="placeholder || `flow-builder.enter-${resourceVariant.modes[0].replace('_', '-').toLowerCase()}-content` | trans"
           :current-expression="content"
           :rows="rows"
           :valid-state="isValid"
+          :disabled-auto-complete="disabledAutoComplete"
           @commitExpressionChange="commitExpressionChange" />
       </div>
     </template>
@@ -34,10 +36,12 @@ export class ResourceVariantTextEditor extends mixins(Lang) {
   @Prop({default: null}) readonly index!: number
   @Prop() readonly resourceId!: IResource['uuid']
   @Prop({default: ''}) readonly label!: string
+  @Prop({type: String, default: ''}) readonly prependText!: string
   @Prop() readonly placeholder!: string
   @Prop() readonly resourceVariant!: IResourceValue
   @Prop() readonly mode!: SupportedMode
   @Prop({default: 2}) readonly rows!: number
+  @Prop({type: Boolean, default: false}) readonly disabledAutoComplete!: boolean
 
   get content(): string {
     return this.resourceVariant.value
@@ -57,13 +61,13 @@ export class ResourceVariantTextEditor extends mixins(Lang) {
       filter.mime_type = mimeType
     }
 
-    this.$emit('beforeResourceVariantChanged', {variant: resourceVariant, resourceId})
+    this.$emit('beforeResourceVariantChanged', {variant: resourceVariant, resourceId, value})
     this.resource_setOrCreateValueModeSpecific({
       resourceId,
       filter,
       value,
     })
-    this.$emit('afterResourceVariantChanged', {variant: resourceVariant, resourceId})
+    this.$emit('afterResourceVariantChanged', {variant: resourceVariant, resourceId, value})
   }
 
   @flowVuexNamespace.Action resource_setOrCreateValueModeSpecific!:

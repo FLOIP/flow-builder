@@ -51,4 +51,8 @@ export class Lang extends Vue {
     }
     return ''
   }
+  // Useful when calling Lang.trans in a store for eg.
+  static trans(translation: string, interpolations?: object) {
+    return thisGlobal.Lang.trans(translation, interpolations)
+  }
 }

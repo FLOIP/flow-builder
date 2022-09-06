@@ -17,7 +17,7 @@
 <script lang="ts">
 import {Vue, Options} from 'vue-class-component'
 import {Prop, Watch} from 'vue-property-decorator'
-import {cloneDeep, debounce, find, isEqual, maxBy} from 'lodash'
+import {cloneDeep, debounce, maxBy} from 'lodash'
 import {namespace} from 'vuex-class'
 import {IBlock, IFlow, ILanguage, IResource, IResources, SupportedMode} from '@floip/flow-runner'
 import {IValidationStatus} from '@/store/validation'
@@ -26,14 +26,13 @@ const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
 const builderVuexNamespace = namespace('builder')
 
-//in `px`
-const MARGIN_HEIGHT_CORRECTION = -10
+const MARGIN_HEIGHT_CORRECTION_PX = -10
 
-//ideal value: the xDelta when we compute xPosition from existing active block, in `px`
-const MARGIN_WIDTH_CORRECTION = 120
+//ideal value: the xDelta when we compute xPosition from existing active block
+const MARGIN_WIDTH_CORRECTION_PX = 120
 
-//in `ms`
-const DEBOUNCE_SCROLL_TIMER = 300
+const DEBOUNCE_SCROLL_TIMER_MS = 300
+const DEBOUNCE_VALIDATION_TIMER_MS = 300
 
 @Options({})
 export class BuilderCanvas extends Vue {
@@ -43,27 +42,23 @@ export class BuilderCanvas extends Vue {
   // ###### Validation API Watchers [
   @Watch('activeFlow', {deep: true, immediate: true})
   async onActiveFlowChanged(newFlow: IFlow): Promise<void> {
-    console.debug('watch/activeFlow:', 'active flow has changed from builder canvas, validating ...')
-    await this.validate_flow({flow: newFlow})
+    this.debounceFlowValidation({newFlow})
   }
+
+  debounceFlowValidation = debounce(function (this: any, {newFlow}: {newFlow: IFlow}) {
+    console.debug('watch/activeFlow:', 'active flow has changed from builder canvas, validating ...')
+    this.validate_flow({flow: newFlow})
+  }, DEBOUNCE_VALIDATION_TIMER_MS)
 
   @Watch('blocksOnActiveFlowForWatcher', {deep: true, immediate: true})
   async onBlocksInActiveFlowChanged(newBlocks: IBlock[], oldBlocks: IBlock[]): Promise<void> {
-    if (newBlocks.length === 0) {
-      return
-    }
-
-    console.debug('watch/activeFlow.blocks:', 'blocks inside active flow have changed, validating ...')
-
-    await Promise.all(
-      newBlocks.map(async (currentNewBlock) => {
-        const currentOldBlock = find(oldBlocks, {uuid: currentNewBlock.uuid})
-        if (!isEqual(currentNewBlock, currentOldBlock)) {
-          await this.validate_block({block: currentNewBlock})
-        }
-      }),
-    )
+    this.debounceBlockValidation()
   }
+
+  debounceBlockValidation = debounce(function (this: any) {
+    console.debug('watch/activeFlow.blocks:', 'blocks inside active flow have changed, validating ...')
+    this.validate_allBlocksWithinFlow()
+  }, DEBOUNCE_VALIDATION_TIMER_MS)
 
   @Watch('activeFlow.resources', {deep: true, immediate: true})
   async onResourcesOnActiveFlowChanged(newResources: IResources, oldResources: IResources): Promise<void> {
@@ -95,7 +90,7 @@ export class BuilderCanvas extends Vue {
     window.scrollTo({
       top: this.canvasHeight,
     })
-  }, DEBOUNCE_SCROLL_TIMER)
+  }, DEBOUNCE_SCROLL_TIMER_MS)
 
   // !important: do not change to arrow function
 
@@ -103,7 +98,7 @@ export class BuilderCanvas extends Vue {
     window.scrollTo({
       left: this.canvasWidth,
     })
-  }, DEBOUNCE_SCROLL_TIMER)
+  }, DEBOUNCE_SCROLL_TIMER_MS)
 
   // ] ######## end canvas dynamic size watchers
 
@@ -173,7 +168,7 @@ export class BuilderCanvas extends Vue {
     }
 
     const yPosition: number = this.blockAtTheLowestPosition.ui_metadata.canvas_coordinates.y
-    const scrollHeight = yPosition + MARGIN_HEIGHT_CORRECTION
+    const scrollHeight = yPosition + MARGIN_HEIGHT_CORRECTION_PX
 
     if (scrollHeight < this.windowHeight) {
       return this.windowHeight
@@ -193,7 +188,7 @@ export class BuilderCanvas extends Vue {
     }
 
     const xPosition: number = this.blockAtTheFurthestRightPosition.ui_metadata.canvas_coordinates.x
-    const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH_CORRECTION + this.visibleBlockEditorWidth
+    const scrollWidth = xPosition + this.blockWidth + MARGIN_WIDTH_CORRECTION_PX + this.visibleBlockEditorWidth
 
     if (scrollWidth < this.windowWidth) {
       return this.windowWidth - this.widthAdjustment
@@ -213,7 +208,7 @@ export class BuilderCanvas extends Vue {
   @builderVuexNamespace.State isBlockEditorOpen!: boolean
 
   @validationVuexNamespace.Action validate_flow!: ({flow}: { flow: IFlow }) => Promise<IValidationStatus>
-  @validationVuexNamespace.Action validate_block!: ({block}: { block: IBlock }) => Promise<IValidationStatus>
+  @validationVuexNamespace.Action validate_allBlocksWithinFlow!: () => Promise<void>
   @validationVuexNamespace.Action validate_resourcesOnSupportedValues!: (
     {resources, supportedModes, supportedLanguages}: {resources: IResource[], supportedModes: SupportedMode[], supportedLanguages: ILanguage[]}
   ) => Promise<void>

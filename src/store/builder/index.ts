@@ -1,4 +1,4 @@
-import {filter, flatMap, isEqual, keyBy, map, mapValues, union} from 'lodash'
+import {filter, flatMap, isEqual, keyBy, map, mapValues, union, reject} from 'lodash'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlock, IBlockExit, IBlockUIMetadataCanvasCoordinates, IFloipUIMetadata, ValidationException} from '@floip/flow-runner'
@@ -48,6 +48,7 @@ export interface IPosition {
 export interface IBuilderState {
   activeBlockId: IBlock['uuid'] | null,
   isEditable: boolean,
+  hasFlowChanges: boolean,
   activeConnectionsContext: IConnectionContext[],
   operations: {
     [OperationKind.CONNECTION_SOURCE_RELOCATE]: IConnectionSourceRelocateOperation,
@@ -57,11 +58,13 @@ export interface IBuilderState {
   draggableForExitsByUuid: object,
   isBlockEditorOpen: boolean,
   interactionDesignerBoundingClientRect: DOMRect,
+  isConnectionCreationInProgress: boolean,
 }
 
 export const stateFactory = (): IBuilderState => ({
   activeBlockId: null,
   isEditable: true,
+  hasFlowChanges: false,
   activeConnectionsContext: [],
   operations: {
     [OperationKind.CONNECTION_SOURCE_RELOCATE]: {
@@ -77,6 +80,7 @@ export const stateFactory = (): IBuilderState => ({
   draggableForExitsByUuid: {},
   isBlockEditorOpen: false,
   interactionDesignerBoundingClientRect: {} as DOMRect,
+  isConnectionCreationInProgress: false,
 })
 
 export type ConnectionLayout = any[]
@@ -94,6 +98,8 @@ export const getters: GetterTree<IBuilderState, IRootState> = {
   exitLabelsById: (_state, _getters, {flow: {flows}}) => mapValues(keyBy(flatMap(flows[0].blocks, 'exits'), 'uuid'), 'label'),
 
   isEditable: (state) => state.isEditable,
+
+  hasFlowChanges: (state) => state.hasFlowChanges,
 
   interactionDesignerBoundingClientRect: (state) => state.interactionDesignerBoundingClientRect,
 }
@@ -114,6 +120,14 @@ export const mutations: MutationTree<IBuilderState> = {
     state.activeConnectionsContext = filter(state.activeConnectionsContext, (context) => context !== connectionContext)
   },
 
+  deactivateConnectionFromExitUuid(state, {exitUuid}: {exitUuid: IBlockExit['uuid']}) {
+    state.activeConnectionsContext = reject(state.activeConnectionsContext, (context) => context.exitId === exitUuid)
+  },
+
+  setIsConnectionCreationInProgress(state, {value}: {value: boolean}) {
+    state.isConnectionCreationInProgress = value
+  },
+
   setOperation({operations}: { operations: any }, {operation}: { operation: SupportedOperation }) {
     operations[operation.kind] = operation
   },
@@ -125,6 +139,10 @@ export const mutations: MutationTree<IBuilderState> = {
 
   setIsEditable(state, value) {
     state.isEditable = value
+  },
+
+  setHasFlowChanges(state, value) {
+    state.hasFlowChanges = value
   },
 
   initDraggableForExitsByUuid(state) {
@@ -296,6 +314,10 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     const boolVal = Boolean(value)
     commit('setIsEditable', boolVal)
   },
+
+  setHasFlowChanges({commit}, value) {
+    commit('setHasFlowChanges', Boolean(value))
+  },
 }
 
 export const store: Module<IBuilderState, IRootState> = {
@@ -312,8 +334,16 @@ export function createDefaultBlockTypeInstallerFor(
   blockType: IBlock['type'],
   storeForBlockType: Module<any, IRootState>,
 ) {
-  return (builder: any) => builder.$store.hasModule(['flow', blockType])
-    || builder.$store.registerModule(['flow', blockType], storeForBlockType)
+  return (builder: any) => {
+    if (storeForBlockType === undefined || blockType === undefined) {
+      // If this error happens, try to not import function from '@/lib' but directly from the file
+      console.error('createDefaultBlockTypeInstallerFor',
+        'something weird is happening: the store is undefined',
+        'which might cause',
+        '"TypeError: rawModule is undefined"')
+    }
+    return builder.$store.hasModule(['flow', blockType]) || builder.$store.registerModule(['flow', blockType], storeForBlockType)
+  }
 }
 
 export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): ConnectionLayout {
@@ -326,6 +356,9 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): 
     // block titles
     source.label,
     target.label,
+
+    // states that would affect block heights
+    source?.vendor_metadata?.floip?.ui_metadata?.should_show_block_tool_bar,
 
     // todo: this needs to be a computed prop // possibly on store as getter by blockId ?
 

@@ -89,8 +89,14 @@ export function debugValidationStatus(status: IValidationStatus, customMessage: 
 
 function getErrorMessageLocalizationKeyForProperty(keyPrefix: string, ajvErrorObject: ErrorObject) : string {
   const [entity] = keyPrefix.split('/')
-  const property = ajvErrorObject.dataPath
-    .replaceAll('/', '-')
+  let property
+  if (ajvErrorObject.params?.missingProperty !== undefined) {
+    property = `${ajvErrorObject.dataPath}-${ajvErrorObject.params?.missingProperty}`
+  } else {
+    property = ajvErrorObject.dataPath
+  }
+
+  property = property.replaceAll('/', '-')
     // Replacing digits to eliminate resource indexes
     .replaceAll(/\d/g, 'x')
 
@@ -197,6 +203,19 @@ export function getOrCreateFlowValidator(schemaVersion: string): ValidateFunctio
     delete flowJsonSchema.definitions.IFlow.properties.resources
 
     validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowJsonSchema, '#/definitions/IFlow'))
+  }
+  return validators.get(validationType)!
+}
+
+/**
+ * Validator for the container and its content (flows, blocks, etc)
+ */
+export function getOrCreateContainerImportValidator(schemaVersion: string): ValidateFunction {
+  const validationType = 'container_import'
+  if (isEmpty(validators) || !validators.has(validationType)) {
+    const flowJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`)
+
+    validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowJsonSchema, '#/definitions/IContainer'))
   }
   return validators.get(validationType)!
 }

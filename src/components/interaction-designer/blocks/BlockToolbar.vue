@@ -7,13 +7,13 @@
           v-if="isBlockSelected"
           v-tooltip="trans('flow-builder.deselect-block')"
           :icon="['far', 'check-circle']"
-          class="fa-btn text-info"
+          class="cursor-pointer text-info"
           @click="isEditable && block_deselect({ blockId: block.uuid })" />
         <font-awesome-icon
           v-if="!isBlockSelected"
           v-tooltip="trans('flow-builder.select-block')"
           :icon="['far', 'circle']"
-          class="fa-btn"
+          class="cursor-pointer"
           @click="isEditable && block_select({ blockId: block.uuid })" />
       </template>
     </div>
@@ -29,7 +29,11 @@
             <small>{{ trans('flow-builder.cancel') }}</small>
           </button>
           <button
-            class="btn btn-danger btn-xs ml-1"
+            :class="{
+              'btn-danger': !isWaitingForConnection && !isActivatedByConnection,
+              'btn-secondary': isWaitingForConnection || isActivatedByConnection,
+            }"
+            class="btn btn-xs ml-1"
             @click.prevent="handleDeleteBlock">
             <small>{{ trans('flow-builder.delete-block') }}</small>
           </button>
@@ -38,7 +42,10 @@
           v-if="!isDeleting"
           v-tooltip="trans('flow-builder.tooltip-delete-block')"
           :icon="['far', 'trash-alt']"
-          class="fa-btn text-danger"
+          :class="{
+            'text-danger': !isWaitingForConnection && !isActivatedByConnection,
+          }"
+          class="cursor-pointer"
           @click.prevent="isDeleting = true" />
       </div>
       <!--Duplicate-->
@@ -47,16 +54,18 @@
           v-if="isEditable"
           v-tooltip="trans('flow-builder.tooltip-duplicate-block')"
           :icon="['fac', 'copy']"
-          class="fa-btn"
+          class="cursor-pointer"
           @click.prevent="handleDuplicateBlock" />
       </div>
       <!--Expand block editor-->
-      <div class="mr-1 ml-2">
-        <font-awesome-icon
-          v-tooltip="trans('flow-builder.toggle-block-editor-tooltip')"
-          :icon="isEditorVisible ? ['fac', 'minimize'] : ['fac', 'expand']"
-          class="fa-btn"
-          @click.prevent="handleExpandMinimizeBlockEditor" />
+      <div
+        v-tooltip.hover="trans('flow-builder.toggle-block-editor-tooltip')"
+        class="mr-1 ml-2 cursor-pointer icon-container"
+        @click.prevent="handleExpandMinimizeBlockEditor">
+        <span class="icon-text">
+          {{ isEditorVisible ? trans('flow-builder.hide') : trans('flow-builder.show') }}
+        </span>
+        <font-awesome-icon :icon="isEditorVisible ? ['fac', 'minimize'] : ['fac', 'expand']" />
       </div>
     </div>
   </div>
@@ -79,6 +88,8 @@ export class BlockToolbar extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly isBlockSelected!: boolean
   @Prop() readonly isEditorVisible!: boolean
+  @Prop() readonly isWaitingForConnection!: boolean
+  @Prop() readonly isActivatedByConnection!: boolean
 
   isDeleting = false
 
@@ -102,7 +113,7 @@ export class BlockToolbar extends mixins(Lang) {
 
   handleExpandMinimizeBlockEditor(): void {
     this.setIsBlockEditorOpen(!this.isEditorVisible)
-    let routerName = ''
+    let routerName
     if (this.isEditorVisible) {
       routerName = 'block-selected-details'
       this.$emit('before-minimize')
@@ -141,49 +152,13 @@ export class BlockToolbar extends mixins(Lang) {
 export default BlockToolbar
 </script>
 
-<style lang="scss">
-.block {
-  .block-toolbar {
-    transition: opacity 100ms ease-in-out;
-    background: white;
-    opacity: 0; // default state of hidden
-
-    margin-top: -39.25px;
-    margin-right: -7.5px;
-    margin-left: -7.5px;
-    padding: 5px;
-
-    border-top: inherit;
-    border-right: inherit;
-    border-left: inherit;
-    border-top-right-radius: inherit;
-    border-top-left-radius: inherit;
-  }
-
-  &.has-multiple-exits {
-    .block-toolbar {
-      margin-right: -7.5px;
-    }
-  }
-
-  &.has-toolbar,
-  &:hover {
-    .block-toolbar {
-      opacity: 1;
-    }
-  }
-
-  &.active {
-    .block-toolbar {
-      margin-left: -8.5px;
-      margin-right: -8.5px;
-    }
-
-    &.has-multiple-exits {
-      .block-toolbar {
-        margin-right: -8.5px;
-      }
-    }
-  }
+<style scoped>
+.icon-container {
+  display: flex;
+  align-items: center;
+}
+.icon-text {
+  font-size: 0.8rem;
+  margin-right: 0.15rem;
 }
 </style>

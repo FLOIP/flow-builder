@@ -12,7 +12,6 @@
         name="resource-editors">
         <resource-editor
           v-if="promptResource"
-          :label="trans('flow-builder.prompt')"
           :resource="promptResource"
           :block="block"
           :flow="flow" />

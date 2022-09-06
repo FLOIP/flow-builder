@@ -58,10 +58,10 @@
 </template>
 
 <script lang="ts">
-  import {get, isEmpty, find} from 'lodash'
+  import {get, isEmpty} from 'lodash'
   import {Prop} from 'vue-property-decorator'
-  import {IBlock, IBlockExit, ValidationException} from '@floip/flow-runner'
   import {mixins, Options} from 'vue-class-component'
+  import {IBlock, IBlockExit} from '@floip/flow-runner'
   import {Lang} from '@/lib/filters/lang'
   import {namespace} from 'vuex-class'
 

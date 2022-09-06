@@ -14,24 +14,29 @@ import {set} from 'lodash'
 import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {Lang} from '@/lib/filters/lang'
 import {IConnectionContext} from '@/store/builder'
+import {BLOCK_RESET_CONNECTIONS} from './Block.vue'
 
-const lightColor = '#6897BB'
-const darkColor = '#30516a'
-const disconnectionColor = '#dc3545'
+export const colorStates = {
+  ON_HOVER: '#A31E65',
+  CONNECTING: '#10661E',
+  // For states: Disconnected, Connected, Extremity element in focus
+  DEFAULT: '#707070',
+}
 
 const builderNamespace = namespace('builder')
 
 interface ILeaderLineOptions {
-  endPlugColor: string,
+  color: string,
+  endPlugColor?: string,
   endPlugSize: number,
   endSocket: string,
-  gradient: true,
-  outline: boolean,
-  outlineColor: string,
+  gradient?: true,
+  outline?: boolean,
+  outlineColor?: string,
   path: string,
   size: number,
   startPlug: string,
-  startPlugColor: string,
+  startPlugColor?: string,
   startSocket: string,
 }
 
@@ -42,6 +47,7 @@ export class Connection extends mixins(Lang) {
   @Prop({type: Object}) readonly source!: IBlock
   @Prop({type: Object}) readonly target!: IBlock
   @Prop({type: Object}) readonly position!: { x: number, y: number }
+  @Prop({type: String}) readonly color!: string
 
   // The leader-line library has no types yet
   // No need to set up observers over this
@@ -49,28 +55,22 @@ export class Connection extends mixins(Lang) {
   line: any = undefined
   isPermanentlyActive = false
 
+  get hasDestination(): Boolean {
+    return this.exit.destination_block != null
+  }
+
+  /**
+   * these options come from the Leader-line doc: https://anseki.github.io/leader-line/#options
+   */
   get options(): ILeaderLineOptions {
     return {
       startPlug: 'square',
-
-      startPlugColor: lightColor,
-      endPlugColor: darkColor,
-      gradient: true,
-
+      color: this.color,
       startSocket: 'bottom',
       endSocket: 'top',
-
-      size: 5,
-      outline: true,
-      outlineColor: '#ffffff',
-      // outlineSize: 0.08,
-
+      size: 4,
       path: 'grid',
-      endPlugSize: 0.5,
-      // path: 'fluid',
-      // path: 'arc',
-      // path: 'magnet',
-
+      endPlugSize: 1,
       // middleLabel: LeaderLine.captionLabel(this.exit.name, {
       //   color: darkColor,
       //   fontSize: 12,
@@ -79,10 +79,9 @@ export class Connection extends mixins(Lang) {
     }
   }
 
-  get prominentOptions(): Partial<ILeaderLineOptions> {
+  get onHoverOptions(): Partial<ILeaderLineOptions> {
     return {
-      startPlugColor: disconnectionColor,
-      endPlugColor: disconnectionColor,
+      color: colorStates.ON_HOVER,
     }
   }
 
@@ -95,7 +94,7 @@ export class Connection extends mixins(Lang) {
   }
 
   get sourceElementId(): string {
-    return `exit/${this.exit.uuid}/handle`
+    return `exit/${this.exit.uuid}`
   }
 
   get targetElementId(): string {
@@ -164,7 +163,7 @@ export class Connection extends mixins(Lang) {
     // Add event listeners
     if (connectionElement !== null) {
       connectionElement.addEventListener('click', this.clickHandler.bind(this), false)
-      connectionElement.addEventListener('click', this.clickAwayHandler.bind(this, connectionElement), false)
+      document.addEventListener('click', this.clickAwayHandler.bind(this, connectionElement), false)
       connectionElement.addEventListener('mouseover', this.mouseOverHandler.bind(this), false)
       connectionElement.addEventListener('mouseout', this.mouseOutHandler.bind(this), false)
     }
@@ -172,6 +171,12 @@ export class Connection extends mixins(Lang) {
     // stop listening to scroll and window resize hooks
     // LeaderLine.positionByWindowResize = false
     // this.line.positionByWindowResize = false
+
+    window.addEventListener('message', message => {
+      if (message.data === BLOCK_RESET_CONNECTIONS) {
+        this.line.setOptions(this.options)
+      }
+    })
   }
 
   beforeDestroy(): void {
@@ -199,12 +204,22 @@ export class Connection extends mixins(Lang) {
   }
 
   mouseOverHandler(): void {
-    this.line.setOptions(this.prominentOptions)
+    // Do not handle anything if we don't have the destination yet
+    if (!this.hasDestination) {
+      return
+    }
+
+    this.line.setOptions(this.onHoverOptions)
     this.activateConnection({connectionContext: this.connectionContext})
     this.$emit('lineMouseIn')
   }
 
   mouseOutHandler(): void {
+    // Do not handle anything if we don't have the destination yet
+    if (!this.hasDestination) {
+      return
+    }
+
     if (!this.isPermanentlyActive) {
       this.line.setOptions(this.options)
       this.deactivateConnection({connectionContext: this.connectionContext})
@@ -217,24 +232,32 @@ export class Connection extends mixins(Lang) {
     this.activateConnection({connectionContext: this.connectionContext})
     this.activateBlock({blockId: null})
     this.$emit('lineMouseIn')
+    this.$emit('lineMouseClickedIn')
   }
 
-  clickAwayHandler(connectionElement: Element): void {
-    document.addEventListener('click', (event) => {
-      // Do not listen if the connection was not fully set
+  clickAwayHandler(connectionElement: Element, event: Event): void {
+    // Do not listen if the connection was not fully set
+    // TODO: Correctly implement the commented removeEventListener in case of performance issue on multiple bocks
+    try {
       if (!this.line?.end) {
+        // document.removeEventListener('click', this.clickAwayHandler.bind(this, connectionElement), false)
         return
       }
+    } catch (e) {
+      // document.removeEventListener('click', this.clickAwayHandler.bind(this, connectionElement), false)
+      return
+    }
 
-      const isClickInside = connectionElement.contains(event.target as Element)
+    const isClickInside = connectionElement.contains(event.target as Element)
 
-      if (!isClickInside) {
-        this.isPermanentlyActive = false
-        this.line.setOptions(this.options)
-        this.deactivateConnection({connectionContext: this.connectionContext})
-      }
-      this.$emit('lineMouseOut')
-    }, false)
+    if (!isClickInside) {
+      this.isPermanentlyActive = false
+      this.line.setOptions(this.options)
+      this.deactivateConnection({connectionContext: this.connectionContext})
+      this.$emit('lineMouseClickedOut')
+      // document.removeEventListener('click', this.clickAwayHandler.bind(this, connectionElement), false)
+    }
+    this.$emit('lineMouseOut')
   }
 }
 

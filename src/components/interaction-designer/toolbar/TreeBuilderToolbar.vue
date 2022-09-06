@@ -142,7 +142,7 @@
                 v-tooltip="trans('flow-builder.save-changes-to-the-flow')"
                 type="button"
                 class="btn btn-outline-primary btn-sm ml-4 save-button"
-                :disabled="!!isTreeSaving"
+                :disabled="isSavingDisabled"
                 @click="handlePersistFlow()">
                 {{ saveButtonText }}
                 <font-awesome-icon
@@ -270,7 +270,7 @@
                 aria-haspopup="true"
                 aria-expanded="false"
                 @mouseover="openDropdownMenu($event.target)">
-                <span class="nav-link-text">{{ trans('flow-builder.developer') }}</span>
+                <span class="nav-link-text">{{ 'flow-builder.advanced' | trans }}</span>
               </a>
               <div class="dropdown-menu mt-0">
                 <template v-for="(classDetails, className) in blockClassesForDeveloperCategory">
@@ -419,10 +419,16 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   get saveButtonText(): string {
     if (this.isTreeSaving) {
       return this.trans('flow-builder.saving')
-    } else {
+    } else if (this.hasFlowChanges) {
       return this.trans('flow-builder.save')
+    } else {
+      return this.trans('flow-builder.saved')
     }
-    //TODO - once we can detect changes again we will change this text to "Saved" when saved and keep it that way until there are further changes.
+  }
+
+  get isSavingDisabled(): boolean {
+    // TODO: Also disable when there are no changes; once hasFlowChanges is implemented properly
+    return this.isTreeSaving === true
   }
 
   get blockClassesForContentCategory(): any {
@@ -600,7 +606,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @Getter hasToolbarHomeButton!: boolean
   @Getter hasToolbarNewFlowButton!: boolean
   @Getter hasToolbarExportButton!: boolean
-  @Getter isTreeSaving!: number | boolean
+  @Getter isTreeSaving!: boolean
   @Getter isBlockAvailableByBlockClass?: any
   @Getter hasChanges!: boolean
   @Getter isTreeValid!: boolean
@@ -636,6 +642,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
 
   // Builder
   @builderVuexNamespace.Getter isEditable!: boolean
+  @builderVuexNamespace.Getter hasFlowChanges!: boolean
   @builderVuexNamespace.State activeBlockId?: IBlock['uuid']
   @builderVuexNamespace.Getter activeBlock?: IBlock
   @builderVuexNamespace.Mutation activateBlock!: ({blockId}: { blockId: IBlock['uuid'] | null}) => void

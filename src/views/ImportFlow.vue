@@ -51,7 +51,6 @@
                   class="tall-text"
                   :placeholder="trans('flow-builder.edit-flow-json')"
                   @input="setUpdatingAndHandleFlowJsonTextChange" />
-                <error-handler />
               </div>
             </div>
             <div class="mt-2">
@@ -70,10 +69,9 @@
                   class="tall-text"
                   :placeholder="trans('flow-builder.paste-flow-json')"
                   @input="setUpdatingAndHandleFlowJsonTextChange" />
-                <error-handler />
               </div>
             </div>
-
+            <error-handler-v2 />
             <div class="float-right mt-3">
               <router-link
                 :to="route('flows.cancelImport')"
@@ -106,14 +104,21 @@ import {debounce, forEach, get, isEmpty} from 'lodash'
 import {mixins, Options} from 'vue-class-component'
 import {store} from '@/store'
 import {IContext} from '@floip/flow-runner'
+import ErrorHandlerV2 from '@/components/interaction-designer/flow-editors/import/ErrorHandlerV2.vue'
 
 import ImportStore from '@/store/flow/views/import'
+import {ErrorObject} from 'ajv'
 
 const flowVuexNamespace = namespace('flow')
 const importVuexNamespace = namespace('flow/import')
+const validationVuexNamespace = namespace('validation')
 
-@Options({})
-class ImportFlow extends mixins(Lang, Routes)  {
+@Options({
+  components: {
+    ErrorHandlerV2,
+  },
+})
+class ImportFlow extends mixins(Lang, Routes) {
   @Prop({default: () => ({})}) readonly appConfig!: object
 
   @Prop({default: () => ({})}) readonly builderConfig!: object
@@ -137,13 +142,7 @@ class ImportFlow extends mixins(Lang, Routes)  {
     }
   }
 
-  reset() {
-    this.fileName = ''
-    this.baseReset()
-    this.resetLanguageMatching()
-    this.resetPropertyMatching()
-    this.resetGroupMatching()
-  }
+  @validationVuexNamespace.Action resetValidationStatuses!: ({key}: {key: string}) => void
 
   get uploadOrPaste() {
     return this.uploadOrPasteSetting
@@ -177,14 +176,7 @@ class ImportFlow extends mixins(Lang, Routes)  {
     this.setUpdating(false)
   }
 
-  get disableContinue() {
-    return !this.flowUUID
-      || this.flowError
-      || this.languagesMissing
-      || this.propertiesMissing
-      || this.groupsMissing
-      || this.hasUnsupportedBlockClasses
-  }
+  @importVuexNamespace.Getter isSafeToImport!: boolean
 
   get flowUUID() {
     return get(this.flowContainer, 'flows[0].uuid')
@@ -211,27 +203,29 @@ class ImportFlow extends mixins(Lang, Routes)  {
     reader.readAsText(selectedFile, 'UTF-8')
   }
 
-  async handleImportFlow(route: string) {
-    const flowContainer = await this.flow_import({
-      // @ts-ignore - Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
-      persistRoute: this.route('flows.persistFlow', {}),
-      flowContainer: this.flowContainer,
-    })
-    if (flowContainer) {
-      this.reset()
-      this.$router.push(route)
-    } else {
-      this.setFlowError('flow-builder.problem-importing-flow')
-      // TODO - hook into validation system when we have it to display any errors? Or should we have caught any errors already?
-    }
-  }
+  @validationVuexNamespace.Mutation pushAjvErrorToValidationStatuses!: ({key, ajvError}: {key: string, ajvError: ErrorObject}) => void
 
   @State(({trees: {ui}}) => ui) ui!: any
 
-  @flowVuexNamespace.Action flow_import!: ({
+  @flowVuexNamespace.Action flow_persistImport!: ({
     persistRoute,
     flowContainer,
   }: { persistRoute: string, flowContainer: IContext }) => Promise<IContext>
+
+  async handleImportFlow(route: string) {
+    const flowContainer = await this.flow_persistImport({
+      // @ts-ignore - Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
+      persistRoute: this.route('flows.persistFlowImport', {}),
+      flowContainer: this.flowContainer,
+    })
+
+    if (flowContainer != null) {
+      this.reset()
+      this.$router.push(route)
+    } else {
+      console.warn('There was something wrong when trying to import flow', 'Check console log for more details')
+    }
+  }
 
   @Mutation configure!: ({appConfig, builderConfig}: { appConfig: object, builderConfig: object }) => void
 
@@ -239,13 +233,10 @@ class ImportFlow extends mixins(Lang, Routes)  {
 
   @Getter hasImportFlowTitle!: boolean
 
-  @importVuexNamespace.Getter hasUnsupportedBlockClasses!: boolean
-
-  @importVuexNamespace.Getter languagesMissing!: boolean
-
-  @importVuexNamespace.Getter groupsMissing!: boolean
-
-  @importVuexNamespace.Getter propertiesMissing!: boolean
+  get disableContinue() {
+    return this.flowUUID === undefined
+      || !this.isSafeToImport
+  }
 
   @importVuexNamespace.Action setFlowJson!: (value: string) => Promise<void>
 
@@ -266,6 +257,15 @@ class ImportFlow extends mixins(Lang, Routes)  {
   @importVuexNamespace.State flowJsonText!: string
 
   @importVuexNamespace.State flowContainer!: IContext
+
+  reset() {
+    this.fileName = ''
+    this.baseReset()
+    this.resetLanguageMatching()
+    this.resetPropertyMatching()
+    this.resetGroupMatching()
+    this.resetValidationStatuses({key: 'container_import'})
+  }
 }
 
 export default ImportFlow

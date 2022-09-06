@@ -1,23 +1,33 @@
-import {ActionContext, Dispatch, GetterTree, Module, MutationTree} from 'vuex'
+import {ActionContext, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IBlockExit} from '@floip/flow-runner'
-import {defaultsDeep, last} from 'lodash'
-import {validateBlockWithJsonSchema} from '@/store/validation/validationHelpers'
-import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import {IValidationStatus} from '@/store/validation'
+import {IBlock} from '@floip/flow-runner'
+import {defaultsDeep} from 'lodash'
+import {IValidationStatus, validateBlockWithJsonSchema} from '@/store/validation'
+import {ValidationResults} from '@/lib/validations'
+import {ErrorObject} from 'ajv'
+import Lang from '@/lib/filters/lang'
 
 export interface IEmptyState {}
 
-export const getters: GetterTree<IEmptyState, IRootState> = {}
+export const getters: GetterTree<IEmptyState, IRootState> = {
+  /**
+   * Compute the primary exit test.
+   * We can override this from block type store, or from the consumer side.
+   *
+   * We're sending the blockProps because we might need them for customization
+   */
+  primaryExitTest: () => (_blockProps: Partial<IBlock>) => undefined,
+}
 
 export const mutations: MutationTree<IEmptyState> = {}
 
+// noinspection JSUnusedLocalSymbols
 export const actions = {
   async createWith(
-    {dispatch}: {dispatch: Dispatch},
+    {getters, dispatch}: ActionContext<IEmptyState, IRootState>,
     {props}: { props: { uuid: string } & Partial<IBlock> },
   ): Promise<IBlock> {
-    return defaultsDeep(
+    const mainProps = defaultsDeep(
       {},
       // Props from the block type createWith
       props, {
@@ -27,13 +37,6 @@ export const actions = {
       label: '',
       semantic_label: '',
       config: {},
-      exits: props?.exits ?? [
-        await dispatch('flow/block_createBlockDefaultExitWith', {
-          props: ({
-            uuid: await (new IdGeneratorUuidV4()).generate(),
-          }) as IBlockExit,
-        }, {root: true}),
-      ],
       tags: [],
       vendor_metadata: {
         floip: {
@@ -48,19 +51,36 @@ export const actions = {
       vendor_metadata: await dispatch('initiateExtraVendorConfig'),
     },
     )
+
+    // Define exits after we have the whole final props, this is important for dynamic test value
+    if (props?.exits === undefined) {
+      mainProps.exits = await dispatch('flow/block_generateExitsBasedOnUiConfig', {
+        blockType: props.type,
+        primaryExitTest: getters.primaryExitTest(mainProps),
+      }, {root: true})
+    }
+
+    return mainProps
   },
 
   /**
-   * This will be the default standard exit mode, but we can override it in the specific block store
+   * This will be the default standard exit mode,
+   * but we can override it in the specific block store (eg: for dynamic test generation in MCQ)
    */
   async handleBranchingTypeChangedToUnified(
-    {dispatch}: {dispatch: Dispatch},
+    {dispatch, getters, rootGetters}: ActionContext<IEmptyState, IRootState>,
     {block}: {block: IBlock},
   ): Promise<void> {
-    return dispatch('flow/block_updateBranchingExitsWithInvalidScenario', {
-      blockId: block.uuid,
-      test: 'block.value = true',
-    }, {root: true})
+    if (rootGetters['flow/block_shouldHave2Exits'](block.type) === true) {
+      await dispatch('flow/block_resetBranchingExitsByCollapsingNonDefault', {
+        blockId: block.uuid,
+        primaryExitTest: getters.primaryExitTest(block),
+      }, {root: true})
+    } else {
+      await dispatch('flow/block_resetBranchingExitsToDefaultOnly', {
+        blockId: block.uuid,
+      }, {root: true})
+    }
   },
 
   /**
@@ -91,16 +111,69 @@ export const actions = {
     _ctx: unknown,
     {block, schemaVersion}: {block: IBlock, schemaVersion: string},
   ): Promise<IValidationStatus> {
+    console.debug('floip/BaseBlock/validateBlockWithCustomJsonSchema()', `${block.type}`)
+    // we can provide the customBlockJsonSchema option for validateBlockWithJsonSchema when overriding this validateBlockWithCustomJsonSchema
     return validateBlockWithJsonSchema({block, schemaVersion})
   },
 
-  //Will need to be fully overridden in block stores if needed (see MobilePrimitives_NumericResponseBlockStore.ts, for example)
+  /**
+   * Validate the Consumer block
+   * By overriding this action in the consumer side, we will be able to customize it using different json schema for eg.
+   *
+   * Important: This will be overridden in the consumer side, so DO NOT add generic validations here,
+   * instead edit the `validate()` if needed.
+   */
+  async validateWithProgrammaticLogic(
+    _ctx: unknown,
+    {block}: {block: IBlock},
+  ): Promise<ValidationResults> {
+    console.debug('floip/BaseBlock/validateWithProgrammaticLogic()', `${block.type}`)
+    return [] as ValidationResults
+  },
+
+  /**
+   * Override this in block stores if needed, it's not recommended though.
+   * For customization, let's try to override the 02 actions validateBlockWithCustomJsonSchema & validateWithProgrammaticLogic instead
+   */
   async validate(
     {dispatch}: ActionContext<IEmptyState, IRootState>,
     {block, schemaVersion}: {block: IBlock, schemaVersion: string},
   ): Promise<IValidationStatus> {
-    return dispatch('validateBlockWithCustomJsonSchema', {block, schemaVersion})
+    console.debug('floip/BaseBlock/validate()', `${block.type}`)
+    // Validation based on JsonSchema
+    const validationStatus: IValidationStatus = await dispatch('validateBlockWithCustomJsonSchema', {block, schemaVersion})
+
+    // Validation based on programmatic logic
+    const dataPaths = new Set(validationStatus.ajvErrors?.map((error: ErrorObject) => error.dataPath))
+    const validationResults: ValidationResults = await dispatch('validateWithProgrammaticLogic', {block})
+
+    validationResults.forEach(([dataPath, suffix]) => {
+      if (!dataPaths.has(dataPath)) {
+        dataPaths.add(dataPath)
+
+        validationStatus.ajvErrors = validationStatus.ajvErrors || []
+        validationStatus.ajvErrors.push({
+          dataPath,
+          message: Lang.trans(`flow-builder-validation.${suffix}`),
+        } as ErrorObject)
+      }
+    })
+
+    return validationStatus
   },
+
+  /**
+   * Override this method on the consumer side to react to another block's changes,
+   * e.g. to update expressions that reference the modified block: "@(flow.myBlockNameThatChanged)"
+   * @param context
+   * @param thisBlock, listening block
+   * @param oldBlock, deep clone of the modified block before the change
+   * @param newBlock, deep clone of the modified block after the change, null if the block was deleted
+   */
+  async maybeHandleAnotherBlockChange(
+    context: ActionContext<IEmptyState, IRootState>,
+    {thisBlock, oldBlock, newBlock}: {thisBlock: IBlock, oldBlock: IBlock, newBlock: IBlock | null},
+  ): Promise<void> {},
 }
 
 const BaseBlockStore: Module<IEmptyState, IRootState> = {

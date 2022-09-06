@@ -50,7 +50,7 @@
       <validation-message
         v-if="propertyAction === PROPERTY_ACTION.SET"
         #input-control="{ isValid }"
-        :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
+        :message-key="`block/${block.uuid}/config/set_contact_property/x/property_value`">
         <expression-input
           :label="trans('flow-builder.value-expression')"
           :placeholder="trans('flow-builder.enter-expression')"
@@ -64,11 +64,11 @@
 </template>
 
 <script lang="ts">
-import {IBlock} from '@floip/flow-runner'
+import {IBlock, SetContactProperty} from '@floip/flow-runner'
 import {Prop} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 import {Lang} from '@/lib/filters/lang'
-import {get} from 'lodash'
+import {first} from 'lodash'
 import {mixins, Options} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
@@ -104,12 +104,16 @@ export class ContactPropertyEditor extends mixins(Lang) {
     {index, blockId, propertyKey}: { index: number, blockId: string, propertyKey?: string },
   ) => void
 
+  get firstProperty(): SetContactProperty | undefined {
+    return first(this.block.config.set_contact_property)
+  }
+
   get propertyKey(): string | undefined {
-    return this.block.config?.set_contact_property?.[0]?.property_key
+    return this.firstProperty?.property_key
   }
 
   get propertyValue(): string {
-    return this.block.config?.set_contact_property?.[0].property_value ?? EMPTY_STRING_EXPRESSION
+    return this.firstProperty?.property_value ?? EMPTY_STRING_EXPRESSION
   }
 
   updatePropertyValue(value: string): void {

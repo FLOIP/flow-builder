@@ -17,23 +17,6 @@
           #input-control="{ isValid }"
           :message-key="`block/${block.uuid}/config/flow_id`">
           <div class="form-group">
-            <!--
-            <label class="text-primary">{{ trans('flow-builder.destination-flow') }}</label>
-            <select
-              v-model="destinationFlowId"
-              class="form-control"
-              :class="{ 'is-invalid': isValid === false }">
-              <option value="">
-                {{ trans('flow-builder.none-selected') }}
-              </option>
-              <option
-                v-for="(flow, i) in otherFlows"
-                :value="flow.uuid">
-                {{ flow.name }}
-              </option>
-            </select>
-            //TODO - add back in or move across to embedding app via slot when ready - pull flows from a backend
-          -->
             <text-editor
               v-model="destinationFlowId"
               :label="trans('flow-builder.destination-flow')"
@@ -83,13 +66,17 @@ class Core_RunAnotherFlowBlock extends mixins(Lang) {
     return this.block.config.flow_id
   }
 
-  set destinationFlowId(newDestinationFlowId: string) {
-    this.setDestinationFlowId({blockId: this.block.uuid, newDestinationFlowId})
-  }
-
   @blockVuexNamespace.Action declare setDestinationFlowId: (
-    {blockId, newDestinationFlowId}: { blockId: string, newDestinationFlowId: string },
+    {blockId, newDestinationFlowId}: { blockId: string, newDestinationFlowId: string | undefined },
   ) => Promise<string>
+
+  set destinationFlowId(newDestinationFlowId: string) {
+    if (newDestinationFlowId === '') {
+      this.setDestinationFlowId({blockId: this.block.uuid, newDestinationFlowId: undefined})
+    } else {
+      this.setDestinationFlowId({blockId: this.block.uuid, newDestinationFlowId})
+    }
+  }
   @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
   //TODO - add back in or move across to embedding app via slot when ready - pull flows from a backend
   //@blockVuexNamespace.Getter declare otherFlows: IFlow[]

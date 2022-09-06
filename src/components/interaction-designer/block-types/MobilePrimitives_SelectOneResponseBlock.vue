@@ -1,5 +1,5 @@
 <template>
-  <div class="mobile-primitive-select-one-response-block">
+  <div class="mobile-primitives-select-one-response-block">
     <base-block
       :block="block"
       :flow="flow"
@@ -12,7 +12,6 @@
         name="resource-editors">
         <resource-editor
           v-if="promptResource"
-          :label="trans('flow-builder.prompt')"
           :resource="promptResource"
           :block="block"
           :flow="flow" />
@@ -38,7 +37,9 @@
       </slot>
       <slot
         slot="contact-props"
-        name="contact-props" />
+        name="contact-props">
+        <select-one-response-block-contact-property-editor :block="block" />
+      </slot>
       <slot
         slot="vendor"
         name="vendor" />
@@ -52,7 +53,6 @@ import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelec
 import {namespace} from 'vuex-class'
 import {Prop} from 'vue-property-decorator'
 import {includes} from 'lodash'
-
 import SelectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import {Lang} from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
@@ -76,23 +76,30 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
   SupportedMode = SupportedMode
   findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
 
-  get promptResource(): IResource {
-    return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
+  get promptResource(): IResource | undefined {
+    if (this.block.config.prompt !== undefined) {
+      return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
+    }
+    return undefined
   }
 
   handleChoiceChanged(): void {
-    const {uuid: blockId, vendor_metadata: metadata} = this.block as unknown as IBlockWithBranchingType
-    const {EXIT_PER_CHOICE, UNIFIED} = OutputBranchingType
+    const {
+      uuid: blockId,
+      vendor_metadata: {floip: {ui_metadata: {branching_type}}},
+    } = this.block as unknown as IBlockWithBranchingType
 
-    if (metadata.floip.ui_metadata.branching_type === UNIFIED) {
+    const {EXIT_PER_CHOICE, UNIFIED, ADVANCED} = OutputBranchingType
+
+    if (branching_type === UNIFIED) {
       this.handleBranchingTypeChangedToUnified({block: this.block})
+    } else if (branching_type === ADVANCED) {
+      this.reflowExitsFromChoices({blockId})
+    } else if (branching_type === EXIT_PER_CHOICE) {
+      this.reflowExitsFromChoices({blockId})
+    } else {
+      console.error('handleChoiceChanged', `cannot handle branching type ${branching_type}`)
     }
-
-    if (metadata.floip.ui_metadata.branching_type !== EXIT_PER_CHOICE) {
-      return
-    }
-
-    this.reflowExitsFromChoices({blockId})
   }
 
   reflowExitsWhenSwitchingToBranchingTypeNotUnified(): void {

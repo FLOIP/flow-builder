@@ -12,12 +12,13 @@ import {
   SupportedMode,
 
 } from '@floip/flow-runner'
-import {cloneDeep, each, filter, get, forIn, includes, intersection, isEmpty, map, union} from 'lodash'
+import {cloneDeep, each, filter, get, forIn, includes, intersection, isEmpty, map, uniqBy} from 'lodash'
 import {
   debugValidationStatus,
   flatValidationStatuses,
   getLocalizedAjvErrors,
   getLocalizedBackendErrors,
+  getOrCreateContainerImportValidator,
   getOrCreateFlowValidator,
   getOrCreateLanguageValidator,
   getOrCreateResourceValidator,
@@ -85,6 +86,17 @@ export const mutations: MutationTree<IValidationState> = {
   removeValidationStatusesFor(state:any, {key}:any) {
     delete state.validationStatuses[key]
   },
+  resetValidationStatuses(state, {key}): void {
+    state.validationStatuses[key] = {ajvErrors: undefined}
+    state.validationStatuses[key]['ajvErrors'] = []
+  },
+  pushAjvErrorToValidationStatuses(state, {key, ajvError}): void {
+    if (state.validationStatuses[key]?.ajvErrors == null) {
+      state.validationStatuses, key, {ajvErrors: undefined}
+      state.validationStatuses[key]['ajvErrors'] = []
+    }
+    state.validationStatuses[key]!.ajvErrors!.push(ajvError)
+  },
 }
 
 export const actions: ActionTree<IValidationState, IRootState> = {
@@ -137,10 +149,11 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     Object.keys(backendErrorsList).forEach((currentUuid) => {
       const key = `backend/${type}/${currentUuid}`
       const currentErrors = backendErrorsList[currentUuid]
+      const uniqueErrors = uniqBy(currentErrors, 'message') as { message: string }[]
 
       state.validationStatuses[key] = {
-        isValid: currentErrors === undefined || currentErrors.length === 0,
-        ajvErrors: getLocalizedBackendErrors(key, currentErrors),
+        isValid: uniqueErrors === undefined || uniqueErrors.length === 0,
+        ajvErrors: getLocalizedBackendErrors(key, uniqueErrors),
       }
 
       debugValidationStatus(state.validationStatuses[key], `${type} validation based on backend action`)
@@ -172,13 +185,21 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     return state.validationStatuses[key]
   },
 
-  async validate_flowContainer({state}:any, {flowContainer}: { flowContainer: IContainer }): Promise<IValidationStatus> {
-    const key = `flowContainer/${flowContainer.uuid}`
-    const errors = getFlowStructureErrors(flowContainer, false)
+  /**
+   * Validate the whole container for import purpose, including all contents like: flows, blocks, etc
+   * Assuming the provided container is a valid JSON
+   */
+  async validate_containerImport({state, commit, dispatch, rootGetters}, {flowContainer}: { flowContainer: IContainer }): Promise<IValidationStatus> {
+    // We do not add the uuid in key as it's hard coded in flow state for now
+    const key = 'container_import'
+
+    // At this stage we assume the container has the specification_version
+    const validate = getOrCreateContainerImportValidator(rootGetters['flow/activeFlowContainer'].specification_version)
     state.validationStatuses[key] = {
-      isValid: !errors,
-      ajvErrors: getLocalizedAjvErrors(key, errors),
-    }
+      isValid: validate(flowContainer),
+      ajvErrors: getLocalizedAjvErrors(key, validate.errors),
+      type: 'container_import',
+    };
 
     debugValidationStatus(state.validationStatuses[key], 'flow container validation status')
     return state.validationStatuses[key]
@@ -203,8 +224,26 @@ export const actions: ActionTree<IValidationState, IRootState> = {
   async validate_resource({state, rootGetters}: any, {resource}: {resource: IResource}): Promise<IValidationStatus> {
     const validate = getOrCreateResourceValidator(rootGetters['flow/activeFlowContainer'].specification_version)
     const key = `resource/${resource.uuid}`
+
+    const isValid = validate(resource)
+
+    if (validate.errors) {
+      for (let i = 0; i < validate.errors.length; i += 1) {
+        const {keyword, dataPath} = validate.errors[i]
+
+        if (keyword === 'pattern') {
+          const index = /^\/values\/(?<index>\d+)/.exec(dataPath)?.groups?.index
+          const {content_type: contentType} = resource.values[Number(index)]
+
+          if (contentType === 'AUDIO') {
+            validate.errors[i].keyword = 'pattern-ivr'
+          }
+        }
+      }
+    }
+
     state.validationStatuses[key] = {
-      isValid: validate(resource),
+      isValid,
       ajvErrors: getLocalizedAjvErrors(key, validate.errors),
       type: 'resource',
     }
@@ -252,6 +291,10 @@ export const actions: ActionTree<IValidationState, IRootState> = {
       }),
     )
   },
+
+  resetValidationStatuses({commit}, {key}: {key: string}): void {
+    commit('resetValidationStatuses', {key})
+  },
 }
 
 export const store: Module<IValidationState, IRootState> = {
@@ -263,3 +306,4 @@ export const store: Module<IValidationState, IRootState> = {
 }
 
 export default store
+export * from './validationHelpers'

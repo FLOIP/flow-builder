@@ -1,9 +1,9 @@
-import {ActionTree, Module} from 'vuex'
+import {ActionContext, ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, ISetGroupMembershipBlockConfig} from '@floip/flow-runner'
+import {ISetContactPropertyBlock, ISetGroupMembershipBlockConfig} from '@floip/flow-runner'
 import {cloneDeep} from 'lodash'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
-import {Core_SetGroupMembershipValidator} from '@/lib/validations'
+import {ValidationResults} from '@/lib/validations'
 
 export interface IGroupOption {
   id: string,
@@ -18,26 +18,20 @@ export const BLOCK_TYPE = 'Core.SetGroupMembership'
 const actions: ActionTree<IEmptyState, IRootState> = {
   ...baseActions,
 
-  async createWith({dispatch}, {props}: { props: { uuid: string } & Partial<ISetGroupMembershipBlockConfig> }) {
+  async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<ISetGroupMembershipBlockConfig> }) {
     props.type = BLOCK_TYPE
     props.config = {
       is_member: true,
       groups: [],
       clear: false,
     }
-    return baseActions.createWith({dispatch}, {props})
-  },
-
-  handleBranchingTypeChangedToUnified({dispatch}, {block}: { block: IBlock }) {
-    dispatch('flow/block_updateBranchingExitsToDefaultOnly', {
-      blockId: block.uuid,
-    }, {root: true})
+    return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
 
   async setIsMember({commit, rootGetters}, action) {
     const activeBlock = rootGetters['builder/activeBlock']
     let isMember = false
-    if (action) {
+    if (action === true) {
       isMember = action.id === ADD_KEY
     }
     commit('flow/block_updateConfigByPath', {
@@ -47,8 +41,19 @@ const actions: ActionTree<IEmptyState, IRootState> = {
     }, {root: true})
   },
 
-  async validate(_context, {block, schemaVersion}: {block: IBlock, schemaVersion: string}) {
-    return Core_SetGroupMembershipValidator.runAllValidations(block, schemaVersion)
+  async validateWithProgrammaticLogic(
+    _ctx: unknown,
+    {block}: {block: ISetContactPropertyBlock},
+  ): Promise<ValidationResults> {
+    console.debug('floip/SetGroupMembership/validateWithProgrammaticLogic()', `${block.type}`)
+    const errors: ValidationResults = []
+
+    const {groups, is_member} = block.config
+
+    if (is_member !== undefined && groups?.length === 0) {
+      errors.push(['/config/groups', 'set-group-membership-groups-required'])
+    }
+    return errors
   },
 }
 

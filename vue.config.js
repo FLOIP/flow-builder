@@ -1,5 +1,6 @@
 const path = require('path')
 const fs = require('fs')
+const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 
 module.exports = {
@@ -116,13 +117,25 @@ module.exports = {
   //         res.end("Flow not found")
   //       }
   //     })
-  //     // To persist new flow
+  //     // To persist new flow via "new flow page"
   //     // In the success case, just echo the flow back
   //     app.post('/backend/flows', bodyParser.json(), (req, res) => {
   //       const container = req.body
   //       res.writeHead(200, { 'Content-Type': 'application/json' })
   //       console.debug('Simulating flow creation ...')
   //       res.end(JSON.stringify(container))
+  //     })
+  //     // To persist flow import via "import flow page"
+  //     // In the success case, just echo the flow back: the response might have multiple data, but we fetch from createdContainer
+  //     app.post('/backend/flows/import', bodyParser.json(), (req, res) => {
+  //       const container = req.body
+  //       console.debug('Simulating flow import ...')
+  //       res.writeHead(200, { 'Content-Type': 'application/json' })
+  //       res.end(JSON.stringify({message: 'anything', createdContainer: container}))
+  //       // For dev: to simulate a failure, just uncomment the follow 02 lines, and comment the 02 previous lines for status 200
+  //       // and re-serve the app. Then test an import.
+  //       // res.writeHead(500, { 'Content-Type': 'application/json' })
+  //       // res.end(JSON.stringify({error: 'simulating 500 error for flow import'}))
   //     })
   //     /**
   //      * To update existing flow
@@ -181,50 +194,50 @@ module.exports = {
   //       res.end(JSON.stringify(container))
   //     })
 
-  //     //In the success case, just echo the language back
-  //     app.post('/backend/languages', bodyParser.json(), (req, res) => {
-  //       const language = req.body
-  //       res.writeHead(200, { 'Content-Type': 'application/json' })
-  //       res.end(JSON.stringify(language))
-  //     })
+  // //     //In the success case, just echo the language back
+  // //     app.post('/backend/languages', bodyParser.json(), (req, res) => {
+  // //       const language = req.body
+  // //       res.writeHead(200, { 'Content-Type': 'application/json' })
+  // //       res.end(JSON.stringify(language))
+  // //     })
 
-  //     // Mock call to record start, with this format
-  //     // {uuid: ..., queue_id: ..., status: "in_progress", status_description: ..., description: ...}
-  //     app.all('/calltorecord/start', (req, res) => {
-  //       const result = {
-  //         uuid: `${Math.random().toString(36).substr(2, 16)}.${Math.random().toString(36).substr(2, 10)}`,
-  //         queue_id: Math.floor(Math.random() * (1000 + 1)),
-  //         status: 'in_progress',
-  //         status_description: '',
-  //         description: 'Test call-to-record audio',
-  //         recorder_id: `${req.body.recorder_name.replace(/[\W_]+/g, '')}-${req.body.recorder_phonenumber}`,
-  //       }
-  //       res.cookie(result.uuid, 'in_progress')
-  //       res.writeHead(200, { 'Content-Type': 'application/json' })
-  //       res.end(JSON.stringify(result))
-  //     })
+  // //     // Mock call to record start, with this format
+  // //     // {uuid: ..., queue_id: ..., status: "in_progress", status_description: ..., description: ...}
+  // //     app.all('/calltorecord/start', (req, res) => {
+  // //       const result = {
+  // //         uuid: `${Math.random().toString(36).substr(2, 16)}.${Math.random().toString(36).substr(2, 10)}`,
+  // //         queue_id: Math.floor(Math.random() * (1000 + 1)),
+  // //         status: 'in_progress',
+  // //         status_description: '',
+  // //         description: 'Test call-to-record audio',
+  // //         recorder_id: `${req.body.recorder_name.replace(/[\W_]+/g, '')}-${req.body.recorder_phonenumber}`,
+  // //       }
+  // //       res.cookie(result.uuid, 'in_progress')
+  // //       res.writeHead(200, { 'Content-Type': 'application/json' })
+  // //       res.end(JSON.stringify(result))
+  // //     })
 
-  //     // Mock call to record status, with this format
-  //     // { audio_file_id: "148", status: "new", description: "my descr", status_description: "", uuid: "5ffcdb4d0d8742.58454366", duration_seconds: "4.54", created_at: "2021-01-11 23:12:50", key: "block_1586301986853_15:45", queueId: "5ffcdb4d0d8742.58454366" }
-  //     app.all('/calltorecord/status', (req, res) => {
-  //       const now = new Date().toISOString().split('T')
-  //       const result = {
-  //         audio_file_id: Math.floor(Math.random() * (1000 + 1)),
-  //         duration_seconds: Math.random() * 10,
-  //         status: req.cookies[req.body.uuid],
-  //         description: 'Test call-to-record audio',
-  //         uuid: req.body.uuid,
-  //         key: req.body.key,
-  //         queueId: req.body.queueId,
-  //         created_at: `${now[0]} ${now[1].split('.')[0]}`,
-  //       }
-  //       if (req.cookies[req.body.uuid] !== 'new') {
-  //         // `new` status tells the UI we had successful `recorded` audio
-  //         res.cookie(result.uuid, 'new')
-  //       }
-  //       res.writeHead(200, { 'Content-Type': 'application/json' })
-  //       res.end(JSON.stringify(result))
-  //     })
-  //   },
-  // },
+  // //     // Mock call to record status, with this format
+  // //     // { audio_file_id: "148", status: "new", description: "my descr", status_description: "", uuid: "5ffcdb4d0d8742.58454366", duration_seconds: "4.54", created_at: "2021-01-11 23:12:50", key: "block_1586301986853_15:45", queueId: "5ffcdb4d0d8742.58454366" }
+  // //     app.all('/calltorecord/status', (req, res) => {
+  // //       const now = new Date().toISOString().split('T')
+  // //       const result = {
+  // //         audio_file_id: Math.floor(Math.random() * (1000 + 1)),
+  // //         duration_seconds: Math.random() * 10,
+  // //         status: req.cookies[req.body.uuid],
+  // //         description: 'Test call-to-record audio',
+  // //         uuid: req.body.uuid,
+  // //         key: req.body.key,
+  // //         queueId: req.body.queueId,
+  // //         created_at: `${now[0]} ${now[1].split('.')[0]}`,
+  // //       }
+  // //       if (req.cookies[req.body.uuid] !== 'new') {
+  // //         // `new` status tells the UI we had successful `recorded` audio
+  // //         res.cookie(result.uuid, 'new')
+  // //       }
+  // //       res.writeHead(200, { 'Content-Type': 'application/json' })
+  // //       res.end(JSON.stringify(result))
+  // //     })
+  // //   },
+  // // },
 }

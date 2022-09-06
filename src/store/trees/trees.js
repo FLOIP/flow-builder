@@ -54,6 +54,7 @@ export default {
         isEditable: true,
         subscriberPropertyFields: [],
         blockTags: [],
+        supportedFlowSpecVersionsForImport: undefined,
       },
     }
   },
@@ -102,6 +103,8 @@ export default {
     interactiveBlockClasses: ({ui}) => lodash.pickBy(ui.blockClasses, (value) => value.is_interactive),
 
     blockClasses: ({ui}) => lodash.keys(ui.blockClasses),
+
+    supportedFlowSpecVersionsForImport: ({ui}) => ui.supportedFlowSpecVersionsForImport,
 
     interactiveBlocksInTree: ({tree}, {interactiveBlockClasses}) => lodash.filter(
       tree.blocks,

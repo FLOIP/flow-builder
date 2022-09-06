@@ -348,7 +348,7 @@ exports[`Storyshots InteractionDesigner/Toolbar Saving State 1`] = `
                             type="button"
                           >
                             
-              Save
+              Saved
               
                             <!---->
                           </button>
@@ -598,28 +598,6 @@ exports[`Storyshots InteractionDesigner/Toolbar Saving State 1`] = `
                           <div
                             class="dropdown-menu mt-0"
                           >
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item"
-                              data-block-type="ConsoleIO.Print"
-                              href="#"
-                            >
-                              
-                  Print
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item"
-                              data-block-type="ConsoleIO.Read"
-                              href="#"
-                            >
-                              
-                  Read
-                
-                            </a>
                             <!---->
                              
                             <a
@@ -829,7 +807,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                             type="button"
                           >
                             
-              Save
+              Saved
               
                             <!---->
                           </button>
@@ -1079,28 +1057,6 @@ exports[`Storyshots InteractionDesigner/Toolbar With Extra Buttons Slot 1`] = `
                           <div
                             class="dropdown-menu mt-0"
                           >
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item"
-                              data-block-type="ConsoleIO.Print"
-                              href="#"
-                            >
-                              
-                  Print
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item"
-                              data-block-type="ConsoleIO.Read"
-                              href="#"
-                            >
-                              
-                  Read
-                
-                            </a>
                             <!---->
                              
                             <a
@@ -1311,7 +1267,7 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                             type="button"
                           >
                             
-              Save
+              Saved
               
                             <!---->
                           </button>
@@ -1561,28 +1517,6 @@ exports[`Storyshots InteractionDesigner/Toolbar With Grouped Buttons Slot 1`] = 
                           <div
                             class="dropdown-menu mt-0"
                           >
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item"
-                              data-block-type="ConsoleIO.Print"
-                              href="#"
-                            >
-                              
-                  Print
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item"
-                              data-block-type="ConsoleIO.Read"
-                              href="#"
-                            >
-                              
-                  Read
-                
-                            </a>
                             <!---->
                              
                             <a
@@ -2014,28 +1948,6 @@ exports[`Storyshots InteractionDesigner/Toolbar With Save Button 1`] = `
                           <div
                             class="dropdown-menu mt-0"
                           >
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item"
-                              data-block-type="ConsoleIO.Print"
-                              href="#"
-                            >
-                              
-                  Print
-                
-                            </a>
-                            <!---->
-                             
-                            <a
-                              class="dropdown-item"
-                              data-block-type="ConsoleIO.Read"
-                              href="#"
-                            >
-                              
-                  Read
-                
-                            </a>
                             <!---->
                              
                             <a

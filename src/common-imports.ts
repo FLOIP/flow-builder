@@ -1,6 +1,7 @@
 import * as commonComponents from '@/components/common'
 import * as interactionDesignerComponents from '@/components/interaction-designer'
 import * as blockEditorsComponents from '@/components/interaction-designer/block-editors'
+import * as blockEditorsChoicesComponents from '@/components/interaction-designer/block-editors/choices'
 import * as blockTypesComponents from '@/components/interaction-designer/block-types'
 import * as flowEditorsComponents from '@/components/interaction-designer/flow-editors'
 import * as flowImportComponents from '@/components/interaction-designer/flow-editors/import'
@@ -20,6 +21,7 @@ export default function registerCustomComponents(app, extra = {}) {
     ...commonComponents,
     ...interactionDesignerComponents,
     ...blockEditorsComponents,
+    ...blockEditorsChoicesComponents,
     ...blockTypesComponents,
     ...flowEditorsComponents,
     ...flowImportComponents,

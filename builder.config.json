@@ -30,6 +30,11 @@
           "path": "\/flows\/import",
           "methods": ["GET"]
         },
+        "persistFlowImport": {
+          "name": "persistFlowImport",
+          "path": "\/backend\/flows\/import",
+          "methods": ["POST", "PUT"]
+        },
         "fetchFlow": {
           "name": "fetchFlow",
           "path": "\/flows\/{flowId}",
@@ -78,6 +83,7 @@
         }
       }
     },
+    "supportedFlowSpecVersionsForImport": ["1.0.0-rc4"],
     "languages": [
       {
         "id": "22",
@@ -91,22 +97,6 @@
       }
     ],
     "blockClasses": {
-      "ConsoleIO.Print": {
-        "name": "ConsoleIO.Print",
-        "type": "ConsoleIO.Print",
-        "is_interactive": false,
-        "is_branching": false,
-        "category":  0,
-        "menu_category": 5
-      },
-      "ConsoleIO.Read": {
-        "name": "ConsoleIO.Read",
-        "type": "ConsoleIO.Read",
-        "is_interactive": true,
-        "is_branching": false,
-        "category":  1,
-        "menu_category": 5
-      },
       "Core.Case": {
         "name": "Core.Case",
         "type": "Core.Case",
@@ -129,7 +119,7 @@
         "is_interactive": false,
         "is_branching": false,
         "category":  0,
-        "menu_category": 3
+        "menu_category": 5
       },
       "Core.RunFlow": {
         "name": "Core.RunFlow",
@@ -137,7 +127,7 @@
         "is_interactive": false,
         "is_branching": false,
         "category":  0,
-        "menu_category": 3
+        "menu_category": 5
       },
       "Core.SetContactProperty": {
         "name": "Core.SetContactProperty",
@@ -170,7 +160,17 @@
         "is_branching": true,
         "category":  2,
         "menu_category": 1,
-        "divider_before": true
+        "divider_before": true,
+        "exits": {
+          "default_branching_type": "EXIT_PER_CHOICE",
+          "primary": {
+            "name": "1",
+            "test": "@block.value != null"
+          },
+          "default": {
+            "name": "Default"
+          }
+        }
       },
       "MobilePrimitives.SelectManyResponse": {
         "name": "MobilePrimitives.SelectManyResponse",
@@ -178,7 +178,16 @@
         "is_interactive": true,
         "is_branching": true,
         "category":  2,
-        "menu_category": 1
+        "menu_category": 1,
+        "exits": {
+          "default_branching_type": "EXIT_PER_CHOICE",
+          "primary": {
+            "name": "1"
+          },
+          "default": {
+            "name": "Default"
+          }
+        }
       },
       "MobilePrimitives.NumericResponse": {
         "name": "MobilePrimitives.NumericResponse",
@@ -186,7 +195,16 @@
         "is_interactive": true,
         "is_branching": false,
         "category":  1,
-        "menu_category": 1
+        "menu_category": 1,
+        "exits": {
+          "primary": {
+            "name": "Valid",
+            "test": "@ISNUMBER(block.value)"
+          },
+          "default": {
+            "name": "Invalid"
+          }
+        }
       },
       "MobilePrimitives.OpenResponse": {
         "name": "MobilePrimitives.OpenResponse",
@@ -203,7 +221,16 @@
         "is_branching": false,
         "category":  1,
         "menu_category": 1,
-        "divider_before": true
+        "divider_before": true,
+        "exits": {
+          "primary": {
+            "name": "Valid",
+            "test": "NOT(block.value = false)"
+          },
+          "default": {
+            "name": "Invalid"
+          }
+        }
       },
       "SmartDevices.PhotoResponse": {
         "name": "SmartDevices.PhotoResponse",
@@ -211,7 +238,16 @@
         "is_interactive": true,
         "is_branching": false,
         "category":  1,
-        "menu_category": 1
+        "menu_category": 1,
+        "exits": {
+          "primary": {
+            "name": "Valid",
+            "test": "NOT(block.value = false)"
+          },
+          "default": {
+            "name": "Invalid"
+          }
+        }
       }
     },
     "blockTags": [],
@@ -301,7 +337,21 @@
         "id": "14",
         "name": "favourite_fruits",
         "display_label": "Favourite fruits (multiple_choice)",
-        "data_type": "multiple_choice"
+        "data_type": "multiple_choice",
+        "choices": [
+          {
+            "description": "Apple",
+            "value": "apple"
+          },
+          {
+            "description": "Banana",
+            "value": "banana"
+          },
+          {
+            "description": "Mango",
+            "value": "mango"
+          }
+        ]
       },
       {
         "id": "15",
@@ -319,9 +369,9 @@
     "subscriberPropertyFieldDataTypesMapping": {
       "text": ["MobilePrimitives.OpenResponse", "SmartDevices.LocationResponse", "MobilePrimitives.NumericResponse", "MobilePrimitives.SelectOneResponse", "MobilePrimitives.SelectManyResponse"],
       "location": ["SmartDevices.LocationResponse"],
-      "number": ["MobilePrimitives.NumericResponse", "MobilePrimitives.OpenResponse"],
+      "number": ["MobilePrimitives.NumericResponse", "MobilePrimitives.OpenResponse", "MobilePrimitives.SelectOneResponse", "MobilePrimitives.SelectManyResponse"],
       "phone": ["MobilePrimitives.NumericResponse"],
-      "multiple_choice": ["MobilePrimitives.SelectOneResponse", "MobilePrimitives.SelectManyResponse"],
+      "multiple_choice": ["MobilePrimitives.SelectManyResponse"],
       "media": ["SmartDevices.PhotoResponse"]
     },
     "treeTitles": {},

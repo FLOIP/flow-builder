@@ -4,20 +4,37 @@ import {
   IBlock,
   IBlockExit,
   IContext,
+  ILanguage,
 } from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {defaults, get, has, isArray, isNil, last, reject, snakeCase, toPath} from 'lodash'
+import {cloneDeep, defaults, has, isArray, isNil, last, reject, snakeCase} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
+import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
+import {BLOCK_TYPE as SelectOneBlockType} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
+import {BLOCK_TYPE as SelectManyBlockType} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
+import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
+import * as SetContactPropertyModule from './block/set-contact-property'
 import {IFlowsState} from '.'
 import {removeBlockValueByPath, updateBlockValueByPath} from './utils/vuexBlockHelpers'
 
-import * as SetContactPropertyModule from './block/set-contact-property'
-
 export const getters: GetterTree<IFlowsState, IRootState> = {
+  ...SetContactPropertyModule.getters,
+
   // todo: do we do all bocks in all blocks, or all blocks in [!! active flow !!]  ?
   //       the interesting bit is that resources are _all_ resources... so we could follow suit here? :shrug:
   // blocksByUuid: ({flows}) => map(resources, 'uuid')
+  block_classesConfig(_state, _getters, rootState): Record<string, object> {
+    return rootState.trees.ui.blockClasses
+  },
+
+  block_shouldHave2Exits: (state, getters) => (blockType: string): boolean => {
+    const blockDefinition = getters.block_classesConfig[blockType]
+    const primaryExitName = blockDefinition?.exits?.primary?.name
+    const defaultExitName = blockDefinition?.exits?.default?.name
+
+    return primaryExitName !== undefined && defaultExitName !== undefined
+  },
 }
 
 export const mutations: MutationTree<IFlowsState> = {
@@ -117,7 +134,10 @@ export const mutations: MutationTree<IFlowsState> = {
     findBlockExitWith(exitId, block)
       .destination_block = destinationBlockId
   },
-  block_updateVendorMetadataByPath(state, {blockId, path, value}: { blockId: string, path: string, value: object | string }) {
+  block_updateVendorMetadataByPath(
+    state,
+    {blockId, path, value}: {blockId: string, path: string, value: boolean | number | string | object | null | undefined},
+  ) {
     updateBlockValueByPath(state, blockId, `vendor_metadata.${path}`, value)
   },
   block_removeVendorMetadataByPath(state, {blockId, path}: { blockId: string, path: string }) {
@@ -138,18 +158,24 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   /**
    * Set block name
+   * @param commit
+   * @param dispatch
+   * @param state
    * @param blockId
    * @param value
    * @param lockAutoUpdate, true if user overrides auto-generated name
    */
   block_setName(
-    {commit, state},
+    {commit, dispatch, state},
     {blockId, value, lockAutoUpdate = false}: {blockId: IBlock['uuid'], value: string, lockAutoUpdate: boolean},
   ) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
 
     if (block.vendor_metadata?.floip.ui_metadata?.should_auto_update_name === true || lockAutoUpdate) {
+      const oldBlock = cloneDeep(block)
       commit('block_setName', {blockId, value})
+      const newBlock = cloneDeep(block)
+      dispatch('block_notifyOtherBlocksAboutBlockChange', {oldBlock, newBlock})
     }
 
     if (lockAutoUpdate) {
@@ -159,6 +185,28 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         value: false,
       })
     }
+  },
+
+  /**
+   * We can use this to update expressions located in other blocks' configs
+   * if they are referencing the modified block, e.g. "@(flow.myBlockNameThatChanged)"
+   * @param dispatch
+   * @param rootGetters
+   * @param oldBlock, deep clone of the modified block before the change
+   * @param newBlock, deep clone of the modified block after the change, null if the block was deleted
+   */
+  block_notifyOtherBlocksAboutBlockChange(
+    {dispatch, rootGetters},
+    {oldBlock, newBlock}: {oldBlock: IBlock, newBlock: IBlock | null},
+  ) {
+    return Promise.all(
+      rootGetters['flow/activeFlow']?.blocks.map((blockToNotify: IBlock) =>
+        dispatch(
+          `flow/${blockToNotify.type}/maybeHandleAnotherBlockChange`,
+          {thisBlock: blockToNotify, oldBlock, newBlock},
+          {root: true},
+        )) ?? [],
+    )
   },
 
   block_resetName({commit, state}, {blockId}) {
@@ -201,6 +249,59 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       }),
     }
   },
+
+  /**
+   * primaryExitTest has priority over test defined in builder.config.blockClasses
+   * If we have undefined, then we try to use what we defined in builder.config.blockClasses
+   */
+  async block_generateExitsBasedOnUiConfig(
+    {state, dispatch, getters},
+    {blockType, primaryExitTest}: {blockType: string, primaryExitTest?: string},
+  ): Promise<IBlockExit[]> {
+    const blockDefinition = getters.block_classesConfig[blockType]
+    const primaryExitName = blockDefinition?.exits?.primary?.name
+    const defaultExitName = blockDefinition?.exits?.default?.name
+    const defaultBranchingType = blockDefinition?.exits?.default_branching_type
+    let exits: IBlockExit[] = []
+
+    if (defaultBranchingType === undefined && getters.block_shouldHave2Exits(blockType) === true) {
+      // Has 02 exits
+      exits = [
+        await dispatch('block_createBlockExitWith', {
+          props: ({
+            uuid: await (new IdGeneratorUuidV4()).generate(),
+            name: primaryExitName,
+            test: primaryExitTest ?? blockDefinition?.exits?.primary.test,
+          }) as IBlockExit,
+        }),
+        await dispatch('block_createBlockDefaultExitWith', {
+          props: ({
+            uuid: await (new IdGeneratorUuidV4()).generate(),
+            name: defaultExitName,
+          }) as IBlockExit,
+        }),
+      ]
+    } else {
+      // Has only one exit `Default` if
+      // - the default_branching_type is mentioned (eg: EXIT_PER_CHOICE)
+      // - OR the 02 exits are not clearly defined
+      exits = [await dispatch('block_createBlockDefaultExitWith', {
+        props: ({
+          uuid: await (new IdGeneratorUuidV4()).generate(),
+        }) as IBlockExit,
+      })]
+
+      if (![OutputBranchingType.EXIT_PER_CHOICE, OutputBranchingType.ADVANCED, undefined].includes(defaultBranchingType)) {
+        console.warn(
+          'block_generateExitsBasedOnUiConfig',
+          `the default_branching_type ${defaultBranchingType} is not recognized, this might cause an error.`,
+        )
+      }
+    }
+
+    return exits
+  },
+
   async block_updateBlockExitWith(
     {commit},
     {blockId, exitId, props: {test, name, semantic_label}}: { blockId: string, exitId: string, props: Partial<IBlockExit> },
@@ -243,33 +344,23 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
-  // TODO in VMO-6181: update the name & definition to correspond for MCQ context, no more block is using this apart from MCQ
-  async block_convertExitFormationToUnified({state, dispatch}, {blockId, test}: {blockId: IBlock['uuid'], test: IBlockExit['test']}) {
-    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
-    const primaryExitProps: Partial<IBlockExit> = {
-      uuid: await (new IdGeneratorUuidV4()).generate(),
-      name: '1',
-      test,
-    }
-
-    block.exits = [
-      await dispatch('block_createBlockExitWith', {props: primaryExitProps}),
-      last(block.exits),
-    ]
-  },
-
   /**
    * Update exits after the block creation.
    * Standard exit where the end user can make an error. We have 02 exits:
-   * - Valid
-   * - Invalid
+   * - Non default exits would be collapsed into 01 exit (eg: Valid, Success)
+   * - Default exit would be the last exit (eg: Invalid, Failure)
    */
-  async block_updateBranchingExitsWithInvalidScenario({state, dispatch}, {blockId, test}: {blockId: IBlock['uuid'], test: IBlockExit['test']}) {
+  async block_resetBranchingExitsByCollapsingNonDefault(
+    {state, getters, dispatch},
+    {blockId, primaryExitTest}: {blockId: IBlock['uuid'], primaryExitTest: string},
+  ) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+    const blockDefinition = getters.block_classesConfig[block.type]
+
     const primaryExitProps: Partial<IBlockExit> = {
       uuid: await (new IdGeneratorUuidV4()).generate(),
-      name: 'Valid',
-      test,
+      name: blockDefinition?.exits?.primary.name,
+      test: primaryExitTest ?? blockDefinition?.exits?.primary.test,
     }
 
     block.exits = [
@@ -283,7 +374,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
    * Update exits after the block creation.
    * Standard exit mode where the user can’t provide invalid response. We have 01 single exit `Default`
    */
-  async block_updateBranchingExitsToDefaultOnly({state, dispatch}, {blockId}: {blockId: IBlock['uuid']}) {
+  async block_resetBranchingExitsToDefaultOnly({state, dispatch}, {blockId}: {blockId: IBlock['uuid']}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
 
     block.exits = [
@@ -292,13 +383,59 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     ]
   },
 
-  async block_select({state}, {blockId}: { blockId: IBlock['uuid'] }) {
+  async block_select({state, dispatch}, {blockId}: { blockId: IBlock['uuid'] }) {
     state.selectedBlocks.push(blockId)
+    dispatch('block_updateShouldShowBlockToolBar', {blockId, value: true})
   },
 
   async block_deselect({state}, {blockId}: { blockId: IBlock['uuid'] }) {
     // remove it
     state.selectedBlocks = state.selectedBlocks.filter((item) => item !== blockId)
+  },
+
+  block_updateShouldShowBlockToolBar({state, commit}, {blockId, value}: { blockId: string, path: string, value: boolean }): void {
+    commit('block_updateVendorMetadataByPath', {
+      blockId,
+      path: 'floip.ui_metadata.should_show_block_tool_bar',
+      value,
+    })
+  },
+
+  block_updateAllBlocksAfterAddingFlowLanguage({rootGetters, dispatch}, {language}: {language: ILanguage}): void {
+    rootGetters['flow/activeFlow'].blocks.map((currentBlock: IBlock) => {
+      if (currentBlock.type === SelectOneBlockType || currentBlock.type === SelectManyBlockType) {
+        const hasTextMode = rootGetters['flow/hasTextMode']
+        if (hasTextMode === true) {
+          (currentBlock as ISelectOneResponseBlock).config.choices.map((choice) => {
+            choice.text_tests?.push({
+              language: language.id,
+              test_expression: `@block.response = '${choice.name}'`,
+            })
+
+            return choice
+          })
+        }
+      }
+
+      return currentBlock
+    })
+  },
+
+  block_updateAllBlocksAfterDeletingFlowLanguage({rootGetters, dispatch}, {language}: {language: ILanguage}): void {
+    rootGetters['flow/activeFlow'].blocks.map((currentBlock: IBlock) => {
+      if (currentBlock.type === SelectOneBlockType || currentBlock.type === SelectManyBlockType) {
+        const hasTextMode = rootGetters['flow/hasTextMode']
+        if (hasTextMode === true) {
+          (currentBlock as ISelectOneResponseBlock).config.choices.map((choice) => {
+            choice.text_tests = choice.text_tests?.filter((test) => test.language !== language.id)
+
+            return choice
+          })
+        }
+      }
+
+      return currentBlock
+    })
   },
 }
 

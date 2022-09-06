@@ -43,7 +43,7 @@ import {ErrorObject} from 'ajv'
 import {Prop} from 'vue-property-decorator'
 import {IBlock, IFlow, IResource, IResources} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
-import {get, union} from 'lodash'
+import {get, map} from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
@@ -87,7 +87,7 @@ export class BlockErrorsExpandable extends mixins(Lang) {
 
   get currentBlockResourceUuids(): IResource['uuid'][] {
     const choiceResourceUuids = this.block.config?.choices !== undefined
-      ? Object.values(this.block.config.choices)
+      ? map(this.block.config.choices, 'prompt')
       : []
 
     return [
