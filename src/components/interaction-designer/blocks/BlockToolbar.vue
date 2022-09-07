@@ -7,13 +7,13 @@
           v-if="isBlockSelected"
           v-b-tooltip.hover="trans('flow-builder.deselect-block')"
           :icon="['far', 'check-circle']"
-          class="fa-btn text-info"
+          class="cursor-pointer text-info"
           @click="isEditable && block_deselect({ blockId: block.uuid })" />
         <font-awesome-icon
           v-if="!isBlockSelected"
           v-b-tooltip.hover="trans('flow-builder.select-block')"
           :icon="['far', 'circle']"
-          class="fa-btn"
+          class="cursor-pointer"
           @click="isEditable && block_select({ blockId: block.uuid })" />
       </template>
     </div>
@@ -43,9 +43,9 @@
           v-b-tooltip.hover="trans('flow-builder.tooltip-delete-block')"
           :icon="['far', 'trash-alt']"
           :class="{
-              'text-danger': !isWaitingForConnection && !isActivatedByConnection,
-            }"
-          class="fa-btn"
+            'text-danger': !isWaitingForConnection && !isActivatedByConnection,
+          }"
+          class="cursor-pointer"
           @click.prevent="isDeleting = true" />
       </div>
       <!--Duplicate-->
@@ -54,16 +54,18 @@
           v-if="isEditable"
           v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
           :icon="['fac', 'copy']"
-          class="fa-btn"
+          class="cursor-pointer"
           @click.prevent="handleDuplicateBlock" />
       </div>
       <!--Expand block editor-->
-      <div class="mr-1 ml-2">
-        <font-awesome-icon
-          v-b-tooltip.hover="trans('flow-builder.toggle-block-editor-tooltip')"
-          :icon="isEditorVisible ? ['fac', 'minimize'] : ['fac', 'expand']"
-          class="fa-btn"
-          @click.prevent="handleExpandMinimizeBlockEditor" />
+      <div
+        v-b-tooltip.hover="trans('flow-builder.toggle-block-editor-tooltip')"
+        class="mr-1 ml-2 cursor-pointer icon-container"
+        @click.prevent="handleExpandMinimizeBlockEditor">
+        <span class="icon-text">
+          {{ isEditorVisible ? trans('flow-builder.hide') : trans('flow-builder.show') }}
+        </span>
+        <font-awesome-icon :icon="isEditorVisible ? ['fac', 'minimize'] : ['fac', 'expand']" />
       </div>
     </div>
   </div>
@@ -111,7 +113,7 @@ export class BlockToolbar extends mixins(Lang) {
 
   handleExpandMinimizeBlockEditor(): void {
     this.setIsBlockEditorOpen(!this.isEditorVisible)
-    let routerName = ''
+    let routerName
     if (this.isEditorVisible) {
       routerName = 'block-selected-details'
       this.$emit('before-minimize')
@@ -148,3 +150,14 @@ export class BlockToolbar extends mixins(Lang) {
 }
 export default BlockToolbar
 </script>
+
+<style scoped>
+.icon-container {
+  display: flex;
+  align-items: center;
+}
+.icon-text {
+  font-size: 0.8rem;
+  margin-right: 0.15rem;
+}
+</style>
