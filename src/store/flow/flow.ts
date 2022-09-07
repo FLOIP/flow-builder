@@ -17,12 +17,11 @@ import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {cloneDeep, defaults, every, forEach, get, has, includes, merge, omit, sortBy} from 'lodash'
-import {discoverContentTypesFor} from '@/store/flow/resource'
+import {discoverContentTypesFor, cleanupFlowResources} from '@/store/flow/resource'
 import {computeBlockCanvasCoordinates} from '@/store/builder'
+import {ErrorObject} from 'ajv'
 import {IFlowsState} from '.'
 import {mergeFlowContainer} from './utils/importHelpers'
-import Lang from '@/lib/filters/lang'
-import {ErrorObject} from 'ajv'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   //We allow for an attempt to get a flow which doesn't yet exist in the state - e.g. the first_flow_id doesn't correspond to a flow
@@ -194,7 +193,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       return getters.activeFlowContainer
     }
     try {
-      const {data} = await axios[restVerb](persistRoute, omit(flowContainer, ['isCreated']))
+      const {data} = await axios[restVerb](persistRoute, omit(cleanupFlowResources(flowContainer), ['isCreated']))
       commit('flow_setFlowContainer', data)
       commit('flow_updateCreatedState', true)
       dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
@@ -354,6 +353,42 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         values,
       },
     })
+  },
+
+  flow_addMissingResourceValues({getters, rootGetters, dispatch}): void {
+    const activeFlow: IFlow = getters.activeFlow
+    const resources = activeFlow.resources
+    const modes = activeFlow.supported_modes
+    const languages = activeFlow.languages.map(language => language.id)
+
+    resources
+      // Choices are a special case, we should not add variants
+      .filter(resource => resource.values.every(value => value.mime_type !== rootGetters['validation/textMimeType']))
+      .forEach(resource => {
+        modes.forEach(mode => {
+          languages.forEach(language => {
+            const resourceValue = resource.values.find(value => value.language_id === language && value.modes.includes(mode))
+
+            if (resourceValue === undefined) {
+              console.warn(`Adding missing variant: lang ${language}, mode: ${mode} for resource ${resource.uuid}`)
+
+              discoverContentTypesFor(mode)?.forEach((content_type) => {
+                dispatch('resource_createVariant', {
+                  resourceId: resource.uuid,
+                  variant: {
+                    content_type,
+                    language_id: language,
+                    modes: [
+                      mode,
+                    ],
+                    value: '',
+                  },
+                })
+              })
+            }
+          })
+        })
+      })
   },
 
   async flow_createWith({rootState}, {props}: { props: { uuid: string } & Partial<IFlow> }): Promise<IFlow> {

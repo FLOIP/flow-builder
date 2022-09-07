@@ -123,6 +123,8 @@ export const actions: ActionTree<IValidationState, IRootState> = {
   async validate_allBlocksFromBackend({dispatch}): Promise<void> {
     await dispatch('validate_fromBackend', {type: 'block'})
     await dispatch('validate_fromBackend', {type: 'resource'})
+
+    await dispatch('flow/flow_addMissingResourceValues', null, {root: true})
   },
 
   /**
