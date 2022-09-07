@@ -184,7 +184,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   /**
    * Persistence for SAVE action
    */
-  async flow_persist({getters, commit, dispatch}, {persistRoute, flowContainer}): Promise<IContext | null> {
+  async flow_persist({getters, rootGetters, commit, dispatch}, {persistRoute, flowContainer}): Promise<IContext | null> {
     const restVerb = flowContainer.isCreated ? 'put' : 'post'
     const oldCreatedState = flowContainer.isCreated
     if (!persistRoute) {
@@ -193,7 +193,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       return getters.activeFlowContainer
     }
     try {
-      const {data} = await axios[restVerb](persistRoute, omit(cleanupFlowResources(flowContainer), ['isCreated']))
+      const {data} = await axios[restVerb](persistRoute, omit(cleanupFlowResources(flowContainer, rootGetters['validation/choiceMimeType']), ['isCreated']))
       commit('flow_setFlowContainer', data)
       commit('flow_updateCreatedState', true)
       dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
