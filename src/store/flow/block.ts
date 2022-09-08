@@ -19,6 +19,8 @@ import * as SetContactPropertyModule from './block/set-contact-property'
 import {IFlowsState} from '.'
 import {removeBlockValueByPath, updateBlockValueByPath} from './utils/vuexBlockHelpers'
 
+export type BlockConfigField = object | string | number | boolean | undefined | null
+
 export const getters: GetterTree<IFlowsState, IRootState> = {
   ...SetContactPropertyModule.getters,
 
@@ -93,7 +95,7 @@ export const mutations: MutationTree<IFlowsState> = {
       .config = newConfig
   },
   // note that the {key} could be undefined inside `config` at block creation (eg: optional config)
-  block_updateConfigByKey(state, {blockId, key, value}: { blockId: string, key: string, value: object }) {
+  block_updateConfigByKey(state, {blockId, key, value}: { blockId: string, key: string, value: BlockConfigField }) {
     const currentConfig: { [key: string]: any } = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config
     currentConfig[key] = value
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config = {...currentConfig}
@@ -104,10 +106,10 @@ export const mutations: MutationTree<IFlowsState> = {
   /**
    * update config by path, and make nested assignment reactive for vue
    */
-  block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value?: object | string | number | boolean}) {
+  block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value: BlockConfigField}) {
     updateBlockValueByPath(state, blockId, `config.${path}`, value)
   },
-  block_updateUIMetadataByPath(state, {blockId, path, value}: {blockId: string, path: string, value?: object | string | number | boolean}) {
+  block_updateUIMetadataByPath(state, {blockId, path, value}: {blockId: string, path: string, value: BlockConfigField}) {
     const chunks = path.split('.')
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
 
@@ -138,7 +140,7 @@ export const mutations: MutationTree<IFlowsState> = {
   },
   block_updateVendorMetadataByPath(
     state,
-    {blockId, path, value}: {blockId: string, path: string, value: boolean | number | string | object | null | undefined},
+    {blockId, path, value}: {blockId: string, path: string, value: BlockConfigField},
   ) {
     updateBlockValueByPath(state, blockId, `vendor_metadata.${path}`, value)
   },
