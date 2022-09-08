@@ -1,4 +1,4 @@
-import {ISuggestion, ISuggestionValue} from '../types'
+import {ISuggestion, ISuggestionValue, IExpressionContext} from '../types'
 
 export type SuggestionValueOrString = ISuggestionValue | string
 
@@ -32,4 +32,10 @@ export function merge(suggestions: ISuggestion[]): ISuggestion[] {
     trigger,
     values,
   }))
+}
+
+export function getBlockNames(context: IExpressionContext): string[] {
+  return context.blocks
+    .map(block => block.name)
+    .filter(Boolean) ?? []
 }

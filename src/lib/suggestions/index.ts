@@ -5,6 +5,7 @@ import {getBlockSuggestions} from './getBlockSuggestions'
 import {getContactSuggestions} from './getContactSuggestions'
 import {getFlowIdentifiersSuggestions} from './getFlowIdentifiersSuggestions'
 import {getMethodSuggestions} from './getMethodSuggestions'
+import {getResultsSuggestions} from './getResultsSuggestions'
 import {getRunSuggestions} from './getRunSuggestions'
 
 import {merge} from './suggestionHelpers'
@@ -29,5 +30,6 @@ export function getSuggestions(context: IExpressionContext): ISuggestion[] {
     ...getFlowIdentifiersSuggestions(context),
     ...getMethodSuggestions(),
     ...getRunSuggestions(context),
+    ...getResultsSuggestions(context),
   ])
 }

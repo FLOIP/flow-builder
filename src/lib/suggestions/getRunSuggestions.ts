@@ -1,6 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 
 import {IExpressionContext, ISuggestion} from '../types'
+import {getResultSuggestionsForBlockNames} from './getResultsSuggestions'
+import {getBlockNames} from './suggestionHelpers'
 
 function getRunSuggestionsWithPrefix(prefix: string): ISuggestion[] {
   return [
@@ -38,9 +40,7 @@ function getRunSuggestionsWithPrefix(prefix: string): ISuggestion[] {
 }
 
 export function getRunSuggestions(context: IExpressionContext): ISuggestion[] {
-  const blockNames = context.blocks
-    .map(block => block.name)
-    .filter(Boolean) ?? []
+  const blockNames = getBlockNames(context)
 
   return [
     {
@@ -50,38 +50,7 @@ export function getRunSuggestions(context: IExpressionContext): ISuggestion[] {
       ],
     },
     ...getRunSuggestionsWithPrefix('@run'),
-    {
-      trigger: '@run.results.',
-      values: blockNames.map(name => `@run.results.${name}`),
-    },
-    ...blockNames.flatMap(name => ([
-      {
-        trigger: `@run.results.${name}.`,
-        values: [
-          `@run.results.${name}.entered_at`,
-          `@run.results.${name}.exited_at`,
-          `@run.results.${name}.response`,
-          `@run.results.${name}.value`,
-          `@run.results.${name}.block`,
-          `@run.results.${name}.exit`,
-        ],
-      },
-      {
-        trigger: `@run.results.${name}.block.`,
-        values: [
-          `@run.results.${name}.block.id`,
-          `@run.results.${name}.block.name`,
-          `@run.results.${name}.block.label`,
-        ],
-      },
-      {
-        trigger: `@run.results.${name}.exit.`,
-        values: [
-          `@run.results.${name}.exit.name`,
-          `@run.results.${name}.exit.id`,
-        ],
-      },
-    ])) as ISuggestion[],
+    ...getResultSuggestionsForBlockNames(blockNames, '@run.results'),
     ...getRunSuggestionsWithPrefix('@run.parent'),
     ...getRunSuggestionsWithPrefix('@run.child'),
     {
