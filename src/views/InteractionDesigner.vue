@@ -314,13 +314,26 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     })
   }
 
-  handleFlowChanges({type}: MutationPayload): void {
-    if (type.startsWith('flow/') === false) {
+  handleFlowChanges({type, payload}: MutationPayload): void {
+    // We overwrite flow container after saving, reset change state
+    if (type === 'flow/flow_setFlowContainer') {
+      this.setHasFlowChanges(false)
       return
     }
 
-    if (type === 'flow/flow_setFlowContainer') {
-      this.setHasFlowChanges(false)
+    // Consider changing block positoin a flow change
+    if (type === 'builder/setBlockPositionTo') {
+      this.setHasFlowChanges(true)
+      return
+    }
+
+    // Visibility of block toolbar is not a flow change
+    if (type === 'flow/block_updateVendorMetadataByPath' && payload.path === 'floip.ui_metadata.should_show_block_tool_bar') {
+      return
+    }
+
+    // Only consider flow mutations
+    if (type.startsWith('flow/') === false) {
       return
     }
 
