@@ -119,7 +119,7 @@ import {Getter, namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 import {find, has, isEmpty, map} from 'lodash'
 import {mixins} from 'vue-class-component'
-import {BlockConfigField, isBlockInteractive} from '@/store/flow/block.ts'
+import {BlockConfigField, isBlockInteractive} from '@/store/flow/block'
 import VueMultiselect from 'vue-multiselect'
 import {IContactPropertyOption, IContactPropertyOptionForUISelector} from '@/store/flow/block-types/Core_SetContactPropertyStore'
 
