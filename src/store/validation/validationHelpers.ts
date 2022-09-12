@@ -117,16 +117,13 @@ function getErrorMessageLocalizationKey(keyPrefix: string, ajvErrorObject: Error
 }
 
 function getLocalizedErrorMessage(keyPrefix: string, ajvErrorObject: ErrorObject) : string {
-  console.debug('getLocalizedErrorMessage', keyPrefix, ajvErrorObject)
-
   const hasKeyword = typeof ajvErrorObject.keyword === 'string'
   const hasMessage = typeof ajvErrorObject.message === 'string' && ajvErrorObject.message.length > 0
 
   // Handle custom messages w/o keywords
   if (!hasKeyword) {
     if (hasMessage) {
-      console.debug('getLocalizedErrorMessage return #1 (ajvErrorObject.message!):', ajvErrorObject.message!)
-      return ajvErrorObject.message!
+       return ajvErrorObject.message!
     } else {
       throw new Error(`Malformed AJV error object: no keyword or message; ${JSON.stringify(ajvErrorObject)}`)
     }
@@ -140,11 +137,9 @@ function getLocalizedErrorMessage(keyPrefix: string, ajvErrorObject: ErrorObject
 
   if (!hasTranslation) {
     console.warn(`Error message not localized: ${localizationKey}`, JSON.parse(JSON.stringify(ajvErrorObject)))
-    console.debug('getLocalizedErrorMessage return #2 (ajvErrorObject.message ?? ""):', ajvErrorObject.message ?? '')
     return ajvErrorObject.message ?? ''
   }
 
-  console.debug('getLocalizedErrorMessage return #3 localizedMessage:', localizedMessage)
   return localizedMessage
 }
 
@@ -253,22 +248,17 @@ export function getOrCreateResourceValidator(schemaVersion: string): ValidateFun
  * @param customBlockJsonSchema,
  */
 export function validateBlockWithJsonSchema({block, schemaVersion, customBlockJsonSchema}: {block: IBlock, schemaVersion: string, customBlockJsonSchema?: JSONSchema7}): IValidationStatus {
-  console.debug('validateBlockWithJsonSchema block, schemaVersion, customBlockJsonSchema:', block, schemaVersion, customBlockJsonSchema)
   let validate = null
-  console.debug('validateBlockWithJsonSchema validators:', validators)
   if (isEmpty(validators) || !validators.has(block.type)) {
-    console.debug('validateBlockWithJsonSchema 1 if')
-    const blockTypeWithoutNameSpace = block.type.split('.').pop()
+    const blockTypeWithoutNameSpace = block.type.split('.')[block.type.split('.').length - 1]
     let blockJsonSchema
     try {
       if (customBlockJsonSchema == null) {
         // eslint-disable-next-line import/no-dynamic-require,global-require
         blockJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/I${blockTypeWithoutNameSpace}Block.json`)
         validate = createDefaultJsonSchemaValidatorFactoryFor(blockJsonSchema)
-        console.debug('validateBlockWithJsonSchema 2 if blockJsonSchema, validate:', blockJsonSchema, validate)
       } else {
         validate = createDefaultJsonSchemaValidatorFactoryFor(customBlockJsonSchema)
-        console.debug('validateBlockWithJsonSchema 2 else validate:', validate)
       }
     } catch (e) {
       if (e.code === 'MODULE_NOT_FOUND') {
@@ -277,19 +267,16 @@ export function validateBlockWithJsonSchema({block, schemaVersion, customBlockJs
         // eslint-disable-next-line import/no-dynamic-require,global-require
         blockJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`)
         validate = createDefaultJsonSchemaValidatorFactoryFor(blockJsonSchema, '#/definitions/IBlock')
-        console.debug('validateBlockWithJsonSchema 3 if blockJsonSchema, validate:', blockJsonSchema, validate)
       } else {
-        console.debug('validateBlockWithJsonSchema 3 else')
         throw e
       }
     }
     validators.set(block.type, validate)
   } else {
-    console.debug('validateBlockWithJsonSchema 1 else')
     validate = validators.get(block.type)!
   }
 
-  const res = {
+  return {
     isValid: validate(block),
     ajvErrors: validate.errors,
     type: block.type,
@@ -298,6 +285,4 @@ export function validateBlockWithJsonSchema({block, schemaVersion, customBlockJs
       resourceUuid: get(block, 'config.prompt'),
     },
   }
-  console.debug('validateBlockWithJsonSchema res', res)
-  return res
 }

@@ -139,33 +139,26 @@ export const actions = {
     {dispatch}: ActionContext<IEmptyState, IRootState>,
     {block, schemaVersion}: {block: IBlock, schemaVersion: string},
   ): Promise<IValidationStatus> {
-    console.debug('floip/BaseBlock/validate()', `${block.type}`, schemaVersion)
+    console.debug('floip/BaseBlock/validate()', `${block.type}`)
     // Validation based on JsonSchema
     const validationStatus: IValidationStatus = await dispatch('validateBlockWithCustomJsonSchema', {block, schemaVersion})
-    console.debug('floip/BaseBlock/validate validationStatus before:', validationStatus)
 
     // Validation based on programmatic logic
     const dataPaths = new Set(validationStatus.ajvErrors?.map((error: ErrorObject) => error.dataPath))
-    console.debug('floip/BaseBlock/validate dataPaths:', dataPaths)
     const validationResults: ValidationResults = await dispatch('validateWithProgrammaticLogic', {block})
-    console.debug('floip/BaseBlock/validate validationResults:', validationResults)
 
     validationResults.forEach(([dataPath, suffix]) => {
       if (!dataPaths.has(dataPath)) {
         dataPaths.add(dataPath)
 
         validationStatus.ajvErrors = validationStatus.ajvErrors || []
-
-        const message = Lang.trans(`flow-builder-validation.${suffix}`)
-        console.debug('floip/BaseBlock/validate dataPath suffix message:', dataPath, suffix, message)
-
         validationStatus.ajvErrors.push({
           dataPath,
-          message,
+          message: Lang.trans(`flow-builder-validation.${suffix}`),
         } as ErrorObject)
       }
     })
-    console.debug('floip/BaseBlock/validate validationStatus after:', validationStatus)
+
     return validationStatus
   },
 
