@@ -106,9 +106,12 @@ export const actions: ActionTree<IValidationState, IRootState> = {
     const status = await dispatch(`flow/${block.type}/validate`, {block, schemaVersion}, {root: true})
 
     const key = `block/${block.uuid}`
+    const ajvErrors = getLocalizedAjvErrors(key, status.ajvErrors)
+    console.debug('validate_block key, status, ajvErrors:', key, status, ajvErrors)
+
     Vue.set(state.validationStatuses, key, {
       ...status,
-      ajvErrors: getLocalizedAjvErrors(key, status.ajvErrors),
+      ajvErrors,
     })
     if (status.ajvErrors === null) {
       commit('removeValidationStatusesFor', {key})

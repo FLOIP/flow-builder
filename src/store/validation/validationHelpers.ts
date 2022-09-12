@@ -117,13 +117,16 @@ function getErrorMessageLocalizationKey(keyPrefix: string, ajvErrorObject: Error
 }
 
 function getLocalizedErrorMessage(keyPrefix: string, ajvErrorObject: ErrorObject) : string {
+  console.debug('getLocalizedErrorMessage', keyPrefix, ajvErrorObject)
+
   const hasKeyword = typeof ajvErrorObject.keyword === 'string'
   const hasMessage = typeof ajvErrorObject.message === 'string' && ajvErrorObject.message.length > 0
 
   // Handle custom messages w/o keywords
   if (!hasKeyword) {
     if (hasMessage) {
-       return ajvErrorObject.message!
+      console.debug('getLocalizedErrorMessage return #1 (ajvErrorObject.message!):', ajvErrorObject.message!)
+      return ajvErrorObject.message!
     } else {
       throw new Error(`Malformed AJV error object: no keyword or message; ${JSON.stringify(ajvErrorObject)}`)
     }
@@ -137,9 +140,11 @@ function getLocalizedErrorMessage(keyPrefix: string, ajvErrorObject: ErrorObject
 
   if (!hasTranslation) {
     console.warn(`Error message not localized: ${localizationKey}`, JSON.parse(JSON.stringify(ajvErrorObject)))
+    console.debug('getLocalizedErrorMessage return #2 (ajvErrorObject.message ?? ""):', ajvErrorObject.message ?? '')
     return ajvErrorObject.message ?? ''
   }
 
+  console.debug('getLocalizedErrorMessage return #3 localizedMessage:', localizedMessage)
   return localizedMessage
 }
 
