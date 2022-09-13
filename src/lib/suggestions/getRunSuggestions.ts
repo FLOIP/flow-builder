@@ -52,9 +52,7 @@ export function getRunSuggestions(context: IExpressionContext): ISuggestion[] {
     ...getRunSuggestionsWithPrefix('@run'),
     ...getResultSuggestionsForBlockNames(blockNames, '@run.results'),
     ...getRunSuggestionsWithPrefix('@run.parent'),
-    ...getResultSuggestionsForBlockNames(blockNames, '@run.parent.results'),
     ...getRunSuggestionsWithPrefix('@run.child'),
-    ...getResultSuggestionsForBlockNames(blockNames, '@run.child.results'),
     {
       trigger: '@',
       values: [
