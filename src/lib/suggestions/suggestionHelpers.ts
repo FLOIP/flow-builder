@@ -1,4 +1,5 @@
-import {ISuggestion, ISuggestionValue, IExpressionContext} from '../types'
+import {uniq} from 'lodash'
+import {IExpressionContext, ISuggestion, ISuggestionValue} from '../types'
 
 export type SuggestionValueOrString = ISuggestionValue | string
 
@@ -22,10 +23,10 @@ export function merge(suggestions: ISuggestion[]): ISuggestion[] {
     const {trigger, values} = suggestions[i]
     validateValuePrefixes(trigger, values)
 
-    map.set(trigger, [
+    map.set(trigger, uniq([
       ...map.get(trigger) ?? [],
       ...values,
-    ])
+    ]))
   }
 
   return Array.from(map.entries()).map(([trigger, values]) => ({
