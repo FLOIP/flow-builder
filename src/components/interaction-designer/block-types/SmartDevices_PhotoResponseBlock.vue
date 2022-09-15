@@ -50,7 +50,7 @@ const builderVuexNamespace = namespace('builder')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
 @Component({})
-class SmartDevices_PhotoResponseBlock extends mixins(Lang) {
+export class SmartDevices_PhotoResponseBlock extends mixins(Lang) {
   // @Prop()readonly block!: IPhotoResponseBlock
   @Prop() readonly block!: IBlock
   @Prop() readonly flow!: IFlow
@@ -69,5 +69,5 @@ class SmartDevices_PhotoResponseBlock extends mixins(Lang) {
 }
 
 export default SmartDevices_PhotoResponseBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, PhotoStore)
+export const photoResponseBlockIntstaller = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, PhotoStore)
 </script>

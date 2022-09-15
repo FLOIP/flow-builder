@@ -70,5 +70,5 @@ class MobilePrimitives_MessageBlock extends mixins(Lang) {
 }
 
 export default MobilePrimitives_MessageBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, MessageStore)
+export const messageBlockInstaller = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, MessageStore)
 </script>

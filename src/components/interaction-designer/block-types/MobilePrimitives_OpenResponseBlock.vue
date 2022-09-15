@@ -82,5 +82,5 @@ class MobilePrimitives_OpenResponseBlock extends mixins(Lang) {
 }
 
 export default MobilePrimitives_OpenResponseBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, OpenResponseStore)
+export const openResponseBlockInstaller = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, OpenResponseStore)
 </script>

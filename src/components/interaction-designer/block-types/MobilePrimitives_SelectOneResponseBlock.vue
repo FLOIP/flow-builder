@@ -59,9 +59,8 @@ import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
 import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
 import {
-  IBlockWithBranchingType,
-  OutputBranchingType,
-} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
+  IBlockWithBranchingType, OutputBranchingType,
+} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.model'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
@@ -121,5 +120,5 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
 }
 
 export default MobilePrimitives_SelectOneResponseBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SelectOneStore)
+export const selectOneResponseBlockInstaller = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SelectOneStore)
 </script>

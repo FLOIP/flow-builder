@@ -67,7 +67,7 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({})
-class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
+export class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: INumericResponseBlock
   @Prop() readonly flow!: IFlow
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
@@ -111,5 +111,5 @@ class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
 }
 
 export default MobilePrimitives_NumericResponseBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, NumericStore)
+export const numericResponseBlockInstaller = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, NumericStore)
 </script>

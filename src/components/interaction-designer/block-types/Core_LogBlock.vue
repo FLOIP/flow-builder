@@ -56,7 +56,7 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({})
-class Core_LogBlock extends mixins(Lang) {
+export class Core_LogBlock extends mixins(Lang) {
   @Prop() readonly block!: ILogBlock
   @Prop() readonly flow!: IFlow
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
@@ -76,5 +76,5 @@ class Core_LogBlock extends mixins(Lang) {
 }
 
 export default Core_LogBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, LogStore)
+export const logBlockInstaller = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, LogStore)
 </script>

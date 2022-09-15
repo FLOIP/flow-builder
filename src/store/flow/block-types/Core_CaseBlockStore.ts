@@ -2,7 +2,7 @@ import {ActionContext, ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
 import {ICaseBlock} from '@floip/flow-runner/src/model/block/ICaseBlock'
 import {cloneDeep} from 'lodash'
-import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
+import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.model'
 import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
 
 export const BLOCK_TYPE = 'Core.Case'

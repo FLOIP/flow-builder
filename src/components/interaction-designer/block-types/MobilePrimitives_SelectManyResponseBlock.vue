@@ -68,5 +68,5 @@ export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseB
 }
 
 export default MobilePrimitives_SelectManyResponseBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SelectManyResponseStore)
+export const selectManyResponseBlockInstaller = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SelectManyResponseStore)
 </script>

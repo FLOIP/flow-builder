@@ -12,7 +12,7 @@ import BaseStore, {
   IEmptyState,
 } from '@/store/flow/block-types/BaseBlock'
 import {ValidationResults} from '@/lib/validations'
-import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
+import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.model'
 import * as ChoiceModule from '@/store/flow/block/choice'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'

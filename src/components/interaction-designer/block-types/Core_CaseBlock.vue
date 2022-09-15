@@ -47,7 +47,7 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({})
-class Core_CaseBlock extends mixins(Lang) {
+export class Core_CaseBlock extends mixins(Lang) {
   @Prop() readonly block!: ICaseBlock
   @Prop() readonly flow!: IFlow
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
@@ -61,5 +61,5 @@ class Core_CaseBlock extends mixins(Lang) {
 }
 
 export default Core_CaseBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, CaseStore)
+export const caseBlockInstaller = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, CaseStore)
 </script>

@@ -56,7 +56,7 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({})
-class Core_RunAnotherFlowBlock extends mixins(Lang) {
+export class Core_RunAnotherFlowBlock extends mixins(Lang) {
   @Prop() readonly block!: IRunFlowBlock
   @Prop() readonly flow!: IFlow
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
@@ -85,5 +85,5 @@ class Core_RunAnotherFlowBlock extends mixins(Lang) {
 }
 
 export default Core_RunAnotherFlowBlock
-export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, RunAnotherFlowStore)
+export const runFlowBlockInstaller = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, RunAnotherFlowStore)
 </script>
