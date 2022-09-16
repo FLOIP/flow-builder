@@ -85,5 +85,5 @@ export class Core_RunAnotherFlowBlock extends mixins(Lang) {
 }
 
 export default Core_RunAnotherFlowBlock
-export const runFlowBlockInstaller = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, RunAnotherFlowStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, RunAnotherFlowStore)
 </script>

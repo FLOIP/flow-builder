@@ -4,7 +4,7 @@ export {default as MobilePrimitives_SelectOneResponseBlockStore} from './MobileP
 export {default as MobilePrimitives_SelectManyResponseBlockStore} from './MobilePrimitives_SelectManyResponseBlockStore'
 export {default as MobilePrimitives_OpenResponseBlockStore} from './MobilePrimitives_OpenResponseBlockStore'
 export {default as MobilePrimitives_NumericResponseBlockStore} from './MobilePrimitives_NumericResponseBlockStore'
-export * from './MobilePrimitives_MessageBlockStore'
+export {default as MobilePrimitives_MessageBlockStore} from './MobilePrimitives_MessageBlockStore'
 export {default as Core_CaseBlockStore} from './Core_CaseBlockStore'
 export {default as Core_SetGroupMembershipBlockStore} from './Core_SetGroupMembershipStore'
 export {default as Core_RunFlowBlockStore} from './Core_RunFlowBlockStore'

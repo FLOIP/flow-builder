@@ -53,5 +53,5 @@ export class Core_SetContactPropertyBlock extends mixins(Lang) {
 }
 
 export default Core_SetContactPropertyBlock
-export const setContactPropertyBlockInstaller = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SetContactPropertyStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SetContactPropertyStore)
 </script>

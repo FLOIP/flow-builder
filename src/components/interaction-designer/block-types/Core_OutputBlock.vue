@@ -80,5 +80,5 @@ export class Core_OutputBlock extends mixins(Lang) {
 }
 
 export default Core_OutputBlock
-export const outputBlockInstaller = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, OutputStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, OutputStore)
 </script>

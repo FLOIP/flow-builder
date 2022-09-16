@@ -69,5 +69,5 @@ export class SmartDevices_PhotoResponseBlock extends mixins(Lang) {
 }
 
 export default SmartDevices_PhotoResponseBlock
-export const photoResponseBlockIntstaller = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, PhotoStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, PhotoStore)
 </script>

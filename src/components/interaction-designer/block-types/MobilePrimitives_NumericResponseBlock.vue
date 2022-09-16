@@ -111,5 +111,5 @@ export class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
 }
 
 export default MobilePrimitives_NumericResponseBlock
-export const numericResponseBlockInstaller = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, NumericStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, NumericStore)
 </script>

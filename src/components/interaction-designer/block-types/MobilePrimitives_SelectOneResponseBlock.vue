@@ -120,5 +120,5 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
 }
 
 export default MobilePrimitives_SelectOneResponseBlock
-export const selectOneResponseBlockInstaller = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SelectOneStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SelectOneStore)
 </script>

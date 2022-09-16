@@ -76,5 +76,5 @@ export class Core_LogBlock extends mixins(Lang) {
 }
 
 export default Core_LogBlock
-export const logBlockInstaller = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, LogStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, LogStore)
 </script>

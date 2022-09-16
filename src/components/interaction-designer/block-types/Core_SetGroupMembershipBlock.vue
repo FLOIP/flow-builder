@@ -64,7 +64,7 @@ export class Core_SetGroupMembershipBlock extends mixins(Lang) {
 }
 
 export default Core_SetGroupMembershipBlock
-export const setGroupMembershipBlockInstaller = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SetGroupMembershipStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, SetGroupMembershipStore)
 </script>
 
 <style lang="css" scoped>

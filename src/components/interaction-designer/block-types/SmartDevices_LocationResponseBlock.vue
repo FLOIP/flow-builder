@@ -86,5 +86,5 @@ export class SmartDevices_LocationResponseBlock extends mixins(Lang) {
 }
 
 export default SmartDevices_LocationResponseBlock
-export const locationResponseBlockInstaller = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, LocationStore)
+export const install = createDefaultBlockTypeInstallerFor(BLOCK_TYPE, LocationStore)
 </script>
