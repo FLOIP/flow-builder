@@ -211,7 +211,7 @@ export const SelectOneResponseBlockContactPropertyEditor = {
     },
 
     setBooleanChoiceValueOption(choiceValueOption, choicePrompt) {
-      this.setChoiceValue(choiceValueOption.value, choicePrompt)
+      this.setChoiceValue(choiceValueOption?.value ?? '', choicePrompt)
     },
   },
 }
