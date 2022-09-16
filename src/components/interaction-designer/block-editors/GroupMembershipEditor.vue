@@ -51,7 +51,7 @@ import {namespace} from 'vuex-class'
 import VueMultiselect from 'vue-multiselect'
 import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
-import {BlockConfigField} from '@/store/flow/block'
+import {BlockConfigFieldType} from '@/store/flow/block'
 import ValidationMessage from '../../common/ValidationMessage.vue'
 
 const flowVuexNamespace = namespace('flow')
@@ -188,7 +188,7 @@ export class GroupMembershipEditor extends mixins(Lang) {
   }
 
   @flowVuexNamespace.Mutation block_updateConfigByPath!: (
-    {blockId, path, value}: { blockId: string, path: string, value: BlockConfigField }
+    {blockId, path, value}: { blockId: string, path: string, value: BlockConfigFieldType }
   ) => void
 }
 
