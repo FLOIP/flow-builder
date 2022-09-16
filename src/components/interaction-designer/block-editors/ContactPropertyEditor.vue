@@ -70,6 +70,7 @@ import {namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 import {first} from 'lodash'
 import {mixins} from 'vue-class-component'
+import {BlockConfigFieldType} from '@/store/flow/block'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -126,7 +127,7 @@ export class ContactPropertyEditor extends mixins(Lang) {
   }
 
   @flowVuexNamespace.Mutation block_updateConfigByPath!: (
-    {blockId, path, value}: { blockId: string, path: string, value: string }
+    {blockId, path, value}: { blockId: string, path: string, value: BlockConfigFieldType }
   ) => void
 
   set propertyKey(value: string | undefined) {

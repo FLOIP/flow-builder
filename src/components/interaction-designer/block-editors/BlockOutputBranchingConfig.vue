@@ -64,6 +64,7 @@
   import {mixins} from 'vue-class-component'
   import Lang from '@/lib/filters/lang'
   import {namespace} from 'vuex-class'
+  import {BlockConfigFieldType} from '@/store/flow/block'
 
   const flowVuexNamespace = namespace('flow')
 
@@ -143,7 +144,7 @@
     }
 
     @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!:
-      ({blockId, path, value}: { blockId: string, path: string, value: object | string }) => void
+      ({blockId, path, value}: { blockId: string, path: string, value: BlockConfigFieldType }) => void
     @flowVuexNamespace.Mutation block_exitClearDestinationBlockFor!:
       ({blockExit}: {blockExit: IBlockExit}) => void
   }
