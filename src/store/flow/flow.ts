@@ -355,42 +355,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
-  flow_addMissingResourceValues({getters, rootGetters, dispatch}): void {
-    const activeFlow: IFlow = getters.activeFlow
-    const resources = activeFlow.resources
-    const modes = activeFlow.supported_modes
-    const languages = activeFlow.languages.map(language => language.id)
-
-    resources
-      // Choices are a special case, we should not add variants
-      .filter(resource => resource.values.every(value => value.mime_type !== rootGetters['validation/textMimeType']))
-      .forEach(resource => {
-        modes.forEach(mode => {
-          languages.forEach(language => {
-            const resourceValue = resource.values.find(value => value.language_id === language && value.modes.includes(mode))
-
-            if (resourceValue === undefined) {
-              console.warn(`Adding missing variant: lang ${language}, mode: ${mode} for resource ${resource.uuid}`)
-
-              discoverContentTypesFor(mode)?.forEach((content_type) => {
-                dispatch('resource_createVariant', {
-                  resourceId: resource.uuid,
-                  variant: {
-                    content_type,
-                    language_id: language,
-                    modes: [
-                      mode,
-                    ],
-                    value: '',
-                  },
-                })
-              })
-            }
-          })
-        })
-      })
-  },
-
   async flow_createWith({rootState}, {props}: { props: { uuid: string } & Partial<IFlow> }): Promise<IFlow> {
     return {
       ...defaults(props, {
