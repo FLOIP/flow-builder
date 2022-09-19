@@ -10,4 +10,5 @@ export {default as Core_SetGroupMembershipBlockStore} from './Core_SetGroupMembe
 export {default as Core_RunFlowBlockStore} from './Core_RunFlowBlockStore'
 export {default as Core_LogBlockStore} from './Core_LogBlockStore'
 export {default as Core_OutputBlockStore} from './Core_OutputBlockStore'
-export {default as Core_SetContactPropertyBlockStore, IContactPropertyOption} from './Core_SetContactPropertyStore'
+export {default as Core_SetContactPropertyBlockStore} from './Core_SetContactPropertyStore'
+export * from './Core_SetContactPropertyStore.model'

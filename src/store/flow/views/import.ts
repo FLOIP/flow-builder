@@ -5,7 +5,7 @@ import {IBlock, IContainer, IContext} from '@floip/flow-runner'
 import {cloneDeep, difference, differenceWith, find, findIndex, get, isEmpty, isEqual, join, keys, reject, set, uniq} from 'lodash'
 import {ErrorObject} from 'ajv'
 import Lang from '@/lib/filters/lang'
-import {IContactPropertyMultipleChoice} from '../block-types/Core_SetContactPropertyStore'
+import {IContactPropertyMultipleChoice} from '../block-types/Core_SetContactPropertyStore.model'
 import {IGroupOption} from '../block-types/Core_SetGroupMembershipStore'
 import {
   checkSingleFlowOnly,
