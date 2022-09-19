@@ -119,7 +119,7 @@ import {Getter, namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 import {find, has, isEmpty, map} from 'lodash'
 import {mixins} from 'vue-class-component'
-import {isBlockInteractive} from '@/store/flow/block.ts'
+import {BlockConfigFieldType, isBlockInteractive} from '@/store/flow/block'
 import VueMultiselect from 'vue-multiselect'
 import {IContactPropertyOption, IContactPropertyOptionForUISelector} from '@/store/flow/block-types/Core_SetContactPropertyStore.model'
 
@@ -271,10 +271,10 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
   }
 
   @flowVuexNamespace.Mutation block_updateConfigByPath!: (
-    {blockId, path, value}: { blockId: string, path: string, value: string | object }
+    {blockId, path, value}: { blockId: string, path: string, value: BlockConfigFieldType }
   ) => void
   @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!: (
-    {blockId, path, value}: { blockId: string, path: string, value: string }
+    {blockId, path, value}: { blockId: string, path: string, value: BlockConfigFieldType }
   ) => void
   @flowVuexNamespace.Mutation block_removeConfigByKey!: ({blockId, key}: { blockId: IBlock['uuid'], key: string}) => void
 
