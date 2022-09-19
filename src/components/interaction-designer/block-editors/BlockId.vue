@@ -14,5 +14,6 @@ const props = defineProps({
 })
 const blockId: string = computed(() => (props.block.uuid !== undefined ? props.block.uuid : ''))
 
+// eslint-disable-next-line @typescript-eslint/unbound-method
 const {trans} = Lang
 </script>

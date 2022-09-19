@@ -42,7 +42,6 @@ import CaseStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStor
 import Lang from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
-import MessageStore from "@/store/flow/block-types/MobilePrimitives_MessageBlockStore";
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
