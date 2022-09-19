@@ -122,7 +122,7 @@ export const SelectOneResponseBlockContactPropertyEditor = {
     choiceValueOptions() {
       return [
         {value: '', description: this.trans('flow-builder.no-value')},
-        ...(this.contactProperty?.choices ?? []).map((value, description) => ({
+        ...(this.contactProperty?.choices ?? []).map(({value, description}) => ({
           value,
           description: description ?? value,
         })),
