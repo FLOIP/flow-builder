@@ -57,7 +57,9 @@
         <div
           v-if="isBlockInteractive(block)"
           class="form-group">
-          <div class="custom-control custom-radio">
+          <div
+            v-if="!disableExpressionInput"
+            class="custom-control custom-radio">
             <input
               id="setProp"
               type="radio"
@@ -75,7 +77,9 @@
           <slot
             v-if="propertyValueAction === PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
             name="entry-from-this-block" />
-          <div class="custom-control custom-radio">
+          <div
+            v-if="!disableExpressionInput"
+            class="custom-control custom-radio">
             <input
               id="clearProp"
               type="radio"
@@ -135,6 +139,7 @@ const BLOCK_RESPONSE_EXPRESSION = '@block.value'
 })
 export class GenericContactPropertyEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
+  @Prop({default: false}) readonly disableExpressionInput!: boolean
 
   shouldSetContactProperty = false
   PROPERTY_VALUE_ACTION = {
@@ -186,7 +191,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
 
   // for radio buttons ######################
   initPropertyValueAction(): void {
-    if (this.propertyValue === BLOCK_RESPONSE_EXPRESSION) {
+    if (this.disableExpressionInput || this.propertyValue === BLOCK_RESPONSE_EXPRESSION) {
       this.propertyValueAction = this.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE
     } else {
       this.propertyValueAction = this.PROPERTY_VALUE_ACTION.OPEN_EXPRESSION
