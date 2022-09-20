@@ -151,8 +151,6 @@ export default {
       return lodash.get(ui.blockClasses[getters.selectedBlock.type], 'canSetSubscriberProperty', false)
     },
 
-    languageSelectors: ({ui}) => ui.languageSelectors,
-
     isBlockAvailableByBlockClass(state) {
       return lodash.mapValues(state.ui.blockClasses, (blockClass) => {
         const contentTypesToEnabledStatus = lodash.get(blockClass, 'isEnabledForContentType', [])

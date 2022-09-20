@@ -26,7 +26,8 @@ import {Getter, namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 import {find} from 'lodash'
 import {mixins} from 'vue-class-component'
-import {IGroupOption} from '../../../store/flow/block-types/Core_SetGroupMembershipStore'
+import {BlockConfigFieldType} from '@/store/flow/block'
+import {IGroupOption} from '@/store/flow/block-types/Core_SetGroupMembershipStore'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -69,7 +70,7 @@ export class GroupSelector extends mixins(Lang) {
     blockId,
     path,
     value,
-  }: { blockId: string, path: string, value: object | string }) => void
+  }: { blockId: string, path: string, value: BlockConfigFieldType }) => void
   @Getter groups!: IGroupOption[]
 }
 
