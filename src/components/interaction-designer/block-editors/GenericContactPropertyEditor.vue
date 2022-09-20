@@ -125,7 +125,7 @@ import {find, has, isEmpty, map} from 'lodash'
 import {mixins} from 'vue-class-component'
 import {BlockConfigFieldType, isBlockInteractive} from '@/store/flow/block'
 import VueMultiselect from 'vue-multiselect'
-import {IContactPropertyOption, IContactPropertyOptionForUISelector} from '@/store/flow/block-types/Core_SetContactPropertyStore'
+import {IContactPropertyOption, IContactPropertyOptionForUISelector} from '@/store/flow/block-types/Core_SetContactPropertyStore.model'
 
 const flowVuexNamespace = namespace('flow')
 
