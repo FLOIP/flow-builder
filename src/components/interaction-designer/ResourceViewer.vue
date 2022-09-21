@@ -292,7 +292,7 @@ import {Action, Getter} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 import {IBatchMatchAudioData, IBlockExtended} from '@/lib/types'
 import {IBlock, IBlockConfig} from '@floip/flow-runner'
-import stores from '../store'
+import stores from '../../store'
 import FuseResult = Fuse.FuseResult;
 
 @Component({})

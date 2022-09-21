@@ -35,8 +35,14 @@
 
     <main class="interaction-designer-main">
       <builder-canvas
+        v-if="component === 'builder'"
         :width-adjustment="builderWidthAdjustment"
-        @click.native="handleCanvasSelected" />,
+        @click.native="handleCanvasSelected" />
+      <resource-viewer
+        v-else-if="component === 'resource-viewer'"/>
+      <div v-else>
+        <div class="alert alert-danger">ERROR: component '{{ component }}' is not supported</div>
+      </div>
     </main>
   </div>
 </template>
@@ -70,6 +76,8 @@ const clipboardNamespace = namespace('clipboard')
 export class InteractionDesigner extends mixins(Lang, Routes) {
   @Prop(String) readonly id!: string
   @Prop(String) readonly mode!: string
+  @Prop(String) readonly component!: string
+
   @Prop({
     type: Object,
     default() {

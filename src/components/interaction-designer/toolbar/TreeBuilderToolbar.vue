@@ -74,16 +74,34 @@
 
               <div class="vertical-divider" />
 
-              <template v-if="isResourceEditorEnabled">
+<!--              <template v-if="isResourceEditorEnabled">-->
+<!--                <router-link-->
+<!--                  :to="resourceViewUrl"-->
+<!--                  class="btn btn-outline-primary btn-sm"-->
+<!--                  @click.native="handleResourceViewerSelected">-->
+<!--                  {{ trans('flow-builder.resource-view') }}-->
+<!--                </router-link>-->
+
+<!--                <div class="vertical-divider" />-->
+<!--              </template>-->
+              <div
+                v-if="isResourceEditorEnabled"
+                class="btn-group mr-3">
+                <router-link
+                  :class="{active: isEditable, disabled: isTreeSaving}"
+                  :to="editTreeUrl"
+                  class="btn btn-outline-primary btn-sm"
+                  @click.native.prevent="handlePersistFlow(flowViewUrl)">
+                  {{ trans('flow-builder.flow-view') }}
+                </router-link>
                 <router-link
                   :to="resourceViewUrl"
                   class="btn btn-outline-primary btn-sm"
-                  @click.native="handleResourceViewerSelected">
+                  :class="{active: !isEditable, disabled: isTreeSaving}"
+                  @click.native.prevent="handlePersistFlow(resourceViewUrl)">
                   {{ trans('flow-builder.resource-view') }}
                 </router-link>
-
-                <div class="vertical-divider" />
-              </template>
+              </div>
 
               <div
                 v-if="!ui.isEditableLocked"
@@ -397,6 +415,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   get resourceViewUrl(): string {
     return this.editTreeRoute({
       component: 'resource-viewer',
+      mode: 'edit',
     })
   }
 
@@ -408,14 +427,14 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
 
   get editTreeUrl(): string {
     return this.editTreeRoute({
-      component: 'designer',
+      component: 'builder',
       mode: 'edit',
     })
   }
 
   get viewTreeUrl(): string {
     return this.editTreeRoute({
-      component: 'designer',
+      component: 'builder',
       mode: 'view',
     })
   }
@@ -572,9 +591,9 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     return shouldShowDividerBeforeBlock && this.isBlockAvailableByBlockClass[className]
   }
 
-  handleResourceViewerSelected(): void {
-    this.$el.scrollIntoView(true)
-  }
+  // handleResourceViewerSelected(): void {
+  //   this.$el.scrollIntoView(true)
+  // }
 
   // This could be extracted to a helper mixin of some sort so it can be used in other places
   removeNilValues(obj: any): Dictionary<unknown> {

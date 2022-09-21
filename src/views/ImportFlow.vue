@@ -80,10 +80,10 @@
               </router-link>
 
               <a
-                :href="route('flows.editFlow', {flowId: flowUUID, component: 'designer', mode: 'edit'})"
+                :href="route('flows.editFlow', {flowId: flowUUID, component: 'builder', mode: 'edit'})"
                 class="btn btn-primary"
                 :class="{'disabled': disableContinue}"
-                @click.prevent="handleImportFlow(route('flows.editFlow', {flowId: flowUUID, component: 'designer', mode: 'edit'}))">
+                @click.prevent="handleImportFlow(route('flows.editFlow', {flowId: flowUUID, component: 'builder', mode: 'edit'}))">
                 {{ 'flow-builder.create-flow' | trans }}
               </a>
             </div>

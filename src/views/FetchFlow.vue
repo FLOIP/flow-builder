@@ -71,7 +71,7 @@ class FetchFlow extends mixins(Routes, Lang) {
         await this.$router.replace(nextUrl)
       } else {
         this.message = 'flow-builder.flow-found'
-        this.flowLink = this.route('flows.editFlow', {flowId: this.activeFlow.uuid, component: 'designer', mode: 'edit'})
+        this.flowLink = this.route('flows.editFlow', {flowId: this.activeFlow.uuid, component: 'builder', mode: 'edit'})
       }
 
       this.validate_allBlocksFromBackend()
