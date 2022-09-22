@@ -264,7 +264,7 @@ export const actions: ActionTree<IImportState, IRootState> = {
       const supportedSpecVersions = rootGetters?.supportedFlowSpecVersionsForImport
       if (supportedSpecVersions === undefined
         || !Array.isArray(supportedSpecVersions)
-        || (Array.isArray(supportedSpecVersions) && supportedSpecVersions === [])) {
+        || (Array.isArray(supportedSpecVersions) && supportedSpecVersions.length === 0)) {
         throw new Error('Please set the supportedFlowSpecVersionsForImport in flow config')
       }
 

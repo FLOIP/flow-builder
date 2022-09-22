@@ -160,13 +160,12 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
     try {
       const {data: {createdContainer}} = await axios[restVerb](persistRoute, omit(flowContainer, ['isCreated']))
-      console.debug('test', createdContainer)
+      console.debug('createdContainer', createdContainer)
       commit('flow_setFlowContainer', createdContainer)
-      // commit('flow_setFlowContainer', data)
       commit('flow_updateCreatedState', true)
       dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
       return getters.activeFlowContainer
-    } catch (error) {
+    } catch (error: any) {
       commit('flow_updateCreatedState', oldCreatedState)
       commit('validation/pushAjvErrorToValidationStatuses', {
         key: 'container_import',
@@ -198,7 +197,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       commit('flow_updateCreatedState', true)
       dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
       return getters.activeFlowContainer
-    } catch (error) {
+    } catch (error: any) {
       commit('flow_updateCreatedState', oldCreatedState)
       console.error(`Server error persisting flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
       return null
@@ -216,7 +215,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       commit('flow_setFlowContainer', data)
       commit('flow_updateCreatedState', true)
       return data
-    } catch (error) {
+    } catch (error: any) {
       console.info(`Server error fetching flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
       return null
     }

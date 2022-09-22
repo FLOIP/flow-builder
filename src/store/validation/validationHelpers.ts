@@ -260,7 +260,7 @@ export function validateBlockWithJsonSchema({block, schemaVersion, customBlockJs
       } else {
         validate = createDefaultJsonSchemaValidatorFactoryFor(customBlockJsonSchema)
       }
-    } catch (e) {
+    } catch (e: any) {
       if (e.code === 'MODULE_NOT_FOUND') {
         console.warn(`A Specific Validator for the ${blockTypeWithoutNameSpace}Block could not be found. `
           + `Falling back the generic Block validator for ${schemaVersion}`)

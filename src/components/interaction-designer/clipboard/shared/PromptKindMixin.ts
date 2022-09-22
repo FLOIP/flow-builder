@@ -29,7 +29,7 @@ export class PromptKindMixin extends Vue {
     try {
       this.prompt.validate(value)
       this.errorMsg = ''
-    } catch (e) {
+    } catch (e: any) {
       this.errorMsg = e.message
     }
   }

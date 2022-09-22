@@ -1,5 +1,4 @@
 import {IBlock, ILanguage} from '@floip/flow-runner'
-import {IAudioFile} from '../components/interaction-designer/resource-editors'
 
 export interface IBlockExtended extends IBlock {
   jsKey: string,
@@ -17,6 +16,18 @@ export interface IBlockCustomData {
   repeat: boolean,
   reviewed?: Record<string, boolean>,
   approved?: Record<string, boolean>,
+}
+
+export interface IAudioFile {
+  id: string,
+  // filename: string,
+  audio_uuid: string,
+  description: string,
+  language_id: string,
+  duration_seconds: string,
+  original_extension: string,
+  created_at: string,
+  uri: string,
 }
 
 export interface IAudioFileSelection {

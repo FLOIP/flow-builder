@@ -122,23 +122,12 @@ import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/Vali
 import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
 import {mixins} from 'vue-class-component'
 import {TabsPlugin} from 'bootstrap-vue'
+import {IAudioFile} from '@/lib/types'
 
 Vue.use(TabsPlugin)
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
-
-export interface IAudioFile {
-  id: string,
-  // filename: string,
-  audio_uuid: string,
-  description: string,
-  language_id: string,
-  duration_seconds: string,
-  original_extension: string,
-  created_at: string,
-  uri: string,
-}
 
 interface IResourceDefinitionVariantOverModesWithOptionalValue extends Partial<IResourceDefinitionVariantOverModes> {
   value?: IResourceDefinitionVariantOverModes['value'],
