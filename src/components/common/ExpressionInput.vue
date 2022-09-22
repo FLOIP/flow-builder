@@ -34,21 +34,10 @@ import '@avcs/autosuggest/dropdown.css'
 import {mixins} from 'vue-class-component'
 import {Component, Prop} from 'vue-property-decorator'
 import {Getter, namespace} from 'vuex-class'
-import {MethodNodeEvaluatorFactory} from '@floip/expression-evaluator/dist/Evaluator/NodeEvaluator/MethodNodeEvaluator/Factory'
 import Lang from '@/lib/filters/lang'
-import {IBlock, IFlow} from '@floip/flow-runner'
-import {IExpressionContext, ISubscriberPropertyField, ISuggestion, ISuggestionValue} from '@/lib/types'
-
-const defaultContactPropertyFields = [
-  'phone',
-]
-
-const defaultDateFields = [
-  'now',
-  'yesterday',
-  'today',
-  'tomorrow',
-]
+import {IFlow} from '@floip/flow-runner'
+import {ISubscriberPropertyField, ISuggestion} from '@/lib/types'
+import {getSuggestions} from '@/lib/suggestions'
 
 interface IAutoSuggest {
   dropdown: {
@@ -107,77 +96,11 @@ export class ExpressionInput extends mixins(Lang) {
     }
   }
 
-  get expressionContext(): IExpressionContext {
-    const contactFields = this.subscriberPropertyFields.map((prop) => prop.name).concat(defaultContactPropertyFields)
-    const blocks = this.activeFlow?.blocks.flatMap((b: IBlock) => [b.name, b.uuid])
-    return {
-      contact: contactFields,
-      flow: blocks,
-      date: defaultDateFields,
-    }
-  }
-
-  get topLevelSuggestions(): ISuggestion[] {
-    return [{
-      trigger: '@',
-      values: [
-        {
-          value: '@()',
-          focusText: [-1, -1],
-        },
-        ...Array.from(Object.entries(this.expressionContext)).map((item) => `@${item[0]}`),
-      ],
-    }]
-  }
-
-  get contextSuggestions(): ISuggestion[] {
-    return Array.from(Object.entries(this.expressionContext)).map((item) => {
-      const name = item[0]
-      return {
-        trigger: `${name}.`,
-        values: item[1].map((val: ISuggestionValue) => `${name}.${val}`),
-      }
-    })
-  }
-
-  get methodSuggestions(): ISuggestion[] {
-    return Array.from(this.evaluatorMethods.entries()).map((item) => ({
-      trigger: item[0],
-      values: item[1].map((i) => ({
-        value: `${i}()`,
-        focusText: [-1, -1],
-      })),
-    }))
-  }
-
-  get evaluatorMethods(): Map<string, Function[]> {
-    const methods = new Map()
-
-    /* eslint-disable no-restricted-syntax */
-    for (const handler of MethodNodeEvaluatorFactory.defaultHandlers()) {
-      for (const method of handler.handles()) {
-        const trigger = method.substr(0, 2)
-        const upperTrigger = trigger.toUpperCase()
-        const upperMethod = method.toUpperCase()
-        if (methods.has(trigger)) {
-          methods.set(trigger, [...methods.get(trigger), method])
-          methods.set(upperTrigger, [...methods.get(upperTrigger), upperMethod])
-        } else {
-          methods.set(trigger, [method])
-          methods.set(upperTrigger, [upperMethod])
-        }
-      }
-    }
-    /* eslint-enable no-restricted-syntax */
-    return methods
-  }
-
   get suggestions(): ISuggestion[] {
-    return [
-      ...this.contextSuggestions,
-      ...this.methodSuggestions,
-      ...this.topLevelSuggestions,
-    ]
+    return getSuggestions({
+      blocks: this.activeFlow?.blocks ?? [],
+      subscriberPropertyFields: this.subscriberPropertyFields,
+    })
   }
 
   /**
@@ -214,7 +137,7 @@ export class ExpressionInput extends mixins(Lang) {
 
   mounted(): void {
     if (this.disabledAutoComplete === false) {
-      const input = this.refInputElement;
+      const input = this.refInputElement
       this.suggest = new AutoSuggest({
         caseSensitive: false,
         suggestions: this.suggestions,
