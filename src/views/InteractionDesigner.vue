@@ -174,10 +174,6 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   }
 
   created(): void {
-    // if (this.activeMainComponent === undefined) {
-    //   this.setActiveMainComponent({mainComponent: this.mainComponent})
-    // }
-
     if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
       this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig})
     }
