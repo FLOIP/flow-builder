@@ -84,7 +84,7 @@
                   @click.native.prevent="handlePersistFlow(editTreeUrl)">
                   {{ trans('flow-builder.flow-view') }}
                 </router-link>
-                <!--TODO: handle the mode for resource viewer-->
+                <!--TODO: VMO-7095 handle the mode for resource viewer-->
                 <router-link
                   :to="resourceViewUrl"
                   class="btn btn-outline-primary btn-sm"
