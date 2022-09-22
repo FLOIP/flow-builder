@@ -23,7 +23,7 @@ export const routes = [
     props: (route) => ({
       id: route.params.id,
       mode: route.params.mode,
-      component: route.params.component,
+      mainComponent: route.params.component,
     }),
     component: () => import(/* webpackChunkName:"chunk-builder" */ '@/views/InteractionDesigner.vue'),
     children: [

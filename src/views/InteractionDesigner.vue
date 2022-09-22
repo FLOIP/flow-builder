@@ -35,13 +35,13 @@
 
     <main class="interaction-designer-main">
       <builder-canvas
-        v-if="component === 'builder'"
+        v-if="mainComponent === 'builder'"
         :width-adjustment="builderWidthAdjustment"
         @click.native="handleCanvasSelected" />
       <resource-viewer
-        v-else-if="component === 'resource-viewer'"/>
+        v-else-if="mainComponent === 'resource-viewer'"/>
       <div v-else>
-        <div class="alert alert-danger">ERROR: component '{{ component }}' is not supported</div>
+        <div class="alert alert-danger">ERROR: component '{{ mainComponent }}' is not supported</div>
       </div>
     </main>
   </div>
@@ -76,7 +76,7 @@ const clipboardNamespace = namespace('clipboard')
 export class InteractionDesigner extends mixins(Lang, Routes) {
   @Prop(String) readonly id!: string
   @Prop(String) readonly mode!: string
-  @Prop(String) readonly component!: string
+  @Prop(String) readonly mainComponent!: string
 
   @Prop({
     type: Object,
@@ -137,10 +137,13 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   @State(({trees: {ui}}) => ui.blockClasses) blockClasses!: Record<string, any>
 
   @flowNamespace.Getter activeFlow?: IFlow
+  @builderNamespace.State activeMainComponent?: string
   @builderNamespace.Getter activeBlock?: IBlock
   @builderNamespace.Getter isEditable!: boolean
   @builderNamespace.Getter hasFlowChanges!: boolean
   @builderNamespace.Getter interactionDesignerBoundingClientRect!: DOMRect
+  @builderNamespace.Getter isBuilderCanvasEnabled!: boolean
+  @builderNamespace.Getter isResourceViewerCanvasEnabled!: boolean
   @clipboardNamespace.Getter isSimulatorActive!: boolean
 
   get jsKey(): string {
@@ -163,8 +166,18 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   onModeChanged(newMode: string): void {
     this.updateIsEditableFromParams(newMode)
   }
+  @builderNamespace.Mutation setActiveMainComponent!: ({mainComponent}: {mainComponent: string | undefined}) => void
+
+  activated(): void {
+    // todo: remove once we have jsKey in our js-route
+    this.deselectBlocks()
+  }
 
   created(): void {
+    // if (this.activeMainComponent === undefined) {
+    //   this.setActiveMainComponent({mainComponent: this.mainComponent})
+    // }
+
     if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
       this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig})
     }
@@ -179,11 +192,6 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     this.initializeTreeModel()
     // `this.mode` comes from captured param in js-routes
     this.updateIsEditableFromParams(this.mode)
-  }
-
-  activated(): void {
-    // todo: remove once we have jsKey in our js-route
-    this.deselectBlocks()
   }
 
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
@@ -242,6 +250,10 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   @Mutation deselectBlocks!: () => void
   @builderNamespace.Mutation activateBlock!: ({blockId}: {blockId: IBlock['uuid'] | null}) => void
   @builderNamespace.Mutation setIsBlockEditorOpen!: (value: boolean) => void
+
+  updated() {
+    this.setActiveMainComponent({mainComponent: this.mainComponent})
+  }
   @builderNamespace.Mutation setInteractionDesignerBoundingClientRect!: (value: DOMRect) => void
   @builderNamespace.Action setIsEditable!: (arg0: boolean) => void
   @builderNamespace.Action setHasFlowChanges!: (arg0: boolean) => void

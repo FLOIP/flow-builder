@@ -88,16 +88,17 @@
                 v-if="isResourceEditorEnabled"
                 class="btn-group mr-3">
                 <router-link
-                  :class="{active: isEditable, disabled: isTreeSaving}"
+                  :class="{active: isBuilderCanvasEnabled, disabled: isTreeSaving}"
                   :to="editTreeUrl"
                   class="btn btn-outline-primary btn-sm"
-                  @click.native.prevent="handlePersistFlow(flowViewUrl)">
+                  @click.native.prevent="handlePersistFlow(editTreeUrl)">
                   {{ trans('flow-builder.flow-view') }}
                 </router-link>
+                <!--TODO: handle the mode for resource viewer-->
                 <router-link
                   :to="resourceViewUrl"
                   class="btn btn-outline-primary btn-sm"
-                  :class="{active: !isEditable, disabled: isTreeSaving}"
+                  :class="{active: isResourceViewerCanvasEnabled, disabled: isTreeSaving}"
                   @click.native.prevent="handlePersistFlow(resourceViewUrl)">
                   {{ trans('flow-builder.resource-view') }}
                 </router-link>
@@ -173,8 +174,9 @@
         </div>
       </div>
 
+      <!--TODO: Extract this into a smaller component-->
       <div
-        v-if="isEditable"
+        v-if="isBuilderCanvasEnabled && isEditable"
         class="tree-workspace-panel-heading panel-heading w-100 bg-white d-flex justify-content-start pt-0 pb-0">
         <div class="tree-workspace-panel-heading-contents">
           <ul class="nav">
@@ -314,7 +316,7 @@
         </div>
       </div>
     </div>
-    <div class="tree-builder-toolbar-alerts w-100">
+    <div v-if="isBuilderCanvasEnabled" class="tree-builder-toolbar-alerts w-100">
       <selection-banner
         v-if="isEditable"
         @updated="handleHeightChangeFromDOM" />
@@ -667,7 +669,10 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @builderVuexNamespace.Getter hasFlowChanges!: boolean
   @builderVuexNamespace.State activeBlockId?: IBlock['uuid']
   @builderVuexNamespace.Getter activeBlock?: IBlock
+  @builderVuexNamespace.Getter isBuilderCanvasEnabled!: boolean
+  @builderVuexNamespace.Getter isResourceViewerCanvasEnabled!: boolean
   @builderVuexNamespace.Mutation activateBlock!: ({blockId}: { blockId: IBlock['uuid'] | null}) => void
+  @builderVuexNamespace.Mutation setActiveMainComponent!: ({mainComponent}: {mainComponent: string | undefined}) => void
 
   // Clipboard
   @clipboardVuexNamespace.Action setSimulatorActive!: (value: boolean) => void

@@ -49,6 +49,7 @@ export interface IPosition {
 export interface IBuilderState {
   activeBlockId: IBlock['uuid'] | null,
   isEditable: boolean,
+  activeMainComponent?: string,
   hasFlowChanges: boolean,
   activeConnectionsContext: IConnectionContext[],
   operations: {
@@ -65,6 +66,7 @@ export interface IBuilderState {
 export const stateFactory = (): IBuilderState => ({
   activeBlockId: null,
   isEditable: true,
+  activeMainComponent: undefined,
   hasFlowChanges: false,
   activeConnectionsContext: [],
   operations: {
@@ -103,6 +105,10 @@ export const getters: GetterTree<IBuilderState, IRootState> = {
   hasFlowChanges: (state) => state.hasFlowChanges,
 
   interactionDesignerBoundingClientRect: (state) => state.interactionDesignerBoundingClientRect,
+
+  isBuilderCanvasEnabled: (state) => state.activeMainComponent === 'builder',
+
+  isResourceViewerCanvasEnabled: (state) => state.activeMainComponent === 'resource-viewer',
 }
 
 export const mutations: MutationTree<IBuilderState> = {
@@ -115,6 +121,10 @@ export const mutations: MutationTree<IBuilderState> = {
 
   activateConnection(state, {connectionContext}) {
     state.activeConnectionsContext = union([connectionContext], state.activeConnectionsContext)
+  },
+
+  setActiveMainComponent(state, {mainComponent}: {mainComponent: string | undefined}) {
+    state.activeMainComponent = mainComponent
   },
 
   deactivateConnection(state, {connectionContext}) {
