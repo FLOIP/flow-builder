@@ -74,16 +74,6 @@
 
               <div class="vertical-divider" />
 
-<!--              <template v-if="isResourceEditorEnabled">-->
-<!--                <router-link-->
-<!--                  :to="resourceViewUrl"-->
-<!--                  class="btn btn-outline-primary btn-sm"-->
-<!--                  @click.native="handleResourceViewerSelected">-->
-<!--                  {{ trans('flow-builder.resource-view') }}-->
-<!--                </router-link>-->
-
-<!--                <div class="vertical-divider" />-->
-<!--              </template>-->
               <div
                 v-if="isResourceEditorEnabled"
                 class="btn-group mr-3">
@@ -136,7 +126,7 @@
 
             <div class="ml-auto mr-2">
               <button
-                v-if="hasSimulator"
+                v-if="isBuilderCanvasEnabled && hasSimulator"
                 type="button"
                 class="btn btn-outline-primary btn-sm"
                 @click="setSimulatorActive(true)">
@@ -148,7 +138,7 @@
               </div>
 
               <button
-                v-if="hasToolbarExportButton"
+                v-if="isBuilderCanvasEnabled && hasToolbarExportButton"
                 class="btn btn-outline-primary btn-sm"
                 :class="{active: isExportVisible}"
                 @click="toggleExportVisibility">
@@ -157,7 +147,7 @@
 
               <!--TODO - do disable if no changes logic-->
               <button
-                v-if="isEditable && isFeatureTreeSaveEnabled"
+                v-if="isBuilderCanvasEnabled && isEditable && isFeatureTreeSaveEnabled"
                 v-b-tooltip.hover="trans('flow-builder.save-changes-to-the-flow')"
                 type="button"
                 class="btn btn-outline-primary btn-sm ml-4 save-button"
@@ -174,7 +164,7 @@
         </div>
       </div>
 
-      <!--TODO: Extract this into a smaller component-->
+      <!--TODO: Extract this div into a smaller component-->
       <div
         v-if="isBuilderCanvasEnabled && isEditable"
         class="tree-workspace-panel-heading panel-heading w-100 bg-white d-flex justify-content-start pt-0 pb-0">
