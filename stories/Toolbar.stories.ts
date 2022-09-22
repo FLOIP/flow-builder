@@ -239,6 +239,8 @@ export const WithExtraButtonsSlot = () => (ExtraButtonsSlotClass)
 )
 class SavingStateClass extends BaseMountedClass {
   async mounted() {
+    this.addEnabledFeature({value: 'resourceViewer'})
+    this.setActiveMainComponent({mainComponent: 'builder'})
     this.setTreeSaving(true)
   }
 

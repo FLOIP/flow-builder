@@ -743,14 +743,13 @@ export default TreeBuilderToolbar
   border-color: $primary-900;
   background-color: $white;
 
-  &.active,
-  &.save-button:disabled {
-    color: $primary-900;
-    background-color: $primary-100;
-  }
-
-  &.save-button:disabled {
-    opacity: 1;
+  &.active {
+    border-color: $primary-900;
+    &.disabled {
+      color: $primary-900;
+      background-color: $primary-100;
+      opacity: 1;
+    }
   }
 }
 </style>
