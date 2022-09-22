@@ -16,12 +16,8 @@
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
+    "skipLibCheck": true,
     "resolveJsonModule": true,
-    "plugins": [
-      {
-        "name": "ts-vue-plugin"
-      }
-    ],
     "types": [
       "webpack-env",
       "jest"
