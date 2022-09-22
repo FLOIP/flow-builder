@@ -57,7 +57,7 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({})
-class SmartDevices_LocationResponseBlock extends mixins(Lang) {
+export class SmartDevices_LocationResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   // @Prop()readonly block!: ILocationResponseBlock
   @Prop() readonly flow!: IFlow

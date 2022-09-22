@@ -64,26 +64,10 @@
   import {mixins} from 'vue-class-component'
   import Lang from '@/lib/filters/lang'
   import {namespace} from 'vuex-class'
+  import {BlockConfigFieldType} from '@/store/flow/block'
+  import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.model'
 
   const flowVuexNamespace = namespace('flow')
-
-  export enum OutputBranchingType {
-    UNIFIED = 'UNIFIED',
-    EXIT_PER_CHOICE = 'EXIT_PER_CHOICE',
-    ADVANCED = 'ADVANCED',
-  }
-
-  export interface IVendorMetadataWithBranchingType {
-    floip: {
-      ui_metadata: {
-        branching_type: OutputBranchingType,
-      },
-    },
-  }
-
-  export interface IBlockWithBranchingType extends IBlock {
-    vendor_metadata: IVendorMetadataWithBranchingType,
-  }
 
   @Component({})
   export class BlockOutputBranchingConfig extends mixins(Lang) {
@@ -143,7 +127,7 @@
     }
 
     @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!:
-      ({blockId, path, value}: { blockId: string, path: string, value: object | string }) => void
+      ({blockId, path, value}: { blockId: string, path: string, value: BlockConfigFieldType }) => void
     @flowVuexNamespace.Mutation block_exitClearDestinationBlockFor!:
       ({blockExit}: {blockExit: IBlockExit}) => void
   }

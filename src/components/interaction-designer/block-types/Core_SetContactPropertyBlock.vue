@@ -43,7 +43,7 @@ import {mixins} from 'vue-class-component'
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 
 @Component({})
-class Core_SetContactPropertyBlock extends mixins(Lang) {
+export class Core_SetContactPropertyBlock extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop() readonly flow!: IFlow
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean

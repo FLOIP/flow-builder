@@ -19,7 +19,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
   },
 }
 
-const MobilePrimitives_MessageBlockStore: Module<IEmptyState, IRootState> = {
+export const MobilePrimitives_MessageBlockStore: Module<IEmptyState, IRootState> = {
   ...cloneDeep(BaseStore),
   actions,
 }

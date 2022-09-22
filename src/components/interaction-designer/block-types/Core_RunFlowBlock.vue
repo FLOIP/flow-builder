@@ -56,7 +56,7 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
 
 @Component({})
-class Core_RunAnotherFlowBlock extends mixins(Lang) {
+export class Core_RunAnotherFlowBlock extends mixins(Lang) {
   @Prop() readonly block!: IRunFlowBlock
   @Prop() readonly flow!: IFlow
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean

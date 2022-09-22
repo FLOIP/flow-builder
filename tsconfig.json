@@ -55,5 +55,8 @@
   "exclude": [
     "node_modules",
     "tests/**/storybook.spec.ts"
-  ]
+  ],
+  "vueCompilerOptions": {
+    "target": 2.7
+  }
 }

@@ -3,17 +3,18 @@ import {
   IContext,
   IFlow,
   IResource,
-  IResourceValue,
   IResourceValue as IResourceDefinitionVariantOverModes,
+  IResourceValue,
   SupportedContentType,
   SupportedMode,
 } from '@floip/flow-runner'
 import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/ValidationException'
 import {
+  castArray,
   cloneDeep,
+  compact,
   defaults,
   difference,
-  compact,
   find,
   first,
   isEmpty,
@@ -308,4 +309,25 @@ export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourc
     return contentTypeOverrides
   }, contentTypeOverrides)
   return Object.assign(defaultModeMappings, contentTypeOverrides)[mode]
+}
+
+export function cleanupFlowResources(container: IContext, choiceMimeType: string): IContext {
+  return {
+    ...container,
+    flows: container.flows.map((flow) => ({
+      ...flow,
+      resources: flow.resources
+        .map(resource => ({
+          ...resource,
+          values: resource.values.filter(value => {
+            const isChoice = value.mime_type === choiceMimeType
+            const hasAllowedMode = flow.supported_modes.some(mode => value.modes.includes(mode))
+            const hasSupportedLanguage = flow.languages.some(lang => value.language_id === lang.id)
+
+            return isChoice || (hasAllowedMode && hasSupportedLanguage)
+          }),
+        }))
+        .filter(resource => !isEmpty(resource.values)),
+    })),
+  }
 }

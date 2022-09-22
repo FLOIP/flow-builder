@@ -1,23 +1,19 @@
 <template>
   <div class="block-id text-right">
-    <small class="text-muted">{{ 'flow-builder.block-id' | trans }}: <em>{{ blockId }}</em></small>
+    <small class="text-muted">{{ trans('flow-builder.block-id') }}: <em>{{ blockId }}</em></small>
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
+import {PropType, computed, defineProps} from 'vue'
 import {IBlock} from '@floip/flow-runner'
-import {Component, Prop} from 'vue-property-decorator'
 import Lang from '@/lib/filters/lang'
-import {mixins} from 'vue-class-component'
 
-@Component({})
-export class BlockId extends mixins(Lang) {
-  @Prop() readonly block!: IBlock
+const props = defineProps({
+  block: Object as PropType<IBlock>,
+})
+const blockId: string = computed(() => (props.block.uuid !== undefined ? props.block.uuid : ''))
 
-  get blockId(): string {
-    return this.block.uuid || ''
-  }
-}
-
-export default BlockId
+// eslint-disable-next-line @typescript-eslint/unbound-method
+const {trans} = Lang
 </script>

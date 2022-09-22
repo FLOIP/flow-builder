@@ -11,13 +11,15 @@ import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {cloneDeep, defaults, has, isArray, isNil, last, reject, snakeCase} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
-import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
+import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.model'
 import {BLOCK_TYPE as SelectOneBlockType} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import {BLOCK_TYPE as SelectManyBlockType} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import * as SetContactPropertyModule from './block/set-contact-property'
 import {IFlowsState} from '.'
 import {removeBlockValueByPath, updateBlockValueByPath} from './utils/vuexBlockHelpers'
+
+export type BlockConfigFieldType = object | string | number | boolean | undefined | null
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   ...SetContactPropertyModule.getters,
@@ -93,7 +95,7 @@ export const mutations: MutationTree<IFlowsState> = {
       .config = newConfig
   },
   // note that the {key} could be undefined inside `config` at block creation (eg: optional config)
-  block_updateConfigByKey(state, {blockId, key, value}: { blockId: string, key: string, value: object }) {
+  block_updateConfigByKey(state, {blockId, key, value}: { blockId: string, key: string, value: BlockConfigFieldType }) {
     const currentConfig: { [key: string]: any } = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config
     currentConfig[key] = value
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config = {...currentConfig}
@@ -104,10 +106,10 @@ export const mutations: MutationTree<IFlowsState> = {
   /**
    * update config by path, and make nested assignment reactive for vue
    */
-  block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value?: object | string | number | boolean}) {
+  block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value: BlockConfigFieldType}) {
     updateBlockValueByPath(state, blockId, `config.${path}`, value)
   },
-  block_updateUIMetadataByPath(state, {blockId, path, value}: {blockId: string, path: string, value?: object | string | number | boolean}) {
+  block_updateUIMetadataByPath(state, {blockId, path, value}: {blockId: string, path: string, value: BlockConfigFieldType}) {
     const chunks = path.split('.')
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
 
@@ -138,7 +140,7 @@ export const mutations: MutationTree<IFlowsState> = {
   },
   block_updateVendorMetadataByPath(
     state,
-    {blockId, path, value}: {blockId: string, path: string, value: boolean | number | string | object | null | undefined},
+    {blockId, path, value}: {blockId: string, path: string, value: BlockConfigFieldType},
   ) {
     updateBlockValueByPath(state, blockId, `vendor_metadata.${path}`, value)
   },
@@ -385,13 +387,22 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     ]
   },
 
-  async block_select({state}, {blockId}: { blockId: IBlock['uuid'] }) {
+  async block_select({state, dispatch}, {blockId}: { blockId: IBlock['uuid'] }) {
     state.selectedBlocks.push(blockId)
+    dispatch('block_updateShouldShowBlockToolBar', {blockId, value: true})
   },
 
   async block_deselect({state}, {blockId}: { blockId: IBlock['uuid'] }) {
     // remove it
     state.selectedBlocks = state.selectedBlocks.filter((item) => item !== blockId)
+  },
+
+  block_updateShouldShowBlockToolBar({state, commit}, {blockId, value}: { blockId: string, path: string, value: boolean }): void {
+    commit('block_updateVendorMetadataByPath', {
+      blockId,
+      path: 'floip.ui_metadata.should_show_block_tool_bar',
+      value,
+    })
   },
 
   block_updateAllBlocksAfterAddingFlowLanguage({rootGetters, dispatch}, {language}: {language: ILanguage}): void {

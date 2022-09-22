@@ -57,7 +57,9 @@
         <div
           v-if="isBlockInteractive(block)"
           class="form-group">
-          <div class="custom-control custom-radio">
+          <div
+            v-if="!disableExpressionInput"
+            class="custom-control custom-radio">
             <input
               id="setProp"
               type="radio"
@@ -75,7 +77,9 @@
           <slot
             v-if="propertyValueAction === PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
             name="entry-from-this-block" />
-          <div class="custom-control custom-radio">
+          <div
+            v-if="!disableExpressionInput"
+            class="custom-control custom-radio">
             <input
               id="clearProp"
               type="radio"
@@ -119,9 +123,9 @@ import {Getter, namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 import {find, has, isEmpty, map} from 'lodash'
 import {mixins} from 'vue-class-component'
-import {isBlockInteractive} from '@/store/flow/block.ts'
+import {BlockConfigFieldType, isBlockInteractive} from '@/store/flow/block'
 import VueMultiselect from 'vue-multiselect'
-import {IContactPropertyOption, IContactPropertyOptionForUISelector} from '@/store/flow/block-types/Core_SetContactPropertyStore'
+import {IContactPropertyOption, IContactPropertyOptionForUISelector} from '@/store/flow/block-types/Core_SetContactPropertyStore.model'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -135,6 +139,7 @@ const BLOCK_RESPONSE_EXPRESSION = '@block.value'
 })
 export class GenericContactPropertyEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
+  @Prop({default: false}) readonly disableExpressionInput!: boolean
 
   shouldSetContactProperty = false
   PROPERTY_VALUE_ACTION = {
@@ -186,7 +191,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
 
   // for radio buttons ######################
   initPropertyValueAction(): void {
-    if (this.propertyValue === BLOCK_RESPONSE_EXPRESSION) {
+    if (this.disableExpressionInput || this.propertyValue === BLOCK_RESPONSE_EXPRESSION) {
       this.propertyValueAction = this.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE
     } else {
       this.propertyValueAction = this.PROPERTY_VALUE_ACTION.OPEN_EXPRESSION
@@ -271,10 +276,10 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
   }
 
   @flowVuexNamespace.Mutation block_updateConfigByPath!: (
-    {blockId, path, value}: { blockId: string, path: string, value: string | object }
+    {blockId, path, value}: { blockId: string, path: string, value: BlockConfigFieldType }
   ) => void
   @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!: (
-    {blockId, path, value}: { blockId: string, path: string, value: string }
+    {blockId, path, value}: { blockId: string, path: string, value: BlockConfigFieldType }
   ) => void
   @flowVuexNamespace.Mutation block_removeConfigByKey!: ({blockId, key}: { blockId: IBlock['uuid'], key: string}) => void
 

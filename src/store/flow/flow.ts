@@ -17,12 +17,11 @@ import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {cloneDeep, defaults, every, forEach, get, has, includes, merge, omit, sortBy} from 'lodash'
-import {discoverContentTypesFor} from '@/store/flow/resource'
+import {discoverContentTypesFor, cleanupFlowResources} from '@/store/flow/resource'
 import {computeBlockCanvasCoordinates} from '@/store/builder'
+import {ErrorObject} from 'ajv'
 import {IFlowsState} from '.'
 import {mergeFlowContainer} from './utils/importHelpers'
-import Lang from '@/lib/filters/lang'
-import {ErrorObject} from 'ajv'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   //We allow for an attempt to get a flow which doesn't yet exist in the state - e.g. the first_flow_id doesn't correspond to a flow
@@ -185,7 +184,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   /**
    * Persistence for SAVE action
    */
-  async flow_persist({getters, commit, dispatch}, {persistRoute, flowContainer}): Promise<IContext | null> {
+  async flow_persist({getters, rootGetters, commit, dispatch}, {persistRoute, flowContainer}): Promise<IContext | null> {
     const restVerb = flowContainer.isCreated ? 'put' : 'post'
     const oldCreatedState = flowContainer.isCreated
     if (!persistRoute) {
@@ -194,7 +193,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       return getters.activeFlowContainer
     }
     try {
-      const {data} = await axios[restVerb](persistRoute, omit(flowContainer, ['isCreated']))
+      const {data} = await axios[restVerb](persistRoute, omit(cleanupFlowResources(flowContainer, rootGetters['validation/choiceMimeType']), ['isCreated']))
       commit('flow_setFlowContainer', data)
       commit('flow_updateCreatedState', true)
       dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
