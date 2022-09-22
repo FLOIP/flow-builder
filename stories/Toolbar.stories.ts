@@ -69,6 +69,7 @@ class BaseMountedClass extends Vue {
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Mutation flow_setActiveFlowUUID: any
   @builderVuexNamespace.Action setIsEditable!: (value: boolean) => void
+  @builderVuexNamespace.Mutation setActiveMainComponent!: ({mainComponent}: {mainComponent: string | undefined}) => void
 }
 
 // Default
@@ -80,7 +81,8 @@ class BaseMountedClass extends Vue {
 class DefaultClass extends BaseMountedClass {
   async mounted() {
     this.setIsEditable(false)
-    this.addEnabledFeature({value: 'resourceEditor'})
+    this.addEnabledFeature({value: 'resourceViewer'})
+    this.setActiveMainComponent({mainComponent: 'builder'})
   }
 }
 
@@ -92,14 +94,32 @@ export const Default = () => (DefaultClass)
     ...BaseOptions,
   },
 )
-class ResourceEditorClass extends BaseMountedClass {
+class NoResourceEditorClass extends BaseMountedClass {
   async mounted() {
     this.setIsEditable(false)
-    this.removeEnabledFeature({value: 'resourceEditor'})
+    this.removeEnabledFeature({value: 'resourceViewer'})
+    this.setActiveMainComponent({mainComponent: 'builder'})
   }
 }
 
-export const WithoutResourceEditorToggle = () => (ResourceEditorClass)
+export const NoResourceEditor = () => (NoResourceEditorClass)
+
+// Edit resources
+@Component(
+  {
+    ...BaseOptions,
+  },
+)
+class EditResourceViewerClass extends BaseMountedClass {
+  async mounted() {
+    this.setIsEditable(true)
+    this.addEnabledFeature({value: 'resourceViewer'})
+    this.removeEnabledFeature({value: 'treeSave'})
+    this.setActiveMainComponent({mainComponent: 'resource-viewer'})
+  }
+}
+
+export const EditResourceViewer = () => (EditResourceViewerClass)
 
 // Edit flow
 @Component(
@@ -110,8 +130,9 @@ export const WithoutResourceEditorToggle = () => (ResourceEditorClass)
 class EditFlowClass extends BaseMountedClass {
   async mounted() {
     this.setIsEditable(true)
-    this.addEnabledFeature({value: 'resourceEditor'})
+    this.addEnabledFeature({value: 'resourceViewer'})
     this.removeEnabledFeature({value: 'treeSave'})
+    this.setActiveMainComponent({mainComponent: 'builder'})
   }
 }
 
@@ -126,8 +147,9 @@ export const EditFlow = () => (EditFlowClass)
 class SaveClass extends BaseMountedClass {
   async mounted() {
     this.setIsEditable(true)
-    this.addEnabledFeature({value: 'resourceEditor'})
+    this.addEnabledFeature({value: 'resourceViewer'})
     this.addEnabledFeature({value: 'treeSave'})
+    this.setActiveMainComponent({mainComponent: 'builder'})
   }
 }
 
@@ -163,8 +185,9 @@ BaseOptions2.template = `
 class GroupButtonsSlotClass extends BaseMountedClass {
   async mounted() {
     this.setIsEditable(true)
-    this.addEnabledFeature({value: 'resourceEditor'})
+    this.addEnabledFeature({value: 'resourceViewer'})
     this.addEnabledFeature({value: 'treeSave'})
+    this.setActiveMainComponent({mainComponent: 'builder'})
   }
 }
 
@@ -200,7 +223,8 @@ BaseOptions3.template = `
 class ExtraButtonsSlotClass extends BaseMountedClass {
   async mounted() {
     this.setIsEditable(true)
-    this.addEnabledFeature({value: 'resourceEditor'})
+    this.addEnabledFeature({value: 'resourceViewer'})
+    this.setActiveMainComponent({mainComponent: 'builder'})
     this.addEnabledFeature({value: 'treeSave'})
   }
 }

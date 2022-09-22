@@ -443,7 +443,7 @@
       "treeSave",
       "addLanguageOnImport",
       "callToRecord",
-      "resourceEditor"
+      "resourceViewer"
     ],
     "supportedModes": [
       "TEXT",

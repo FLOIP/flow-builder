@@ -75,7 +75,7 @@
               <div class="vertical-divider" />
 
               <div
-                v-if="isResourceEditorEnabled"
+                v-if="isResourceViewerEnabled"
                 class="btn-group mr-3">
                 <router-link
                   :class="{active: isBuilderCanvasEnabled, disabled: isTreeSaving}"
@@ -631,7 +631,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @Getter isFeatureViewResultsEnabled?: boolean
   @Getter isFeatureSimulatorEnabled?: boolean
   @Getter isFeatureUpdateInteractionTotalsEnabled?: boolean
-  @Getter isResourceEditorEnabled?: boolean
+  @Getter isResourceViewerEnabled?: boolean
   @Mutation setTreeSaving!: (isSaving: boolean) => void
   @Action attemptSaveTree!: void
   @Getter getToolbarConfig!: boolean
