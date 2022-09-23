@@ -1,12 +1,4 @@
 {
-  "outDir": "dist/types",
-  "declaration": true,
-  "emitDeclarationOnly": true,
-  "paths": {
-    "@/*": [
-      "src/*"
-    ]
-  },
   "include" : [
     "src/**/*.ts",
     "src/**/*.js",
