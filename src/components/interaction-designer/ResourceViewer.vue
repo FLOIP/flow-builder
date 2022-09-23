@@ -1,15 +1,11 @@
 <template>
-  <div class="resource-viewer panel panel-default">
-    <div class="panel-body resource-viewer-contents">
-      <h5>Blocks list:</h5>
-      <ul>
-        <li
-          v-for="block in activeFlow.blocks"
-          :id="`block/${block.uuid}`"
-          :key="block.uuid">
-          Label: {{block.label}}, Type: {{block.type}}
-        </li>
-      </ul>
+  <div class="resource-viewer p-2">
+    <div class="resource-viewer-contents">
+      <resource-viewer-block
+        v-for="block in activeFlow.blocks"
+        :id="`block/${block.uuid}`"
+        :key="block.uuid"
+        :block="block"/>
     </div>
   </div>
 </template>
