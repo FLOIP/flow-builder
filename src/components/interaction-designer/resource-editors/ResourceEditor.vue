@@ -8,7 +8,11 @@
           v-for="({id: languageId, label: language}, langIndex) in activeFlow.languages"
           :key="languageId"
           :title="language || 'flow-builder.unknown-language' | trans">
-          <language-resource-editor :block="block" :language-id="languageId" :language-index="langIndex"/>
+          <language-resource-editor
+            :block="block"
+            :language-id="languageId"
+            :language-index="langIndex"
+            class="tab-content-style"/>
         </b-tab>
       </b-tabs>
     </div>
@@ -43,3 +47,10 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
 
 export default ResourceEditor
 </script>
+
+<style scoped>
+.tab-content-style {
+  background: #F4F4F4;
+  padding: 10px;
+}
+</style>

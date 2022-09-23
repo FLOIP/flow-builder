@@ -1,9 +1,11 @@
 <template>
-  <div v-if="resource" class="language-resource-editor">
+  <div v-if="resource"
+       :class="{'d-flex': isHorizontalDisplay}"
+       class="language-resource-editor">
     <div
       v-for="(mode, modeIndex) in activeFlow.supported_modes"
       :key="modeIndex"
-      class="tab-content-style">
+      :class="{'col-3': isHorizontalDisplay}">
       <header class="d-flex">
         <font-awesome-icon
           v-if="iconsMap.get(mode)"
@@ -114,8 +116,8 @@ export class LanguageResourceEditor extends mixins(FlowUploader, Permissions, Ro
   @Prop({required: true}) block!: IBlock
   @Prop({required: true}) languageIndex!: string
   @Prop({required: true}) languageId!: string
-  @flowVuexNamespace.Getter resourcesByUuidOnActiveFlow!: { [key: string]: IResource }
-  @flowVuexNamespace.Getter activeFlow!: IFlow
+  @Prop({required: true, default: 'vertical'}) resourceDisplayType!: string
+
   SupportedMode = SupportedMode
   SupportedContentType = SupportedContentType
   iconsMap = new Map<string, object>([
@@ -126,12 +128,16 @@ export class LanguageResourceEditor extends mixins(FlowUploader, Permissions, Ro
     [SupportedMode.RICH_MESSAGING, ['far', 'comment-dots']],
     [SupportedMode.OFFLINE, ['fas', 'mobile-alt']],
   ])
+
   discoverContentTypesFor = discoverContentTypesFor
   findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
   findResourceVariantOverModesOn = findResourceVariantOverModesOn
+
   @Getter availableAudioFiles!: IAudioFile[]
   @Getter isFeatureAudioUploadEnabled!: boolean
   @Mutation pushAudioIntoLibrary!: (audio: IAudioFile) => void
+  @flowVuexNamespace.Getter resourcesByUuidOnActiveFlow!: { [key: string]: IResource }
+  @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Action resource_setOrCreateValueModeSpecific!: ({
     resourceId,
     filter,
@@ -141,6 +147,14 @@ export class LanguageResourceEditor extends mixins(FlowUploader, Permissions, Ro
 
   get resource(): IResource {
     return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
+  }
+
+  get isVerticalDisplay(): string {
+    return this.resourceDisplayType === 'vertical'
+  }
+
+  get isHorizontalDisplay(): string {
+    return this.resourceDisplayType === 'horizontal'
   }
 
   /**
@@ -225,10 +239,6 @@ export default LanguageResourceEditor
 </script>
 
 <style scoped>
-.tab-content-style {
-  background: #F4F4F4;
-  padding: 10px;
-}
 .ivr-buttons {
   font-size: small;
   flex-grow: 1;

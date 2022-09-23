@@ -3,14 +3,20 @@
     v-if="activeFlow.languages.length > 0"
     class="horizontal-resource-editor">
     <div>
-      <b-tabs>
-        <b-tab
-          v-for="({id: languageId, label: language}, langIndex) in activeFlow.languages"
-          :key="languageId"
-          :title="language || 'flow-builder.unknown-language' | trans">
-          <language-resource-editor :block="block" :language-id="languageId" :language-index="langIndex"/>
-        </b-tab>
-      </b-tabs>
+      <div v-for="({id: languageId, label: language}, langIndex) in activeFlow.languages"
+           :key="languageId"
+           class="panel panel-default" >
+        <div class="panel-heading">
+          {{language || 'flow-builder.unknown-language' | trans}}
+        </div>
+        <div class="panel-body">
+          <language-resource-editor
+            :block="block"
+            :language-id="languageId"
+            :language-index="langIndex"
+            :resource-display-type="'horizontal'"/>
+        </div>
+      </div>
     </div>
   </div>
 </template>
