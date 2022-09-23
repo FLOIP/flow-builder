@@ -12,7 +12,7 @@
         </div>
       </div>
       <div v-if="hasContent">
-        TBD
+        <horizontal-resource-editor :block="block"/>
       </div>
     </div>
   </div>

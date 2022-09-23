@@ -43,9 +43,7 @@
 
       <hr>
 
-      <first-block-editor-button
-        :flow="flow"
-        :block-id="block.uuid" />
+      <first-block-editor-button :block-id="block.uuid" />
     </fieldset>
 
     <block-id :block="block" />
@@ -64,7 +62,6 @@ const builderVuexNamespace = namespace('builder')
 @Component({})
 export class BaseBlock extends mixins(Lang) {
   @Prop() readonly block!: IBlock
-  @Prop() readonly flow!: IFlow
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
   @Prop({default: true}) readonly usesDefaultContactPropsEditor!: boolean
   @Prop({default: false}) showSemanticLabel!: boolean

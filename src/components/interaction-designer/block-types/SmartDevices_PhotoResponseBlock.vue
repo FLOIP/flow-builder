@@ -2,7 +2,6 @@
   <div class="smart-devices-photo-response-block">
     <base-block
       :block="block"
-      :flow="flow"
       :show-semantic-label="false"
       :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
       :uses-default-branching-editor="usesDefaultBranchingEditor"
@@ -10,11 +9,7 @@
       <slot
         slot="resource-editors"
         name="resource-editors">
-        <resource-editor
-          v-if="promptResource"
-          :resource="promptResource"
-          :block="block"
-          :flow="flow" />
+        <resource-editor :block="block" />
       </slot>
       <slot
         slot="extras"
@@ -53,15 +48,8 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 export class SmartDevices_PhotoResponseBlock extends mixins(Lang) {
   // @Prop()readonly block!: IPhotoResponseBlock
   @Prop() readonly block!: IBlock
-  @Prop() readonly flow!: IFlow
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
   @Prop({default: true}) readonly usesDefaultContactPropsEditor!: boolean
-
-  get promptResource(): IResource {
-    return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
-  }
-
-  @flowVuexNamespace.Getter resourcesByUuidOnActiveFlow!: { [key: string]: IResource }
 
   @builderVuexNamespace.Getter isEditable !: boolean
 

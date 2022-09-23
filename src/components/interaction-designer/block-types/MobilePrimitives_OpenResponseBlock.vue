@@ -2,7 +2,6 @@
   <div class="mobile-primitive-open-response-block">
     <base-block
       :block="block"
-      :flow="flow"
       :show-semantic-label="false"
       :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
       :uses-default-branching-editor="usesDefaultBranchingEditor"
@@ -10,11 +9,7 @@
       <slot
         slot="resource-editors"
         name="resource-editors">
-        <resource-editor
-          v-if="promptResource"
-          :resource="promptResource"
-          :block="block"
-          :flow="flow" />
+        <resource-editor :block="block" />
       </slot>
       <slot
         slot="extras"
@@ -62,15 +57,9 @@ const builderVuexNamespace = namespace('builder')
 @Component({})
 class MobilePrimitives_OpenResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: IOpenResponseBlock
-  @Prop() readonly flow!: IFlow
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
   @Prop({default: true}) readonly usesDefaultContactPropsEditor!: boolean
 
-  get promptResource(): IResource {
-    return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
-  }
-
-  @flowVuexNamespace.Getter resourcesByUuidOnActiveFlow!: { [key: string]: IResource }
   @flowVuexNamespace.Getter hasTextMode!: boolean
   @flowVuexNamespace.Getter hasVoiceMode!: boolean
 

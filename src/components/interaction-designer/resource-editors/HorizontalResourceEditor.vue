@@ -43,3 +43,21 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
 
 export default ResourceEditor
 </script>
+
+<style scoped>
+.tab-content-style {
+  background: #F4F4F4;
+  padding: 10px;
+}
+.ivr-buttons {
+  font-size: small;
+  flex-grow: 1;
+}
+.custom-icons {
+  height: 1.25em;
+  width: 1.25em;
+}
+.library-icons {
+  margin-top: 2px;
+}
+</style>

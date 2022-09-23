@@ -2,7 +2,6 @@
   <div class="core-set-group-membership-block">
     <base-block
       :block="block"
-      :flow="flow"
       :show-semantic-label="false"
       :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
       :uses-default-branching-editor="usesDefaultBranchingEditor"
@@ -49,7 +48,6 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 @Component({})
 export class Core_SetGroupMembershipBlock extends mixins(Lang) {
   @Prop() readonly block!: IBlock
-  @Prop() readonly flow!: IFlow
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
   @Prop({default: false}) readonly usesDefaultContactPropsEditor!: boolean
 

@@ -2,7 +2,6 @@
   <div class="mobile-primitive-select-many-response-block">
     <base-block
       :block="block"
-      :flow="flow"
       :show-semantic-label="false"
       :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
       :uses-default-branching-editor="usesDefaultBranchingEditor"
@@ -10,11 +9,7 @@
       <slot
         slot="resource-editors"
         name="resource-editors">
-        <resource-editor
-          v-if="promptResource"
-          :resource="promptResource"
-          :block="block"
-          :flow="flow" />
+        <resource-editor :block="block" />
       </slot>
       <slot
         slot="extras"
