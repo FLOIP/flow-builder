@@ -1,5 +1,6 @@
+import Lang from '@/lib/filters/lang';
 import { IPositionLeftTop } from '@/lib/types';
-declare const PlainDraggable_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
+declare const PlainDraggable_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class PlainDraggable extends PlainDraggable_base {
     startX?: number;
     startY?: number;

@@ -1,5 +1,6 @@
+import Lang from '@/lib/filters/lang';
 import { IBlock, IFlow, IGroupMembership } from '@floip/flow-runner';
-declare const Core_SetGroupMembershipBlock_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
+declare const Core_SetGroupMembershipBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class Core_SetGroupMembershipBlock extends Core_SetGroupMembershipBlock_base {
     readonly block: IBlock;
     readonly flow: IFlow;
@@ -16,4 +17,4 @@ export declare class Core_SetGroupMembershipBlock extends Core_SetGroupMembershi
     }) => void;
 }
 export default Core_SetGroupMembershipBlock;
-export declare const install: any;
+export declare const install: (builder: import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, any>>) => true | void;

@@ -1,5 +1,6 @@
+import Lang from '@/lib/filters/lang';
 import { IBlockExtended } from '@/lib/types';
-declare const HorizontalBlockContentEditor_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
+declare const HorizontalBlockContentEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class HorizontalBlockContentEditor extends HorizontalBlockContentEditor_base {
     alternateAudioFileSelections: unknown;
     tree: unknown;

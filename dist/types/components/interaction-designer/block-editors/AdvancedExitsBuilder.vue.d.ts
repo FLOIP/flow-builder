@@ -1,6 +1,7 @@
+import Lang from '@/lib/filters/lang';
 import { IBlock, IBlockExit } from '@floip/flow-runner';
 import Vue from 'vue';
-declare const AdvancedExitsBuilder_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
+declare const AdvancedExitsBuilder_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class AdvancedExitsBuilder extends AdvancedExitsBuilder_base {
     readonly block: IBlock;
     draftExit: IBlockExit | null;

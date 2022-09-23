@@ -7,7 +7,7 @@ export default class SelectMany extends SelectMany_base {
         key: string;
         value: string;
     }[];
-    backUpValue: never[];
+    backUpValue: any[];
     mounted(): void;
     setOptions(): void;
     submitAnswer(): Promise<void>;

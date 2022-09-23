@@ -1,5 +1,6 @@
+import Lang from '@/lib/filters/lang';
 import { IBlock } from '@floip/flow-runner';
-declare const LabelEditor_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
+declare const LabelEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class LabelEditor extends LabelEditor_base {
     readonly block: IBlock;
     get blockLabel(): IBlock['label'];

@@ -1,6 +1,7 @@
 import { IBlock, IFlow, IResource } from '@floip/flow-runner';
 import { INumericResponseBlock } from '@floip/flow-runner/src/model/block/INumericResponseBlock';
-declare const MobilePrimitives_NumericResponseBlock_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
+import Lang from '@/lib/filters/lang';
+declare const MobilePrimitives_NumericResponseBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class MobilePrimitives_NumericResponseBlock extends MobilePrimitives_NumericResponseBlock_base {
     readonly block: INumericResponseBlock;
     readonly flow: IFlow;
@@ -32,4 +33,4 @@ export declare class MobilePrimitives_NumericResponseBlock extends MobilePrimiti
     isEditable: boolean;
 }
 export default MobilePrimitives_NumericResponseBlock;
-export declare const install: any;
+export declare const install: (builder: import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, any>>) => true | void;

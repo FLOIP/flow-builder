@@ -44,8 +44,8 @@ export declare const stateFactory: () => IImportState;
 declare const _default: {
     namespaced: boolean;
     state: () => IImportState;
-    getters: GetterTree<IImportState, any>;
+    getters: GetterTree<IImportState, IRootState>;
     mutations: MutationTree<IImportState>;
-    actions: ActionTree<IImportState, any>;
+    actions: ActionTree<IImportState, IRootState>;
 };
 export default _default;

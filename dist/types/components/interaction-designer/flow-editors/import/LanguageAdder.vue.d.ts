@@ -1,5 +1,7 @@
+import Lang from '@/lib/filters/lang';
+import Routes from '@/lib/mixins/Routes';
 import { ILanguage } from '@floip/flow-runner';
-declare const LanguageAdder_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
+declare const LanguageAdder_base: import("vue-class-component/lib/declarations").VueClass<Lang & Routes>;
 export declare class LanguageAdder extends LanguageAdder_base {
     newLanguage: ILanguage;
     selected_iso_639_3: any;

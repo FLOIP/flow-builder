@@ -1,13 +1,15 @@
+import { findOrGenerateStubbedVariantOn } from '@/store/flow/resource';
+import Lang from '@/lib/filters/lang';
 import { IBlock, IFlow, IResource, IResourceValue, SupportedContentType, SupportedMode } from '@floip/flow-runner';
 import { ISelectOneResponseBlock } from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock';
 import Vue from 'vue';
-declare const ChoicesBuilder_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
+declare const ChoicesBuilder_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class ChoicesBuilder extends ChoicesBuilder_base {
     readonly block: ISelectOneResponseBlock;
     draftResource: IResource | null;
     SupportedContentType: typeof SupportedContentType;
     SupportedMode: typeof SupportedMode;
-    findOrGenerateStubbedVariantOn: any;
+    findOrGenerateStubbedVariantOn: typeof findOrGenerateStubbedVariantOn;
     get choiceResourcesOrderedByResourcesList(): IResource[];
     created(): void;
     generateDraftResource(): Promise<void>;

@@ -1,6 +1,7 @@
 import { IBlock, IFlow, IResource } from '@floip/flow-runner';
 import { IOpenResponseBlock } from '@floip/flow-runner/src/model/block/IOpenResponseBlock';
-declare const MobilePrimitives_OpenResponseBlock_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
+import Lang from '@/lib/filters/lang';
+declare const MobilePrimitives_OpenResponseBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 declare class MobilePrimitives_OpenResponseBlock extends MobilePrimitives_OpenResponseBlock_base {
     readonly block: IOpenResponseBlock;
     readonly flow: IFlow;
@@ -20,4 +21,4 @@ declare class MobilePrimitives_OpenResponseBlock extends MobilePrimitives_OpenRe
     isEditable: boolean;
 }
 export default MobilePrimitives_OpenResponseBlock;
-export declare const install: any;
+export declare const install: (builder: import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, any>>) => true | void;

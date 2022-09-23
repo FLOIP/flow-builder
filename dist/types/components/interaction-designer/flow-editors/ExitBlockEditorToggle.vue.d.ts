@@ -1,5 +1,6 @@
+import Lang from '@/lib/filters/lang';
 import { IBlock, IFlow } from '@floip/flow-runner';
-declare const ExitBlockEditorToggle_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
+declare const ExitBlockEditorToggle_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class ExitBlockEditorToggle extends ExitBlockEditorToggle_base {
     readonly flow: IFlow;
     readonly blockId: IBlock['uuid'];

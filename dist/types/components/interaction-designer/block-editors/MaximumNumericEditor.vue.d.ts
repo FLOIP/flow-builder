@@ -1,5 +1,6 @@
+import Lang from '@/lib/filters/lang';
 import { IBlock } from '@floip/flow-runner';
-declare const MaximumNumericEditor_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
+declare const MaximumNumericEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class MaximumNumericEditor extends MaximumNumericEditor_base {
     readonly block: IBlock;
     get maxValue(): any;

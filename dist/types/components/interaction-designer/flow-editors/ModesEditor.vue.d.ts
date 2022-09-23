@@ -1,5 +1,6 @@
 import { IFlow, SupportedMode } from '@floip/flow-runner';
-declare const ModesEditor_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
+import Lang from '@/lib/filters/lang';
+declare const ModesEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class ModesEditor extends ModesEditor_base {
     readonly flow: IFlow;
     get flowSelectedModes(): SupportedMode[];

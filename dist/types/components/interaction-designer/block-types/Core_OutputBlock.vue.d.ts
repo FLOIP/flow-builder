@@ -1,6 +1,7 @@
 import { IOutputBlock } from '@floip/flow-runner/src/model/block/IOutputBlock';
 import { IBlock, IFlow } from '@floip/flow-runner';
-declare const Core_OutputBlock_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
+import Lang from '@/lib/filters/lang';
+declare const Core_OutputBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class Core_OutputBlock extends Core_OutputBlock_base {
     readonly block: IOutputBlock;
     readonly flow: IFlow;
@@ -19,4 +20,4 @@ export declare class Core_OutputBlock extends Core_OutputBlock_base {
     commitExpressionChange(value: string): Promise<string>;
 }
 export default Core_OutputBlock;
-export declare const install: any;
+export declare const install: (builder: import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, any>>) => true | void;
