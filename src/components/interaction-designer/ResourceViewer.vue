@@ -1,5 +1,5 @@
 <template>
-  <div class="resource-viewer p-2">
+  <div class="resource-viewer">
     <div class="resource-viewer-contents">
       <resource-viewer-block
         v-for="block in activeFlow.blocks"
