@@ -1,4 +1,4 @@
-declare module "src/lib/filters/lang" {
+declare module "lib/filters/lang" {
     import Vue from 'vue';
     class Lang extends Vue {
         trans(translation: string, interpolations?: object): any;
@@ -12,7 +12,7 @@ declare module "src/lib/filters/lang" {
     export default Lang;
     export const lang: typeof Lang;
 }
-declare module "src/lib/mixins/Permissions" {
+declare module "lib/mixins/Permissions" {
     import Vue from 'vue';
     export function can(userPermissions: {
         [key: string]: any;
@@ -35,7 +35,7 @@ declare module "src/lib/mixins/Permissions" {
         can(permission: string, requireAll?: boolean): any;
     }
 }
-declare module "src/lib/mixins/Routes" {
+declare module "lib/mixins/Routes" {
     import Vue from 'vue';
     export function interpolateRouteWith(context: any, route?: any): any;
     export function routeFrom(routeKey: string, context: any, routes: any): any;
@@ -44,14 +44,14 @@ declare module "src/lib/mixins/Routes" {
         route(routeKey: string, context: any): any;
     }
 }
-declare module "src/lib/mixins/FlowUploader" {
+declare module "lib/mixins/FlowUploader" {
     import Vue from 'vue';
     export default class FlowUploader extends Vue {
     }
 }
-declare module "src/store/clipboard/index" {
+declare module "store/clipboard/index" {
     import { ActionTree, GetterTree, Module, MutationTree } from 'vuex';
-    import { IRootState } from "src/store/index";
+    import { IRootState } from "store/index";
     import { IPrompt } from '@floip/flow-runner';
     export interface BlocksData {
         isFocused: boolean;
@@ -68,7 +68,7 @@ declare module "src/store/clipboard/index" {
     export const store: Module<IClipboardState, IRootState>;
     export default store;
 }
-declare module "src/components/interaction-designer/block-editors/BlockOutputBranchingConfig.model" {
+declare module "components/interaction-designer/block-editors/BlockOutputBranchingConfig.model" {
     import { IBlock } from '@floip/flow-runner';
     export enum OutputBranchingType {
         UNIFIED = "UNIFIED",
@@ -86,9 +86,9 @@ declare module "src/components/interaction-designer/block-editors/BlockOutputBra
         vendor_metadata: IVendorMetadataWithBranchingType;
     }
 }
-declare module "src/store/validation/validationHelpers" {
+declare module "store/validation/validationHelpers" {
     import { IBlock } from '@floip/flow-runner';
-    import { IIndexedString, IValidationStatus } from "src/store/validation/index";
+    import { IIndexedString, IValidationStatus } from "store/validation/index";
     import { ErrorObject, ValidateFunction } from 'ajv';
     import { JSONSchema7 } from 'json-schema';
     /**
@@ -132,9 +132,9 @@ declare module "src/store/validation/validationHelpers" {
         customBlockJsonSchema?: JSONSchema7;
     }): IValidationStatus;
 }
-declare module "src/store/validation/index" {
+declare module "store/validation/index" {
     import { ActionTree, GetterTree, Module, MutationTree } from 'vuex';
-    import { IRootState } from "src/store/index";
+    import { IRootState } from "store/index";
     import { ErrorObject } from 'ajv';
     export interface IIndexedString {
         [key: string]: string;
@@ -160,9 +160,9 @@ declare module "src/store/validation/index" {
     export const actions: ActionTree<IValidationState, IRootState>;
     export const store: Module<IValidationState, IRootState>;
     export default store;
-    export * from "src/store/validation/validationHelpers";
+    export * from "store/validation/validationHelpers";
 }
-declare module "src/lib/validations/index" {
+declare module "lib/validations/index" {
     import { ErrorObject } from 'ajv';
     /**
      * We have to use named exports from this file, otherwise the following
@@ -175,12 +175,12 @@ declare module "src/lib/validations/index" {
     export type ValidationResult = [ErrorObject['dataPath'], ValidationMessageSuffix];
     export type ValidationResults = ValidationResult[];
 }
-declare module "src/store/flow/block-types/BaseBlock" {
+declare module "store/flow/block-types/BaseBlock" {
     import { ActionContext, GetterTree, Module, MutationTree } from 'vuex';
-    import { IRootState } from "src/store/index";
+    import { IRootState } from "store/index";
     import { IBlock } from '@floip/flow-runner';
-    import { IValidationStatus } from "src/store/validation/index";
-    import { ValidationResults } from "src/lib/validations/index";
+    import { IValidationStatus } from "store/validation/index";
+    import { ValidationResults } from "lib/validations/index";
     export interface IEmptyState {
     }
     export const getters: GetterTree<IEmptyState, IRootState>;
@@ -258,50 +258,50 @@ declare module "src/store/flow/block-types/BaseBlock" {
     const BaseBlockStore: Module<IEmptyState, IRootState>;
     export default BaseBlockStore;
 }
-declare module "src/store/flow/utils/vuexBlockHelpers" {
+declare module "store/flow/utils/vuexBlockHelpers" {
     import { IBlock, IChoice } from '@floip/flow-runner';
     export function updateBlockValueByPath(state: unknown, blockId: IBlock['uuid'], path: string, value: boolean | number | string | object | null | undefined): void;
     export function deleteChoiceValueByPath(state: unknown, choice: IChoice, path: string): void;
     export function removeBlockValueByPath(state: unknown, blockId: IBlock['uuid'], path: string): void;
 }
-declare module "src/store/flow/block/choice" {
-    import { IRootState } from "src/store/index";
+declare module "store/flow/block/choice" {
+    import { IRootState } from "store/index";
     import { ActionTree, GetterTree, MutationTree } from 'vuex';
-    import { IEmptyState } from "src/store/flow/block-types/BaseBlock";
+    import { IEmptyState } from "store/flow/block-types/BaseBlock";
     export const BLOCK_RESPONSE_EXPRESSION = "block.response";
     export function textValueToExpression(value: string): string;
     export const getters: GetterTree<IEmptyState, IRootState>;
     export const mutations: MutationTree<IEmptyState>;
     export const actions: ActionTree<IEmptyState, IRootState>;
 }
-declare module "src/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore" {
+declare module "store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore" {
     import { GetterTree, Module, MutationTree } from 'vuex';
-    import { IRootState } from "src/store/index";
-    import { IEmptyState } from "src/store/flow/block-types/BaseBlock";
+    import { IRootState } from "store/index";
+    import { IEmptyState } from "store/flow/block-types/BaseBlock";
     export const BLOCK_TYPE = "MobilePrimitives.SelectOneResponse";
     export const getters: GetterTree<IEmptyState, IRootState>;
     export const mutations: MutationTree<IEmptyState>;
     const MobilePrimitives_SelectOneResponseBlockStore: Module<IEmptyState, IRootState>;
     export default MobilePrimitives_SelectOneResponseBlockStore;
 }
-declare module "src/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore" {
+declare module "store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore" {
     import { GetterTree, Module } from 'vuex';
-    import { IRootState } from "src/store/index";
-    import { IEmptyState } from "src/store/flow/block-types/BaseBlock";
+    import { IRootState } from "store/index";
+    import { IEmptyState } from "store/flow/block-types/BaseBlock";
     export const BLOCK_TYPE = "MobilePrimitives.SelectManyResponse";
     export const getters: GetterTree<IEmptyState, IRootState>;
     const MobilePrimitives_SelectManyResponseBlockStore: Module<IEmptyState, IRootState>;
     export default MobilePrimitives_SelectManyResponseBlockStore;
 }
-declare module "src/components/interaction-designer/block-editors/choices/expressionTransformers" {
+declare module "components/interaction-designer/block-editors/choices/expressionTransformers" {
     import { IChoice } from '@floip/flow-runner';
     export function choicesToExpression(choices: IChoice[], propertyValueMapping: Record<string, string | number>): string;
 }
-declare module "src/store/flow/block/set-contact-property" {
-    import { IRootState } from "src/store/index";
+declare module "store/flow/block/set-contact-property" {
+    import { IRootState } from "store/index";
     import { IBlock, SetContactProperty } from '@floip/flow-runner';
     import { ActionTree, GetterTree, MutationTree } from 'vuex';
-    import { IFlowsState } from "src/store/flow/index";
+    import { IFlowsState } from "store/flow/index";
     export interface ISetContactPropertyBlockKey {
         blockId: IBlock['uuid'];
         key: SetContactProperty['property_key'];
@@ -313,11 +313,11 @@ declare module "src/store/flow/block/set-contact-property" {
     export const mutations: MutationTree<IFlowsState>;
     export const actions: ActionTree<IFlowsState, IRootState>;
 }
-declare module "src/store/flow/block" {
+declare module "store/flow/block" {
     import { IBlock, IBlockExit } from '@floip/flow-runner';
     import { ActionTree, GetterTree, MutationTree } from 'vuex';
-    import { IRootState } from "src/store/index";
-    import { IFlowsState } from "src/store/flow/index";
+    import { IRootState } from "store/index";
+    import { IFlowsState } from "store/flow/index";
     export type BlockConfigFieldType = object | string | number | boolean | undefined | null;
     export const getters: GetterTree<IFlowsState, IRootState>;
     export const mutations: MutationTree<IFlowsState>;
@@ -333,12 +333,12 @@ declare module "src/store/flow/block" {
      */
     export function isBlockInteractive(block: IBlock): boolean;
 }
-declare module "src/store/builder/index" {
+declare module "store/builder/index" {
     import Vue from 'vue';
     import { ActionTree, GetterTree, Module, MutationTree } from 'vuex';
-    import { IRootState } from "src/store/index";
+    import { IRootState } from "store/index";
     import { IBlock, IBlockExit, IBlockUIMetadataCanvasCoordinates } from '@floip/flow-runner';
-    import { IDeepBlockExitIdWithinFlow } from "src/store/flow/block";
+    import { IDeepBlockExitIdWithinFlow } from "store/flow/block";
     export enum OperationKind {
         CONNECTION_SOURCE_RELOCATE = "CONNECTION_SOURCE_RELOCATE",
         CONNECTION_CREATE = "CONNECTION_CREATE",
@@ -400,12 +400,12 @@ declare module "src/store/builder/index" {
         y: number;
     };
 }
-declare module "src/store/index" {
+declare module "store/index" {
     import { StoreOptions } from 'vuex';
-    import { IClipboardState } from "src/store/clipboard/index";
-    import { IFlowsState } from "src/store/flow/index";
-    import { IBuilderState } from "src/store/builder/index";
-    import { IValidationState } from "src/store/validation/index";
+    import { IClipboardState } from "store/clipboard/index";
+    import { IFlowsState } from "store/flow/index";
+    import { IBuilderState } from "store/builder/index";
+    import { IValidationState } from "store/validation/index";
     export interface IRootState {
         builder: IBuilderState;
         flow: IFlowsState;
@@ -417,7 +417,7 @@ declare module "src/store/index" {
     export const store: StoreOptions<IRootState>;
     export default store;
 }
-declare module "src/store/flow/utils/importHelpers" {
+declare module "store/flow/utils/importHelpers" {
     import { IBlock, IContext, IResource } from '@floip/flow-runner';
     export function updateResourcesForLanguageMatch(resources: IResource[], oldId: string, newId: string): IResource[];
     export function mergeFlowContainer(existingFlowContainer: IContext, newFlowContainer: IContext): IContext;
@@ -437,18 +437,18 @@ declare module "src/store/flow/utils/importHelpers" {
     export function getPropertyBlocks(flowContainer: IContext): IBlock[];
     export function getGroupBlocks(flowContainer: IContext): IBlock[];
 }
-declare module "src/store/flow/flow" {
+declare module "store/flow/flow" {
     import { ActionTree, GetterTree, MutationTree } from 'vuex';
-    import { IRootState } from "src/store/index";
-    import { IFlowsState } from "src/store/flow/index";
+    import { IRootState } from "store/index";
+    import { IFlowsState } from "store/flow/index";
     export const getters: GetterTree<IFlowsState, IRootState>;
     export const mutations: MutationTree<IFlowsState>;
     export const actions: ActionTree<IFlowsState, IRootState>;
 }
-declare module "src/store/flow/index" {
+declare module "store/flow/index" {
     import { IBlock, IFlow } from '@floip/flow-runner';
     import { ActionTree, GetterTree, Module, MutationTree } from 'vuex';
-    import { IRootState } from "src/store/index";
+    import { IRootState } from "store/index";
     export interface IFlowsState {
         isCreated: boolean;
         specification_version: string;
@@ -465,11 +465,11 @@ declare module "src/store/flow/index" {
     export const store: Module<IFlowsState, IRootState>;
     export default store;
 }
-declare module "src/store/flow/resource" {
+declare module "store/flow/resource" {
     import { IContext, IFlow, IResource, IResourceValue as IResourceDefinitionVariantOverModes, IResourceValue, SupportedContentType, SupportedMode } from '@floip/flow-runner';
     import { ActionTree, GetterTree, MutationTree } from 'vuex';
-    import { IFlowsState } from "src/store/flow/index";
-    import { IRootState } from "src/store/index";
+    import { IFlowsState } from "store/flow/index";
+    import { IRootState } from "store/index";
     export const getters: GetterTree<IFlowsState, IRootState>;
     export const mutations: MutationTree<IFlowsState>;
     export const actions: ActionTree<IFlowsState, IRootState>;
@@ -486,7 +486,7 @@ declare module "src/store/flow/resource" {
     export function discoverContentTypesFor(mode: SupportedMode, resource?: IResource): SupportedContentType[] | undefined;
     export function cleanupFlowResources(container: IContext, choiceMimeType: string): IContext;
 }
-declare module "src/components/interaction-designer/resource-editors/__VLS_types" {
+declare module "components/interaction-designer/resource-editors/__VLS_types" {
     import * as vue from 'vue';
     import type { FunctionalComponent, EmitsOptions, DefineComponent, SetupContext, ObjectDirective, FunctionDirective } from 'vue';
     type IsAny<T> = boolean extends (T extends never ? true : false) ? true : false;
@@ -549,13 +549,13 @@ declare module "src/components/interaction-designer/resource-editors/__VLS_types
         [K in keyof T as IsComponent<T[K]> extends true ? K : never]: any;
     };
 }
-declare module "src/components/interaction-designer/resource-editors/ResourceEditor.vue" {
+declare module "components/interaction-designer/resource-editors/ResourceEditor.vue" {
     import { IBlock, IFlow, IResource, IResourceValue as IResourceDefinitionVariantOverModes, SupportedContentType, SupportedMode } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
-    import Permissions from "src/lib/mixins/Permissions";
-    import Routes from "src/lib/mixins/Routes";
-    import FlowUploader from "src/lib/mixins/FlowUploader";
-    import { discoverContentTypesFor, findOrGenerateStubbedVariantOn, findResourceVariantOverModesOn, IResourceDefinitionVariantOverModesFilter } from "src/store/flow/resource";
+    import Lang from "lib/filters/lang";
+    import Permissions from "lib/mixins/Permissions";
+    import Routes from "lib/mixins/Routes";
+    import FlowUploader from "lib/mixins/FlowUploader";
+    import { discoverContentTypesFor, findOrGenerateStubbedVariantOn, findResourceVariantOverModesOn, IResourceDefinitionVariantOverModesFilter } from "store/flow/resource";
     import { ILanguage } from '@floip/flow-runner/dist/flow-spec/ILanguage';
     export interface IAudioFile {
         id: string;
@@ -618,46 +618,46 @@ declare module "src/components/interaction-designer/resource-editors/ResourceEdi
     }
     export default ResourceEditor;
 }
-declare module "src/lib/suggestions/getBlockSuggestions" {
-    import { ISuggestion } from "src/lib/types";
+declare module "lib/suggestions/getBlockSuggestions" {
+    import { ISuggestion } from "lib/types";
     export function getBlockSuggestions(): ISuggestion[];
 }
-declare module "src/lib/suggestions/getContactSuggestions" {
-    import { IExpressionContext, ISuggestion } from "src/lib/types";
+declare module "lib/suggestions/getContactSuggestions" {
+    import { IExpressionContext, ISuggestion } from "lib/types";
     export function getContactSuggestions(context: IExpressionContext): ISuggestion[];
 }
-declare module "src/lib/suggestions/getFlowIdentifiersSuggestions" {
-    import { IExpressionContext, ISuggestion } from "src/lib/types";
+declare module "lib/suggestions/getFlowIdentifiersSuggestions" {
+    import { IExpressionContext, ISuggestion } from "lib/types";
     export function getFlowIdentifiersSuggestions(context: IExpressionContext): ISuggestion[];
 }
-declare module "src/lib/suggestions/getMethodSuggestions" {
-    import { ISuggestion } from "src/lib/types";
+declare module "lib/suggestions/getMethodSuggestions" {
+    import { ISuggestion } from "lib/types";
     export function getMethodSuggestions(): ISuggestion[];
 }
-declare module "src/lib/suggestions/suggestionHelpers" {
-    import { IExpressionContext, ISuggestion, ISuggestionValue } from "src/lib/types";
+declare module "lib/suggestions/suggestionHelpers" {
+    import { IExpressionContext, ISuggestion, ISuggestionValue } from "lib/types";
     export type SuggestionValueOrString = ISuggestionValue | string;
     export function merge(suggestions: ISuggestion[]): ISuggestion[];
     export function getBlockNames(context: IExpressionContext): string[];
 }
-declare module "src/lib/suggestions/getResultsSuggestions" {
-    import { IExpressionContext, ISuggestion } from "src/lib/types";
+declare module "lib/suggestions/getResultsSuggestions" {
+    import { IExpressionContext, ISuggestion } from "lib/types";
     export function getResultSuggestionsForBlockNames(blockNames: string[], prefix: string): ISuggestion[];
     export function getResultsSuggestions(context: IExpressionContext): ISuggestion[];
 }
-declare module "src/lib/suggestions/getRunSuggestions" {
-    import { IExpressionContext, ISuggestion } from "src/lib/types";
+declare module "lib/suggestions/getRunSuggestions" {
+    import { IExpressionContext, ISuggestion } from "lib/types";
     export function getRunSuggestions(context: IExpressionContext): ISuggestion[];
 }
-declare module "src/lib/suggestions/index" {
+declare module "lib/suggestions/index" {
     import { IBlock } from '@floip/flow-runner';
-    import { IExpressionContext, ISuggestion } from "src/lib/types";
+    import { IExpressionContext, ISuggestion } from "lib/types";
     export interface ISuggestionsContext {
         blocks: IBlock[];
     }
     export function getSuggestions(context: IExpressionContext): ISuggestion[];
 }
-declare module "src/components/common/__VLS_types" {
+declare module "components/common/__VLS_types" {
     import * as vue from 'vue';
     import type { FunctionalComponent, EmitsOptions, DefineComponent, SetupContext, ObjectDirective, FunctionDirective } from 'vue';
     type IsAny<T> = boolean extends (T extends never ? true : false) ? true : false;
@@ -720,11 +720,11 @@ declare module "src/components/common/__VLS_types" {
         [K in keyof T as IsComponent<T[K]> extends true ? K : never]: any;
     };
 }
-declare module "src/components/common/ExpressionInput.vue" {
+declare module "components/common/ExpressionInput.vue" {
     import '@avcs/autosuggest/dropdown.css';
-    import Lang from "src/lib/filters/lang";
+    import Lang from "lib/filters/lang";
     import { IFlow } from '@floip/flow-runner';
-    import { ISubscriberPropertyField, ISuggestion } from "src/lib/types";
+    import { ISubscriberPropertyField, ISuggestion } from "lib/types";
     interface IAutoSuggest {
         dropdown: {
             dropdown: HTMLElement;
@@ -767,10 +767,10 @@ declare module "src/components/common/ExpressionInput.vue" {
     }
     export default ExpressionInput;
 }
-declare module "src/components/interaction-designer/resource-editors/ResourceVariantTextEditor.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/interaction-designer/resource-editors/ResourceVariantTextEditor.vue" {
+    import Lang from "lib/filters/lang";
     import { IResource, IResourceValue } from '@floip/flow-runner';
-    import { SupportedMode } from "node_modules/@floip/flow-runner/src/flow-spec/SupportedMode";
+    import { SupportedMode } from '@floip/flow-runner/src/flow-spec/SupportedMode';
     const ResourceVariantTextEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class ResourceVariantTextEditor extends ResourceVariantTextEditor_base {
         readonly index: number;
@@ -792,13 +792,13 @@ declare module "src/components/interaction-designer/resource-editors/ResourceVar
     }
     export default ResourceVariantTextEditor;
 }
-declare module "src/components/interaction-designer/resource-editors/index" {
-    export * from "src/components/interaction-designer/resource-editors/ResourceEditor.vue";
-    export * from "src/components/interaction-designer/resource-editors/ResourceVariantTextEditor.vue";
+declare module "components/interaction-designer/resource-editors/index" {
+    export * from "components/interaction-designer/resource-editors/ResourceEditor.vue";
+    export * from "components/interaction-designer/resource-editors/ResourceVariantTextEditor.vue";
 }
-declare module "src/lib/types" {
+declare module "lib/types" {
     import { IBlock, ILanguage } from '@floip/flow-runner';
-    import { IAudioFile } from "src/components/interaction-designer/resource-editors/index";
+    import { IAudioFile } from "components/interaction-designer/resource-editors/index";
     export interface IBlockExtended extends IBlock {
         jsKey: string;
         customData: IBlockCustomData;
@@ -851,8 +851,8 @@ declare module "src/lib/types" {
     }
     export type BlockClasses = string[];
 }
-declare module "src/components/common/AudioLibrarySearchField.vue" {
-    import { IAudioFile } from "src/components/interaction-designer/resource-editors/index";
+declare module "components/common/AudioLibrarySearchField.vue" {
+    import { IAudioFile } from "components/interaction-designer/resource-editors/index";
     const AudioLibrarySearchField_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
     export class AudioLibrarySearchField extends AudioLibrarySearchField_base {
         readonly langId?: string;
@@ -878,7 +878,7 @@ declare module "src/components/common/AudioLibrarySearchField.vue" {
     }
     export default AudioLibrarySearchField;
 }
-declare module "src/lib/filters/moment" {
+declare module "lib/filters/moment" {
     import { DurationInputArg1, DurationInputArg2, MomentInput } from 'moment';
     import { Vue } from 'vue-property-decorator';
     export function formatDate(date: MomentInput, format?: string): string;
@@ -889,10 +889,10 @@ declare module "src/lib/filters/moment" {
     }
     export default Moment;
 }
-declare module "src/components/common/AudioLibrarySelection.vue" {
-    import Lang from "src/lib/filters/lang";
-    import Moment from "src/lib/filters/moment";
-    import { IAudioFile } from "src/components/interaction-designer/resource-editors/index";
+declare module "components/common/AudioLibrarySelection.vue" {
+    import Lang from "lib/filters/lang";
+    import Moment from "lib/filters/moment";
+    import { IAudioFile } from "components/interaction-designer/resource-editors/index";
     const AudioLibrarySelection_base: import("vue-class-component/lib/declarations").VueClass<Lang & Moment>;
     export class AudioLibrarySelection extends AudioLibrarySelection_base {
         audioFile: IAudioFile;
@@ -905,8 +905,8 @@ declare module "src/components/common/AudioLibrarySelection.vue" {
     }
     export default AudioLibrarySelection;
 }
-declare module "src/components/common/KeypadDigitsSelector.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/common/KeypadDigitsSelector.vue" {
+    import Lang from "lib/filters/lang";
     type MultiselectOption = {
         name: string;
         label: string;
@@ -923,8 +923,8 @@ declare module "src/components/common/KeypadDigitsSelector.vue" {
     }
     export default KeypadDigitsSelector;
 }
-declare module "src/components/common/FloatEditor.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/common/FloatEditor.vue" {
+    import Lang from "lib/filters/lang";
     const FloatEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class FloatEditor extends FloatEditor_base {
         readonly label: string | number;
@@ -939,8 +939,8 @@ declare module "src/components/common/FloatEditor.vue" {
     }
     export default FloatEditor;
 }
-declare module "src/components/common/NumericEditor.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/common/NumericEditor.vue" {
+    import Lang from "lib/filters/lang";
     const NumericEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class NumericEditor extends NumericEditor_base {
         readonly validState?: boolean;
@@ -955,9 +955,9 @@ declare module "src/components/common/NumericEditor.vue" {
     }
     export default NumericEditor;
 }
-declare module "src/components/common/PlainDraggable.vue" {
-    import Lang from "src/lib/filters/lang";
-    import { IPositionLeftTop } from "src/lib/types";
+declare module "components/common/PlainDraggable.vue" {
+    import Lang from "lib/filters/lang";
+    import { IPositionLeftTop } from "lib/types";
     const PlainDraggable_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class PlainDraggable extends PlainDraggable_base {
         startX?: number;
@@ -979,7 +979,7 @@ declare module "src/components/common/PlainDraggable.vue" {
     }
     export default PlainDraggable;
 }
-declare module "src/components/common/TextEditor.vue" {
+declare module "components/common/TextEditor.vue" {
     import { Vue } from 'vue-property-decorator';
     export class TextEditor extends Vue {
         readonly label: string | number;
@@ -992,9 +992,9 @@ declare module "src/components/common/TextEditor.vue" {
     }
     export default TextEditor;
 }
-declare module "src/components/common/ValidationMessage.vue" {
-    import Lang from "src/lib/filters/lang";
-    import { IIndexedString } from "src/store/validation/index";
+declare module "components/common/ValidationMessage.vue" {
+    import Lang from "lib/filters/lang";
+    import { IIndexedString } from "store/validation/index";
     const ValidationMessage_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class ValidationMessage extends ValidationMessage_base {
         messageKey: string;
@@ -1007,19 +1007,19 @@ declare module "src/components/common/ValidationMessage.vue" {
     }
     export default ValidationMessage;
 }
-declare module "src/components/common/index" {
-    export * from "src/components/common/AudioLibrarySearchField.vue";
-    export * from "src/components/common/AudioLibrarySelection.vue";
+declare module "components/common/index" {
+    export * from "components/common/AudioLibrarySearchField.vue";
+    export * from "components/common/AudioLibrarySelection.vue";
     export * from './AudioLibrarySelector.vue';
-    export * from "src/components/common/KeypadDigitsSelector.vue";
-    export * from "src/components/common/ExpressionInput.vue";
-    export * from "src/components/common/FloatEditor.vue";
-    export * from "src/components/common/NumericEditor.vue";
-    export * from "src/components/common/PlainDraggable.vue";
-    export * from "src/components/common/TextEditor.vue";
-    export * from "src/components/common/ValidationMessage.vue";
+    export * from "components/common/KeypadDigitsSelector.vue";
+    export * from "components/common/ExpressionInput.vue";
+    export * from "components/common/FloatEditor.vue";
+    export * from "components/common/NumericEditor.vue";
+    export * from "components/common/PlainDraggable.vue";
+    export * from "components/common/TextEditor.vue";
+    export * from "components/common/ValidationMessage.vue";
 }
-declare module "src/components/interaction-designer/__VLS_types" {
+declare module "components/interaction-designer/__VLS_types" {
     import * as vue from 'vue';
     import type { FunctionalComponent, EmitsOptions, DefineComponent, SetupContext, ObjectDirective, FunctionDirective } from 'vue';
     type IsAny<T> = boolean extends (T extends never ? true : false) ? true : false;
@@ -1082,10 +1082,10 @@ declare module "src/components/interaction-designer/__VLS_types" {
         [K in keyof T as IsComponent<T[K]> extends true ? K : never]: any;
     };
 }
-declare module "src/components/interaction-designer/Connection.vue" {
+declare module "components/interaction-designer/Connection.vue" {
     import { IBlock, IBlockExit } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
-    import { IConnectionContext } from "src/store/builder/index";
+    import Lang from "lib/filters/lang";
+    import { IConnectionContext } from "store/builder/index";
     export const colorStates: {
         ON_HOVER: string;
         CONNECTING: string;
@@ -1147,11 +1147,11 @@ declare module "src/components/interaction-designer/Connection.vue" {
     }
     export default Connection;
 }
-declare module "src/components/interaction-designer/Block.vue" {
+declare module "components/interaction-designer/Block.vue" {
     import { IBlock, IBlockExit, IFlow } from '@floip/flow-runner';
-    import { ConnectionLayout, IConnectionContext, IPosition, OperationKind, SupportedOperation } from "src/store/builder/index";
-    import Lang from "src/lib/filters/lang";
-    import { BlockClasses } from "src/lib/types";
+    import { ConnectionLayout, IConnectionContext, IPosition, OperationKind, SupportedOperation } from "store/builder/index";
+    import Lang from "lib/filters/lang";
+    import { BlockClasses } from "lib/types";
     type Draggable = any;
     type BlockAction = ({ block }: {
         block: IBlock;
@@ -1308,7 +1308,7 @@ declare module "src/components/interaction-designer/Block.vue" {
     }
     export default Block;
 }
-declare module "src/components/interaction-designer/BuilderCanvas.vue" {
+declare module "components/interaction-designer/BuilderCanvas.vue" {
     import { Vue } from 'vue-property-decorator';
     import { IBlock, IFlow, IResources } from '@floip/flow-runner';
     export class BuilderCanvas extends Vue {
@@ -1329,12 +1329,12 @@ declare module "src/components/interaction-designer/BuilderCanvas.vue" {
         get blockHeight(): number;
     }
 }
-declare module "src/components/interaction-designer/index" {
-    export * from "src/components/interaction-designer/Block.vue";
-    export * from "src/components/interaction-designer/BuilderCanvas.vue";
-    export * from "src/components/interaction-designer/Connection.vue";
+declare module "components/interaction-designer/index" {
+    export * from "components/interaction-designer/Block.vue";
+    export * from "components/interaction-designer/BuilderCanvas.vue";
+    export * from "components/interaction-designer/Connection.vue";
 }
-declare module "src/components/interaction-designer/block-editors/choices/__VLS_types" {
+declare module "components/interaction-designer/block-editors/choices/__VLS_types" {
     import * as vue from 'vue';
     import type { FunctionalComponent, EmitsOptions, DefineComponent, SetupContext, ObjectDirective, FunctionDirective } from 'vue';
     type IsAny<T> = boolean extends (T extends never ? true : false) ? true : false;
@@ -1397,11 +1397,11 @@ declare module "src/components/interaction-designer/block-editors/choices/__VLS_
         [K in keyof T as IsComponent<T[K]> extends true ? K : never]: any;
     };
 }
-declare module "src/components/interaction-designer/block-editors/choices/ChoicesBuilder.vue" {
-    import { findOrGenerateStubbedVariantOn } from "src/store/flow/resource";
-    import Lang from "src/lib/filters/lang";
+declare module "components/interaction-designer/block-editors/choices/ChoicesBuilder.vue" {
+    import { findOrGenerateStubbedVariantOn } from "store/flow/resource";
+    import Lang from "lib/filters/lang";
     import { IBlock, IFlow, IResource, IResourceValue, SupportedContentType, SupportedMode } from '@floip/flow-runner';
-    import { ISelectOneResponseBlock } from "node_modules/@floip/flow-runner/src/model/block/ISelectOneResponseBlock";
+    import { ISelectOneResponseBlock } from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock';
     import Vue from 'vue';
     const ChoicesBuilder_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class ChoicesBuilder extends ChoicesBuilder_base {
@@ -1463,8 +1463,8 @@ declare module "src/components/interaction-designer/block-editors/choices/Choice
     }
     export default ChoicesBuilder;
 }
-declare module "src/components/interaction-designer/block-editors/choices/index" {
-    export * from "src/components/interaction-designer/block-editors/choices/ChoicesBuilder.vue";
+declare module "components/interaction-designer/block-editors/choices/index" {
+    export * from "components/interaction-designer/block-editors/choices/ChoicesBuilder.vue";
     export * from './ChoiceMappingModal.vue';
     export * from './VoiceMappingTable.vue';
     export * from './VoiceMappingRow.vue';
@@ -1474,7 +1474,7 @@ declare module "src/components/interaction-designer/block-editors/choices/index"
     export * from './TextMappingTable.vue';
     export * from './TextMappingRow.vue';
 }
-declare module "src/components/interaction-designer/block-editors/__VLS_types" {
+declare module "components/interaction-designer/block-editors/__VLS_types" {
     import * as vue from 'vue';
     import type { FunctionalComponent, EmitsOptions, DefineComponent, SetupContext, ObjectDirective, FunctionDirective } from 'vue';
     type IsAny<T> = boolean extends (T extends never ? true : false) ? true : false;
@@ -1537,8 +1537,8 @@ declare module "src/components/interaction-designer/block-editors/__VLS_types" {
         [K in keyof T as IsComponent<T[K]> extends true ? K : never]: any;
     };
 }
-declare module "src/components/interaction-designer/block-editors/AdvancedExitEditor.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/interaction-designer/block-editors/AdvancedExitEditor.vue" {
+    import Lang from "lib/filters/lang";
     import { IBlock, IBlockExit } from '@floip/flow-runner';
     const AdvancedExitEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class AdvancedExitEditor extends AdvancedExitEditor_base {
@@ -1563,8 +1563,8 @@ declare module "src/components/interaction-designer/block-editors/AdvancedExitEd
     }
     export default AdvancedExitEditor;
 }
-declare module "src/components/interaction-designer/block-editors/AdvancedExitsBuilder.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/interaction-designer/block-editors/AdvancedExitsBuilder.vue" {
+    import Lang from "lib/filters/lang";
     import { IBlock, IBlockExit } from '@floip/flow-runner';
     import Vue from 'vue';
     const AdvancedExitsBuilder_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
@@ -1595,9 +1595,9 @@ declare module "src/components/interaction-designer/block-editors/AdvancedExitsB
     }
     export default AdvancedExitsBuilder;
 }
-declare module "src/components/interaction-designer/block-editors/BlockEditor.vue" {
+declare module "components/interaction-designer/block-editors/BlockEditor.vue" {
     import { IBlock, IFlow } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
+    import Lang from "lib/filters/lang";
     const BlockEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class BlockEditor extends BlockEditor_base {
         activeBlock?: IBlock;
@@ -1605,7 +1605,7 @@ declare module "src/components/interaction-designer/block-editors/BlockEditor.vu
     }
     export default BlockEditor;
 }
-declare module "src/components/interaction-designer/block-editors/BlockId.vue" {
+declare module "components/interaction-designer/block-editors/BlockId.vue" {
     import { PropType } from 'vue';
     import { IBlock } from '@floip/flow-runner';
     const _default: import("vue").DefineComponent<{
@@ -1615,11 +1615,11 @@ declare module "src/components/interaction-designer/block-editors/BlockId.vue" {
     }>>, {}>;
     export default _default;
 }
-declare module "src/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue" {
+declare module "components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue" {
     import { IBlock, IBlockExit } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
-    import { BlockConfigFieldType } from "src/store/flow/block";
-    import { OutputBranchingType } from "src/components/interaction-designer/block-editors/BlockOutputBranchingConfig.model";
+    import Lang from "lib/filters/lang";
+    import { BlockConfigFieldType } from "store/flow/block";
+    import { OutputBranchingType } from "components/interaction-designer/block-editors/BlockOutputBranchingConfig.model";
     const BlockOutputBranchingConfig_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class BlockOutputBranchingConfig extends BlockOutputBranchingConfig_base {
         readonly block: IBlock;
@@ -1644,19 +1644,19 @@ declare module "src/components/interaction-designer/block-editors/BlockOutputBra
     }
     export default BlockOutputBranchingConfig;
 }
-declare module "src/components/interaction-designer/block-editors/Categorization.vue" {
+declare module "components/interaction-designer/block-editors/Categorization.vue" {
     import { IBlock } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
+    import Lang from "lib/filters/lang";
     const Categorization_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class Categorization extends Categorization_base {
         readonly block: IBlock;
     }
     export default Categorization;
 }
-declare module "src/components/interaction-designer/block-editors/ContactPropertyEditor.vue" {
+declare module "components/interaction-designer/block-editors/ContactPropertyEditor.vue" {
     import { IBlock, SetContactProperty } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
-    import { BlockConfigFieldType } from "src/store/flow/block";
+    import Lang from "lib/filters/lang";
+    import { BlockConfigFieldType } from "store/flow/block";
     const ContactPropertyEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class ContactPropertyEditor extends ContactPropertyEditor_base {
         readonly block: IBlock;
@@ -1689,9 +1689,9 @@ declare module "src/components/interaction-designer/block-editors/ContactPropert
     }
     export default ContactPropertyEditor;
 }
-declare module "src/components/interaction-designer/block-editors/EndRecordingDigitsEditor.vue" {
+declare module "components/interaction-designer/block-editors/EndRecordingDigitsEditor.vue" {
     import { IBlock } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
+    import Lang from "lib/filters/lang";
     const EndRecordingDigitsEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class EndRecordingDigitsEditor extends EndRecordingDigitsEditor_base {
         hasIvr: boolean;
@@ -1701,8 +1701,8 @@ declare module "src/components/interaction-designer/block-editors/EndRecordingDi
     }
     export default EndRecordingDigitsEditor;
 }
-declare module "src/components/interaction-designer/block-editors/ExitSemanticLabelEditor.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/interaction-designer/block-editors/ExitSemanticLabelEditor.vue" {
+    import Lang from "lib/filters/lang";
     import { IBlockExit } from '@floip/flow-runner';
     const ExitSemanticLabelEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class ExitSemanticLabelEditor extends ExitSemanticLabelEditor_base {
@@ -1713,7 +1713,7 @@ declare module "src/components/interaction-designer/block-editors/ExitSemanticLa
     }
     export default ExitSemanticLabelEditor;
 }
-declare module "src/store/flow/block-types/Core_SetContactPropertyStore.model" {
+declare module "store/flow/block-types/Core_SetContactPropertyStore.model" {
     export interface IContactPropertyMultipleChoice {
         value: string;
         description: string;
@@ -1729,11 +1729,11 @@ declare module "src/store/flow/block-types/Core_SetContactPropertyStore.model" {
         $isDisabled: boolean;
     }
 }
-declare module "src/components/interaction-designer/block-editors/GenericContactPropertyEditor.vue" {
+declare module "components/interaction-designer/block-editors/GenericContactPropertyEditor.vue" {
     import { IBlock } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
-    import { BlockConfigFieldType } from "src/store/flow/block";
-    import { IContactPropertyOption, IContactPropertyOptionForUISelector } from "src/store/flow/block-types/Core_SetContactPropertyStore.model";
+    import Lang from "lib/filters/lang";
+    import { BlockConfigFieldType } from "store/flow/block";
+    import { IContactPropertyOption, IContactPropertyOptionForUISelector } from "store/flow/block-types/Core_SetContactPropertyStore.model";
     const GenericContactPropertyEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class GenericContactPropertyEditor extends GenericContactPropertyEditor_base {
         readonly block: IBlock;
@@ -1799,10 +1799,10 @@ declare module "src/components/interaction-designer/block-editors/GenericContact
     }
     export default GenericContactPropertyEditor;
 }
-declare module "src/components/interaction-designer/block-editors/GroupMembershipEditor.vue" {
+declare module "components/interaction-designer/block-editors/GroupMembershipEditor.vue" {
     import { IBlock, ISetGroupMembershipBlockConfig, IGroupMembership } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
-    import { BlockConfigFieldType } from "src/store/flow/block";
+    import Lang from "lib/filters/lang";
+    import { BlockConfigFieldType } from "store/flow/block";
     type MembershipAction = {
         id: string;
         label: string;
@@ -1837,10 +1837,10 @@ declare module "src/components/interaction-designer/block-editors/GroupMembershi
     }
     export default GroupMembershipEditor;
 }
-declare module "src/store/flow/block-types/Core_SetGroupMembershipStore" {
+declare module "store/flow/block-types/Core_SetGroupMembershipStore" {
     import { Module } from 'vuex';
-    import { IRootState } from "src/store/index";
-    import { IEmptyState } from "src/store/flow/block-types/BaseBlock";
+    import { IRootState } from "store/index";
+    import { IEmptyState } from "store/flow/block-types/BaseBlock";
     export interface IGroupOption {
         id: string;
         name: string;
@@ -1851,11 +1851,11 @@ declare module "src/store/flow/block-types/Core_SetGroupMembershipStore" {
     const Core_SetGroupMembershipStore: Module<IEmptyState, IRootState>;
     export default Core_SetGroupMembershipStore;
 }
-declare module "src/components/interaction-designer/block-editors/GroupSelector.vue" {
+declare module "components/interaction-designer/block-editors/GroupSelector.vue" {
     import { IBlock } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
-    import { BlockConfigFieldType } from "src/store/flow/block";
-    import { IGroupOption } from "src/store/flow/block-types/Core_SetGroupMembershipStore";
+    import Lang from "lib/filters/lang";
+    import { BlockConfigFieldType } from "store/flow/block";
+    import { IGroupOption } from "store/flow/block-types/Core_SetGroupMembershipStore";
     const GroupSelector_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class GroupSelector extends GroupSelector_base {
         readonly block: IBlock;
@@ -1870,8 +1870,8 @@ declare module "src/components/interaction-designer/block-editors/GroupSelector.
     }
     export default GroupSelector;
 }
-declare module "src/components/interaction-designer/block-editors/LabelEditor.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/interaction-designer/block-editors/LabelEditor.vue" {
+    import Lang from "lib/filters/lang";
     import { IBlock } from '@floip/flow-runner';
     const LabelEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class LabelEditor extends LabelEditor_base {
@@ -1886,8 +1886,8 @@ declare module "src/components/interaction-designer/block-editors/LabelEditor.vu
     }
     export default LabelEditor;
 }
-declare module "src/components/interaction-designer/block-editors/MaxDigitEditor.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/interaction-designer/block-editors/MaxDigitEditor.vue" {
+    import Lang from "lib/filters/lang";
     import { IBlock } from '@floip/flow-runner';
     const MaxDigitEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class MaxDigitEditor extends MaxDigitEditor_base {
@@ -1898,8 +1898,8 @@ declare module "src/components/interaction-designer/block-editors/MaxDigitEditor
     }
     export default MaxDigitEditor;
 }
-declare module "src/components/interaction-designer/block-editors/MaxDurationSecondsEditor.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/interaction-designer/block-editors/MaxDurationSecondsEditor.vue" {
+    import Lang from "lib/filters/lang";
     import { IBlock } from '@floip/flow-runner';
     const MaxDurationSecondsEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class MaxDurationSecondsEditor extends MaxDurationSecondsEditor_base {
@@ -1912,9 +1912,9 @@ declare module "src/components/interaction-designer/block-editors/MaxDurationSec
     }
     export default MaxDurationSecondsEditor;
 }
-declare module "src/components/interaction-designer/block-editors/MaximumChoicesEditor.vue" {
-    import Lang from "src/lib/filters/lang";
-    import { ISelectManyResponseBlock } from "node_modules/@floip/flow-runner/src/model/block/ISelectManyResponseBlock";
+declare module "components/interaction-designer/block-editors/MaximumChoicesEditor.vue" {
+    import Lang from "lib/filters/lang";
+    import { ISelectManyResponseBlock } from '@floip/flow-runner/src/model/block/ISelectManyResponseBlock';
     import { IBlock } from '@floip/flow-runner';
     const MaximumChoicesEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class MaximumChoicesEditor extends MaximumChoicesEditor_base {
@@ -1929,8 +1929,8 @@ declare module "src/components/interaction-designer/block-editors/MaximumChoices
     }
     export default MaximumChoicesEditor;
 }
-declare module "src/components/interaction-designer/block-editors/MaximumNumericEditor.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/interaction-designer/block-editors/MaximumNumericEditor.vue" {
+    import Lang from "lib/filters/lang";
     import { IBlock } from '@floip/flow-runner';
     const MaximumNumericEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class MaximumNumericEditor extends MaximumNumericEditor_base {
@@ -1940,9 +1940,9 @@ declare module "src/components/interaction-designer/block-editors/MaximumNumeric
     }
     export default MaximumNumericEditor;
 }
-declare module "src/components/interaction-designer/block-editors/MinimumChoicesEditor.vue" {
-    import Lang from "src/lib/filters/lang";
-    import { ISelectManyResponseBlock } from "node_modules/@floip/flow-runner/src/model/block/ISelectManyResponseBlock";
+declare module "components/interaction-designer/block-editors/MinimumChoicesEditor.vue" {
+    import Lang from "lib/filters/lang";
+    import { ISelectManyResponseBlock } from '@floip/flow-runner/src/model/block/ISelectManyResponseBlock';
     import { IBlock } from '@floip/flow-runner';
     const MinimumChoicesEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class MinimumChoicesEditor extends MinimumChoicesEditor_base {
@@ -1957,8 +1957,8 @@ declare module "src/components/interaction-designer/block-editors/MinimumChoices
     }
     export default MinimumChoicesEditor;
 }
-declare module "src/components/interaction-designer/block-editors/MinimumNumericEditor.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/interaction-designer/block-editors/MinimumNumericEditor.vue" {
+    import Lang from "lib/filters/lang";
     import { IBlock } from '@floip/flow-runner';
     const MinimumNumericEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class MinimumNumericEditor extends MinimumNumericEditor_base {
@@ -1968,8 +1968,8 @@ declare module "src/components/interaction-designer/block-editors/MinimumNumeric
     }
     export default MinimumNumericEditor;
 }
-declare module "src/components/interaction-designer/block-editors/NameEditor.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/interaction-designer/block-editors/NameEditor.vue" {
+    import Lang from "lib/filters/lang";
     import { IBlock } from '@floip/flow-runner';
     const NameEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class NameEditor extends NameEditor_base {
@@ -1990,8 +1990,8 @@ declare module "src/components/interaction-designer/block-editors/NameEditor.vue
     }
     export default NameEditor;
 }
-declare module "src/components/interaction-designer/block-editors/PhoneRecordingRecorderSelector.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/interaction-designer/block-editors/PhoneRecordingRecorderSelector.vue" {
+    import Lang from "lib/filters/lang";
     export type Recorder = {
         name: string | null;
         phone: string | null;
@@ -2013,9 +2013,9 @@ declare module "src/components/interaction-designer/block-editors/PhoneRecording
     }
     export default PhoneRecordingRecorderSelector;
 }
-declare module "src/components/interaction-designer/block-editors/PhoneRecorder.vue" {
+declare module "components/interaction-designer/block-editors/PhoneRecorder.vue" {
     import { Vue } from 'vue-property-decorator';
-    import { Recorder } from "src/components/interaction-designer/block-editors/PhoneRecordingRecorderSelector.vue";
+    import { Recorder } from "components/interaction-designer/block-editors/PhoneRecordingRecorderSelector.vue";
     export class PhoneRecorder extends Vue {
         readonly recordingKey: string;
         callConfig: Partial<{
@@ -2028,9 +2028,9 @@ declare module "src/components/interaction-designer/block-editors/PhoneRecorder.
     }
     export default PhoneRecorder;
 }
-declare module "src/components/interaction-designer/block-editors/SemanticLabelEditor.vue" {
+declare module "components/interaction-designer/block-editors/SemanticLabelEditor.vue" {
     import { IBlock } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
+    import Lang from "lib/filters/lang";
     const SemanticLabelEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class SemanticLabelEditor extends SemanticLabelEditor_base {
         readonly block: IBlock;
@@ -2043,9 +2043,9 @@ declare module "src/components/interaction-designer/block-editors/SemanticLabelE
     }
     export default SemanticLabelEditor;
 }
-declare module "src/components/interaction-designer/block-editors/TagSelector.vue" {
+declare module "components/interaction-designer/block-editors/TagSelector.vue" {
     import { IBlock } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
+    import Lang from "lib/filters/lang";
     const TagSelector_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class TagSelector extends TagSelector_base {
         readonly block: IBlock;
@@ -2079,8 +2079,8 @@ declare module "src/components/interaction-designer/block-editors/TagSelector.vu
     }
     export default TagSelector;
 }
-declare module "src/components/interaction-designer/block-editors/ThresholdEditor.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/interaction-designer/block-editors/ThresholdEditor.vue" {
+    import Lang from "lib/filters/lang";
     import { IBlock } from '@floip/flow-runner';
     const ThresholdEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class ThresholdEditor extends ThresholdEditor_base {
@@ -2091,8 +2091,8 @@ declare module "src/components/interaction-designer/block-editors/ThresholdEdito
     }
     export default ThresholdEditor;
 }
-declare module "src/components/interaction-designer/block-editors/TimeoutEditor.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/interaction-designer/block-editors/TimeoutEditor.vue" {
+    import Lang from "lib/filters/lang";
     import { IBlock } from '@floip/flow-runner';
     const TimeoutEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class TimeoutEditor extends TimeoutEditor_base {
@@ -2103,8 +2103,8 @@ declare module "src/components/interaction-designer/block-editors/TimeoutEditor.
     }
     export default TimeoutEditor;
 }
-declare module "src/components/interaction-designer/block-editors/UploadMonitor.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/interaction-designer/block-editors/UploadMonitor.vue" {
+    import Lang from "lib/filters/lang";
     type Upload = {
         progress: number;
         status: Map<string, number>;
@@ -2122,46 +2122,46 @@ declare module "src/components/interaction-designer/block-editors/UploadMonitor.
     }
     export default UploadMonitor;
 }
-declare module "src/components/interaction-designer/block-editors/index" {
-    export * from "src/components/interaction-designer/block-editors/choices/index";
-    export * from "src/components/interaction-designer/block-editors/AdvancedExitEditor.vue";
-    export * from "src/components/interaction-designer/block-editors/AdvancedExitsBuilder.vue";
-    export * from "src/components/interaction-designer/block-editors/BlockEditor.vue";
-    export { default as BlockId } from "src/components/interaction-designer/block-editors/BlockId.vue";
-    export * from "src/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue";
-    export * from "src/components/interaction-designer/block-editors/BlockOutputBranchingConfig.model";
-    export * from "src/components/interaction-designer/block-editors/Categorization.vue";
-    export * from "src/components/interaction-designer/block-editors/ContactPropertyEditor.vue";
-    export * from "src/components/interaction-designer/block-editors/EndRecordingDigitsEditor.vue";
-    export * from "src/components/interaction-designer/block-editors/ExitSemanticLabelEditor.vue";
-    export * from "src/components/interaction-designer/block-editors/GenericContactPropertyEditor.vue";
-    export * from "src/components/interaction-designer/block-editors/GroupMembershipEditor.vue";
-    export * from "src/components/interaction-designer/block-editors/GroupSelector.vue";
-    export * from "src/components/interaction-designer/block-editors/LabelEditor.vue";
-    export * from "src/components/interaction-designer/block-editors/MaxDigitEditor.vue";
-    export * from "src/components/interaction-designer/block-editors/MaxDurationSecondsEditor.vue";
-    export * from "src/components/interaction-designer/block-editors/MaximumChoicesEditor.vue";
-    export * from "src/components/interaction-designer/block-editors/MaximumNumericEditor.vue";
-    export * from "src/components/interaction-designer/block-editors/MinimumChoicesEditor.vue";
-    export * from "src/components/interaction-designer/block-editors/MinimumNumericEditor.vue";
-    export * from "src/components/interaction-designer/block-editors/NameEditor.vue";
-    export * from "src/components/interaction-designer/block-editors/PhoneRecorder.vue";
-    export * from "src/components/interaction-designer/block-editors/PhoneRecordingRecorderSelector.vue";
-    export * from "src/components/interaction-designer/block-editors/SemanticLabelEditor.vue";
-    export * from "src/components/interaction-designer/block-editors/TagSelector.vue";
-    export * from "src/components/interaction-designer/block-editors/ThresholdEditor.vue";
-    export * from "src/components/interaction-designer/block-editors/TimeoutEditor.vue";
-    export * from "src/components/interaction-designer/block-editors/UploadMonitor.vue";
+declare module "components/interaction-designer/block-editors/index" {
+    export * from "components/interaction-designer/block-editors/choices/index";
+    export * from "components/interaction-designer/block-editors/AdvancedExitEditor.vue";
+    export * from "components/interaction-designer/block-editors/AdvancedExitsBuilder.vue";
+    export * from "components/interaction-designer/block-editors/BlockEditor.vue";
+    export { default as BlockId } from "components/interaction-designer/block-editors/BlockId.vue";
+    export * from "components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue";
+    export * from "components/interaction-designer/block-editors/BlockOutputBranchingConfig.model";
+    export * from "components/interaction-designer/block-editors/Categorization.vue";
+    export * from "components/interaction-designer/block-editors/ContactPropertyEditor.vue";
+    export * from "components/interaction-designer/block-editors/EndRecordingDigitsEditor.vue";
+    export * from "components/interaction-designer/block-editors/ExitSemanticLabelEditor.vue";
+    export * from "components/interaction-designer/block-editors/GenericContactPropertyEditor.vue";
+    export * from "components/interaction-designer/block-editors/GroupMembershipEditor.vue";
+    export * from "components/interaction-designer/block-editors/GroupSelector.vue";
+    export * from "components/interaction-designer/block-editors/LabelEditor.vue";
+    export * from "components/interaction-designer/block-editors/MaxDigitEditor.vue";
+    export * from "components/interaction-designer/block-editors/MaxDurationSecondsEditor.vue";
+    export * from "components/interaction-designer/block-editors/MaximumChoicesEditor.vue";
+    export * from "components/interaction-designer/block-editors/MaximumNumericEditor.vue";
+    export * from "components/interaction-designer/block-editors/MinimumChoicesEditor.vue";
+    export * from "components/interaction-designer/block-editors/MinimumNumericEditor.vue";
+    export * from "components/interaction-designer/block-editors/NameEditor.vue";
+    export * from "components/interaction-designer/block-editors/PhoneRecorder.vue";
+    export * from "components/interaction-designer/block-editors/PhoneRecordingRecorderSelector.vue";
+    export * from "components/interaction-designer/block-editors/SemanticLabelEditor.vue";
+    export * from "components/interaction-designer/block-editors/TagSelector.vue";
+    export * from "components/interaction-designer/block-editors/ThresholdEditor.vue";
+    export * from "components/interaction-designer/block-editors/TimeoutEditor.vue";
+    export * from "components/interaction-designer/block-editors/UploadMonitor.vue";
 }
-declare module "src/store/flow/block-types/SmartDevices_PhotoResponseBlockStore" {
+declare module "store/flow/block-types/SmartDevices_PhotoResponseBlockStore" {
     import { Module } from 'vuex';
-    import { IRootState } from "src/store/index";
-    import { IEmptyState } from "src/store/flow/block-types/BaseBlock";
+    import { IRootState } from "store/index";
+    import { IEmptyState } from "store/flow/block-types/BaseBlock";
     export const BLOCK_TYPE = "SmartDevices.PhotoResponse";
     const SmartDevices_PhotoResponseBlockStore: Module<IEmptyState, IRootState>;
     export default SmartDevices_PhotoResponseBlockStore;
 }
-declare module "src/components/interaction-designer/block-types/__VLS_types" {
+declare module "components/interaction-designer/block-types/__VLS_types" {
     import * as vue from 'vue';
     import type { FunctionalComponent, EmitsOptions, DefineComponent, SetupContext, ObjectDirective, FunctionDirective } from 'vue';
     type IsAny<T> = boolean extends (T extends never ? true : false) ? true : false;
@@ -2224,9 +2224,9 @@ declare module "src/components/interaction-designer/block-types/__VLS_types" {
         [K in keyof T as IsComponent<T[K]> extends true ? K : never]: any;
     };
 }
-declare module "src/components/interaction-designer/block-types/SmartDevices_PhotoResponseBlock.vue" {
+declare module "components/interaction-designer/block-types/SmartDevices_PhotoResponseBlock.vue" {
     import { IBlock, IFlow, IResource } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
+    import Lang from "lib/filters/lang";
     const SmartDevices_PhotoResponseBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class SmartDevices_PhotoResponseBlock extends SmartDevices_PhotoResponseBlock_base {
         readonly block: IBlock;
@@ -2245,17 +2245,17 @@ declare module "src/components/interaction-designer/block-types/SmartDevices_Pho
     export default SmartDevices_PhotoResponseBlock;
     export const install: (builder: import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, any>>) => true | void;
 }
-declare module "src/store/flow/block-types/SmartDevices_LocationResponseBlockStore" {
+declare module "store/flow/block-types/SmartDevices_LocationResponseBlockStore" {
     import { Module } from 'vuex';
-    import { IRootState } from "src/store/index";
-    import { IEmptyState } from "src/store/flow/block-types/BaseBlock";
+    import { IRootState } from "store/index";
+    import { IEmptyState } from "store/flow/block-types/BaseBlock";
     export const BLOCK_TYPE = "SmartDevices.LocationResponse";
     const SmartDevices_LocationResponseBlockStore: Module<IEmptyState, IRootState>;
     export default SmartDevices_LocationResponseBlockStore;
 }
-declare module "src/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue" {
+declare module "components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue" {
     import { IBlock, IFlow, IResource } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
+    import Lang from "lib/filters/lang";
     const SmartDevices_LocationResponseBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class SmartDevices_LocationResponseBlock extends SmartDevices_LocationResponseBlock_base {
         readonly block: IBlock;
@@ -2284,11 +2284,11 @@ declare module "src/components/interaction-designer/block-types/SmartDevices_Loc
     export default SmartDevices_LocationResponseBlock;
     export const install: (builder: import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, any>>) => true | void;
 }
-declare module "src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue" {
+declare module "components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue" {
     import { IBlock, IFlow, IResource, SupportedMode } from '@floip/flow-runner';
-    import { ISelectOneResponseBlock } from "node_modules/@floip/flow-runner/src/model/block/ISelectOneResponseBlock";
-    import Lang from "src/lib/filters/lang";
-    import { findOrGenerateStubbedVariantOn } from "src/store/flow/resource";
+    import { ISelectOneResponseBlock } from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock';
+    import Lang from "lib/filters/lang";
+    import { findOrGenerateStubbedVariantOn } from "store/flow/resource";
     const MobilePrimitives_SelectOneResponseBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class MobilePrimitives_SelectOneResponseBlock extends MobilePrimitives_SelectOneResponseBlock_base {
         readonly block: ISelectOneResponseBlock;
@@ -2313,9 +2313,9 @@ declare module "src/components/interaction-designer/block-types/MobilePrimitives
     export default MobilePrimitives_SelectOneResponseBlock;
     export const install: (builder: import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, any>>) => true | void;
 }
-declare module "src/components/interaction-designer/block-types/MobilePrimitives_SelectManyResponseBlock.vue" {
+declare module "components/interaction-designer/block-types/MobilePrimitives_SelectManyResponseBlock.vue" {
     import { IBlock } from '@floip/flow-runner';
-    import SelectOneResponseBlock from "src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue";
+    import SelectOneResponseBlock from "components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue";
     export class MobilePrimitives_SelectManyResponseBlock extends SelectOneResponseBlock {
         isEditable: boolean;
         handleBranchingTypeChangedToUnified: ({ block }: {
@@ -2325,18 +2325,18 @@ declare module "src/components/interaction-designer/block-types/MobilePrimitives
     export default MobilePrimitives_SelectManyResponseBlock;
     export const install: (builder: import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, any>>) => true | void;
 }
-declare module "src/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore" {
+declare module "store/flow/block-types/MobilePrimitives_OpenResponseBlockStore" {
     import { Module } from 'vuex';
-    import { IRootState } from "src/store/index";
-    import { IEmptyState } from "src/store/flow/block-types/BaseBlock";
+    import { IRootState } from "store/index";
+    import { IEmptyState } from "store/flow/block-types/BaseBlock";
     export const BLOCK_TYPE = "MobilePrimitives.OpenResponse";
     const MobilePrimitives_OpenResponseBlockStore: Module<IEmptyState, IRootState>;
     export default MobilePrimitives_OpenResponseBlockStore;
 }
-declare module "src/components/interaction-designer/block-types/MobilePrimitives_OpenResponseBlock.vue" {
+declare module "components/interaction-designer/block-types/MobilePrimitives_OpenResponseBlock.vue" {
     import { IBlock, IFlow, IResource } from '@floip/flow-runner';
-    import { IOpenResponseBlock } from "node_modules/@floip/flow-runner/src/model/block/IOpenResponseBlock";
-    import Lang from "src/lib/filters/lang";
+    import { IOpenResponseBlock } from '@floip/flow-runner/src/model/block/IOpenResponseBlock';
+    import Lang from "lib/filters/lang";
     const MobilePrimitives_OpenResponseBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     class MobilePrimitives_OpenResponseBlock extends MobilePrimitives_OpenResponseBlock_base {
         readonly block: IOpenResponseBlock;
@@ -2359,19 +2359,19 @@ declare module "src/components/interaction-designer/block-types/MobilePrimitives
     export default MobilePrimitives_OpenResponseBlock;
     export const install: (builder: import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, any>>) => true | void;
 }
-declare module "src/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore" {
+declare module "store/flow/block-types/MobilePrimitives_NumericResponseBlockStore" {
     import { Module } from 'vuex';
-    import { IRootState } from "src/store/index";
-    import { IEmptyState } from "src/store/flow/block-types/BaseBlock";
+    import { IRootState } from "store/index";
+    import { IEmptyState } from "store/flow/block-types/BaseBlock";
     export const BLOCK_TYPE = "MobilePrimitives.NumericResponse";
     export function normalizeNumericConfigProperty(value?: number | string | null): [number, boolean];
     const MobilePrimitives_NumericResponseBlockStore: Module<IEmptyState, IRootState>;
     export default MobilePrimitives_NumericResponseBlockStore;
 }
-declare module "src/components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue" {
+declare module "components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue" {
     import { IBlock, IFlow, IResource } from '@floip/flow-runner';
-    import { INumericResponseBlock } from "node_modules/@floip/flow-runner/src/model/block/INumericResponseBlock";
-    import Lang from "src/lib/filters/lang";
+    import { INumericResponseBlock } from '@floip/flow-runner/src/model/block/INumericResponseBlock';
+    import Lang from "lib/filters/lang";
     const MobilePrimitives_NumericResponseBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class MobilePrimitives_NumericResponseBlock extends MobilePrimitives_NumericResponseBlock_base {
         readonly block: INumericResponseBlock;
@@ -2406,18 +2406,18 @@ declare module "src/components/interaction-designer/block-types/MobilePrimitives
     export default MobilePrimitives_NumericResponseBlock;
     export const install: (builder: import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, any>>) => true | void;
 }
-declare module "src/store/flow/block-types/MobilePrimitives_MessageBlockStore" {
+declare module "store/flow/block-types/MobilePrimitives_MessageBlockStore" {
     import { Module } from 'vuex';
-    import { IRootState } from "src/store/index";
-    import { IEmptyState } from "src/store/flow/block-types/BaseBlock";
+    import { IRootState } from "store/index";
+    import { IEmptyState } from "store/flow/block-types/BaseBlock";
     export const BLOCK_TYPE = "MobilePrimitives.Message";
     export const MobilePrimitives_MessageBlockStore: Module<IEmptyState, IRootState>;
     export default MobilePrimitives_MessageBlockStore;
 }
-declare module "src/components/interaction-designer/block-types/MobilePrimitives_MessageBlock.vue" {
+declare module "components/interaction-designer/block-types/MobilePrimitives_MessageBlock.vue" {
     import { IBlock, IFlow, IResource } from '@floip/flow-runner';
-    import { IMessageBlock } from "node_modules/@floip/flow-runner/src/model/block/IMessageBlock";
-    import Lang from "src/lib/filters/lang";
+    import { IMessageBlock } from '@floip/flow-runner/src/model/block/IMessageBlock';
+    import Lang from "lib/filters/lang";
     const MobilePrimitives_MessageBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     class MobilePrimitives_MessageBlock extends MobilePrimitives_MessageBlock_base {
         readonly block: IMessageBlock;
@@ -2436,18 +2436,18 @@ declare module "src/components/interaction-designer/block-types/MobilePrimitives
     export default MobilePrimitives_MessageBlock;
     export const install: (builder: import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, any>>) => true | void;
 }
-declare module "src/store/flow/block-types/Core_CaseBlockStore" {
+declare module "store/flow/block-types/Core_CaseBlockStore" {
     import { Module } from 'vuex';
-    import { IRootState } from "src/store/index";
-    import { IEmptyState } from "src/store/flow/block-types/BaseBlock";
+    import { IRootState } from "store/index";
+    import { IEmptyState } from "store/flow/block-types/BaseBlock";
     export const BLOCK_TYPE = "Core.Case";
     const Core_CaseBlockStore: Module<IEmptyState, IRootState>;
     export default Core_CaseBlockStore;
 }
-declare module "src/components/interaction-designer/block-types/Core_CaseBlock.vue" {
-    import { ICaseBlock } from "node_modules/@floip/flow-runner/src/model/block/ICaseBlock";
+declare module "components/interaction-designer/block-types/Core_CaseBlock.vue" {
+    import { ICaseBlock } from '@floip/flow-runner/src/model/block/ICaseBlock';
     import { IBlockExit, IFlow } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
+    import Lang from "lib/filters/lang";
     const Core_CaseBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class Core_CaseBlock extends Core_CaseBlock_base {
         readonly block: ICaseBlock;
@@ -2460,8 +2460,8 @@ declare module "src/components/interaction-designer/block-types/Core_CaseBlock.v
     export default Core_CaseBlock;
     export const install: (builder: import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, any>>) => true | void;
 }
-declare module "src/components/interaction-designer/block-types/Core_SetGroupMembershipBlock.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/interaction-designer/block-types/Core_SetGroupMembershipBlock.vue" {
+    import Lang from "lib/filters/lang";
     import { IBlock, IFlow, IGroupMembership } from '@floip/flow-runner';
     const Core_SetGroupMembershipBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class Core_SetGroupMembershipBlock extends Core_SetGroupMembershipBlock_base {
@@ -2482,18 +2482,18 @@ declare module "src/components/interaction-designer/block-types/Core_SetGroupMem
     export default Core_SetGroupMembershipBlock;
     export const install: (builder: import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, any>>) => true | void;
 }
-declare module "src/store/flow/block-types/Core_RunFlowBlockStore" {
+declare module "store/flow/block-types/Core_RunFlowBlockStore" {
     import { Module } from 'vuex';
-    import { IRootState } from "src/store/index";
-    import { IEmptyState } from "src/store/flow/block-types/BaseBlock";
+    import { IRootState } from "store/index";
+    import { IEmptyState } from "store/flow/block-types/BaseBlock";
     export const BLOCK_TYPE = "Core.RunFlow";
     const Core_RunFlowBlockStore: Module<IEmptyState, IRootState>;
     export default Core_RunFlowBlockStore;
 }
-declare module "src/components/interaction-designer/block-types/Core_RunFlowBlock.vue" {
-    import { IRunFlowBlock } from "node_modules/@floip/flow-runner/src/model/block/IRunFlowBlock";
+declare module "components/interaction-designer/block-types/Core_RunFlowBlock.vue" {
+    import { IRunFlowBlock } from '@floip/flow-runner/src/model/block/IRunFlowBlock';
     import { IBlock, IFlow } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
+    import Lang from "lib/filters/lang";
     const Core_RunAnotherFlowBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class Core_RunAnotherFlowBlock extends Core_RunAnotherFlowBlock_base {
         readonly block: IRunFlowBlock;
@@ -2514,18 +2514,18 @@ declare module "src/components/interaction-designer/block-types/Core_RunFlowBloc
     export default Core_RunAnotherFlowBlock;
     export const install: (builder: import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, any>>) => true | void;
 }
-declare module "src/store/flow/block-types/Core_LogBlockStore" {
+declare module "store/flow/block-types/Core_LogBlockStore" {
     import { Module } from 'vuex';
-    import { IRootState } from "src/store/index";
-    import { IEmptyState } from "src/store/flow/block-types/BaseBlock";
+    import { IRootState } from "store/index";
+    import { IEmptyState } from "store/flow/block-types/BaseBlock";
     export const BLOCK_TYPE = "Core.Log";
     const Core_LogBlockStore: Module<IEmptyState, IRootState>;
     export default Core_LogBlockStore;
 }
-declare module "src/components/interaction-designer/block-types/Core_LogBlock.vue" {
+declare module "components/interaction-designer/block-types/Core_LogBlock.vue" {
     import { IFlow, IBlock } from '@floip/flow-runner';
-    import { ILogBlock } from "node_modules/@floip/flow-runner/src/model/block/ILogBlock";
-    import Lang from "src/lib/filters/lang";
+    import { ILogBlock } from '@floip/flow-runner/src/model/block/ILogBlock';
+    import Lang from "lib/filters/lang";
     const Core_LogBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class Core_LogBlock extends Core_LogBlock_base {
         readonly block: ILogBlock;
@@ -2546,18 +2546,18 @@ declare module "src/components/interaction-designer/block-types/Core_LogBlock.vu
     export default Core_LogBlock;
     export const install: (builder: import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, any>>) => true | void;
 }
-declare module "src/store/flow/block-types/Core_OutputBlockStore" {
+declare module "store/flow/block-types/Core_OutputBlockStore" {
     import { Module } from 'vuex';
-    import { IRootState } from "src/store/index";
-    import { IEmptyState } from "src/store/flow/block-types/BaseBlock";
+    import { IRootState } from "store/index";
+    import { IEmptyState } from "store/flow/block-types/BaseBlock";
     export const BLOCK_TYPE = "Core.Output";
     const Core_OutputBlockStore: Module<IEmptyState, IRootState>;
     export default Core_OutputBlockStore;
 }
-declare module "src/components/interaction-designer/block-types/Core_OutputBlock.vue" {
-    import { IOutputBlock } from "node_modules/@floip/flow-runner/src/model/block/IOutputBlock";
+declare module "components/interaction-designer/block-types/Core_OutputBlock.vue" {
+    import { IOutputBlock } from '@floip/flow-runner/src/model/block/IOutputBlock';
     import { IBlock, IFlow } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
+    import Lang from "lib/filters/lang";
     const Core_OutputBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class Core_OutputBlock extends Core_OutputBlock_base {
         readonly block: IOutputBlock;
@@ -2579,17 +2579,17 @@ declare module "src/components/interaction-designer/block-types/Core_OutputBlock
     export default Core_OutputBlock;
     export const install: (builder: import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, any>>) => true | void;
 }
-declare module "src/store/flow/block-types/Core_SetContactPropertyStore" {
+declare module "store/flow/block-types/Core_SetContactPropertyStore" {
     import { Module } from 'vuex';
-    import { IRootState } from "src/store/index";
-    import { IEmptyState } from "src/store/flow/block-types/BaseBlock";
+    import { IRootState } from "store/index";
+    import { IEmptyState } from "store/flow/block-types/BaseBlock";
     export const BLOCK_TYPE = "Core.SetContactProperty";
     const Core_SetContactPropertyStore: Module<IEmptyState, IRootState>;
     export default Core_SetContactPropertyStore;
 }
-declare module "src/components/interaction-designer/block-types/Core_SetContactPropertyBlock.vue" {
+declare module "components/interaction-designer/block-types/Core_SetContactPropertyBlock.vue" {
     import { IBlock, IFlow } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
+    import Lang from "lib/filters/lang";
     const Core_SetContactPropertyBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class Core_SetContactPropertyBlock extends Core_SetContactPropertyBlock_base {
         readonly block: IBlock;
@@ -2603,9 +2603,9 @@ declare module "src/components/interaction-designer/block-types/Core_SetContactP
     export default Core_SetContactPropertyBlock;
     export const install: (builder: import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, any>>) => true | void;
 }
-declare module "src/components/interaction-designer/block-types/BaseBlock.vue" {
+declare module "components/interaction-designer/block-types/BaseBlock.vue" {
     import { IBlock, IFlow } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
+    import Lang from "lib/filters/lang";
     const BaseBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class BaseBlock extends BaseBlock_base {
         readonly block: IBlock;
@@ -2618,23 +2618,23 @@ declare module "src/components/interaction-designer/block-types/BaseBlock.vue" {
     }
     export default BaseBlock;
 }
-declare module "src/components/interaction-designer/block-types/index" {
-    export { default as SmartDevices_PhotoResponseBlock, install as photoResponseBlockIntstaller, } from "src/components/interaction-designer/block-types/SmartDevices_PhotoResponseBlock.vue";
-    export { default as SmartDevices_LocationResponseBlock, install as locationResponseBlockInstaller, } from "src/components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue";
-    export { default as MobilePrimitives_SelectOneResponseBlock, install as selectOneResponseBlockInstaller, } from "src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue";
-    export { default as MobilePrimitives_SelectManyResponseBlock, install as selectManyResponseBlockInstaller, } from "src/components/interaction-designer/block-types/MobilePrimitives_SelectManyResponseBlock.vue";
-    export { default as MobilePrimitives_OpenResponseBlock, install as openResponseBlockInstaller, } from "src/components/interaction-designer/block-types/MobilePrimitives_OpenResponseBlock.vue";
-    export { default as MobilePrimitives_NumericResponseBlock, install as numericResponseBlockInstaller, } from "src/components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue";
-    export { default as MobilePrimitives_MessageBlock, install as messageBlockInstaller, } from "src/components/interaction-designer/block-types/MobilePrimitives_MessageBlock.vue";
-    export { default as Core_CaseBlock, install as caseBlockInstaller, } from "src/components/interaction-designer/block-types/Core_CaseBlock.vue";
-    export { default as Core_SetGroupMembershipBlock, install as setGroupMembershipBlockInstaller, } from "src/components/interaction-designer/block-types/Core_SetGroupMembershipBlock.vue";
-    export { default as Core_RunFlowBlock, install as runFlowBlockInstaller, } from "src/components/interaction-designer/block-types/Core_RunFlowBlock.vue";
-    export { default as Core_LogBlock, install as logBlockInstaller, } from "src/components/interaction-designer/block-types/Core_LogBlock.vue";
-    export { default as Core_OutputBlock, install as outputBlockInstaller, } from "src/components/interaction-designer/block-types/Core_OutputBlock.vue";
-    export { default as Core_SetContactPropertyBlock, install as setContactPropertyBlockInstaller, } from "src/components/interaction-designer/block-types/Core_SetContactPropertyBlock.vue";
-    export * from "src/components/interaction-designer/block-types/BaseBlock.vue";
+declare module "components/interaction-designer/block-types/index" {
+    export { default as SmartDevices_PhotoResponseBlock, install as photoResponseBlockIntstaller, } from "components/interaction-designer/block-types/SmartDevices_PhotoResponseBlock.vue";
+    export { default as SmartDevices_LocationResponseBlock, install as locationResponseBlockInstaller, } from "components/interaction-designer/block-types/SmartDevices_LocationResponseBlock.vue";
+    export { default as MobilePrimitives_SelectOneResponseBlock, install as selectOneResponseBlockInstaller, } from "components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue";
+    export { default as MobilePrimitives_SelectManyResponseBlock, install as selectManyResponseBlockInstaller, } from "components/interaction-designer/block-types/MobilePrimitives_SelectManyResponseBlock.vue";
+    export { default as MobilePrimitives_OpenResponseBlock, install as openResponseBlockInstaller, } from "components/interaction-designer/block-types/MobilePrimitives_OpenResponseBlock.vue";
+    export { default as MobilePrimitives_NumericResponseBlock, install as numericResponseBlockInstaller, } from "components/interaction-designer/block-types/MobilePrimitives_NumericResponseBlock.vue";
+    export { default as MobilePrimitives_MessageBlock, install as messageBlockInstaller, } from "components/interaction-designer/block-types/MobilePrimitives_MessageBlock.vue";
+    export { default as Core_CaseBlock, install as caseBlockInstaller, } from "components/interaction-designer/block-types/Core_CaseBlock.vue";
+    export { default as Core_SetGroupMembershipBlock, install as setGroupMembershipBlockInstaller, } from "components/interaction-designer/block-types/Core_SetGroupMembershipBlock.vue";
+    export { default as Core_RunFlowBlock, install as runFlowBlockInstaller, } from "components/interaction-designer/block-types/Core_RunFlowBlock.vue";
+    export { default as Core_LogBlock, install as logBlockInstaller, } from "components/interaction-designer/block-types/Core_LogBlock.vue";
+    export { default as Core_OutputBlock, install as outputBlockInstaller, } from "components/interaction-designer/block-types/Core_OutputBlock.vue";
+    export { default as Core_SetContactPropertyBlock, install as setContactPropertyBlockInstaller, } from "components/interaction-designer/block-types/Core_SetContactPropertyBlock.vue";
+    export * from "components/interaction-designer/block-types/BaseBlock.vue";
 }
-declare module "src/components/interaction-designer/flow-editors/__VLS_types" {
+declare module "components/interaction-designer/flow-editors/__VLS_types" {
     import * as vue from 'vue';
     import type { FunctionalComponent, EmitsOptions, DefineComponent, SetupContext, ObjectDirective, FunctionDirective } from 'vue';
     type IsAny<T> = boolean extends (T extends never ? true : false) ? true : false;
@@ -2697,8 +2697,8 @@ declare module "src/components/interaction-designer/flow-editors/__VLS_types" {
         [K in keyof T as IsComponent<T[K]> extends true ? K : never]: any;
     };
 }
-declare module "src/components/interaction-designer/flow-editors/ExitBlockEditorToggle.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/interaction-designer/flow-editors/ExitBlockEditorToggle.vue" {
+    import Lang from "lib/filters/lang";
     import { IBlock, IFlow } from '@floip/flow-runner';
     const ExitBlockEditorToggle_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class ExitBlockEditorToggle extends ExitBlockEditorToggle_base {
@@ -2715,9 +2715,9 @@ declare module "src/components/interaction-designer/flow-editors/ExitBlockEditor
     }
     export default ExitBlockEditorToggle;
 }
-declare module "src/components/interaction-designer/flow-editors/FirstBlockEditorButton.vue" {
+declare module "components/interaction-designer/flow-editors/FirstBlockEditorButton.vue" {
     import { IBlock, IFlow } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
+    import Lang from "lib/filters/lang";
     const FirstBlockEditorButton_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class FirstBlockEditorButton extends FirstBlockEditorButton_base {
         readonly isEditable: boolean;
@@ -2732,9 +2732,9 @@ declare module "src/components/interaction-designer/flow-editors/FirstBlockEdito
     }
     export default FirstBlockEditorButton;
 }
-declare module "src/components/interaction-designer/flow-editors/FlowEditor.vue" {
+declare module "components/interaction-designer/flow-editors/FlowEditor.vue" {
     import { IFlow, IResource, ILanguage, SupportedMode } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
+    import Lang from "lib/filters/lang";
     const FlowEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class FlowEditor extends FlowEditor_base {
         readonly flow: IFlow;
@@ -2771,9 +2771,9 @@ declare module "src/components/interaction-designer/flow-editors/FlowEditor.vue"
     }
     export default FlowEditor;
 }
-declare module "src/components/interaction-designer/flow-editors/InteractionTimeoutEditor.vue" {
+declare module "components/interaction-designer/flow-editors/InteractionTimeoutEditor.vue" {
     import { IFlow } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
+    import Lang from "lib/filters/lang";
     const InteractionTimeoutEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class InteractionTimeoutEditor extends InteractionTimeoutEditor_base {
         readonly flow: IFlow;
@@ -2787,9 +2787,9 @@ declare module "src/components/interaction-designer/flow-editors/InteractionTime
     }
     export default InteractionTimeoutEditor;
 }
-declare module "src/components/interaction-designer/flow-editors/FlowLabelEditor.vue" {
+declare module "components/interaction-designer/flow-editors/FlowLabelEditor.vue" {
     import { IBlock, IFlow } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
+    import Lang from "lib/filters/lang";
     const FlowLabelEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class FlowLabelEditor extends FlowLabelEditor_base {
         readonly flow: IFlow;
@@ -2808,10 +2808,10 @@ declare module "src/components/interaction-designer/flow-editors/FlowLabelEditor
     }
     export default FlowLabelEditor;
 }
-declare module "src/components/interaction-designer/flow-editors/LanguagesEditor.vue" {
+declare module "components/interaction-designer/flow-editors/LanguagesEditor.vue" {
     import { IFlow } from '@floip/flow-runner';
     import { ILanguage } from '@floip/flow-runner/dist/flow-spec/ILanguage';
-    import Lang from "src/lib/filters/lang";
+    import Lang from "lib/filters/lang";
     const LanguagesEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class LanguagesEditor extends LanguagesEditor_base {
         readonly flow: IFlow;
@@ -2823,9 +2823,9 @@ declare module "src/components/interaction-designer/flow-editors/LanguagesEditor
     }
     export default LanguagesEditor;
 }
-declare module "src/components/interaction-designer/flow-editors/ModesEditor.vue" {
+declare module "components/interaction-designer/flow-editors/ModesEditor.vue" {
     import { IFlow, SupportedMode } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
+    import Lang from "lib/filters/lang";
     const ModesEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class ModesEditor extends ModesEditor_base {
         readonly flow: IFlow;
@@ -2835,16 +2835,16 @@ declare module "src/components/interaction-designer/flow-editors/ModesEditor.vue
     }
     export default ModesEditor;
 }
-declare module "src/components/interaction-designer/flow-editors/index" {
-    export * from "src/components/interaction-designer/flow-editors/ExitBlockEditorToggle.vue";
-    export * from "src/components/interaction-designer/flow-editors/FirstBlockEditorButton.vue";
-    export * from "src/components/interaction-designer/flow-editors/FlowEditor.vue";
-    export * from "src/components/interaction-designer/flow-editors/InteractionTimeoutEditor.vue";
-    export * from "src/components/interaction-designer/flow-editors/FlowLabelEditor.vue";
-    export * from "src/components/interaction-designer/flow-editors/LanguagesEditor.vue";
-    export * from "src/components/interaction-designer/flow-editors/ModesEditor.vue";
+declare module "components/interaction-designer/flow-editors/index" {
+    export * from "components/interaction-designer/flow-editors/ExitBlockEditorToggle.vue";
+    export * from "components/interaction-designer/flow-editors/FirstBlockEditorButton.vue";
+    export * from "components/interaction-designer/flow-editors/FlowEditor.vue";
+    export * from "components/interaction-designer/flow-editors/InteractionTimeoutEditor.vue";
+    export * from "components/interaction-designer/flow-editors/FlowLabelEditor.vue";
+    export * from "components/interaction-designer/flow-editors/LanguagesEditor.vue";
+    export * from "components/interaction-designer/flow-editors/ModesEditor.vue";
 }
-declare module "src/components/interaction-designer/flow-editors/import/__VLS_types" {
+declare module "components/interaction-designer/flow-editors/import/__VLS_types" {
     import * as vue from 'vue';
     import type { FunctionalComponent, EmitsOptions, DefineComponent, SetupContext, ObjectDirective, FunctionDirective } from 'vue';
     type IsAny<T> = boolean extends (T extends never ? true : false) ? true : false;
@@ -2907,9 +2907,9 @@ declare module "src/components/interaction-designer/flow-editors/import/__VLS_ty
         [K in keyof T as IsComponent<T[K]> extends true ? K : never]: any;
     };
 }
-declare module "src/components/interaction-designer/flow-editors/import/ImportMatcher.vue" {
+declare module "components/interaction-designer/flow-editors/import/ImportMatcher.vue" {
     import { IContext } from '@floip/flow-runner';
-    import Lang from "src/lib/filters/lang";
+    import Lang from "lib/filters/lang";
     const ImportMatcher_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class ImportMatcher extends ImportMatcher_base {
         readonly matchNotFoundText: string;
@@ -2945,9 +2945,9 @@ declare module "src/components/interaction-designer/flow-editors/import/ImportMa
     }
     export default ImportMatcher;
 }
-declare module "src/components/interaction-designer/flow-editors/import/LanguageAdder.vue" {
-    import Lang from "src/lib/filters/lang";
-    import Routes from "src/lib/mixins/Routes";
+declare module "components/interaction-designer/flow-editors/import/LanguageAdder.vue" {
+    import Lang from "lib/filters/lang";
+    import Routes from "lib/mixins/Routes";
     import { ILanguage } from '@floip/flow-runner';
     const LanguageAdder_base: import("vue-class-component/lib/declarations").VueClass<Lang & Routes>;
     export class LanguageAdder extends LanguageAdder_base {
@@ -2978,14 +2978,14 @@ declare module "src/components/interaction-designer/flow-editors/import/Language
     }
     export default LanguageAdder;
 }
-declare module "src/components/interaction-designer/flow-editors/import/index" {
-    export * from "src/components/interaction-designer/flow-editors/import/ImportMatcher.vue";
-    export * from "src/components/interaction-designer/flow-editors/import/LanguageAdder.vue";
+declare module "components/interaction-designer/flow-editors/import/index" {
+    export * from "components/interaction-designer/flow-editors/import/ImportMatcher.vue";
+    export * from "components/interaction-designer/flow-editors/import/LanguageAdder.vue";
     export * from './TechErrorNotifications.vue';
     export * from './ErrorHandlerV2.vue';
     export * from './FullImportMatcher.vue';
 }
-declare module "src/components/interaction-designer/toolbar/__VLS_types" {
+declare module "components/interaction-designer/toolbar/__VLS_types" {
     import * as vue from 'vue';
     import type { FunctionalComponent, EmitsOptions, DefineComponent, SetupContext, ObjectDirective, FunctionDirective } from 'vue';
     type IsAny<T> = boolean extends (T extends never ? true : false) ? true : false;
@@ -3048,9 +3048,9 @@ declare module "src/components/interaction-designer/toolbar/__VLS_types" {
         [K in keyof T as IsComponent<T[K]> extends true ? K : never]: any;
     };
 }
-declare module "src/components/interaction-designer/toolbar/BlockErrorsExpandable.vue" {
-    import { IValidationStatus } from "src/store/validation/index";
-    import Lang from "src/lib/filters/lang";
+declare module "components/interaction-designer/toolbar/BlockErrorsExpandable.vue" {
+    import { IValidationStatus } from "store/validation/index";
+    import Lang from "lib/filters/lang";
     import { ErrorObject } from 'ajv';
     import { IBlock, IFlow, IResource } from '@floip/flow-runner';
     const BlockErrorsExpandable_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
@@ -3080,10 +3080,10 @@ declare module "src/components/interaction-designer/toolbar/BlockErrorsExpandabl
     }
     export default BlockErrorsExpandable;
 }
-declare module "src/components/interaction-designer/toolbar/ErrorNotifications.vue" {
-    import Lang from "src/lib/filters/lang";
-    import { IValidationStatus } from "src/store/validation/index";
-    import Routes from "src/lib/mixins/Routes";
+declare module "components/interaction-designer/toolbar/ErrorNotifications.vue" {
+    import Lang from "lib/filters/lang";
+    import { IValidationStatus } from "store/validation/index";
+    import Routes from "lib/mixins/Routes";
     import { IBlock, IFlow, IResource } from '@floip/flow-runner';
     import { ErrorObject } from 'ajv';
     const ErrorNotifications_base: import("vue-class-component/lib/declarations").VueClass<Lang & Routes>;
@@ -3111,8 +3111,8 @@ declare module "src/components/interaction-designer/toolbar/ErrorNotifications.v
     }
     export default ErrorNotifications;
 }
-declare module "src/components/interaction-designer/toolbar/SelectionBanner.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/interaction-designer/toolbar/SelectionBanner.vue" {
+    import Lang from "lib/filters/lang";
     import { IBlock } from '@floip/flow-runner';
     const SelectionBanner_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class SelectionBanner extends SelectionBanner_base {
@@ -3128,10 +3128,10 @@ declare module "src/components/interaction-designer/toolbar/SelectionBanner.vue"
     }
     export default SelectionBanner;
 }
-declare module "src/components/interaction-designer/toolbar/TreeBuilderToolbar.vue" {
-    import Lang from "src/lib/filters/lang";
-    import Permissions from "src/lib/mixins/Permissions";
-    import Routes from "src/lib/mixins/Routes";
+declare module "components/interaction-designer/toolbar/TreeBuilderToolbar.vue" {
+    import Lang from "lib/filters/lang";
+    import Permissions from "lib/mixins/Permissions";
+    import Routes from "lib/mixins/Routes";
     import { IBlock, IContext, IFlow, IResource } from '@floip/flow-runner';
     import { RawLocation } from 'vue-router';
     import { Dictionary } from 'vue-router/types/router';
@@ -3239,13 +3239,13 @@ declare module "src/components/interaction-designer/toolbar/TreeBuilderToolbar.v
     }
     export default TreeBuilderToolbar;
 }
-declare module "src/components/interaction-designer/toolbar/index" {
-    export * from "src/components/interaction-designer/toolbar/BlockErrorsExpandable.vue";
-    export * from "src/components/interaction-designer/toolbar/ErrorNotifications.vue";
-    export * from "src/components/interaction-designer/toolbar/SelectionBanner.vue";
-    export * from "src/components/interaction-designer/toolbar/TreeBuilderToolbar.vue";
+declare module "components/interaction-designer/toolbar/index" {
+    export * from "components/interaction-designer/toolbar/BlockErrorsExpandable.vue";
+    export * from "components/interaction-designer/toolbar/ErrorNotifications.vue";
+    export * from "components/interaction-designer/toolbar/SelectionBanner.vue";
+    export * from "components/interaction-designer/toolbar/TreeBuilderToolbar.vue";
 }
-declare module "src/components/interaction-designer/blocks/__VLS_types" {
+declare module "components/interaction-designer/blocks/__VLS_types" {
     import * as vue from 'vue';
     import type { FunctionalComponent, EmitsOptions, DefineComponent, SetupContext, ObjectDirective, FunctionDirective } from 'vue';
     type IsAny<T> = boolean extends (T extends never ? true : false) ? true : false;
@@ -3308,8 +3308,8 @@ declare module "src/components/interaction-designer/blocks/__VLS_types" {
         [K in keyof T as IsComponent<T[K]> extends true ? K : never]: any;
     };
 }
-declare module "src/components/interaction-designer/blocks/BlockToolbar.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/interaction-designer/blocks/BlockToolbar.vue" {
+    import Lang from "lib/filters/lang";
     import { IBlock } from '@floip/flow-runner';
     const BlockToolbar_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class BlockToolbar extends BlockToolbar_base {
@@ -3342,10 +3342,10 @@ declare module "src/components/interaction-designer/blocks/BlockToolbar.vue" {
     }
     export default BlockToolbar;
 }
-declare module "src/components/interaction-designer/blocks/index" {
-    export * from "src/components/interaction-designer/blocks/BlockToolbar.vue";
+declare module "components/interaction-designer/blocks/index" {
+    export * from "components/interaction-designer/blocks/BlockToolbar.vue";
 }
-declare module "src/components/resource-editor/__VLS_types" {
+declare module "components/resource-editor/__VLS_types" {
     import * as vue from 'vue';
     import type { FunctionalComponent, EmitsOptions, DefineComponent, SetupContext, ObjectDirective, FunctionDirective } from 'vue';
     type IsAny<T> = boolean extends (T extends never ? true : false) ? true : false;
@@ -3408,8 +3408,8 @@ declare module "src/components/resource-editor/__VLS_types" {
         [K in keyof T as IsComponent<T[K]> extends true ? K : never]: any;
     };
 }
-declare module "src/components/resource-editor/BatchMatchAudioFilesPrompt.vue" {
-    import { IBatchMatchAudioData } from "src/lib/types";
+declare module "components/resource-editor/BatchMatchAudioFilesPrompt.vue" {
+    import { IBatchMatchAudioData } from "lib/types";
     const BatchMatchAudioFilesPrompt_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
     export class BatchMatchAudioFilesPrompt extends BatchMatchAudioFilesPrompt_base {
         readonly focus: boolean;
@@ -3426,8 +3426,8 @@ declare module "src/components/resource-editor/BatchMatchAudioFilesPrompt.vue" {
     }
     export default BatchMatchAudioFilesPrompt;
 }
-declare module "src/components/resource-editor/BlockContentEditorUnsupported.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/resource-editor/BlockContentEditorUnsupported.vue" {
+    import Lang from "lib/filters/lang";
     import { IBlock } from '@floip/flow-runner';
     const BlockContentEditorUnsupported_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class BlockContentEditorUnsupported extends BlockContentEditorUnsupported_base {
@@ -3435,9 +3435,9 @@ declare module "src/components/resource-editor/BlockContentEditorUnsupported.vue
     }
     export default BlockContentEditorUnsupported;
 }
-declare module "src/components/resource-editor/HorizontalBlockContentEditor.vue" {
-    import Lang from "src/lib/filters/lang";
-    import { IBlockExtended } from "src/lib/types";
+declare module "components/resource-editor/HorizontalBlockContentEditor.vue" {
+    import Lang from "lib/filters/lang";
+    import { IBlockExtended } from "lib/types";
     const HorizontalBlockContentEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class HorizontalBlockContentEditor extends HorizontalBlockContentEditor_base {
         alternateAudioFileSelections: unknown;
@@ -3457,26 +3457,26 @@ declare module "src/components/resource-editor/HorizontalBlockContentEditor.vue"
     }
     export default HorizontalBlockContentEditor;
 }
-declare module "src/components/resource-editor/index" {
-    export * from "src/components/resource-editor/BatchMatchAudioFilesPrompt.vue";
-    export * from "src/components/resource-editor/BlockContentEditorUnsupported.vue";
-    export * from "src/components/resource-editor/HorizontalBlockContentEditor.vue";
+declare module "components/resource-editor/index" {
+    export * from "components/resource-editor/BatchMatchAudioFilesPrompt.vue";
+    export * from "components/resource-editor/BlockContentEditorUnsupported.vue";
+    export * from "components/resource-editor/HorizontalBlockContentEditor.vue";
 }
-declare module "src/common-imports" {
+declare module "common-imports" {
     export default function registerCustomComponents(extra?: {}): Record<string, any>;
 }
-declare module "src/lib/custom-icons/index" {
+declare module "lib/custom-icons/index" {
     import { IconDefinition } from '@fortawesome/fontawesome-common-types';
     const _default_1: IconDefinition[];
     export default _default_1;
 }
-declare module "src/font-awesome-icon" { }
-declare module "src/router/helpers" {
+declare module "font-awesome-icon" { }
+declare module "router/helpers" {
     import { Route } from 'vue-router';
     export const scrollBehavior: (to: Route) => void;
     export const scrollBlockIntoView: (blockId: string) => void;
 }
-declare module "src/components/interaction-designer/clipboard/shared/PromptKindMixin" {
+declare module "components/interaction-designer/clipboard/shared/PromptKindMixin" {
     import Vue from 'vue';
     import { IContext, IPrompt } from '@floip/flow-runner';
     export class PromptKindMixin extends Vue {
@@ -3503,7 +3503,7 @@ declare module "src/components/interaction-designer/clipboard/shared/PromptKindM
         setLastBlockEditable: () => void;
     }
 }
-declare module "src/components/interaction-designer/clipboard/shared/__VLS_types" {
+declare module "components/interaction-designer/clipboard/shared/__VLS_types" {
     import * as vue from 'vue';
     import type { FunctionalComponent, EmitsOptions, DefineComponent, SetupContext, ObjectDirective, FunctionDirective } from 'vue';
     type IsAny<T> = boolean extends (T extends never ? true : false) ? true : false;
@@ -3566,8 +3566,8 @@ declare module "src/components/interaction-designer/clipboard/shared/__VLS_types
         [K in keyof T as IsComponent<T[K]> extends true ? K : never]: any;
     };
 }
-declare module "src/components/interaction-designer/clipboard/shared/BlockActionButtons.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/interaction-designer/clipboard/shared/BlockActionButtons.vue" {
+    import Lang from "lib/filters/lang";
     const BlockActionButtons_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class BlockActionButtons extends BlockActionButtons_base {
         readonly isFocused: boolean;
@@ -3580,7 +3580,7 @@ declare module "src/components/interaction-designer/clipboard/shared/BlockAction
     }
     export default BlockActionButtons;
 }
-declare module "src/components/interaction-designer/clipboard/prompt-kinds/__VLS_types" {
+declare module "components/interaction-designer/clipboard/prompt-kinds/__VLS_types" {
     import * as vue from 'vue';
     import type { FunctionalComponent, EmitsOptions, DefineComponent, SetupContext, ObjectDirective, FunctionDirective } from 'vue';
     type IsAny<T> = boolean extends (T extends never ? true : false) ? true : false;
@@ -3643,17 +3643,17 @@ declare module "src/components/interaction-designer/clipboard/prompt-kinds/__VLS
         [K in keyof T as IsComponent<T[K]> extends true ? K : never]: any;
     };
 }
-declare module "src/components/interaction-designer/clipboard/prompt-kinds/Message.vue" {
-    import Lang from "src/lib/filters/lang";
-    import { PromptKindMixin } from "src/components/interaction-designer/clipboard/shared/PromptKindMixin";
+declare module "components/interaction-designer/clipboard/prompt-kinds/Message.vue" {
+    import Lang from "lib/filters/lang";
+    import { PromptKindMixin } from "components/interaction-designer/clipboard/shared/PromptKindMixin";
     const Message_base: import("vue-class-component/lib/declarations").VueClass<Lang & PromptKindMixin>;
     export default class Message extends Message_base {
         submitAnswer(): Promise<void>;
     }
 }
-declare module "src/components/interaction-designer/clipboard/prompt-kinds/Numeric.vue" {
-    import Lang from "src/lib/filters/lang";
-    import { PromptKindMixin } from "src/components/interaction-designer/clipboard/shared/PromptKindMixin";
+declare module "components/interaction-designer/clipboard/prompt-kinds/Numeric.vue" {
+    import Lang from "lib/filters/lang";
+    import { PromptKindMixin } from "components/interaction-designer/clipboard/shared/PromptKindMixin";
     const Numeric_base: import("vue-class-component/lib/declarations").VueClass<Lang & PromptKindMixin>;
     export default class Numeric extends Numeric_base {
         enteredValue: string;
@@ -3663,9 +3663,9 @@ declare module "src/components/interaction-designer/clipboard/prompt-kinds/Numer
         onCancel(): void;
     }
 }
-declare module "src/components/interaction-designer/clipboard/prompt-kinds/Open.vue" {
-    import Lang from "src/lib/filters/lang";
-    import { PromptKindMixin } from "src/components/interaction-designer/clipboard/shared/PromptKindMixin";
+declare module "components/interaction-designer/clipboard/prompt-kinds/Open.vue" {
+    import Lang from "lib/filters/lang";
+    import { PromptKindMixin } from "components/interaction-designer/clipboard/shared/PromptKindMixin";
     const Open_base: import("vue-class-component/lib/declarations").VueClass<Lang & PromptKindMixin>;
     export default class Open extends Open_base {
         enteredValue: string;
@@ -3675,9 +3675,9 @@ declare module "src/components/interaction-designer/clipboard/prompt-kinds/Open.
         onCancel(): void;
     }
 }
-declare module "src/components/interaction-designer/clipboard/prompt-kinds/SelectOne.vue" {
-    import Lang from "src/lib/filters/lang";
-    import { PromptKindMixin } from "src/components/interaction-designer/clipboard/shared/PromptKindMixin";
+declare module "components/interaction-designer/clipboard/prompt-kinds/SelectOne.vue" {
+    import Lang from "lib/filters/lang";
+    import { PromptKindMixin } from "components/interaction-designer/clipboard/shared/PromptKindMixin";
     const SelectOne_base: import("vue-class-component/lib/declarations").VueClass<Lang & PromptKindMixin>;
     export default class SelectOne extends SelectOne_base {
         selectedItem: string | null;
@@ -3693,9 +3693,9 @@ declare module "src/components/interaction-designer/clipboard/prompt-kinds/Selec
         onCancel(): void;
     }
 }
-declare module "src/components/interaction-designer/clipboard/prompt-kinds/SelectMany.vue" {
-    import Lang from "src/lib/filters/lang";
-    import { PromptKindMixin } from "src/components/interaction-designer/clipboard/shared/PromptKindMixin";
+declare module "components/interaction-designer/clipboard/prompt-kinds/SelectMany.vue" {
+    import Lang from "lib/filters/lang";
+    import { PromptKindMixin } from "components/interaction-designer/clipboard/shared/PromptKindMixin";
     const SelectMany_base: import("vue-class-component/lib/declarations").VueClass<Lang & PromptKindMixin>;
     export default class SelectMany extends SelectMany_base {
         selectedChoices: string[];
@@ -3711,15 +3711,15 @@ declare module "src/components/interaction-designer/clipboard/prompt-kinds/Selec
         onCancel(): void;
     }
 }
-declare module "src/components/interaction-designer/clipboard/shared/UnsupportedBlock.vue" {
-    import Lang from "src/lib/filters/lang";
+declare module "components/interaction-designer/clipboard/shared/UnsupportedBlock.vue" {
+    import Lang from "lib/filters/lang";
     const UnsupportedBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export class UnsupportedBlock extends UnsupportedBlock_base {
         readonly blockName?: string;
     }
     export default UnsupportedBlock;
 }
-declare module "src/components/interaction-designer/clipboard/__VLS_types" {
+declare module "components/interaction-designer/clipboard/__VLS_types" {
     import * as vue from 'vue';
     import type { FunctionalComponent, EmitsOptions, DefineComponent, SetupContext, ObjectDirective, FunctionDirective } from 'vue';
     type IsAny<T> = boolean extends (T extends never ? true : false) ? true : false;
@@ -3782,11 +3782,11 @@ declare module "src/components/interaction-designer/clipboard/__VLS_types" {
         [K in keyof T as IsComponent<T[K]> extends true ? K : never]: any;
     };
 }
-declare module "src/components/interaction-designer/clipboard/ClipboardRoot.vue" {
+declare module "components/interaction-designer/clipboard/ClipboardRoot.vue" {
     import { IContext, FlowRunner } from '@floip/flow-runner';
-    import { IFlowsState } from "src/store/flow/index";
-    import Lang from "src/lib/filters/lang";
-    import { BlocksData } from "src/store/clipboard/index";
+    import { IFlowsState } from "store/flow/index";
+    import Lang from "lib/filters/lang";
+    import { BlocksData } from "store/clipboard/index";
     const ClipboardRoot_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
     export default class ClipboardRoot extends ClipboardRoot_base {
         runner: FlowRunner;
@@ -3814,7 +3814,7 @@ declare module "src/components/interaction-designer/clipboard/ClipboardRoot.vue"
         removeFromBlocksData: (index: number) => void;
     }
 }
-declare module "src/views/__VLS_types" {
+declare module "views/__VLS_types" {
     import * as vue from 'vue';
     import type { FunctionalComponent, EmitsOptions, DefineComponent, SetupContext, ObjectDirective, FunctionDirective } from 'vue';
     type IsAny<T> = boolean extends (T extends never ? true : false) ? true : false;
@@ -3877,9 +3877,9 @@ declare module "src/views/__VLS_types" {
         [K in keyof T as IsComponent<T[K]> extends true ? K : never]: any;
     };
 }
-declare module "src/views/InteractionDesigner.vue" {
-    import Lang from "src/lib/filters/lang";
-    import Routes from "src/lib/mixins/Routes";
+declare module "views/InteractionDesigner.vue" {
+    import Lang from "lib/filters/lang";
+    import Routes from "lib/mixins/Routes";
     import { Route } from 'vue-router';
     import { IBlock, IFlow } from '@floip/flow-runner';
     import { ErrorObject } from 'ajv';
@@ -3969,9 +3969,9 @@ declare module "src/views/InteractionDesigner.vue" {
     }
     export default InteractionDesigner;
 }
-declare module "src/views/FetchFlow.vue" {
-    import Lang from "src/lib/filters/lang";
-    import Routes from "src/lib/mixins/Routes";
+declare module "views/FetchFlow.vue" {
+    import Lang from "lib/filters/lang";
+    import Routes from "lib/mixins/Routes";
     import { IFlow } from '@floip/flow-runner';
     const FetchFlow_base: import("vue-class-component/lib/declarations").VueClass<Lang & Routes>;
     class FetchFlow extends FetchFlow_base {
@@ -4000,12 +4000,12 @@ declare module "src/views/FetchFlow.vue" {
     }
     export default FetchFlow;
 }
-declare module "src/views/NewFlow.vue" {
-    import Lang from "src/lib/filters/lang";
-    import Routes from "src/lib/mixins/Routes";
+declare module "views/NewFlow.vue" {
+    import Lang from "lib/filters/lang";
+    import Routes from "lib/mixins/Routes";
     import { IContext, IFlow } from '@floip/flow-runner';
     import { RawLocation } from 'vue-router';
-    import { IValidationStatus } from "src/store/validation/index";
+    import { IValidationStatus } from "store/validation/index";
     const NewFlow_base: import("vue-class-component/lib/declarations").VueClass<Lang & Routes>;
     class NewFlow extends NewFlow_base {
         readonly appConfig: object;
@@ -4039,13 +4039,13 @@ declare module "src/views/NewFlow.vue" {
     }
     export default NewFlow;
 }
-declare module "src/store/flow/views/import" {
+declare module "store/flow/views/import" {
     import { ILanguage } from '@floip/flow-runner/dist/flow-spec/ILanguage';
     import { ActionTree, GetterTree, MutationTree } from 'vuex';
-    import { IRootState } from "src/store/index";
+    import { IRootState } from "store/index";
     import { IBlock, IContext } from '@floip/flow-runner';
-    import { IContactPropertyMultipleChoice } from "src/store/flow/block-types/Core_SetContactPropertyStore.model";
-    import { IGroupOption } from "src/store/flow/block-types/Core_SetGroupMembershipStore";
+    import { IContactPropertyMultipleChoice } from "store/flow/block-types/Core_SetContactPropertyStore.model";
+    import { IGroupOption } from "store/flow/block-types/Core_SetGroupMembershipStore";
     export const getters: GetterTree<IImportState, IRootState>;
     export const mutations: MutationTree<IImportState>;
     export const actions: ActionTree<IImportState, IRootState>;
@@ -4092,9 +4092,9 @@ declare module "src/store/flow/views/import" {
     };
     export default _default_2;
 }
-declare module "src/views/ImportFlow.vue" {
-    import Lang from "src/lib/filters/lang";
-    import Routes from "src/lib/mixins/Routes";
+declare module "views/ImportFlow.vue" {
+    import Lang from "lib/filters/lang";
+    import Routes from "lib/mixins/Routes";
     import { IContext } from '@floip/flow-runner';
     import { ErrorObject } from 'ajv';
     const ImportFlow_base: import("vue-class-component/lib/declarations").VueClass<Lang & Routes>;
@@ -4150,9 +4150,9 @@ declare module "src/views/ImportFlow.vue" {
     }
     export default ImportFlow;
 }
-declare module "src/views/Home.vue" {
-    import Lang from "src/lib/filters/lang";
-    import Routes from "src/lib/mixins/Routes";
+declare module "views/Home.vue" {
+    import Lang from "lib/filters/lang";
+    import Routes from "lib/mixins/Routes";
     import { IFlow } from '@floip/flow-runner';
     const Home_base: import("vue-class-component/lib/declarations").VueClass<Lang & Routes>;
     class Home extends Home_base {
@@ -4172,31 +4172,31 @@ declare module "src/views/Home.vue" {
     }
     export default Home;
 }
-declare module "src/store/flow/block-types/index" {
-    export { default as BaseBlockStore } from "src/store/flow/block-types/BaseBlock";
-    export { default as SmartDevices_PhotoResponseBlockStore } from "src/store/flow/block-types/SmartDevices_PhotoResponseBlockStore";
-    export { default as SmartDevices_LocationResponseBlockStore } from "src/store/flow/block-types/SmartDevices_LocationResponseBlockStore";
-    export { default as MobilePrimitives_SelectOneResponseBlockStore } from "src/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore";
-    export { default as MobilePrimitives_SelectManyResponseBlockStore } from "src/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore";
-    export { default as MobilePrimitives_OpenResponseBlockStore } from "src/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore";
-    export { default as MobilePrimitives_NumericResponseBlockStore } from "src/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore";
-    export { default as MobilePrimitives_MessageBlockStore } from "src/store/flow/block-types/MobilePrimitives_MessageBlockStore";
-    export { default as Core_CaseBlockStore } from "src/store/flow/block-types/Core_CaseBlockStore";
-    export { default as Core_SetGroupMembershipBlockStore } from "src/store/flow/block-types/Core_SetGroupMembershipStore";
-    export { default as Core_RunFlowBlockStore } from "src/store/flow/block-types/Core_RunFlowBlockStore";
-    export { default as Core_LogBlockStore } from "src/store/flow/block-types/Core_LogBlockStore";
-    export { default as Core_OutputBlockStore } from "src/store/flow/block-types/Core_OutputBlockStore";
-    export { default as Core_SetContactPropertyBlockStore } from "src/store/flow/block-types/Core_SetContactPropertyStore";
-    export * from "src/store/flow/block-types/Core_SetContactPropertyStore.model";
+declare module "store/flow/block-types/index" {
+    export { default as BaseBlockStore } from "store/flow/block-types/BaseBlock";
+    export { default as SmartDevices_PhotoResponseBlockStore } from "store/flow/block-types/SmartDevices_PhotoResponseBlockStore";
+    export { default as SmartDevices_LocationResponseBlockStore } from "store/flow/block-types/SmartDevices_LocationResponseBlockStore";
+    export { default as MobilePrimitives_SelectOneResponseBlockStore } from "store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore";
+    export { default as MobilePrimitives_SelectManyResponseBlockStore } from "store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore";
+    export { default as MobilePrimitives_OpenResponseBlockStore } from "store/flow/block-types/MobilePrimitives_OpenResponseBlockStore";
+    export { default as MobilePrimitives_NumericResponseBlockStore } from "store/flow/block-types/MobilePrimitives_NumericResponseBlockStore";
+    export { default as MobilePrimitives_MessageBlockStore } from "store/flow/block-types/MobilePrimitives_MessageBlockStore";
+    export { default as Core_CaseBlockStore } from "store/flow/block-types/Core_CaseBlockStore";
+    export { default as Core_SetGroupMembershipBlockStore } from "store/flow/block-types/Core_SetGroupMembershipStore";
+    export { default as Core_RunFlowBlockStore } from "store/flow/block-types/Core_RunFlowBlockStore";
+    export { default as Core_LogBlockStore } from "store/flow/block-types/Core_LogBlockStore";
+    export { default as Core_OutputBlockStore } from "store/flow/block-types/Core_OutputBlockStore";
+    export { default as Core_SetContactPropertyBlockStore } from "store/flow/block-types/Core_SetContactPropertyStore";
+    export * from "store/flow/block-types/Core_SetContactPropertyStore.model";
 }
-declare module "src/lib" {
-    import { createDefaultBlockTypeInstallerFor as createDefaultBlockTypeInstallerForFunction } from "src/store/builder/index";
-    import InteractionDesignerComponent from "src/views/InteractionDesigner.vue";
-    import FetchFlowComponent from "src/views/FetchFlow.vue";
-    import NewFlowComponent from "src/views/NewFlow.vue";
-    import ImportFlowComponent from "src/views/ImportFlow.vue";
-    import HomeComponent from "src/views/Home.vue";
-    import BaseBlockComponent from "src/components/interaction-designer/block-types/BaseBlock.vue";
+declare module "lib" {
+    import { createDefaultBlockTypeInstallerFor as createDefaultBlockTypeInstallerForFunction } from "store/builder/index";
+    import InteractionDesignerComponent from "views/InteractionDesigner.vue";
+    import FetchFlowComponent from "views/FetchFlow.vue";
+    import NewFlowComponent from "views/NewFlow.vue";
+    import ImportFlowComponent from "views/ImportFlow.vue";
+    import HomeComponent from "views/Home.vue";
+    import BaseBlockComponent from "components/interaction-designer/block-types/BaseBlock.vue";
     export const appConfig: any;
     export const builderConfig: any;
     export const InteractionDesigner: typeof InteractionDesignerComponent;
@@ -7631,32 +7631,32 @@ declare module "src/lib" {
         };
     };
     export const BaseBlock: typeof BaseBlockComponent;
-    export const BaseBlockStore: import("vuex").Module<import("@/store/flow/block-types/BaseBlock").IEmptyState, import("@/store").IRootState>;
+    export const BaseBlockStore: import("vuex").Module<import("store/flow/block-types/BaseBlock").IEmptyState, import("store").IRootState>;
     export const createDefaultBlockTypeInstallerFor: typeof createDefaultBlockTypeInstallerForFunction;
-    export * from "src/components/common/index";
-    export * from "src/components/interaction-designer/index";
-    export * from "src/components/interaction-designer/block-types/index";
-    export * from "src/components/interaction-designer/block-editors/index";
-    export * from "src/components/interaction-designer/blocks/index";
-    export * from "src/components/interaction-designer/flow-editors/index";
-    export * from "src/components/interaction-designer/flow-editors/import/index";
-    export * from "src/components/interaction-designer/resource-editors/index";
-    export * from "src/components/resource-editor/index";
-    export * from "src/components/interaction-designer/toolbar/index";
-    export * from "src/store/flow/block-types/index";
-    export * from "src/router/helpers";
-    export * from "src/store/validation/index";
-    export * from "src/lib/validations/index";
+    export * from "components/common/index";
+    export * from "components/interaction-designer/index";
+    export * from "components/interaction-designer/block-types/index";
+    export * from "components/interaction-designer/block-editors/index";
+    export * from "components/interaction-designer/blocks/index";
+    export * from "components/interaction-designer/flow-editors/index";
+    export * from "components/interaction-designer/flow-editors/import/index";
+    export * from "components/interaction-designer/resource-editors/index";
+    export * from "components/resource-editor/index";
+    export * from "components/interaction-designer/toolbar/index";
+    export * from "store/flow/block-types/index";
+    export * from "router/helpers";
+    export * from "store/validation/index";
+    export * from "lib/validations/index";
     const Components: Record<string, any>;
     export default Components;
 }
-declare module "src/router/index" {
+declare module "router/index" {
     import VueRouter, { RouteConfig } from 'vue-router';
     export const routes: Array<RouteConfig>;
     export const router: VueRouter;
     export default router;
 }
-declare module "src/__VLS_types" {
+declare module "__VLS_types" {
     import * as vue from 'vue';
     import type { FunctionalComponent, EmitsOptions, DefineComponent, SetupContext, ObjectDirective, FunctionDirective } from 'vue';
     type IsAny<T> = boolean extends (T extends never ? true : false) ? true : false;
@@ -7719,11 +7719,11 @@ declare module "src/__VLS_types" {
         [K in keyof T as IsComponent<T[K]> extends true ? K : never]: any;
     };
 }
-declare module "src/App.vue" {
+declare module "App.vue" {
     const _default_3: any;
     export default _default_3;
 }
-declare module "src/main" {
+declare module "main" {
     /**
      * This import modifies the jquery that should already be on the page globally at global.$
      * e.g. adding $().modal() and other jquery plugins
@@ -7734,8 +7734,8 @@ declare module "src/main" {
     import 'vue-multiselect/dist/vue-multiselect.min.css';
     import 'scss/main.scss';
 }
-declare module "tests/unit/components/interaction-designer/block-editors/choices/expressionTransformers.spec" { }
-declare module "stories/story-utils/storeSetup" {
+declare module "../tests/unit/components/interaction-designer/block-editors/choices/expressionTransformers.spec" { }
+declare module "../stories/story-utils/storeSetup" {
     import Vue from 'vue';
     import { IBlock, IFlow } from '@floip/flow-runner';
     export interface IBaseOptions {
@@ -7796,7 +7796,7 @@ declare module "stories/story-utils/storeSetup" {
         }): void;
     }
 }
-declare module "stories/story-utils/__VLS_types" {
+declare module "../stories/story-utils/__VLS_types" {
     import * as vue from 'vue';
     import type { FunctionalComponent, EmitsOptions, DefineComponent, SetupContext, ObjectDirective, FunctionDirective } from 'vue';
     type IsAny<T> = boolean extends (T extends never ? true : false) ? true : false;
@@ -7859,7 +7859,7 @@ declare module "stories/story-utils/__VLS_types" {
         [K in keyof T as IsComponent<T[K]> extends true ? K : never]: any;
     };
 }
-declare module "stories/story-utils/FlowBuilderContainer.vue" {
+declare module "../stories/story-utils/FlowBuilderContainer.vue" {
     import '@/css/stories/InteractionDesigner.css';
     import 'bootstrap';
     import 'bootstrap/dist/css/bootstrap.min.css';
@@ -7872,7 +7872,7 @@ declare module "stories/story-utils/FlowBuilderContainer.vue" {
     }
     export default FlowBuilderContainer;
 }
-declare module "stories/story-utils/FlowBuilderSidebarEditorContainer.vue" {
+declare module "../stories/story-utils/FlowBuilderSidebarEditorContainer.vue" {
     import Vue from 'vue';
     import { IBlock, IFlow } from '@floip/flow-runner';
     export class FlowBuilderSidebarEditorContainer extends Vue {
@@ -7883,8 +7883,8 @@ declare module "stories/story-utils/FlowBuilderSidebarEditorContainer.vue" {
     }
     export default FlowBuilderSidebarEditorContainer;
 }
-declare module "stories/CaseBlockStyled.stories" {
-    import { BaseMountedVueClass } from "stories/story-utils/storeSetup";
+declare module "../stories/CaseBlockStyled.stories" {
+    import { BaseMountedVueClass } from "../stories/story-utils/storeSetup";
     const _default_4: {
         title: string;
         excludeStories: RegExp;
@@ -7902,8 +7902,8 @@ declare module "stories/CaseBlockStyled.stories" {
     }
     export const ExistingDataBlock: () => typeof CurrentClass2;
 }
-declare module "stories/Flow.stories" {
-    import { BaseMountedVueClass } from "stories/story-utils/storeSetup";
+declare module "../stories/Flow.stories" {
+    import { BaseMountedVueClass } from "../stories/story-utils/storeSetup";
     const _default_5: {
         title: string;
         excludeStories: RegExp;
@@ -7924,8 +7924,8 @@ declare module "stories/Flow.stories" {
     }
     export const ExistingDataPreFilled: () => typeof CurrentClass2;
 }
-declare module "stories/LocationResponseBlock.stories" {
-    import { BaseMountedVueClass } from "stories/story-utils/storeSetup";
+declare module "../stories/LocationResponseBlock.stories" {
+    import { BaseMountedVueClass } from "../stories/story-utils/storeSetup";
     const _default_6: {
         title: string;
         excludeStories: RegExp;
@@ -7946,7 +7946,7 @@ declare module "stories/LocationResponseBlock.stories" {
     }
     export const NonStartingBlock: () => typeof CurrentClass3;
 }
-declare module "stories/story-utils/PlainFlowBuilderBlockEditorContainer.vue" {
+declare module "../stories/story-utils/PlainFlowBuilderBlockEditorContainer.vue" {
     import '@/css/stories/InteractionDesigner.css';
     import 'bootstrap';
     import 'bootstrap/dist/css/bootstrap.min.css';
@@ -7963,8 +7963,8 @@ declare module "stories/story-utils/PlainFlowBuilderBlockEditorContainer.vue" {
     }
     export default PlainFlowBuilderBlockEditorContainer;
 }
-declare module "stories/LogBlockPlain.stories" {
-    import { BaseMountedVueClass } from "stories/story-utils/storeSetup";
+declare module "../stories/LogBlockPlain.stories" {
+    import { BaseMountedVueClass } from "../stories/story-utils/storeSetup";
     const _default_7: {
         title: string;
         excludeStories: RegExp;
@@ -7979,8 +7979,8 @@ declare module "stories/LogBlockPlain.stories" {
     }
     export const ExistingDataBlock: () => typeof CurrentClass2;
 }
-declare module "stories/LogBlockStyled.stories" {
-    import { BaseMountedVueClass } from "stories/story-utils/storeSetup";
+declare module "../stories/LogBlockStyled.stories" {
+    import { BaseMountedVueClass } from "../stories/story-utils/storeSetup";
     const _default_8: {
         title: string;
         excludeStories: RegExp;
@@ -7999,8 +7999,8 @@ declare module "stories/LogBlockStyled.stories" {
     }
     export const ExistingDataNonStartingBlock: () => typeof CurrentClass3;
 }
-declare module "stories/MessageBlock.stories" {
-    import { BaseMountedVueClass, BaseMountedVueClassWithResourceAndMode } from "stories/story-utils/storeSetup";
+declare module "../stories/MessageBlock.stories" {
+    import { BaseMountedVueClass, BaseMountedVueClassWithResourceAndMode } from "../stories/story-utils/storeSetup";
     const _default_9: {
         title: string;
         excludeStories: RegExp;
@@ -8019,8 +8019,8 @@ declare module "stories/MessageBlock.stories" {
     }
     export const NonStartingBlock: () => typeof NonStartingBlockClass;
 }
-declare module "stories/NumericResponseBlock.stories" {
-    import { BaseMountedVueClass, BaseMountedVueClassWithResourceAndMode } from "stories/story-utils/storeSetup";
+declare module "../stories/NumericResponseBlock.stories" {
+    import { BaseMountedVueClass, BaseMountedVueClassWithResourceAndMode } from "../stories/story-utils/storeSetup";
     const _default_10: {
         title: string;
         excludeStories: RegExp;
@@ -8055,8 +8055,8 @@ declare module "stories/NumericResponseBlock.stories" {
     }
     export const NonStartingBlock: () => typeof CurrentClass5;
 }
-declare module "stories/OpenResponseBlock.stories" {
-    import { BaseMountedVueClass, BaseMountedVueClassWithResourceAndMode } from "stories/story-utils/storeSetup";
+declare module "../stories/OpenResponseBlock.stories" {
+    import { BaseMountedVueClass, BaseMountedVueClassWithResourceAndMode } from "../stories/story-utils/storeSetup";
     const _default_11: {
         title: string;
         excludeStories: RegExp;
@@ -8087,8 +8087,8 @@ declare module "stories/OpenResponseBlock.stories" {
     }
     export const NonStartingBlock: () => typeof CurrentClass5;
 }
-declare module "stories/OutputBlockStyled.stories" {
-    import { BaseMountedVueClass } from "stories/story-utils/storeSetup";
+declare module "../stories/OutputBlockStyled.stories" {
+    import { BaseMountedVueClass } from "../stories/story-utils/storeSetup";
     const _default_12: {
         title: string;
         excludeStories: RegExp;
@@ -8099,8 +8099,8 @@ declare module "stories/OutputBlockStyled.stories" {
     }
     export const Default: () => typeof DefaultClass;
 }
-declare module "stories/PhotoResponseBlock.stories" {
-    import { BaseMountedVueClass } from "stories/story-utils/storeSetup";
+declare module "../stories/PhotoResponseBlock.stories" {
+    import { BaseMountedVueClass } from "../stories/story-utils/storeSetup";
     const _default_13: {
         title: string;
         excludeStories: RegExp;
@@ -8119,8 +8119,8 @@ declare module "stories/PhotoResponseBlock.stories" {
     }
     export const NonStartingBlock: () => typeof CurrentClass3;
 }
-declare module "stories/RunAnotherFlowBlockStyled.stories" {
-    import { BaseMountedVueClass } from "stories/story-utils/storeSetup";
+declare module "../stories/RunAnotherFlowBlockStyled.stories" {
+    import { BaseMountedVueClass } from "../stories/story-utils/storeSetup";
     const _default_14: {
         title: string;
         excludeStories: RegExp;
@@ -8131,9 +8131,9 @@ declare module "stories/RunAnotherFlowBlockStyled.stories" {
     }
     export const Default: () => typeof DefaultClass;
 }
-declare module "stories/SelectManyResponsesBlock.stories" {
-    import selectManyResponseBlock from "src/components/interaction-designer/block-types/MobilePrimitives_SelectManyResponseBlock.vue";
-    import { BaseMountedVueClass, BaseMountedVueClassWithResourceAndMode } from "stories/story-utils/storeSetup";
+declare module "../stories/SelectManyResponsesBlock.stories" {
+    import selectManyResponseBlock from "components/interaction-designer/block-types/MobilePrimitives_SelectManyResponseBlock.vue";
+    import { BaseMountedVueClass, BaseMountedVueClassWithResourceAndMode } from "../stories/story-utils/storeSetup";
     const _default_15: {
         component: typeof selectManyResponseBlock;
         title: string;
@@ -8156,9 +8156,9 @@ declare module "stories/SelectManyResponsesBlock.stories" {
     }
     export const ExistingData: () => typeof ExistingDataClass;
 }
-declare module "stories/SelectOneResponseBlock.stories" {
-    import SelectOneResponseBlock from "src/components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue";
-    import { BaseMountedVueClass, BaseMountedVueClassWithResourceAndMode } from "stories/story-utils/storeSetup";
+declare module "../stories/SelectOneResponseBlock.stories" {
+    import SelectOneResponseBlock from "components/interaction-designer/block-types/MobilePrimitives_SelectOneResponseBlock.vue";
+    import { BaseMountedVueClass, BaseMountedVueClassWithResourceAndMode } from "../stories/story-utils/storeSetup";
     const _default_16: {
         component: typeof SelectOneResponseBlock;
         title: string;
@@ -8181,8 +8181,8 @@ declare module "stories/SelectOneResponseBlock.stories" {
     }
     export const ExistingData: () => typeof ExistingDataClass;
 }
-declare module "stories/SetContactPropertyBlock.stories" {
-    import { BaseMountedVueClass } from "stories/story-utils/storeSetup";
+declare module "../stories/SetContactPropertyBlock.stories" {
+    import { BaseMountedVueClass } from "../stories/story-utils/storeSetup";
     const _default_17: {
         title: string;
         excludeStories: RegExp;
@@ -8221,8 +8221,8 @@ declare module "stories/SetContactPropertyBlock.stories" {
     }
     export const ClearAction: () => typeof ClearActionClass;
 }
-declare module "stories/SetGroupMembershipBlock.stories" {
-    import { BaseMountedVueClass } from "stories/story-utils/storeSetup";
+declare module "../stories/SetGroupMembershipBlock.stories" {
+    import { BaseMountedVueClass } from "../stories/story-utils/storeSetup";
     const _default_18: {
         title: string;
         excludeStories: RegExp;
@@ -8239,13 +8239,13 @@ declare module "stories/SetGroupMembershipBlock.stories" {
     }
     export const ExistingDataBlock: () => typeof ExistingDataBlockClass;
 }
-declare module "stories/story-utils/router/index" {
+declare module "../stories/story-utils/router/index" {
     import VueRouter, { RouteConfig } from 'vue-router';
     export const routes: Array<RouteConfig>;
     const router: VueRouter;
     export default router;
 }
-declare module "stories/Toolbar.stories" {
+declare module "../stories/Toolbar.stories" {
     import Vue from 'vue';
     import { IFlow } from '@floip/flow-runner';
     const _default_19: {
