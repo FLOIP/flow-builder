@@ -3,13 +3,15 @@
   "version": "0.4.18",
   "description": "flow-builder provides an open source frontend for authoring flow interoperability project specification compliant flows.",
   "main": "./dist/flow-builder.common.js",
+  "types" : "./dist/flow-builder.d.ts",
   "files": [
     "dist/*"
   ],
   "scripts": {
     "build": "vue-cli-service build",
     "serve": "vue-cli-service serve",
-    "build-bundle": "vue-cli-service build --target lib --name flow-builder src/lib.ts && vue-tsc --declaration --emitDeclarationOnly --outFile dist/flow-builder.d.ts",
+    "emit-ts": "vue-tsc --declaration --emitDeclarationOnly --outFile dist/flow-builder.d.ts --declarationMap",
+    "build-bundle": "vue-cli-service build --target lib --name flow-builder src/lib.ts && yarn emit-ts",
     "build-bundle-and-commit": "yarn clean && yarn build-bundle && git add dist/ && git commit -m \"build-bundle\"",
     "resolve-conflicting-builds": "git checkout --theirs dist/ && yarn build-bundle",
     "test:unit": "vue-cli-service test:unit",
