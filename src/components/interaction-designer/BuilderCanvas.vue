@@ -16,10 +16,9 @@
 
 <script lang="ts">
 import {Component, Prop, Vue, Watch} from 'vue-property-decorator'
-import {cloneDeep, debounce, maxBy} from 'lodash'
+import {debounce, maxBy} from 'lodash'
 import {namespace} from 'vuex-class'
-import {IBlock, IFlow, ILanguage, IResource, IResources, SupportedMode} from '@floip/flow-runner'
-import {IValidationStatus} from '@/store/validation'
+import {IBlock, IFlow} from '@floip/flow-runner'
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
@@ -31,7 +30,6 @@ const MARGIN_HEIGHT_CORRECTION_PX = -10
 const MARGIN_WIDTH_CORRECTION_PX = 120
 
 const DEBOUNCE_SCROLL_TIMER_MS = 300
-// const DEBOUNCE_VALIDATION_TIMER_MS = 300
 
 @Component({})
 export class BuilderCanvas extends Vue {
