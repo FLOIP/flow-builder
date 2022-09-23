@@ -1,7 +1,6 @@
-import Lang from '@/lib/filters/lang';
 import { IResource, IResourceValue } from '@floip/flow-runner';
 import { SupportedMode } from '@floip/flow-runner/src/flow-spec/SupportedMode';
-declare const ResourceVariantTextEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
+declare const ResourceVariantTextEditor_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
 export declare class ResourceVariantTextEditor extends ResourceVariantTextEditor_base {
     readonly index: number;
     readonly resourceId: IResource['uuid'];

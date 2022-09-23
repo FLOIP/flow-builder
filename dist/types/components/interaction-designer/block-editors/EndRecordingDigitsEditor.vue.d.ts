@@ -1,6 +1,5 @@
 import { IBlock } from '@floip/flow-runner';
-import Lang from '@/lib/filters/lang';
-declare const EndRecordingDigitsEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
+declare const EndRecordingDigitsEditor_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
 export declare class EndRecordingDigitsEditor extends EndRecordingDigitsEditor_base {
     hasIvr: boolean;
     block: IBlock;

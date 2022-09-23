@@ -1,6 +1,5 @@
-import Lang from '@/lib/filters/lang';
 import { IBlock } from '@floip/flow-runner';
-declare const SelectionBanner_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
+declare const SelectionBanner_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
 export declare class SelectionBanner extends SelectionBanner_base {
     deleting: boolean;
     updated(): void;

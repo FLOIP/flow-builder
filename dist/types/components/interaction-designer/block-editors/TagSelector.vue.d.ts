@@ -1,6 +1,5 @@
 import { IBlock } from '@floip/flow-runner';
-import Lang from '@/lib/filters/lang';
-declare const TagSelector_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
+declare const TagSelector_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
 export declare class TagSelector extends TagSelector_base {
     readonly block: IBlock;
     readonly taggable: boolean;

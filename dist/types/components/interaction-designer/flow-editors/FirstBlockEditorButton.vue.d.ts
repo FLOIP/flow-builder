@@ -1,6 +1,5 @@
 import { IBlock, IFlow } from '@floip/flow-runner';
-import Lang from '@/lib/filters/lang';
-declare const FirstBlockEditorButton_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
+declare const FirstBlockEditorButton_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
 export declare class FirstBlockEditorButton extends FirstBlockEditorButton_base {
     readonly isEditable: boolean;
     readonly blockId: IBlock['uuid'];

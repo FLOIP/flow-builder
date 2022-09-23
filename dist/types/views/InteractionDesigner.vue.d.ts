@@ -1,10 +1,8 @@
-import Lang from '@/lib/filters/lang';
-import Routes from '@/lib/mixins/Routes';
 import { Route } from 'vue-router';
 import { IBlock, IFlow } from '@floip/flow-runner';
 import { ErrorObject } from 'ajv';
 import { MutationPayload } from 'vuex';
-declare const InteractionDesigner_base: import("vue-class-component/lib/declarations").VueClass<Lang & Routes>;
+declare const InteractionDesigner_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
 export declare class InteractionDesigner extends InteractionDesigner_base {
     readonly id: string;
     readonly mode: string;

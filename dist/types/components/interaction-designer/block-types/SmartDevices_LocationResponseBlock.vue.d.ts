@@ -1,6 +1,5 @@
 import { IBlock, IFlow, IResource } from '@floip/flow-runner';
-import Lang from '@/lib/filters/lang';
-declare const SmartDevices_LocationResponseBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
+declare const SmartDevices_LocationResponseBlock_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
 export declare class SmartDevices_LocationResponseBlock extends SmartDevices_LocationResponseBlock_base {
     readonly block: IBlock;
     readonly flow: IFlow;
@@ -26,4 +25,4 @@ export declare class SmartDevices_LocationResponseBlock extends SmartDevices_Loc
     isEditable: boolean;
 }
 export default SmartDevices_LocationResponseBlock;
-export declare const install: (builder: import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => import("vue-property-decorator").Vue<Record<string, any>, Record<string, any>, never, never, any>>) => true | void;
+export declare const install: any;

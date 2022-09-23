@@ -1,5 +1,4 @@
-import Lang from '@/lib/filters/lang';
-declare const NumericEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
+declare const NumericEditor_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
 export declare class NumericEditor extends NumericEditor_base {
     readonly validState?: boolean;
     readonly label: string | number;

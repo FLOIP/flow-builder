@@ -1,14 +1,12 @@
-import Lang from '@/lib/filters/lang';
-import Routes from '@/lib/mixins/Routes';
 import { IFlow } from '@floip/flow-runner';
-declare const FetchFlow_base: import("vue-class-component/lib/declarations").VueClass<Lang & Routes>;
+declare const FetchFlow_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
 declare class FetchFlow extends FetchFlow_base {
     readonly uuid: string;
     readonly appConfig: object;
     readonly builderConfig: object;
     message: string;
     showNewButton: boolean;
-    flowLink: null;
+    flowLink: any;
     activeFlow: IFlow;
     flow_fetch: ({ fetchRoute }: {
         fetchRoute: string;

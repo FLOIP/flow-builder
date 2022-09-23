@@ -1,8 +1,7 @@
-import Lang from '@/lib/filters/lang';
-import Routes from '@/lib/mixins/Routes';
+/// <reference types="lodash" />
 import { IContext } from '@floip/flow-runner';
 import { ErrorObject } from 'ajv';
-declare const ImportFlow_base: import("vue-class-component/lib/declarations").VueClass<Lang & Routes>;
+declare const ImportFlow_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
 declare class ImportFlow extends ImportFlow_base {
     readonly appConfig: object;
     readonly builderConfig: object;

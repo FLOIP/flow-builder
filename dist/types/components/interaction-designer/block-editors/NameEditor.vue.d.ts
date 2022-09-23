@@ -1,6 +1,5 @@
-import Lang from '@/lib/filters/lang';
 import { IBlock } from '@floip/flow-runner';
-declare const NameEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
+declare const NameEditor_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
 export declare class NameEditor extends NameEditor_base {
     editBlockName: boolean;
     readonly block: IBlock;

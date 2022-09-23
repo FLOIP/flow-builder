@@ -1,5 +1,4 @@
 import '@avcs/autosuggest/dropdown.css';
-import Lang from '@/lib/filters/lang';
 import { IFlow } from '@floip/flow-runner';
 import { ISubscriberPropertyField, ISuggestion } from '@/lib/types';
 interface IAutoSuggest {
@@ -7,7 +6,7 @@ interface IAutoSuggest {
         dropdown: HTMLElement;
     };
 }
-declare const ExpressionInput_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
+declare const ExpressionInput_base: import("vue-class-component/lib/declarations").VueClass<unknown>;
 export declare class ExpressionInput extends ExpressionInput_base {
     readonly label: string | number;
     readonly labelClass: string;
