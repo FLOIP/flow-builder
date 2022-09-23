@@ -1,5 +1,5 @@
-import { IValidationStatus } from '@/store/validation';
-import Lang from '@/lib/filters/lang';
+import { IValidationStatus } from '../../../store/validation';
+import Lang from '../../../lib/filters/lang';
 import { ErrorObject } from 'ajv';
 import { IBlock, IFlow, IResource } from '@floip/flow-runner';
 declare const BlockErrorsExpandable_base: import("vue-class-component/lib/declarations").VueClass<Lang>;

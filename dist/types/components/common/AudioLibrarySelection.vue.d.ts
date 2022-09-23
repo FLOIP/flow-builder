@@ -1,5 +1,5 @@
-import Lang from '@/lib/filters/lang';
-import Moment from '@/lib/filters/moment';
+import Lang from '../../lib/filters/lang';
+import Moment from '../../lib/filters/moment';
 import { IAudioFile } from '../interaction-designer/resource-editors';
 declare const AudioLibrarySelection_base: import("vue-class-component/lib/declarations").VueClass<Lang & Moment>;
 export declare class AudioLibrarySelection extends AudioLibrarySelection_base {

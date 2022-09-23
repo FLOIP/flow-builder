@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import { ActionTree, GetterTree, Module, MutationTree } from 'vuex';
-import { IRootState } from '@/store';
+import { IRootState } from '../../store';
 import { IBlock, IBlockExit, IBlockUIMetadataCanvasCoordinates } from '@floip/flow-runner';
-import { IDeepBlockExitIdWithinFlow } from '@/store/flow/block';
+import { IDeepBlockExitIdWithinFlow } from '../../store/flow/block';
 export declare enum OperationKind {
     CONNECTION_SOURCE_RELOCATE = "CONNECTION_SOURCE_RELOCATE",
     CONNECTION_CREATE = "CONNECTION_CREATE",

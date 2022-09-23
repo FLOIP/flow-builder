@@ -1,6 +1,6 @@
 import { ILanguage } from '@floip/flow-runner/dist/flow-spec/ILanguage';
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
-import { IRootState } from '@/store';
+import { IRootState } from '../../../store';
 import { IBlock, IContext } from '@floip/flow-runner';
 import { IContactPropertyMultipleChoice } from '../block-types/Core_SetContactPropertyStore.model';
 import { IGroupOption } from '../block-types/Core_SetGroupMembershipStore';

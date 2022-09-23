@@ -1,6 +1,6 @@
-import Lang from '@/lib/filters/lang';
-import Permissions from '@/lib/mixins/Permissions';
-import Routes from '@/lib/mixins/Routes';
+import Lang from '../../../lib/filters/lang';
+import Permissions from '../../../lib/mixins/Permissions';
+import Routes from '../../../lib/mixins/Routes';
 import { IBlock, IContext, IFlow, IResource } from '@floip/flow-runner';
 import { RawLocation } from 'vue-router';
 import { Dictionary } from 'vue-router/types/router';

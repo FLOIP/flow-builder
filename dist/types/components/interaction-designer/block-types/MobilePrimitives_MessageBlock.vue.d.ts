@@ -1,6 +1,6 @@
 import { IBlock, IFlow, IResource } from '@floip/flow-runner';
 import { IMessageBlock } from '@floip/flow-runner/src/model/block/IMessageBlock';
-import Lang from '@/lib/filters/lang';
+import Lang from '../../../lib/filters/lang';
 declare const MobilePrimitives_MessageBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 declare class MobilePrimitives_MessageBlock extends MobilePrimitives_MessageBlock_base {
     readonly block: IMessageBlock;

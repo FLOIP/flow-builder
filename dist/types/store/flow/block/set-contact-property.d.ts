@@ -1,4 +1,4 @@
-import { IRootState } from '@/store';
+import { IRootState } from '../../../store';
 import { IBlock, SetContactProperty } from '@floip/flow-runner';
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
 import { IFlowsState } from '../index';

@@ -1,5 +1,5 @@
-import Lang from '@/lib/filters/lang';
-import { IIndexedString } from '@/store/validation';
+import Lang from '../../lib/filters/lang';
+import { IIndexedString } from '../../store/validation';
 declare const ValidationMessage_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class ValidationMessage extends ValidationMessage_base {
     messageKey: string;

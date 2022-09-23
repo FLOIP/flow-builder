@@ -1,5 +1,5 @@
 import { StoreOptions } from 'vuex';
-import { IClipboardState } from '@/store/clipboard';
+import { IClipboardState } from '../store/clipboard';
 import { IFlowsState } from './flow';
 import { IBuilderState } from './builder';
 import { IValidationState } from './validation';

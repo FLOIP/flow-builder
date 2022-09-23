@@ -1,5 +1,5 @@
 import { ActionTree, GetterTree, Module, MutationTree } from 'vuex';
-import { IRootState } from '@/store';
+import { IRootState } from '../../store';
 import { IPrompt } from '@floip/flow-runner';
 export interface BlocksData {
     isFocused: boolean;

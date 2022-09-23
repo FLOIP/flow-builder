@@ -1,8 +1,8 @@
 import { ActionContext, GetterTree, Module, MutationTree } from 'vuex';
-import { IRootState } from '@/store';
+import { IRootState } from '../../../store';
 import { IBlock } from '@floip/flow-runner';
-import { IValidationStatus } from '@/store/validation';
-import { ValidationResults } from '@/lib/validations';
+import { IValidationStatus } from '../../../store/validation';
+import { ValidationResults } from '../../../lib/validations';
 export interface IEmptyState {
 }
 export declare const getters: GetterTree<IEmptyState, IRootState>;

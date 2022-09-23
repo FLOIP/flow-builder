@@ -1,7 +1,7 @@
 /// <reference types="lodash" />
 import { Vue } from 'vue-property-decorator';
 import { IBlock, IFlow, ILanguage, IResource, IResources, SupportedMode } from '@floip/flow-runner';
-import { IValidationStatus } from '@/store/validation';
+import { IValidationStatus } from '../../store/validation';
 export declare class BuilderCanvas extends Vue {
     block: IBlock;
     widthAdjustment: number;

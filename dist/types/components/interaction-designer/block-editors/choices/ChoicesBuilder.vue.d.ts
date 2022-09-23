@@ -1,5 +1,5 @@
-import { findOrGenerateStubbedVariantOn } from '@/store/flow/resource';
-import Lang from '@/lib/filters/lang';
+import { findOrGenerateStubbedVariantOn } from '../../../../store/flow/resource';
+import Lang from '../../../../lib/filters/lang';
 import { IBlock, IFlow, IResource, IResourceValue, SupportedContentType, SupportedMode } from '@floip/flow-runner';
 import { ISelectOneResponseBlock } from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock';
 import Vue from 'vue';

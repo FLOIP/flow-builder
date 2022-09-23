@@ -1,6 +1,6 @@
-import Lang from '@/lib/filters/lang';
-import { IValidationStatus } from '@/store/validation';
-import Routes from '@/lib/mixins/Routes';
+import Lang from '../../../lib/filters/lang';
+import { IValidationStatus } from '../../../store/validation';
+import Routes from '../../../lib/mixins/Routes';
 import { IBlock, IFlow, IResource } from '@floip/flow-runner';
 import { ErrorObject } from 'ajv';
 declare const ErrorNotifications_base: import("vue-class-component/lib/declarations").VueClass<Lang & Routes>;

@@ -1,5 +1,5 @@
-import Lang from '@/lib/filters/lang';
-import Routes from '@/lib/mixins/Routes';
+import Lang from '../lib/filters/lang';
+import Routes from '../lib/mixins/Routes';
 import { Route } from 'vue-router';
 import { IBlock, IFlow } from '@floip/flow-runner';
 import { ErrorObject } from 'ajv';

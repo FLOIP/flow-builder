@@ -1,5 +1,5 @@
 import { IBlock } from '@floip/flow-runner';
-import { IIndexedString, IValidationStatus } from '@/store/validation/index';
+import { IIndexedString, IValidationStatus } from '../../store/validation/index';
 import { ErrorObject, ValidateFunction } from 'ajv';
 import { JSONSchema7 } from 'json-schema';
 /**

@@ -1,6 +1,6 @@
 import { IOutputBlock } from '@floip/flow-runner/src/model/block/IOutputBlock';
 import { IBlock, IFlow } from '@floip/flow-runner';
-import Lang from '@/lib/filters/lang';
+import Lang from '../../../lib/filters/lang';
 declare const Core_OutputBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class Core_OutputBlock extends Core_OutputBlock_base {
     readonly block: IOutputBlock;

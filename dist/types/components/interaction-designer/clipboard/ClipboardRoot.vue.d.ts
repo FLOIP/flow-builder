@@ -1,7 +1,7 @@
 import { IContext, FlowRunner } from '@floip/flow-runner';
-import { IFlowsState } from '@/store/flow';
-import Lang from '@/lib/filters/lang';
-import { BlocksData } from '@/store/clipboard';
+import { IFlowsState } from '../../../store/flow';
+import Lang from '../../../lib/filters/lang';
+import { BlocksData } from '../../../store/clipboard';
 declare const ClipboardRoot_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export default class ClipboardRoot extends ClipboardRoot_base {
     runner: FlowRunner;

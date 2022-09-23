@@ -1,4 +1,4 @@
-import Lang from '@/lib/filters/lang';
+import Lang from '../../lib/filters/lang';
 declare type MultiselectOption = {
     name: string;
     label: string;

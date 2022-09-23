@@ -1,4 +1,4 @@
-import Lang from '@/lib/filters/lang';
+import Lang from '../../../lib/filters/lang';
 export declare type Recorder = {
     name: string | null;
     phone: string | null;

@@ -1,5 +1,5 @@
 import { IContext } from '@floip/flow-runner';
-import Lang from '@/lib/filters/lang';
+import Lang from '../../../../lib/filters/lang';
 declare const ImportMatcher_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class ImportMatcher extends ImportMatcher_base {
     readonly matchNotFoundText: string;

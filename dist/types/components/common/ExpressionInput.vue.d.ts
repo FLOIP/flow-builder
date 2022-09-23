@@ -1,7 +1,7 @@
 import '@avcs/autosuggest/dropdown.css';
-import Lang from '@/lib/filters/lang';
+import Lang from '../../lib/filters/lang';
 import { IFlow } from '@floip/flow-runner';
-import { ISubscriberPropertyField, ISuggestion } from '@/lib/types';
+import { ISubscriberPropertyField, ISuggestion } from '../../lib/types';
 interface IAutoSuggest {
     dropdown: {
         dropdown: HTMLElement;

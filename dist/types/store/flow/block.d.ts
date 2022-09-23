@@ -1,6 +1,6 @@
 import { IBlock, IBlockExit } from '@floip/flow-runner';
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
-import { IRootState } from '@/store';
+import { IRootState } from '../../store';
 import { IFlowsState } from '.';
 export declare type BlockConfigFieldType = object | string | number | boolean | undefined | null;
 export declare const getters: GetterTree<IFlowsState, IRootState>;

@@ -1,5 +1,5 @@
 import { IBlock, IFlow, IResource } from '@floip/flow-runner';
-import Lang from '@/lib/filters/lang';
+import Lang from '../../../lib/filters/lang';
 declare const SmartDevices_PhotoResponseBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class SmartDevices_PhotoResponseBlock extends SmartDevices_PhotoResponseBlock_base {
     readonly block: IBlock;

@@ -1,6 +1,6 @@
 import { IBlock, IBlockExit } from '@floip/flow-runner';
-import Lang from '@/lib/filters/lang';
-import { IConnectionContext } from '@/store/builder';
+import Lang from '../../lib/filters/lang';
+import { IConnectionContext } from '../../store/builder';
 export declare const colorStates: {
     ON_HOVER: string;
     CONNECTING: string;

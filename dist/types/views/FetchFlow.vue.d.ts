@@ -1,5 +1,5 @@
-import Lang from '@/lib/filters/lang';
-import Routes from '@/lib/mixins/Routes';
+import Lang from '../lib/filters/lang';
+import Routes from '../lib/mixins/Routes';
 import { IFlow } from '@floip/flow-runner';
 declare const FetchFlow_base: import("vue-class-component/lib/declarations").VueClass<Lang & Routes>;
 declare class FetchFlow extends FetchFlow_base {

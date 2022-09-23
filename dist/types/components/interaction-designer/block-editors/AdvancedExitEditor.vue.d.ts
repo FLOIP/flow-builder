@@ -1,4 +1,4 @@
-import Lang from '@/lib/filters/lang';
+import Lang from '../../../lib/filters/lang';
 import { IBlock, IBlockExit } from '@floip/flow-runner';
 declare const AdvancedExitEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class AdvancedExitEditor extends AdvancedExitEditor_base {

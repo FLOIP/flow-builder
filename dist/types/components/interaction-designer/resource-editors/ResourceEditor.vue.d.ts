@@ -1,9 +1,9 @@
 import { IBlock, IFlow, IResource, IResourceValue as IResourceDefinitionVariantOverModes, SupportedContentType, SupportedMode } from '@floip/flow-runner';
-import Lang from '@/lib/filters/lang';
-import Permissions from '@/lib/mixins/Permissions';
-import Routes from '@/lib/mixins/Routes';
-import FlowUploader from '@/lib/mixins/FlowUploader';
-import { discoverContentTypesFor, findOrGenerateStubbedVariantOn, findResourceVariantOverModesOn, IResourceDefinitionVariantOverModesFilter } from '@/store/flow/resource';
+import Lang from '../../../lib/filters/lang';
+import Permissions from '../../../lib/mixins/Permissions';
+import Routes from '../../../lib/mixins/Routes';
+import FlowUploader from '../../../lib/mixins/FlowUploader';
+import { discoverContentTypesFor, findOrGenerateStubbedVariantOn, findResourceVariantOverModesOn, IResourceDefinitionVariantOverModesFilter } from '../../../store/flow/resource';
 import { ILanguage } from '@floip/flow-runner/dist/flow-spec/ILanguage';
 export interface IAudioFile {
     id: string;

@@ -1,7 +1,7 @@
 import { IBlock, IBlockExit, IFlow } from '@floip/flow-runner';
-import { ConnectionLayout, IConnectionContext, IPosition, OperationKind, SupportedOperation } from '@/store/builder';
-import Lang from '@/lib/filters/lang';
-import { BlockClasses } from '@/lib/types';
+import { ConnectionLayout, IConnectionContext, IPosition, OperationKind, SupportedOperation } from '../../store/builder';
+import Lang from '../../lib/filters/lang';
+import { BlockClasses } from '../../lib/types';
 declare type Draggable = any;
 declare type BlockAction = ({ block }: {
     block: IBlock;

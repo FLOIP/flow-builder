@@ -1,5 +1,5 @@
 import { Vue } from 'vue-property-decorator';
-import { Recorder } from '@/components/interaction-designer/block-editors/PhoneRecordingRecorderSelector.vue';
+import { Recorder } from '../../../components/interaction-designer/block-editors/PhoneRecordingRecorderSelector.vue';
 export declare class PhoneRecorder extends Vue {
     readonly recordingKey: string;
     callConfig: Partial<{

@@ -1,4 +1,4 @@
-import Lang from '@/lib/filters/lang';
+import Lang from '../../../lib/filters/lang';
 declare type Upload = {
     progress: number;
     status: Map<string, number>;

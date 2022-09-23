@@ -1,6 +1,6 @@
 import { IBlock, ISetGroupMembershipBlockConfig, IGroupMembership } from '@floip/flow-runner';
-import Lang from '@/lib/filters/lang';
-import { BlockConfigFieldType } from '@/store/flow/block';
+import Lang from '../../../lib/filters/lang';
+import { BlockConfigFieldType } from '../../../store/flow/block';
 declare type MembershipAction = {
     id: string;
     label: string;

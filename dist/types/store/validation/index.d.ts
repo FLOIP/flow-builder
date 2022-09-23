@@ -1,5 +1,5 @@
 import { ActionTree, GetterTree, Module, MutationTree } from 'vuex';
-import { IRootState } from '@/store';
+import { IRootState } from '../../store';
 import { ErrorObject } from 'ajv';
 export interface IIndexedString {
     [key: string]: string;
