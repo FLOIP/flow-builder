@@ -3,15 +3,14 @@
   "version": "0.4.18",
   "description": "flow-builder provides an open source frontend for authoring flow interoperability project specification compliant flows.",
   "main": "./dist/flow-builder.common.js",
-  "types" : "./dist/flow-builder.d.ts",
+  "types": "./dist/flow-builder.d.ts",
   "files": [
     "dist/*"
   ],
   "scripts": {
     "build": "vue-cli-service build",
     "serve": "vue-cli-service serve",
-    "emit-ts": "vue-tsc --rootDir ./src --outFile dist/flow-builder.d.ts --declaration --emitDeclarationOnly --declarationMap",
-    "build-bundle": "vue-cli-service build --target lib --name flow-builder src/lib.ts && yarn emit-ts",
+    "build-bundle": "vue-cli-service build --target lib --name flow-builder src/lib.ts && yarn emit-dts",
     "build-bundle-and-commit": "yarn clean && yarn build-bundle && git add dist/ && git commit -m \"build-bundle\"",
     "resolve-conflicting-builds": "git checkout --theirs dist/ && yarn build-bundle",
     "test:unit": "vue-cli-service test:unit",
@@ -21,6 +20,7 @@
     "storybook:serve": "vue-cli-service storybook:serve -p 6006 -c config/storybook",
     "md-docs": "./node_modules/widdershins/widdershins.js docs/routes/openapi/routes.yaml docs/routes/markdown/routes.md --language_tabs 'javascript:Javascript' --omitHeader",
     "clean": "rm -rf dist/",
+    "emit-dts": "vue-tsc --rootDir ./src --outDir dist/types --declaration --emitDeclarationOnly",
     "deploy": "yarn clean && yarn build-bundle && git add dist/ && git commit -m \"Build + package for release.\" && yarn version --patch && git push origin --tags HEAD"
   },
   "engines": {
