@@ -74,16 +74,25 @@
 
               <div class="vertical-divider" />
 
-              <template v-if="isResourceEditorEnabled">
+              <div
+                v-if="isResourceViewerEnabled"
+                class="btn-group mr-3">
+                <router-link
+                  :class="{active: isBuilderCanvasEnabled, disabled: isTreeSaving}"
+                  :to="editTreeUrl"
+                  class="btn btn-outline-primary btn-sm"
+                  @click.native.prevent="handlePersistFlow(editTreeUrl)">
+                  {{ trans('flow-builder.flow-view') }}
+                </router-link>
+                <!--TODO: VMO-7095 handle the mode for resource viewer-->
                 <router-link
                   :to="resourceViewUrl"
                   class="btn btn-outline-primary btn-sm"
-                  @click.native="handleResourceViewerSelected">
+                  :class="{active: isResourceViewerCanvasEnabled, disabled: isTreeSaving}"
+                  @click.native.prevent="handlePersistFlow(resourceViewUrl)">
                   {{ trans('flow-builder.resource-view') }}
                 </router-link>
-
-                <div class="vertical-divider" />
-              </template>
+              </div>
 
               <div
                 v-if="!ui.isEditableLocked"
@@ -117,7 +126,7 @@
 
             <div class="ml-auto mr-2">
               <button
-                v-if="hasSimulator"
+                v-if="isBuilderCanvasEnabled && hasSimulator"
                 type="button"
                 class="btn btn-outline-primary btn-sm"
                 @click="setSimulatorActive(true)">
@@ -129,7 +138,7 @@
               </div>
 
               <button
-                v-if="hasToolbarExportButton"
+                v-if="isBuilderCanvasEnabled && hasToolbarExportButton"
                 class="btn btn-outline-primary btn-sm"
                 :class="{active: isExportVisible}"
                 @click="toggleExportVisibility">
@@ -138,7 +147,7 @@
 
               <!--TODO - do disable if no changes logic-->
               <button
-                v-if="isEditable && isFeatureTreeSaveEnabled"
+                v-if="isBuilderCanvasEnabled && isEditable && isFeatureTreeSaveEnabled"
                 v-b-tooltip.hover="trans('flow-builder.save-changes-to-the-flow')"
                 type="button"
                 class="btn btn-outline-primary btn-sm ml-4 save-button"
@@ -155,8 +164,9 @@
         </div>
       </div>
 
+      <!--TODO: Extract this div into a smaller component-->
       <div
-        v-if="isEditable"
+        v-if="isBuilderCanvasEnabled && isEditable"
         class="tree-workspace-panel-heading panel-heading w-100 bg-white d-flex justify-content-start pt-0 pb-0">
         <div class="tree-workspace-panel-heading-contents">
           <ul class="nav">
@@ -296,7 +306,7 @@
         </div>
       </div>
     </div>
-    <div class="tree-builder-toolbar-alerts w-100">
+    <div v-if="isBuilderCanvasEnabled" class="tree-builder-toolbar-alerts w-100">
       <selection-banner
         v-if="isEditable"
         @updated="handleHeightChangeFromDOM" />
@@ -397,6 +407,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   get resourceViewUrl(): string {
     return this.editTreeRoute({
       component: 'resource-viewer',
+      mode: 'edit',
     })
   }
 
@@ -408,14 +419,14 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
 
   get editTreeUrl(): string {
     return this.editTreeRoute({
-      component: 'designer',
+      component: 'builder',
       mode: 'edit',
     })
   }
 
   get viewTreeUrl(): string {
     return this.editTreeRoute({
-      component: 'designer',
+      component: 'builder',
       mode: 'view',
     })
   }
@@ -572,9 +583,9 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     return shouldShowDividerBeforeBlock && this.isBlockAvailableByBlockClass[className]
   }
 
-  handleResourceViewerSelected(): void {
-    this.$el.scrollIntoView(true)
-  }
+  // handleResourceViewerSelected(): void {
+  //   this.$el.scrollIntoView(true)
+  // }
 
   // This could be extracted to a helper mixin of some sort so it can be used in other places
   removeNilValues(obj: any): Dictionary<unknown> {
@@ -620,7 +631,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @Getter isFeatureViewResultsEnabled?: boolean
   @Getter isFeatureSimulatorEnabled?: boolean
   @Getter isFeatureUpdateInteractionTotalsEnabled?: boolean
-  @Getter isResourceEditorEnabled?: boolean
+  @Getter isResourceViewerEnabled?: boolean
   @Mutation setTreeSaving!: (isSaving: boolean) => void
   @Action attemptSaveTree!: void
   @Getter getToolbarConfig!: boolean
@@ -648,7 +659,10 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @builderVuexNamespace.Getter hasFlowChanges!: boolean
   @builderVuexNamespace.State activeBlockId?: IBlock['uuid']
   @builderVuexNamespace.Getter activeBlock?: IBlock
+  @builderVuexNamespace.Getter isBuilderCanvasEnabled!: boolean
+  @builderVuexNamespace.Getter isResourceViewerCanvasEnabled!: boolean
   @builderVuexNamespace.Mutation activateBlock!: ({blockId}: { blockId: IBlock['uuid'] | null}) => void
+  @builderVuexNamespace.Mutation setActiveMainComponent!: ({mainComponent}: {mainComponent: string | undefined}) => void
 
   // Clipboard
   @clipboardVuexNamespace.Action setSimulatorActive!: (value: boolean) => void
@@ -729,14 +743,13 @@ export default TreeBuilderToolbar
   border-color: $primary-900;
   background-color: $white;
 
-  &.active,
-  &.save-button:disabled {
-    color: $primary-900;
-    background-color: $primary-100;
-  }
-
-  &.save-button:disabled {
-    opacity: 1;
+  &.active {
+    border-color: $primary-900;
+    &.disabled {
+      color: $primary-900;
+      background-color: $primary-100;
+      opacity: 1;
+    }
   }
 }
 </style>

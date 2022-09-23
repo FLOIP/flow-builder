@@ -18,11 +18,12 @@ export const routes = [
     component: () => import(/* webpackChunkName:"chunk-builder" */ '@/views/FetchFlow.vue'),
   },
   {
-    path: '/flows/:id/designer/:mode',
+    path: '/flows/:id/:component/:mode',
     name: 'flow-canvas',
     props: (route) => ({
       id: route.params.id,
       mode: route.params.mode,
+      mainComponent: route.params.component,
     }),
     component: () => import(/* webpackChunkName:"chunk-builder" */ '@/views/InteractionDesigner.vue'),
     children: [
