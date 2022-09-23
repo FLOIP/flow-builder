@@ -3,7 +3,7 @@
   "version": "0.4.18",
   "description": "flow-builder provides an open source frontend for authoring flow interoperability project specification compliant flows.",
   "main": "./dist/flow-builder.common.js",
-  "types": "./dist/flow-builder.d.ts",
+  "types": "./dist/types/lib.d.ts",
   "files": [
     "dist/*"
   ],
