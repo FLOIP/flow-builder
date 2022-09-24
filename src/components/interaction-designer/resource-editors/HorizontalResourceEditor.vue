@@ -18,8 +18,8 @@
           <div class="mr-auto">{{language || 'flow-builder.unknown-language' | trans}}</div>
           <div class="ml-auto">
             <button
-              :aria-controls="`collapse-lang-panel-${languageId}`"
-              :data-target="`#collapse-lang-panel-${languageId}`"
+              :aria-controls="`collapse-lang-panel-${block.uuid}-${languageId}`"
+              :data-target="`#collapse-lang-panel-${block.uuid}-${languageId}`"
               aria-expanded="false"
               class="btn btn-sm btn-primary"
               data-toggle="collapse"
@@ -28,7 +28,7 @@
             </button>
           </div>
         </div>
-        <div :id="`collapse-lang-panel-${languageId}`" class="language-panel-body p-2 collapse multi-collapse">
+        <div :id="`collapse-lang-panel-${block.uuid}-${languageId}`" class="language-panel-body p-2 collapse multi-collapse">
           <language-resource-editor
             :block="block"
             :language-id="languageId"
