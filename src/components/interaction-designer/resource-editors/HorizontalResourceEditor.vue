@@ -5,11 +5,30 @@
     <div>
       <div v-for="({id: languageId, label: language}, langIndex) in activeFlow.languages"
            :key="languageId"
-           class="panel panel-default" >
-        <div class="panel-heading">
-          {{language || 'flow-builder.unknown-language' | trans}}
+           :class="{
+             'radius-on-top': langIndex === 0,
+             'radius-on-bottom': langIndex === activeFlow.languages.length - 1
+           }"
+           class="language-panel">
+        <div :class="{
+             'radius-on-top': langIndex === 0,
+             'radius-on-bottom': langIndex === activeFlow.languages.length - 1
+           }"
+             class="language-panel-heading p-2 d-flex">
+          <div class="mr-auto">{{language || 'flow-builder.unknown-language' | trans}}</div>
+          <div class="ml-auto">
+            <button
+              :aria-controls="`collapse-lang-panel-${languageId}`"
+              :data-target="`#collapse-lang-panel-${languageId}`"
+              aria-expanded="false"
+              class="btn btn-sm btn-primary"
+              data-toggle="collapse"
+              type="button">
+              show/hide
+            </button>
+          </div>
         </div>
-        <div class="panel-body">
+        <div :id="`collapse-lang-panel-${languageId}`" class="language-panel-body p-2 collapse multi-collapse">
           <language-resource-editor
             :block="block"
             :language-id="languageId"
@@ -50,20 +69,29 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
 export default ResourceEditor
 </script>
 
-<style scoped>
-.tab-content-style {
-  background: #F4F4F4;
-  padding: 10px;
+<style lang="scss" scoped>
+@import "../../../scss/custom_variables";
+
+.language-panel {
+  margin-top: -1px; /** To avoid bold border separator on multiple languages **/
+  border: 1px solid $neutral-200;
 }
-.ivr-buttons {
-  font-size: small;
-  flex-grow: 1;
+
+.radius-on-top {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
 }
-.custom-icons {
-  height: 1.25em;
-  width: 1.25em;
+
+.radius-on-bottom {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
 }
-.library-icons {
-  margin-top: 2px;
+
+.language-panel-heading {
+  background-color: white;
+}
+
+.language-panel-body {
+  border-top: 1px solid $neutral-200;
 }
 </style>
