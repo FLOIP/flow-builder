@@ -113,13 +113,21 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
 
   @validationVuexNamespace.Action validate_flow!: ({flow}: { flow: IFlow }) => Promise<IValidationStatus>
   debounceFlowValidation = debounce(function (this: any, {newFlow}: {newFlow: IFlow}) {
-    console.debug('watch/activeFlow:', 'active flow has changed', `from ${this.mainComponent}.`, 'Validating ...')
-    this.validate_flow({flow: newFlow})
+    if (newFlow !== undefined) {
+      console.debug('watch/activeFlow:', 'active flow has changed', `from ${this.mainComponent}.`, 'Validating ...');
+      this.validate_flow({flow: newFlow})
+    } else {
+      console.warn('watch/activeFlow:', 'newFlow is undefined')
+    }
   }, DEBOUNCE_VALIDATION_TIMER_MS)
   @validationVuexNamespace.Action validate_allBlocksWithinFlow!: () => Promise<void>
   debounceBlockValidation = debounce(function (this: any) {
-    console.debug('watch/activeFlow.blocks:', 'blocks inside active flow have changed', `from ${this.mainComponent}.`, 'Validating ...')
-    this.validate_allBlocksWithinFlow()
+    if (this.activeFlow !== undefined) {
+      console.debug('watch/activeFlow.blocks:', 'blocks inside active flow have changed', `from ${this.mainComponent}.`, 'Validating ...');
+      this.validate_allBlocksWithinFlow()
+    } else {
+      console.warn('watch/activeFlow.blocks:', 'activeFlow is undefined')
+    }
   }, DEBOUNCE_VALIDATION_TIMER_MS)
   @validationVuexNamespace.Action validate_resourcesOnSupportedValues!: (
     {resources, supportedModes, supportedLanguages}: {resources: IResource[], supportedModes: SupportedMode[], supportedLanguages: ILanguage[]}
@@ -128,11 +136,15 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   @Watch('activeFlow.resources', {deep: true, immediate: true})
   async onResourcesOnActiveFlowChanged(newResources: IResources, oldResources: IResources): Promise<void> {
     console.debug('watch/activeFlow.resources:', 'resources inside active flow have changed', `from ${this.mainComponent}.`, 'Validating ...')
-    await this.validate_resourcesOnSupportedValues({
-      resources: newResources,
-      supportedModes: this.activeFlow?.supported_modes,
-      supportedLanguages: this.activeFlow?.languages,
-    })
+    if (this.activeFlow !== undefined) {
+      await this.validate_resourcesOnSupportedValues({
+        resources: newResources,
+        supportedModes: this.activeFlow.supported_modes,
+        supportedLanguages: this.activeFlow.languages,
+      })
+    } else {
+      console.warn('watch/activeFlow.resources:', 'activeFlow is undefined')
+    }
   }
   // ] ######### end Validation API Watchers
 
