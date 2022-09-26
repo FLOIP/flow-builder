@@ -116,7 +116,7 @@ export class LanguageResourceEditor extends mixins(FlowUploader, Permissions, Ro
   @Prop({required: true}) block!: IBlock
   @Prop({required: true}) languageIndex!: string
   @Prop({required: true}) languageId!: string
-  @Prop({required: true, default: 'vertical'}) resourceDisplayType!: string
+  @Prop({required: false, default: 'vertical'}) resourceDisplayType!: string
 
   SupportedMode = SupportedMode
   SupportedContentType = SupportedContentType
