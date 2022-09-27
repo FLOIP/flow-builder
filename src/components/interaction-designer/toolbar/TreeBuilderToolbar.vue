@@ -692,8 +692,6 @@ export default TreeBuilderToolbar
 
 .tree-builder-toolbar-main-menu {
   background: $neutral-50;
-
-  box-shadow: 0 3px 6px #CACACA;
 }
 
 .btn-toolbar > .flow-label {
