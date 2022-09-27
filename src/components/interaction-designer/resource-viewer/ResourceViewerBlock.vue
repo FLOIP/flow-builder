@@ -5,15 +5,17 @@
       <div class="ml-auto"><h6>{{trans(`flow-builder.${block.type}`).toUpperCase()}}</h6></div>
     </div>
     <div class="block-content">
-      <div class="d-flex">
-        <simplified-name-editor :block="block" class="col-3 p-0"/>
-        <div v-if="!hasContent" class="col-3">
-          <div class="badge badge-info">{{trans('flow-builder.no-content-block-info')}}</div>
+      <fieldset :disabled="!isEditable">
+        <div class="d-flex">
+          <simplified-name-editor :block="block" class="col-3 p-0"/>
+          <div v-if="!hasContent" class="col-3">
+            <div class="badge badge-info">{{trans('flow-builder.no-content-block-info')}}</div>
+          </div>
         </div>
-      </div>
-      <div v-if="hasContent">
-        <horizontal-resource-editor :block="block"/>
-      </div>
+        <div v-if="hasContent">
+          <horizontal-resource-editor :block="block"/>
+        </div>
+      </fieldset>
     </div>
   </div>
 </template>
@@ -31,6 +33,7 @@ export default {
   mixins: [lang],
   computed: {
     ...mapGetters('flow', ['block_classesConfig']),
+    ...mapGetters('builder', ['isEditable']),
     blockLabel() {
       return this.block.label > '' ? this.block.label : lang.trans('flow-builder.untitled-block')
     },

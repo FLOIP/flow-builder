@@ -79,17 +79,16 @@
                 class="btn-group mr-3">
                 <router-link
                   :class="{active: isBuilderCanvasEnabled, disabled: isTreeSaving}"
-                  :to="editTreeUrl"
+                  :to="treeUrl"
                   class="btn btn-outline-primary btn-sm"
-                  @click.native.prevent="handlePersistFlow(editTreeUrl)">
+                  @click.native.prevent="handlePersistFlow(treeUrl)">
                   {{ trans('flow-builder.flow-view') }}
                 </router-link>
-                <!--TODO: VMO-7095 handle the mode for resource viewer-->
                 <router-link
-                  :to="resourceViewUrl"
+                  :to="resourceUrl"
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: isResourceViewerCanvasEnabled, disabled: isTreeSaving}"
-                  @click.native.prevent="handlePersistFlow(resourceViewUrl)">
+                  @click.native.prevent="handlePersistFlow(resourceUrl)">
                   {{ trans('flow-builder.resource-view') }}
                 </router-link>
               </div>
@@ -404,16 +403,23 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     )
   }
 
-  get resourceViewUrl(): string {
+  get resourceUrl(): string {
     return this.editTreeRoute({
       component: 'resource-viewer',
-      mode: 'edit',
+      mode: this.isEditable ? 'edit' : 'view',
     })
   }
 
   get downloadAudioUrl(): string {
     return this.editTreeRoute({
       component: 'downloadaudio',
+    })
+  }
+
+  get treeUrl(): string {
+    return this.editTreeRoute({
+      component: 'builder',
+      mode: this.isEditable ? 'edit' : 'view',
     })
   }
 
