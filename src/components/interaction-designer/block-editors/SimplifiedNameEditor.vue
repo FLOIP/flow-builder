@@ -65,6 +65,7 @@ export class SimplifiedNameEditor extends mixins(Lang) {
   filterName(e: KeyboardEvent): void {
     this.activateEditing()
 
+    // allow [a-zA-Z0-9_] only
     if (e.key.match(/\W+|Enter/g)) {
       e.preventDefault()
     }
