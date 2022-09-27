@@ -98,24 +98,24 @@
                 class="btn-group">
                 <router-link
                   v-b-tooltip.hover="trans('flow-builder.click-to-toggle-editing')"
-                  :to="viewTreeUrl"
+                  :to="viewModeUrl"
                   event=""
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: !isEditable, disabled: isTreeSaving}"
                   :aria-disabled="isTreeSaving"
                   :tabindex="isTreeSaving ? -1 : undefined"
-                  @click.native.prevent="handlePersistFlow(viewTreeUrl)">
+                  @click.native.prevent="handlePersistFlow(viewModeUrl)">
                   {{ trans('flow-builder.view-mode') }}
                 </router-link>
                 <router-link
                   v-b-tooltip.hover="trans('flow-builder.click-to-toggle-editing')"
-                  :to="editTreeUrl"
+                  :to="editModeUrl"
                   event=""
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: isEditable, disabled: isTreeSaving}"
                   :aria-disabled="isTreeSaving"
                   :tabindex="isTreeSaving ? -1 : undefined"
-                  @click.native.prevent="handlePersistFlow(editTreeUrl)">
+                  @click.native.prevent="handlePersistFlow(editModeUrl)">
                   {{ trans('flow-builder.edit-mode') }}
                 </router-link>
               </div>
@@ -423,17 +423,12 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     })
   }
 
-  get editTreeUrl(): string {
-    return this.editTreeRoute({
-      component: 'builder',
-      mode: 'edit',
-    })
-  }
+  @builderVuexNamespace.State activeMainComponent?: string
 
-  get viewTreeUrl(): string {
+  get editModeUrl(): string {
     return this.editTreeRoute({
-      component: 'builder',
-      mode: 'view',
+      component: this.activeMainComponent,
+      mode: 'edit',
     })
   }
 
@@ -664,6 +659,13 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @builderVuexNamespace.Getter isEditable!: boolean
   @builderVuexNamespace.Getter hasFlowChanges!: boolean
   @builderVuexNamespace.State activeBlockId?: IBlock['uuid']
+
+  get viewModeUrl(): string {
+    return this.editTreeRoute({
+      component: this.activeMainComponent,
+      mode: 'view',
+    })
+  }
   @builderVuexNamespace.Getter activeBlock?: IBlock
   @builderVuexNamespace.Getter isBuilderCanvasEnabled!: boolean
   @builderVuexNamespace.Getter isResourceViewerCanvasEnabled!: boolean
