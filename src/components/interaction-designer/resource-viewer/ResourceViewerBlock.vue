@@ -1,15 +1,18 @@
 <template>
   <div class="resource-viewer-block border p-2">
     <div class="block-header-1 d-flex">
-      <div class="mr-auto p-2"><h5>{{blockLabel}}</h5></div>
-      <div class="ml-auto p-2"><h6>{{trans(`flow-builder.${block.type}`).toUpperCase()}}</h6></div>
+      <div class="mr-auto text-primary"><h5>{{blockLabel}}</h5></div>
+      <div class="ml-auto"><h6>{{trans(`flow-builder.${block.type}`).toUpperCase()}}</h6></div>
     </div>
-    <div class="block-content ml-2">
-      <div v-if="!hasContent"  class="badge badge-info">
-        {{trans('flow-builder.no-content-block-info')}}
+    <div class="block-content">
+      <div class="d-flex">
+        <simplified-name-editor :block="block" class="col-3 p-0"/>
+        <div v-if="!hasContent" class="col-3">
+          <div class="badge badge-info">{{trans('flow-builder.no-content-block-info')}}</div>
+        </div>
       </div>
-      <div v-else>
-        Content TBD
+      <div v-if="hasContent">
+        TBD
       </div>
     </div>
   </div>
