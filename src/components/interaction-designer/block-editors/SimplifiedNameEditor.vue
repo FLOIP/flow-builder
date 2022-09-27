@@ -65,7 +65,6 @@ export class SimplifiedNameEditor extends mixins(Lang) {
   filterName(e: KeyboardEvent): void {
     this.activateEditing()
 
-    // Consider user input as name editing
     if (e.key.match(/\W+|Enter/g)) {
       e.preventDefault()
     }
