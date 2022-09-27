@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
+import {ActionTree, GetterTree, Module, MutationTree, Store} from 'vuex'
 import {IRootState} from '@/store'
 import {ErrorObject} from 'ajv'
 import {
@@ -7,13 +7,11 @@ import {
   IContainer,
   IFlow,
   ILanguage,
-  getFlowStructureErrors,
   IResource,
   SupportedContentType,
   SupportedMode,
-
 } from '@floip/flow-runner'
-import {cloneDeep, each, filter, get, forIn, includes, intersection, isEmpty, map, uniqBy} from 'lodash'
+import {cloneDeep, each, filter, get, forIn, includes, intersection, isEmpty, map, uniqBy, debounce} from 'lodash'
 import {
   debugValidationStatus,
   flatValidationStatuses,
@@ -296,6 +294,50 @@ export const actions: ActionTree<IValidationState, IRootState> = {
   resetValidationStatuses({commit}, {key}: {key: string}): void {
     commit('resetValidationStatuses', {key})
   },
+}
+
+export function registerWatchers(store: Store<IRootState>): void {
+  const DEBOUNCE_VALIDATION_TIMER_MS = 300
+
+  store.watch(
+    (_, getters) => getters['flow/activeFlow'],
+    newFlow => debounce(
+      async () => {
+        console.debug('watch/activeFlow:', 'active flow has changed', 'Validating ...')
+        await store.dispatch('validate_flow', {flow: newFlow})
+      },
+      DEBOUNCE_VALIDATION_TIMER_MS,
+    ),
+    {deep: true, immediate: true},
+  )
+
+  store.watch(
+    (_, getters) => getters['flow/blocksOnActiveFlow'],
+    () => debounce(
+      async () => {
+        console.debug('watch/activeFlow.blocks:', 'blocks inside active flow have changed', 'Validating ...')
+        await store.dispatch('validate_allBlocksWithinFlow')
+      },
+      DEBOUNCE_VALIDATION_TIMER_MS,
+    ),
+    {deep: true, immediate: true},
+  )
+
+  store.watch(
+    (_, getters) => getters['flow/resourcesOnActiveFlow'],
+    newResources => debounce(
+      async () => {
+        console.debug('watch/activeFlow.resources:', 'resources inside active flow have changed', 'Validating ...')
+        await store.dispatch('validate_resourcesOnSupportedValues', {
+          resources: newResources,
+          supportedModes: this.activeFlow.supported_modes,
+          supportedLanguages: this.activeFlow.languages,
+        })
+      },
+      DEBOUNCE_VALIDATION_TIMER_MS,
+    ),
+    {deep: true, immediate: true},
+  )
 }
 
 export const store: Module<IValidationState, IRootState> = {

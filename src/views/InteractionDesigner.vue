@@ -48,20 +48,20 @@
 </template>
 
 <script lang="ts">
-import {cloneDeep, debounce, endsWith, forEach, get, includes, invoke, isEmpty, values} from 'lodash'
+import {endsWith, forEach, get, includes, invoke, isEmpty, values} from 'lodash'
 import {mixins} from 'vue-class-component'
 import {Component, Prop, Vue, Watch} from 'vue-property-decorator'
 import {Action, Getter, Mutation, namespace, State} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 import Routes from '@/lib/mixins/Routes'
 import {scrollBehavior, scrollBlockIntoView} from '@/router/helpers'
-import {store} from '@/store'
+import {IRootState, store} from '@/store'
 import ClipboardRoot from '@/components/interaction-designer/clipboard/ClipboardRoot.vue'
 import {Route} from 'vue-router'
-import {IBlock, IFlow, ILanguage, IResource, IResources, SupportedMode} from '@floip/flow-runner'
+import {IBlock, IFlow} from '@floip/flow-runner'
 import {ErrorObject} from 'ajv'
-import {MutationPayload} from 'vuex'
-import {IValidationStatus} from '@/store/validation'
+import {MutationPayload, Store} from 'vuex'
+import {registerWatchers} from '@/store/validation'
 
 Component.registerHooks(['beforeRouteUpdate'])
 
@@ -69,8 +69,6 @@ const flowNamespace = namespace('flow')
 const builderNamespace = namespace('builder')
 const clipboardNamespace = namespace('clipboard')
 const validationVuexNamespace = namespace('validation')
-
-const DEBOUNCE_VALIDATION_TIMER_MS = 300
 
 @Component({
   components: {
@@ -94,26 +92,6 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
       return {}
     },
   }) readonly builderConfig!: object
-
-  @validationVuexNamespace.Action validate_flow!: ({flow}: { flow: IFlow }) => Promise<IValidationStatus>
-  debounceFlowValidation = debounce(function (this: any, {newFlow}: {newFlow: IFlow}) {
-    console.debug('watch/activeFlow:', 'active flow has changed', `from ${this.mainComponent}.`, 'Validating ...')
-    this.validate_flow({flow: newFlow})
-  }, DEBOUNCE_VALIDATION_TIMER_MS)
-  @validationVuexNamespace.Action validate_allBlocksWithinFlow!: () => Promise<void>
-  debounceBlockValidation = debounce(function (this: any) {
-    console.debug('watch/activeFlow.blocks:', 'blocks inside active flow have changed', `from ${this.mainComponent}.`, 'Validating ...')
-    this.validate_allBlocksWithinFlow()
-  }, DEBOUNCE_VALIDATION_TIMER_MS)
-  @validationVuexNamespace.Action validate_resourcesOnSupportedValues!: (
-    {resources, supportedModes, supportedLanguages}: {resources: IResource[], supportedModes: SupportedMode[], supportedLanguages: ILanguage[]}
-  ) => Promise<void>
-
-  get blocksOnActiveFlowForWatcher(): IBlock[] {
-    // needed to make comparison between new & old values on watcher
-    return cloneDeep(this.activeFlow.blocks)
-  }
-  // ] ######### end Validation API Watchers
 
   toolbarHeight = 102
   // TODO: Move this to BlockClassDetails spec // an inversion can be "legacy types"
@@ -170,27 +148,6 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   @builderNamespace.Getter isResourceViewerCanvasEnabled!: boolean
   @clipboardNamespace.Getter isSimulatorActive!: boolean
 
-  // ###### Validation API Watchers [
-  @Watch('activeFlow', {deep: true, immediate: true})
-  async onActiveFlowChanged(newFlow: IFlow): Promise<void> {
-    this.debounceFlowValidation({newFlow})
-  }
-
-  @Watch('blocksOnActiveFlowForWatcher', {deep: true, immediate: true})
-  async onBlocksInActiveFlowChanged(newBlocks: IBlock[], oldBlocks: IBlock[]): Promise<void> {
-    this.debounceBlockValidation()
-  }
-
-  @Watch('activeFlow.resources', {deep: true, immediate: true})
-  async onResourcesOnActiveFlowChanged(newResources: IResources, oldResources: IResources): Promise<void> {
-    console.debug('watch/activeFlow.resources:', 'resources inside active flow have changed', `from ${this.mainComponent}.`, 'Validating ...')
-    await this.validate_resourcesOnSupportedValues({
-      resources: newResources,
-      supportedModes: this.activeFlow.supported_modes,
-      supportedLanguages: this.activeFlow.languages,
-    })
-  }
-
   get jsKey(): string {
     return get(this.selectedBlock, 'jsKey')
   }
@@ -229,6 +186,9 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
 
     // Listen to Flow updates to maintain "hasFlowChanges" state
     this.$store.subscribe(this.handleFlowChanges.bind(this))
+
+    // watch state and run validations
+    registerWatchers(this.$store as Store<IRootState>)
 
     this.initializeTreeModel()
     // `this.mode` comes from captured param in js-routes
