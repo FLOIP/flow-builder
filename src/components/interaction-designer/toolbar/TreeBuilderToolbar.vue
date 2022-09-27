@@ -79,17 +79,16 @@
                 class="btn-group mr-3">
                 <router-link
                   :class="{active: isBuilderCanvasEnabled, disabled: isTreeSaving}"
-                  :to="editTreeUrl"
+                  :to="treeUrl"
                   class="btn btn-outline-primary btn-sm"
-                  @click.native.prevent="handlePersistFlow(editTreeUrl)">
+                  @click.native.prevent="handlePersistFlow(treeUrl)">
                   {{ trans('flow-builder.flow-view') }}
                 </router-link>
-                <!--TODO: VMO-7095 handle the mode for resource viewer-->
                 <router-link
-                  :to="resourceViewUrl"
+                  :to="resourceUrl"
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: isResourceViewerCanvasEnabled, disabled: isTreeSaving}"
-                  @click.native.prevent="handlePersistFlow(resourceViewUrl)">
+                  @click.native.prevent="handlePersistFlow(resourceUrl)">
                   {{ trans('flow-builder.resource-view') }}
                 </router-link>
               </div>
@@ -99,24 +98,24 @@
                 class="btn-group">
                 <router-link
                   v-b-tooltip.hover="trans('flow-builder.click-to-toggle-editing')"
-                  :to="viewTreeUrl"
+                  :to="viewModeUrl"
                   event=""
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: !isEditable, disabled: isTreeSaving}"
                   :aria-disabled="isTreeSaving"
                   :tabindex="isTreeSaving ? -1 : undefined"
-                  @click.native.prevent="handlePersistFlow(viewTreeUrl)">
+                  @click.native.prevent="handlePersistFlow(viewModeUrl)">
                   {{ trans('flow-builder.view-mode') }}
                 </router-link>
                 <router-link
                   v-b-tooltip.hover="trans('flow-builder.click-to-toggle-editing')"
-                  :to="editTreeUrl"
+                  :to="editModeUrl"
                   event=""
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: isEditable, disabled: isTreeSaving}"
                   :aria-disabled="isTreeSaving"
                   :tabindex="isTreeSaving ? -1 : undefined"
-                  @click.native.prevent="handlePersistFlow(editTreeUrl)">
+                  @click.native.prevent="handlePersistFlow(editModeUrl)">
                   {{ trans('flow-builder.edit-mode') }}
                 </router-link>
               </div>
@@ -404,10 +403,10 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     )
   }
 
-  get resourceViewUrl(): string {
+  get resourceUrl(): string {
     return this.editTreeRoute({
       component: 'resource-viewer',
-      mode: 'edit',
+      mode: this.isEditable ? 'edit' : 'view',
     })
   }
 
@@ -417,17 +416,19 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     })
   }
 
-  get editTreeUrl(): string {
+  get treeUrl(): string {
     return this.editTreeRoute({
       component: 'builder',
-      mode: 'edit',
+      mode: this.isEditable ? 'edit' : 'view',
     })
   }
 
-  get viewTreeUrl(): string {
+  @builderVuexNamespace.State activeMainComponent?: string
+
+  get editModeUrl(): string {
     return this.editTreeRoute({
-      component: 'builder',
-      mode: 'view',
+      component: this.activeMainComponent,
+      mode: 'edit',
     })
   }
 
@@ -658,6 +659,13 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @builderVuexNamespace.Getter isEditable!: boolean
   @builderVuexNamespace.Getter hasFlowChanges!: boolean
   @builderVuexNamespace.State activeBlockId?: IBlock['uuid']
+
+  get viewModeUrl(): string {
+    return this.editTreeRoute({
+      component: this.activeMainComponent,
+      mode: 'view',
+    })
+  }
   @builderVuexNamespace.Getter activeBlock?: IBlock
   @builderVuexNamespace.Getter isBuilderCanvasEnabled!: boolean
   @builderVuexNamespace.Getter isResourceViewerCanvasEnabled!: boolean
