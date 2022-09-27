@@ -1,5 +1,6 @@
-export * from './ResourceEditor.vue'
-export * from './ResourceVariantTextEditor.vue'
 export {default as HorizontalResourceEditor} from './HorizontalResourceEditor.vue'
 export {default as LanguageResourceEditor} from './LanguageResourceEditor.vue'
+export {default as ModeResourceEditor} from './ModeResourceEditor.vue'
 export * from './ResourceEditor.model'
+export * from './ResourceEditor.vue'
+export * from './ResourceVariantTextEditor.vue'

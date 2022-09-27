@@ -1,25 +1,15 @@
 <template>
-  <!--Resource editors grouped by language-->
+  <!--Resource editors grouped by mode (channel)-->
   <div v-if="resource"
-       :class="{'d-flex': isHorizontalDisplay}"
-       class="language-resource-editor">
-    <div
-      v-for="(mode, modeIndex) in activeFlow.supported_modes"
-      :key="modeIndex"
-      :class="{'col-3': isHorizontalDisplay}">
+       class="mode-resource-editor d-flex">
+    <div v-for="({id: languageId, label: language}, languageIndex) in activeFlow.languages"
+         :key="languageId"
+         class="col-3">
       <header class="d-flex">
-        <font-awesome-icon
-          v-if="iconsMap.get(mode)"
-          :class="{'custom-icons': iconsMap.get(mode)[0] === 'fac', 'library-icons': iconsMap.get(mode)[0] !== 'fac'}"
-          :icon="iconsMap.get(mode)" />
-        <h6 class="ml-1">
-          {{ `flow-builder.${mode.toLowerCase()}-content` | trans }}
-        </h6>
+        <div class="mr-auto">{{language || trans('flow-builder.unknown-language')}}</div>
       </header>
 
       <template v-for="contentType in discoverContentTypesFor(mode)">
-        <!-- todo: it's odd that we pass around a ContentType variant rather than a ContentTypeLangMode variant (aka, mode as external arg) -->
-
         <resource-variant-text-editor
           v-if="contentType === SupportedContentType.TEXT"
           :index="computeResourceIndex(languageIndex, modeIndex)"
@@ -94,7 +84,6 @@ import {
   IBlock,
   IFlow,
   IResource,
-  IResourceValue as IResourceDefinitionVariantOverModes,
   SupportedContentType,
   SupportedMode,
 } from '@floip/flow-runner'
@@ -115,20 +104,11 @@ const builderVuexNamespace = namespace('builder')
 @Component({})
 export class LanguageResourceEditor extends mixins(FlowUploader, Permissions, Routes, Lang) {
   @Prop({required: true}) block!: IBlock
-  @Prop({required: true}) languageIndex!: string
-  @Prop({required: true}) languageId!: string
-  @Prop({required: false, default: 'vertical'}) resourceDisplayType!: string
+  @Prop({required: true}) modeIndex!: string
+  @Prop({required: true}) mode!: string
 
   SupportedMode = SupportedMode
   SupportedContentType = SupportedContentType
-  iconsMap = new Map<string, object>([
-    [SupportedMode.SMS, ['far', 'envelope']],
-    [SupportedMode.TEXT, ['fac', 'text']],
-    [SupportedMode.USSD, ['fac', 'ussd']],
-    [SupportedMode.IVR, ['fac', 'audio']],
-    [SupportedMode.RICH_MESSAGING, ['far', 'comment-dots']],
-    [SupportedMode.OFFLINE, ['fas', 'mobile-alt']],
-  ])
 
   discoverContentTypesFor = discoverContentTypesFor
   findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
