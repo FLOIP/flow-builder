@@ -38,11 +38,7 @@ export class FirstBlockEditorButton extends mixins(Lang) {
 
   @Prop() readonly blockId!: IBlock['uuid']
 
-  @Prop() readonly flow!: IFlow
-
-  get isStartBlock(): boolean {
-    return this.blockId === this.flow.first_block_id
-  }
+  @flowVuexNamespace.Getter activeFlow!: IFlow
 
   // @ts-ignore
   setStartBlock(event: any): void {
@@ -50,6 +46,9 @@ export class FirstBlockEditorButton extends mixins(Lang) {
     this.flow_setFirstBlockId({flowId, blockId})
   }
 
+  get isStartBlock(): boolean {
+    return this.blockId === this.activeFlow.first_block_id
+  }
   @flowVuexNamespace.Mutation flow_setFirstBlockId!: ({flowId, blockId}: { flowId: IFlow['uuid'], blockId: IBlock['uuid'] }) => void
 }
 

@@ -95,23 +95,56 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     },
   }) readonly builderConfig!: object
 
+  get blocksOnActiveFlowForWatcher(): IBlock[] {
+    // needed to make comparison between new & old values on watcher
+    return cloneDeep(this.activeFlow?.blocks)
+  }
+
+  // ###### Validation API Watchers [
+  @Watch('activeFlow', {deep: true, immediate: true})
+  async onActiveFlowChanged(newFlow: IFlow): Promise<void> {
+    this.debounceFlowValidation({newFlow})
+  }
+
+  @Watch('blocksOnActiveFlowForWatcher', {deep: true, immediate: true})
+  async onBlocksInActiveFlowChanged(newBlocks: IBlock[], oldBlocks: IBlock[]): Promise<void> {
+    this.debounceBlockValidation()
+  }
+
   @validationVuexNamespace.Action validate_flow!: ({flow}: { flow: IFlow }) => Promise<IValidationStatus>
   debounceFlowValidation = debounce(function (this: any, {newFlow}: {newFlow: IFlow}) {
-    console.debug('watch/activeFlow:', 'active flow has changed', `from ${this.mainComponent}.`, 'Validating ...')
-    this.validate_flow({flow: newFlow})
+    if (newFlow !== undefined) {
+      console.debug('watch/activeFlow:', 'active flow has changed', `from ${this.mainComponent}.`, 'Validating ...');
+      this.validate_flow({flow: newFlow})
+    } else {
+      console.warn('watch/activeFlow:', 'newFlow is undefined')
+    }
   }, DEBOUNCE_VALIDATION_TIMER_MS)
   @validationVuexNamespace.Action validate_allBlocksWithinFlow!: () => Promise<void>
   debounceBlockValidation = debounce(function (this: any) {
-    console.debug('watch/activeFlow.blocks:', 'blocks inside active flow have changed', `from ${this.mainComponent}.`, 'Validating ...')
-    this.validate_allBlocksWithinFlow()
+    if (this.activeFlow !== undefined) {
+      console.debug('watch/activeFlow.blocks:', 'blocks inside active flow have changed', `from ${this.mainComponent}.`, 'Validating ...');
+      this.validate_allBlocksWithinFlow()
+    } else {
+      console.warn('watch/activeFlow.blocks:', 'activeFlow is undefined')
+    }
   }, DEBOUNCE_VALIDATION_TIMER_MS)
   @validationVuexNamespace.Action validate_resourcesOnSupportedValues!: (
     {resources, supportedModes, supportedLanguages}: {resources: IResource[], supportedModes: SupportedMode[], supportedLanguages: ILanguage[]}
   ) => Promise<void>
 
-  get blocksOnActiveFlowForWatcher(): IBlock[] {
-    // needed to make comparison between new & old values on watcher
-    return cloneDeep(this.activeFlow.blocks)
+  @Watch('activeFlow.resources', {deep: true, immediate: true})
+  async onResourcesOnActiveFlowChanged(newResources: IResources, oldResources: IResources): Promise<void> {
+    console.debug('watch/activeFlow.resources:', 'resources inside active flow have changed', `from ${this.mainComponent}.`, 'Validating ...')
+    if (this.activeFlow !== undefined) {
+      await this.validate_resourcesOnSupportedValues({
+        resources: newResources,
+        supportedModes: this.activeFlow.supported_modes,
+        supportedLanguages: this.activeFlow.languages,
+      })
+    } else {
+      console.warn('watch/activeFlow.resources:', 'activeFlow is undefined')
+    }
   }
   // ] ######### end Validation API Watchers
 
@@ -169,27 +202,6 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   @builderNamespace.Getter isBuilderCanvasEnabled!: boolean
   @builderNamespace.Getter isResourceViewerCanvasEnabled!: boolean
   @clipboardNamespace.Getter isSimulatorActive!: boolean
-
-  // ###### Validation API Watchers [
-  @Watch('activeFlow', {deep: true, immediate: true})
-  async onActiveFlowChanged(newFlow: IFlow): Promise<void> {
-    this.debounceFlowValidation({newFlow})
-  }
-
-  @Watch('blocksOnActiveFlowForWatcher', {deep: true, immediate: true})
-  async onBlocksInActiveFlowChanged(newBlocks: IBlock[], oldBlocks: IBlock[]): Promise<void> {
-    this.debounceBlockValidation()
-  }
-
-  @Watch('activeFlow.resources', {deep: true, immediate: true})
-  async onResourcesOnActiveFlowChanged(newResources: IResources, oldResources: IResources): Promise<void> {
-    console.debug('watch/activeFlow.resources:', 'resources inside active flow have changed', `from ${this.mainComponent}.`, 'Validating ...')
-    await this.validate_resourcesOnSupportedValues({
-      resources: newResources,
-      supportedModes: this.activeFlow.supported_modes,
-      supportedLanguages: this.activeFlow.languages,
-    })
-  }
 
   get jsKey(): string {
     return get(this.selectedBlock, 'jsKey')

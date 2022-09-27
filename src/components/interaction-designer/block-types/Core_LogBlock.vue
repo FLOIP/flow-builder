@@ -2,7 +2,6 @@
   <div class="core-log-block">
     <base-block
       :block="block"
-      :flow="flow"
       :show-semantic-label="false"
       :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
       :uses-default-branching-editor="usesDefaultBranchingEditor"
@@ -58,7 +57,6 @@ const builderVuexNamespace = namespace('builder')
 @Component({})
 export class Core_LogBlock extends mixins(Lang) {
   @Prop() readonly block!: ILogBlock
-  @Prop() readonly flow!: IFlow
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
   @Prop({default: false}) readonly usesDefaultContactPropsEditor!: boolean
 
