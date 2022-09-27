@@ -32,6 +32,8 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   resourcesByUuidOnActiveFlow: (_state, getters) => keyBy(getters.activeFlow.resources, 'uuid'),
 
   resourceUuidsOnActiveFlow: (_state, getters) => compact(map(getters.activeFlow.resources, (res) => res.uuid)),
+
+  resourcesOnActiveFlow: (_state, getters) => getters.activeFlow.resources,
 }
 
 export const mutations: MutationTree<IFlowsState> = {

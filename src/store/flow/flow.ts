@@ -34,7 +34,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
       }
     }
   },
-  blockUuidsOnActiveFlow: (state, getters): IBlock['uuid'][] => getters.activeFlow?.blocks,
+  blocksOnActiveFlow: (state, getters): IBlock[] => getters.activeFlow?.blocks,
   isActiveFlowValid: (state, getters, rootState) => {
     const flowValidationResult = get(rootState.validation.validationStatuses, `flow/${getters.activeFlow.uuid}`)
     if (flowValidationResult && !flowValidationResult.isValid) {
