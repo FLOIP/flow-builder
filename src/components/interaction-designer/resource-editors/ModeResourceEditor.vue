@@ -1,7 +1,7 @@
 <template>
   <!--Resource editors grouped by mode (channel)-->
   <div v-if="resource"
-       class="mode-resource-editor d-flex">
+       class="mode-resource-editor d-flex flex-wrap">
     <div v-for="({id: languageId, label: language}, languageIndex) in activeFlow.languages"
          :key="languageId"
          class="col-3">
