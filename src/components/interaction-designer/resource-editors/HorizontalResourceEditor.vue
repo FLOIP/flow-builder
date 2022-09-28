@@ -2,34 +2,35 @@
   <div
     v-if="activeFlow.supported_modes.length > 0"
     class="horizontal-resource-editor">
-    <div>
-      <div v-for="(mode, modeIndex) in activeFlow.supported_modes"
-           :key="modeIndex"
+    <div class="d-flex flex-column">
+      <div v-for="(item) in supportedModeWithOrderInfo"
+           :key="item.index"
            :class="{
-             'radius-on-top': modeIndex === 0,
-             'radius-on-bottom': modeIndex === activeFlow.supported_modes.length - 1
+             [`order-${item.order}`]: true,
+             'radius-on-top': item.order === 0,
+             'radius-on-bottom': item.order === activeFlow.supported_modes.length - 1
            }"
            class="resource-panel">
         <div :class="{
-             'radius-on-top': modeIndex === 0,
-             'radius-on-bottom': modeIndex === activeFlow.supported_modes.length - 1
+             'radius-on-top': item.order === 0,
+             'radius-on-bottom': item.order === activeFlow.supported_modes.length - 1,
            }"
              class="resource-panel-heading p-2 d-flex">
           <div class="mr-auto">
             <header class="d-flex">
               <font-awesome-icon
-                v-if="iconsMap.get(mode)"
-                :class="{'custom-icons': iconsMap.get(mode)[0] === 'fac', 'library-icons': iconsMap.get(mode)[0] !== 'fac'}"
-                :icon="iconsMap.get(mode)" />
+                v-if="iconsMap.get(item.mode)"
+                :class="{'custom-icons': iconsMap.get(item.mode)[0] === 'fac', 'library-icons': iconsMap.get(item.mode)[0] !== 'fac'}"
+                :icon="iconsMap.get(item.mode)" />
               <h6 class="ml-1">
-                {{ `flow-builder.${mode.toLowerCase()}-content` | trans }}
+                {{ `flow-builder.${item.mode.toLowerCase()}-content` | trans }}
               </h6>
             </header>
           </div>
           <div class="ml-auto">
             <button
-              :aria-controls="`collapse-lang-panel-${block.uuid}-${mode}`"
-              :data-target="`#collapse-lang-panel-${block.uuid}-${mode}`"
+              :aria-controls="`collapse-lang-panel-${block.uuid}-${item.mode}`"
+              :data-target="`#collapse-lang-panel-${block.uuid}-${item.mode}`"
               aria-expanded="false"
               class="btn btn-sm btn-primary"
               data-toggle="collapse"
@@ -38,11 +39,11 @@
             </button>
           </div>
         </div>
-        <div :id="`collapse-lang-panel-${block.uuid}-${mode}`" class="resource-panel-body p-2 collapse multi-collapse">
+        <div :id="`collapse-lang-panel-${block.uuid}-${item.mode}`" class="resource-panel-body p-2 collapse multi-collapse">
           <mode-resource-editor
             :block="block"
-            :mode="mode"
-            :mode-index="modeIndex" />
+            :mode="item.mode"
+            :mode-index="item.index" />
         </div>
       </div>
     </div>
@@ -51,17 +52,14 @@
 
 <script lang="ts">
 import {namespace} from 'vuex-class'
-import {
-  IBlock,
-  IFlow,
-  SupportedMode,
-} from '@floip/flow-runner'
+import {IBlock, IFlow, SupportedMode,} from '@floip/flow-runner'
 import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
 import FlowUploader from '@/lib/mixins/FlowUploader'
 import {Component, Prop} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
+import {sortBy} from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -80,6 +78,27 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
     [SupportedMode.RICH_MESSAGING, ['far', 'comment-dots']],
     [SupportedMode.OFFLINE, ['fas', 'mobile-alt']],
   ])
+
+  get supportedModeWithOrderInfo() {
+    return this.activeFlow.supported_modes.map((item, key) => ({
+        mode: item,
+        index: key,
+        order: this.computeChannelDisplayOrder(item),
+      }))
+  }
+
+  computeChannelDisplayOrder(mode: SupportedMode) {
+    const order = [
+      SupportedMode.IVR,
+      SupportedMode.SMS,
+      SupportedMode.USSD,
+      SupportedMode.TEXT,
+      SupportedMode.RICH_MESSAGING,
+      SupportedMode.OFFLINE,
+    ]
+    const orderedSupportedMode = sortBy(this.activeFlow.supported_modes, (o) => order.indexOf(o))
+    return orderedSupportedMode.indexOf(mode)
+  }
 }
 
 export default ResourceEditor
