@@ -2,7 +2,7 @@
   <validation-message
     :message-key="`resource/${resourceId}/values/${index}/value`">
     <template #input-control="{ isValid }">
-      <div class="resource-variant-text-editor">
+      <div class="resource-variant-text-editor mb-0">
         <expression-input
           ref="input"
           :label="label"
@@ -12,7 +12,8 @@
           :rows="rows"
           :valid-state="isValid"
           :disabled-auto-complete="disabledAutoComplete"
-          @commitExpressionChange="commitExpressionChange" />
+          class="mb-0"
+          @commitExpressionChange="commitExpressionChange"/>
       </div>
     </template>
   </validation-message>

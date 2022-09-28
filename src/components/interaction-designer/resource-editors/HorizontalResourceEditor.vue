@@ -64,10 +64,11 @@ import {sortBy} from 'lodash'
 const flowVuexNamespace = namespace('flow')
 
 @Component({})
-export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, Lang) {
+export class HorizontalResourceEditor extends mixins(FlowUploader, Permissions, Routes, Lang) {
   @Prop({required: true}) block!: IBlock
 
   @flowVuexNamespace.Getter activeFlow!: IFlow
+  @flowVuexNamespace.Getter supportedModeWithOrderInfo!: {mode: SupportedMode, index: number, order: number}[]
 
   SupportedMode = SupportedMode
   iconsMap = new Map<string, object>([
@@ -78,30 +79,9 @@ export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, La
     [SupportedMode.RICH_MESSAGING, ['far', 'comment-dots']],
     [SupportedMode.OFFLINE, ['fas', 'mobile-alt']],
   ])
-
-  get supportedModeWithOrderInfo() {
-    return this.activeFlow.supported_modes.map((item, key) => ({
-        mode: item,
-        index: key,
-        order: this.computeChannelDisplayOrder(item),
-      }))
-  }
-
-  computeChannelDisplayOrder(mode: SupportedMode) {
-    const order = [
-      SupportedMode.IVR,
-      SupportedMode.SMS,
-      SupportedMode.USSD,
-      SupportedMode.TEXT,
-      SupportedMode.RICH_MESSAGING,
-      SupportedMode.OFFLINE,
-    ]
-    const orderedSupportedMode = sortBy(this.activeFlow.supported_modes, (o) => order.indexOf(o))
-    return orderedSupportedMode.indexOf(mode)
-  }
 }
 
-export default ResourceEditor
+export default HorizontalResourceEditor
 </script>
 
 <style lang="scss" scoped>

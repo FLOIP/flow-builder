@@ -1,55 +1,57 @@
 <template>
   <!--Resource editors grouped by language-->
   <div v-if="resource"
-       :class="{'d-flex': isHorizontalDisplay}"
-       class="language-resource-editor">
+       class="language-resource-editor d-flex flex-column">
     <div
-      v-for="(mode, modeIndex) in activeFlow.supported_modes"
-      :key="modeIndex"
-      :class="{'col-3': isHorizontalDisplay}">
+      v-for="(item) in supportedModeWithOrderInfo"
+      :key="item.index"
+      :class="{
+        [`order-${item.order}`]: true
+      }"
+      class="mbx-4">
       <header class="d-flex">
         <font-awesome-icon
-          v-if="iconsMap.get(mode)"
-          :class="{'custom-icons': iconsMap.get(mode)[0] === 'fac', 'library-icons': iconsMap.get(mode)[0] !== 'fac'}"
-          :icon="iconsMap.get(mode)" />
+          v-if="iconsMap.get(item.mode)"
+          :class="{'custom-icons': iconsMap.get(item.mode)[0] === 'fac', 'library-icons': iconsMap.get(item.mode)[0] !== 'fac'}"
+          :icon="iconsMap.get(item.mode)" />
         <h6 class="ml-1">
-          {{ `flow-builder.${mode.toLowerCase()}-content` | trans }}
+          {{ `flow-builder.${item.mode.toLowerCase()}-content` | trans }}
         </h6>
       </header>
 
-      <template v-for="contentType in discoverContentTypesFor(mode)">
+      <template v-for="contentType in discoverContentTypesFor(item.mode)">
         <!-- todo: it's odd that we pass around a ContentType variant rather than a ContentTypeLangMode variant (aka, mode as external arg) -->
 
         <resource-variant-text-editor
           v-if="contentType === SupportedContentType.TEXT"
-          :index="computeResourceIndex(languageIndex, modeIndex)"
-          :mode="mode"
+          :index="computeResourceIndex(languageIndex, item.index)"
+          :mode="item.mode"
           :resource-id="resource.uuid"
           :resource-variant="findOrGenerateStubbedVariantOn(
                   resource,
-                  {language_id: languageId, content_type: contentType, modes: [mode]})" />
+                  {language_id: languageId, content_type: contentType, modes: [item.mode]})" />
 
         <div v-if="contentType === SupportedContentType.AUDIO">
           <validation-message
             #input-control="{ isValid }"
-            :message-key="`resource/${resource.uuid}/values/${computeResourceIndex(languageIndex, modeIndex)}/value`">
+            :message-key="`resource/${resource.uuid}/values/${computeResourceIndex(languageIndex, item.index)}/value`">
             <audio-library-selector
               :audio-files="availableAudioFiles"
               :lang-id="languageId"
               :resource-id="resource.uuid"
               :selected-audio-uri="findOrGenerateStubbedVariantOn(
                       resource,
-                      {language_id: languageId, content_type: contentType, modes: [mode]}).value" />
+                      {language_id: languageId, content_type: contentType, modes: [item.mode]}).value" />
           </validation-message>
 
           <phone-recorder
-            v-if="can(['edit-content', 'send-call-to-records'], true) && !findOrGenerateStubbedVariantOn(resource,{language_id: languageId, content_type: contentType, modes: [mode]}).value"
+            v-if="can(['edit-content', 'send-call-to-records'], true) && !findOrGenerateStubbedVariantOn(resource,{language_id: languageId, content_type: contentType, modes: [item.mode]}).value"
             :recording-key="`${block.uuid}:${languageId}`" />
 
-          <template v-if="!findAudioResourceVariantFor(resource, {language_id: languageId, content_type: contentType, modes: [mode]})">
+          <template v-if="!findAudioResourceVariantFor(resource, {language_id: languageId, content_type: contentType, modes: [item.mode]})">
             <upload-monitor :upload-key="`${block.uuid}:${languageId}`" />
 
-            <div class="d-flex mt-2">
+            <div class="d-flex mt-2 mb-3">
               <button
                 v-if="isEditable && isFeatureAudioUploadEnabled"
                 v-flow-uploader="{
@@ -117,7 +119,6 @@ export class LanguageResourceEditor extends mixins(FlowUploader, Permissions, Ro
   @Prop({required: true}) block!: IBlock
   @Prop({required: true}) languageIndex!: string
   @Prop({required: true}) languageId!: string
-  @Prop({required: false, default: 'vertical'}) resourceDisplayType!: string
 
   SupportedMode = SupportedMode
   SupportedContentType = SupportedContentType
@@ -139,6 +140,7 @@ export class LanguageResourceEditor extends mixins(FlowUploader, Permissions, Ro
   @Mutation pushAudioIntoLibrary!: (audio: IAudioFile) => void
   @flowVuexNamespace.Getter resourcesByUuidOnActiveFlow!: { [key: string]: IResource }
   @flowVuexNamespace.Getter activeFlow!: IFlow
+  @flowVuexNamespace.Getter supportedModeWithOrderInfo!: {mode: SupportedMode, index: number, order: number}[]
   @flowVuexNamespace.Action resource_setOrCreateValueModeSpecific!: ({
     resourceId,
     filter,
@@ -150,13 +152,7 @@ export class LanguageResourceEditor extends mixins(FlowUploader, Permissions, Ro
     return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
   }
 
-  get isVerticalDisplay(): string {
-    return this.resourceDisplayType === 'vertical'
-  }
-
-  get isHorizontalDisplay(): string {
-    return this.resourceDisplayType === 'horizontal'
-  }
+  @flowVuexNamespace.Getter supportedModeWithOrderInfo!: {mode: SupportedMode, index: number, order: number}[]
 
   /**
    * Compute resource index (cell index) for a table having X languages and Y modes

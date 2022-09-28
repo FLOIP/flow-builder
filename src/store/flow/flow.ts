@@ -75,6 +75,28 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   hasVoiceMode: (state, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.IVR),
   hasOfflineMode: (state, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.OFFLINE),
   currentFlowsState: (state) => state,
+  /**
+   * supportedModeWithOrderInfo for UI display
+   */
+  supportedModeWithOrderInfo: (state, getters) => getters.activeFlow.supported_modes.map((item: SupportedMode, key: number) => ({
+    mode: item,
+    index: key,
+    order: getters.orderedSupportedModes.indexOf(item),
+  })),
+  /**
+   * orderedSupportedModes for UI display
+   */
+  orderedSupportedModes: (state, getters) => {
+    const order = [
+      SupportedMode.IVR,
+      SupportedMode.SMS,
+      SupportedMode.USSD,
+      SupportedMode.TEXT,
+      SupportedMode.RICH_MESSAGING,
+      SupportedMode.OFFLINE,
+    ]
+    return sortBy(getters.activeFlow.supported_modes, (item: SupportedMode) => order.indexOf(item))
+  },
 }
 
 export const mutations: MutationTree<IFlowsState> = {

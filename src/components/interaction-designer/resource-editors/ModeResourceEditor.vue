@@ -102,7 +102,7 @@ const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 
 @Component({})
-export class LanguageResourceEditor extends mixins(FlowUploader, Permissions, Routes, Lang) {
+export class ModeResourceEditor extends mixins(FlowUploader, Permissions, Routes, Lang) {
   @Prop({required: true}) block!: IBlock
   @Prop({required: true}) modeIndex!: string
   @Prop({required: true}) mode!: string
@@ -216,7 +216,7 @@ export class LanguageResourceEditor extends mixins(FlowUploader, Permissions, Ro
     }
   }
 }
-export default LanguageResourceEditor
+export default ModeResourceEditor
 </script>
 
 <style scoped>
