@@ -81,14 +81,14 @@
                   :class="{active: isBuilderCanvasEnabled, disabled: isTreeSaving}"
                   :to="treeUrl"
                   class="btn btn-outline-primary btn-sm"
-                  @click.native.prevent="handlePersistFlow(treeUrl)">
+                  @click.native.prevent="handleFlowViewMenu">
                   {{ trans('flow-builder.flow-view') }}
                 </router-link>
                 <router-link
                   :to="resourceUrl"
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: isResourceViewerCanvasEnabled, disabled: isTreeSaving}"
-                  @click.native.prevent="handlePersistFlow(resourceUrl)">
+                  @click.native.prevent="handleResourceViewMenu">
                   {{ trans('flow-builder.resource-view') }}
                 </router-link>
               </div>
@@ -612,6 +612,16 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       this.height = height
       this.$emit('height-updated', this.height)
     }
+  }
+
+  handleFlowViewMenu() {
+    this.handlePersistFlow(this.treeUrl)
+  }
+
+  handleResourceViewMenu() {
+    this.handlePersistFlow(this.resourceUrl)
+    // scroll back to the top left in case the window has scroll bars from the builder-canvas
+    window.scrollTo(0, 0)
   }
 
   // ########### VUEX ###############
