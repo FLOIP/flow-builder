@@ -45,6 +45,7 @@
                 :options="booleanChoiceValueOptions"
                 :show-labels="false"
                 :placeholder="trans('flow-builder.select-a-value')"
+                :preselect-first="true"
                 track-by="value"
                 label="description"
                 @input="setBooleanChoiceValueOption($event, choicePrompt)" />
@@ -54,6 +55,7 @@
                 :options="choiceValueOptions"
                 :show-labels="false"
                 :placeholder="trans('flow-builder.select-a-value')"
+                :preselect-first="true"
                 track-by="value"
                 label="description"
                 @input="setChoiceValueOption($event, choicePrompt)" />
@@ -71,6 +73,8 @@ import VueMultiselect from 'vue-multiselect'
 import {find} from 'lodash'
 import {lang} from '@/lib/filters/lang'
 import {choicesToExpression} from './expressionTransformers'
+
+const NO_VALUE = 'NULL'
 
 export const SelectOneResponseBlockContactPropertyEditor = {
   components: {
@@ -121,7 +125,7 @@ export const SelectOneResponseBlockContactPropertyEditor = {
 
     choiceValueOptions() {
       return [
-        {value: '', description: this.trans('flow-builder.no-value')},
+        {value: NO_VALUE, description: this.trans('flow-builder.no-value')},
         ...(this.contactProperty?.choices ?? []).map(({value, description}) => ({
           value,
           description: description ?? value,
@@ -131,7 +135,7 @@ export const SelectOneResponseBlockContactPropertyEditor = {
 
     booleanChoiceValueOptions() {
       return [
-        {value: '', description: this.trans('flow-builder.no-value')},
+        {value: NO_VALUE, description: this.trans('flow-builder.no-value')},
         {value: 'TRUE', description: this.trans('flow-builder.true')},
         {value: 'FALSE', description: this.trans('flow-builder.false')},
       ]
