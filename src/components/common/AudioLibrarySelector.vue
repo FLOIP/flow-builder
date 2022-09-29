@@ -66,6 +66,7 @@ export const AudioLibrarySelector = {
         filter: {language_id: langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},
         value: value.uri,
       })
+      this.$emit('select')
     },
   },
 }

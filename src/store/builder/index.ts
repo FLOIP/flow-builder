@@ -2,8 +2,10 @@ import {filter, flatMap, isEqual, keyBy, map, mapValues, union, reject} from 'lo
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IBlockExit, IBlockUIMetadataCanvasCoordinates, IFloipUIMetadata, ValidationException} from '@floip/flow-runner'
+import {IBlock, IBlockExit, IBlockUIMetadataCanvasCoordinates, IContext, IFloipUIMetadata, ValidationException} from '@floip/flow-runner'
 import {IDeepBlockExitIdWithinFlow} from '@/store/flow/block'
+import {routeFrom} from '@/lib/mixins/Routes'
+import {Getter} from 'vuex-class'
 
 // todo migrate these to flight-monitor
 export enum OperationKind {
@@ -328,6 +330,26 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
 
   setHasFlowChanges({commit}, value) {
     commit('setHasFlowChanges', Boolean(value))
+  },
+
+  async persistFlowAndAnimate({dispatch, commit, rootGetters, rootState}): Promise<IContext | undefined> {
+    commit('setTreeSaving', true)
+
+    const persistFlowAndReturnNewContainer = dispatch('flow/flow_persist', {
+      persistRoute: routeFrom('flows.persistFlow', {}, rootState.trees.ui.routes),
+      flowContainer: rootGetters['flow/activeFlowContainer'],
+    }, {root: true})
+
+    const keepAnimatingIfPersistWasTooFast = new Promise(resolve => setTimeout(resolve, 1000))
+
+    const [newFlowContainer] = await Promise.all([
+      persistFlowAndReturnNewContainer,
+      keepAnimatingIfPersistWasTooFast,
+    ])
+
+    commit('setTreeSaving', false)
+
+    return newFlowContainer
   },
 }
 

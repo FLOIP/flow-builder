@@ -39,6 +39,7 @@ export class PhoneRecorder extends Vue {
     }
 
     this.$store.dispatch('startAudioRecordingFor', callConfig)
+      .finally(() => this.$emit('finish'))
   }
 
   // TODO: Deprecate (this + setAudioRecordingConfigVisibilityForSelectedBlock) in favor of modal + local state

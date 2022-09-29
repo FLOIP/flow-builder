@@ -16,8 +16,9 @@
           :mode="mode"
           :resource-id="resource.uuid"
           :resource-variant="findOrGenerateStubbedVariantOn(
-                  resource,
-                  {language_id: languageId, content_type: contentType, modes: [mode]})" />
+            resource,
+            {language_id: languageId, content_type: contentType, modes: [mode]})"
+          @afterResourceVariantChanged="debouncePersistFlow" />
 
         <div v-if="contentType === SupportedContentType.AUDIO">
           <validation-message
@@ -28,13 +29,15 @@
               :lang-id="languageId"
               :resource-id="resource.uuid"
               :selected-audio-uri="findOrGenerateStubbedVariantOn(
-                      resource,
-                      {language_id: languageId, content_type: contentType, modes: [mode]}).value" />
+                resource,
+                {language_id: languageId, content_type: contentType, modes: [mode]}).value"
+              @select="debouncePersistFlow" />
           </validation-message>
 
           <phone-recorder
             v-if="can(['edit-content', 'send-call-to-records'], true) && !findOrGenerateStubbedVariantOn(resource,{language_id: languageId, content_type: contentType, modes: [mode]}).value"
-            :recording-key="`${block.uuid}:${languageId}`" />
+            :recording-key="`${block.uuid}:${languageId}`"
+            @finish="debouncePersistFlow" />
 
           <template v-if="!findAudioResourceVariantFor(resource, {language_id: languageId, content_type: contentType, modes: [mode]})">
             <upload-monitor :upload-key="`${block.uuid}:${languageId}`" />
@@ -43,9 +46,9 @@
               <button
                 v-if="isEditable && isFeatureAudioUploadEnabled"
                 v-flow-uploader="{
-                        target: route('trees.resumeableAudioUpload'),
-                        token: `${block.uuid}:${languageId}`,
-                        accept: 'audio/*'}"
+                  target: route('trees.resumeableAudioUpload'),
+                  token: `${block.uuid}:${languageId}`,
+                  accept: 'audio/*'}"
                 class="btn btn-primary ivr-buttons"
                 @fileError="handleFileErrorFor($event)"
                 @fileSuccess="handleFileSuccessFor(`${block.uuid}:${languageId}`, languageId, $event)"
@@ -97,6 +100,7 @@ import {
 import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/ValidationException'
 import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
 import {IAudioFile} from '@/components/interaction-designer/resource-editors/ResourceEditor.model'
+import {debounce} from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
@@ -125,6 +129,7 @@ export class ModeResourceEditor extends mixins(FlowUploader, Permissions, Routes
     value,
   }: { resourceId: IResource['uuid'], filter: IResourceDefinitionVariantOverModesWithOptionalValue, value: string }) => void
   @builderVuexNamespace.Getter isEditable !: boolean
+  @builderVuexNamespace.Action persistFlowAndAnimate!: () => Promise<void>
 
   get resource(): IResource {
     return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
@@ -155,6 +160,7 @@ export class ModeResourceEditor extends mixins(FlowUploader, Permissions, Routes
   handleFilesSubmittedFor(key: string, {data}: { data: any }): void {
     console.debug('call handleFilesSubmittedFor')
     this.$store.dispatch('multimediaUpload/uploadFiles', {...data, key})
+    this.debouncePersistFlow()
   }
 
   /**
@@ -193,6 +199,7 @@ export class ModeResourceEditor extends mixins(FlowUploader, Permissions, Routes
     // remove the focus from the `upload` Tab
     event.target.blur()
     this.pushAudioIntoLibrary(uploadedAudio)
+    this.debouncePersistFlow()
   }
 
   /**
@@ -202,6 +209,7 @@ export class ModeResourceEditor extends mixins(FlowUploader, Permissions, Routes
   handleFileErrorFor(event: any): void {
     const {data: {message}} = event
     console.debug('handleFileErrorFor', message)
+    this.debouncePersistFlow()
   }
 
   findAudioResourceVariantFor(resource: IResource, filter: IResourceDefinitionVariantOverModesFilter): string | null {
@@ -215,6 +223,10 @@ export class ModeResourceEditor extends mixins(FlowUploader, Permissions, Routes
       return null
     }
   }
+
+  debouncePersistFlow = debounce(() => {
+    this.persistFlowAndAnimate()
+  }, 1500)
 }
 export default ModeResourceEditor
 </script>
