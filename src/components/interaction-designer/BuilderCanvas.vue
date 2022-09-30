@@ -5,9 +5,7 @@
     :style="{ minWidth: `${canvasWidth}px` , minHeight: `${canvasHeight}px` }">
     <block
       v-for="block in activeFlow.blocks"
-      :id="`block/${block.uuid}`"
       :key="block.uuid"
-      :ref="`block/${block.uuid}`"
       :block="block"
       :x="block.ui_metadata.canvas_coordinates.x"
       :y="block.ui_metadata.canvas_coordinates.y" />

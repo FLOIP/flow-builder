@@ -6,7 +6,7 @@ import {
   getActiveFlowFrom,
   IBlock,
   IContext,
-  IFlow,
+  IFlow, ILanguage,
   IResource,
   IResourceValue,
   SupportedMode,
@@ -22,6 +22,10 @@ import {computeBlockCanvasCoordinates} from '@/store/builder'
 import {ErrorObject} from 'ajv'
 import {IFlowsState} from '.'
 import {mergeFlowContainer} from './utils/importHelpers'
+
+export function orderLanguages(LanguagesList: ILanguage[]): ILanguage[] {
+  return sortBy(LanguagesList, ['label'])
+}
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   //We allow for an attempt to get a flow which doesn't yet exist in the state - e.g. the first_flow_id doesn't correspond to a flow
@@ -163,7 +167,7 @@ export const mutations: MutationTree<IFlowsState> = {
   flow_setLanguages(state, {flowId, value}) {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
     // Make sure to follow order when populating languages, because the order may affect indexes during resource validation
-    flow.languages = Array.isArray(value) ? sortBy(value, ['label']) : [value]
+    flow.languages = Array.isArray(value) ? orderLanguages(value as ILanguage[]) : [value]
   },
 }
 
@@ -351,7 +355,9 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   async flow_createBlankResourceForEnabledModesAndLangs({rootState, dispatch}): Promise<IResource> {
     // Let's create all languages, we might need them but if they are switched off they just don't get used
-    const values: IResourceValue = rootState.trees.ui.languages.reduce((memo: object[], language: { id: string, name: string }) => {
+    // It's important to use the same order to generate resource, that will be helpful for resource validation indexes
+    const values: IResourceValue[] = orderLanguages(rootState.trees.ui.languages as ILanguage[])
+      .reduce((memo: IResourceValue[], language: ILanguage) => {
       // Let's just create all the modes, we might need them but if they are switched off they just don't get used
       Object.values(SupportedMode).forEach((mode: SupportedMode) => {
         discoverContentTypesFor(mode)?.forEach((contentType) => {

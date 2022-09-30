@@ -13,7 +13,7 @@
           </div>
         </div>
         <div v-if="hasContent">
-          <horizontal-resource-editor :block="block"/>
+          <per-mode-resource-editor :block="block"/>
         </div>
       </fieldset>
     </div>
