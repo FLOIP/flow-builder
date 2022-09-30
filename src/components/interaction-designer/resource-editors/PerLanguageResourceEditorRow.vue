@@ -1,7 +1,7 @@
 <template>
   <!--Resource editors grouped by language-->
   <div v-if="resource"
-       class="language-resource-editor d-flex flex-column">
+       class="per-language-resource-editor d-flex flex-column">
     <div
       v-for="(item) in supportedModeWithOrderInfo"
       :key="item.index"
