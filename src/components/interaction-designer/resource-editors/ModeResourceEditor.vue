@@ -18,7 +18,7 @@
           :resource-variant="findOrGenerateStubbedVariantOn(
             resource,
             {language_id: languageId, content_type: contentType, modes: [mode]})"
-          @afterResourceVariantChanged="debouncePersistFlow" />
+          @afterResourceVariantChanged="debounce_persistFlow" />
 
         <div v-if="contentType === SupportedContentType.AUDIO">
           <validation-message
@@ -31,13 +31,13 @@
               :selected-audio-uri="findOrGenerateStubbedVariantOn(
                 resource,
                 {language_id: languageId, content_type: contentType, modes: [mode]}).value"
-              @select="debouncePersistFlow" />
+              @select="debounce_persistFlow" />
           </validation-message>
 
           <phone-recorder
             v-if="can(['edit-content', 'send-call-to-records'], true) && !findOrGenerateStubbedVariantOn(resource,{language_id: languageId, content_type: contentType, modes: [mode]}).value"
             :recording-key="`${block.uuid}:${languageId}`"
-            @finish="debouncePersistFlow" />
+            @finish="debounce_persistFlow" />
 
           <template v-if="!findAudioResourceVariantFor(resource, {language_id: languageId, content_type: contentType, modes: [mode]})">
             <upload-monitor :upload-key="`${block.uuid}:${languageId}`" />
@@ -160,7 +160,7 @@ export class ModeResourceEditor extends mixins(FlowUploader, Permissions, Routes
   handleFilesSubmittedFor(key: string, {data}: { data: any }): void {
     console.debug('call handleFilesSubmittedFor')
     this.$store.dispatch('multimediaUpload/uploadFiles', {...data, key})
-    this.debouncePersistFlow()
+    this.debounce_persistFlow()
   }
 
   /**
@@ -199,7 +199,7 @@ export class ModeResourceEditor extends mixins(FlowUploader, Permissions, Routes
     // remove the focus from the `upload` Tab
     event.target.blur()
     this.pushAudioIntoLibrary(uploadedAudio)
-    this.debouncePersistFlow()
+    this.debounce_persistFlow()
   }
 
   /**
@@ -209,7 +209,7 @@ export class ModeResourceEditor extends mixins(FlowUploader, Permissions, Routes
   handleFileErrorFor(event: any): void {
     const {data: {message}} = event
     console.debug('handleFileErrorFor', message)
-    this.debouncePersistFlow()
+    this.debounce_persistFlow()
   }
 
   findAudioResourceVariantFor(resource: IResource, filter: IResourceDefinitionVariantOverModesFilter): string | null {
@@ -224,7 +224,7 @@ export class ModeResourceEditor extends mixins(FlowUploader, Permissions, Routes
     }
   }
 
-  debouncePersistFlow = debounce(() => {
+  debounce_persistFlow = debounce(() => {
     this.persistFlowAndAnimate()
   }, 1500)
 }

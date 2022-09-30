@@ -333,7 +333,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
   },
 
   async persistFlowAndAnimate({dispatch, commit, rootGetters, rootState}): Promise<IContext | undefined> {
-    commit('setTreeSaving', true)
+    commit('setTreeSaving', true, {root: true})
 
     const persistFlowAndReturnNewContainer = dispatch('flow/flow_persist', {
       persistRoute: routeFrom('flows.persistFlow', {}, rootState.trees.ui.routes),
@@ -347,7 +347,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
       keepAnimatingIfPersistWasTooFast,
     ])
 
-    commit('setTreeSaving', false)
+    commit('setTreeSaving', false, {root: true})
 
     return newFlowContainer
   },
