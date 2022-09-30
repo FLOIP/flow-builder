@@ -1,14 +1,14 @@
 <template>
   <div
     v-if="activeFlow.languages.length > 0"
-    class="horizontal-resource-editor">
+    class="per-language-resource-editor">
     <div>
       <b-tabs>
         <b-tab
           v-for="({id: languageId, label: language}, langIndex) in activeFlow.languages"
           :key="languageId"
           :title="language || 'flow-builder.unknown-language' | trans">
-          <language-resource-editor
+          <per-language-resource-editor-row
             :block="block"
             :language-id="languageId"
             :language-index="langIndex"
@@ -39,13 +39,13 @@ Vue.use(TabsPlugin)
 const flowVuexNamespace = namespace('flow')
 
 @Component({})
-export class ResourceEditor extends mixins(FlowUploader, Permissions, Routes, Lang) {
+export class PerLanguageResourceEditor extends mixins(FlowUploader, Permissions, Routes, Lang) {
   @Prop({required: true}) block!: IBlock
 
   @flowVuexNamespace.Getter activeFlow!: IFlow
 }
 
-export default ResourceEditor
+export default PerLanguageResourceEditor
 </script>
 
 <style scoped>

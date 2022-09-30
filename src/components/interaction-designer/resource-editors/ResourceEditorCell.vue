@@ -1,83 +1,59 @@
 <template>
-  <!--Resource editors grouped by language-->
-  <div v-if="resource"
-       class="language-resource-editor d-flex flex-column">
-    <div
-      v-for="(item) in supportedModeWithOrderInfo"
-      :key="item.index"
-      :class="{
-        [`order-${item.order}`]: true
-      }"
-      class="mbx-4">
-      <header class="d-flex">
-        <font-awesome-icon
-          v-if="iconsMap.get(item.mode)"
-          :class="{'custom-icons': iconsMap.get(item.mode)[0] === 'fac', 'library-icons': iconsMap.get(item.mode)[0] !== 'fac'}"
-          :icon="iconsMap.get(item.mode)" />
-        <h6 class="ml-1">
-          {{ `flow-builder.${item.mode.toLowerCase()}-content` | trans }}
-        </h6>
-      </header>
-
-      <template v-for="contentType in discoverContentTypesFor(item.mode)">
-        <!-- todo: it's odd that we pass around a ContentType variant rather than a ContentTypeLangMode variant (aka, mode as external arg) -->
-
-        <resource-variant-text-editor
-          v-if="contentType === SupportedContentType.TEXT"
-          :index="computeResourceIndex(languageIndex, item.index)"
-          :mode="item.mode"
-          :resource-id="resource.uuid"
-          :resource-variant="findOrGenerateStubbedVariantOn(
+  <div class="all-modes-resource-editor d-flex flex-column">
+    <resource-variant-text-editor
+      v-if="contentType === SupportedContentType.TEXT"
+      :index="computeResourceIndex(languageIndex, modeIndex)"
+      :mode="mode"
+      :resource-id="resource.uuid"
+      :resource-variant="findOrGenerateStubbedVariantOn(
                   resource,
-                  {language_id: languageId, content_type: contentType, modes: [item.mode]})" />
+                  {language_id: languageId, content_type: contentType, modes: [mode]})" />
 
-        <div v-if="contentType === SupportedContentType.AUDIO">
-          <validation-message
-            #input-control="{ isValid }"
-            :message-key="`resource/${resource.uuid}/values/${computeResourceIndex(languageIndex, item.index)}/value`">
-            <audio-library-selector
-              :audio-files="availableAudioFiles"
-              :lang-id="languageId"
-              :resource-id="resource.uuid"
-              :selected-audio-uri="findOrGenerateStubbedVariantOn(
+    <div v-if="contentType === SupportedContentType.AUDIO">
+      <validation-message
+        #input-control="{ isValid }"
+        :message-key="`resource/${resource.uuid}/values/${computeResourceIndex(languageIndex, modeIndex)}/value`">
+        <audio-library-selector
+          :audio-files="availableAudioFiles"
+          :lang-id="languageId"
+          :resource-id="resource.uuid"
+          :selected-audio-uri="findOrGenerateStubbedVariantOn(
                       resource,
-                      {language_id: languageId, content_type: contentType, modes: [item.mode]}).value" />
-          </validation-message>
+                      {language_id: languageId, content_type: contentType, modes: [mode]}).value" />
+      </validation-message>
 
-          <phone-recorder
-            v-if="can(['edit-content', 'send-call-to-records'], true) && !findOrGenerateStubbedVariantOn(resource,{language_id: languageId, content_type: contentType, modes: [item.mode]}).value"
-            :recording-key="`${block.uuid}:${languageId}`" />
+      <phone-recorder
+        v-if="can(['edit-content', 'send-call-to-records'], true) && !findOrGenerateStubbedVariantOn(resource,{language_id: languageId, content_type: contentType, modes: [mode]}).value"
+        :recording-key="`${block.uuid}:${languageId}`" />
 
-          <template v-if="!findAudioResourceVariantFor(resource, {language_id: languageId, content_type: contentType, modes: [item.mode]})">
-            <upload-monitor :upload-key="`${block.uuid}:${languageId}`" />
+      <template v-if="!findAudioResourceVariantFor(resource, {language_id: languageId, content_type: contentType, modes: [mode]})">
+        <upload-monitor :upload-key="`${block.uuid}:${languageId}`" />
 
-            <div class="d-flex mt-2 mb-3">
-              <button
-                v-if="isEditable && isFeatureAudioUploadEnabled"
-                v-flow-uploader="{
+        <div class="d-flex mt-2 mb-3">
+          <button
+            v-if="isEditable && isFeatureAudioUploadEnabled"
+            v-flow-uploader="{
                         target: route('trees.resumeableAudioUpload'),
                         token: `${block.uuid}:${languageId}`,
                         accept: 'audio/*'}"
-                class="btn btn-primary ivr-buttons"
-                @fileError="handleFileErrorFor($event)"
-                @fileSuccess="handleFileSuccessFor(`${block.uuid}:${languageId}`, languageId, $event)"
-                @filesSubmitted="handleFilesSubmittedFor(`${block.uuid}:${languageId}`, $event)">
-                <font-awesome-icon
-                  :icon="['fac', 'upload']"
-                  class="fa-btn" />
-                {{ 'flow-builder.upload-audio' | trans }}
-              </button>
-              <button
-                v-if="can(['edit-content', 'send-call-to-records'], true) && isFeatureAudioUploadEnabled"
-                class="btn btn-primary ivr-buttons ml-2"
-                @click.prevent="triggerRecordViaPhoneFor(languageId)">
-                <font-awesome-icon
-                  :icon="['fac', 'record-audio']"
-                  class="fa-btn" />
-                {{ 'flow-builder.record-audio' | trans }}
-              </button>
-            </div>
-          </template>
+            class="btn btn-primary ivr-buttons"
+            @fileError="handleFileErrorFor($event)"
+            @fileSuccess="handleFileSuccessFor(`${block.uuid}:${languageId}`, languageId, $event)"
+            @filesSubmitted="handleFilesSubmittedFor(`${block.uuid}:${languageId}`, $event)">
+            <font-awesome-icon
+              :icon="['fac', 'upload']"
+              class="fa-btn" />
+            {{ 'flow-builder.upload-audio' | trans }}
+          </button>
+          <button
+            v-if="can(['edit-content', 'send-call-to-records'], true) && isFeatureAudioUploadEnabled"
+            class="btn btn-primary ivr-buttons ml-2"
+            @click.prevent="triggerRecordViaPhoneFor(languageId)">
+            <font-awesome-icon
+              :icon="['fac', 'record-audio']"
+              class="fa-btn" />
+            {{ 'flow-builder.record-audio' | trans }}
+          </button>
         </div>
       </template>
     </div>
@@ -96,13 +72,11 @@ import {
   IBlock,
   IFlow,
   IResource,
-  IResourceValue as IResourceDefinitionVariantOverModes,
   SupportedContentType,
   SupportedMode,
 } from '@floip/flow-runner'
 
 import {
-  discoverContentTypesFor,
   findOrGenerateStubbedVariantOn,
   findResourceVariantOverModesOn,
   IResourceDefinitionVariantOverModesFilter,
@@ -115,23 +89,17 @@ const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 
 @Component({})
-export class LanguageResourceEditor extends mixins(FlowUploader, Permissions, Routes, Lang) {
+export class ResourceEditorCell extends mixins(FlowUploader, Permissions, Routes, Lang) {
   @Prop({required: true}) block!: IBlock
+  @Prop({required: true}) contentType!: string
   @Prop({required: true}) languageIndex!: string
   @Prop({required: true}) languageId!: string
+  @Prop({required: true}) modeIndex!: string
+  @Prop({required: true}) mode!: string
 
   SupportedMode = SupportedMode
   SupportedContentType = SupportedContentType
-  iconsMap = new Map<string, object>([
-    [SupportedMode.SMS, ['far', 'envelope']],
-    [SupportedMode.TEXT, ['fac', 'text']],
-    [SupportedMode.USSD, ['fac', 'ussd']],
-    [SupportedMode.IVR, ['fac', 'audio']],
-    [SupportedMode.RICH_MESSAGING, ['far', 'comment-dots']],
-    [SupportedMode.OFFLINE, ['fas', 'mobile-alt']],
-  ])
 
-  discoverContentTypesFor = discoverContentTypesFor
   findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
   findResourceVariantOverModesOn = findResourceVariantOverModesOn
 
@@ -140,7 +108,6 @@ export class LanguageResourceEditor extends mixins(FlowUploader, Permissions, Ro
   @Mutation pushAudioIntoLibrary!: (audio: IAudioFile) => void
   @flowVuexNamespace.Getter resourcesByUuidOnActiveFlow!: { [key: string]: IResource }
   @flowVuexNamespace.Getter activeFlow!: IFlow
-  @flowVuexNamespace.Getter supportedModeWithOrderInfo!: {mode: SupportedMode, index: number, order: number}[]
   @flowVuexNamespace.Action resource_setOrCreateValueModeSpecific!: ({
     resourceId,
     filter,
@@ -151,8 +118,6 @@ export class LanguageResourceEditor extends mixins(FlowUploader, Permissions, Ro
   get resource(): IResource {
     return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
   }
-
-  @flowVuexNamespace.Getter supportedModeWithOrderInfo!: {mode: SupportedMode, index: number, order: number}[]
 
   /**
    * Compute resource index (cell index) for a table having X languages and Y modes
@@ -232,19 +197,12 @@ export class LanguageResourceEditor extends mixins(FlowUploader, Permissions, Ro
     }
   }
 }
-export default LanguageResourceEditor
+export default ResourceEditorCell
 </script>
 
 <style scoped>
 .ivr-buttons {
   font-size: small;
   flex-grow: 1;
-}
-.custom-icons {
-  height: 1.25em;
-  width: 1.25em;
-}
-.library-icons {
-  margin-top: 2px;
 }
 </style>

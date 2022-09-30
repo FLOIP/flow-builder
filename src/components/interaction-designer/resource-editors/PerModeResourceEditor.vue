@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="activeFlow.supported_modes.length > 0"
-    class="horizontal-resource-editor">
+    class="per-mode-resource-editor">
     <div class="d-flex flex-column">
       <div v-for="(item) in supportedModeWithOrderInfo"
            :key="item.index"
@@ -40,7 +40,7 @@
           </div>
         </div>
         <div :id="`collapse-lang-panel-${block.uuid}-${item.mode}`" class="resource-panel-body p-2 collapse multi-collapse">
-          <mode-resource-editor
+          <per-mode-resource-editor-row
             :block="block"
             :mode="item.mode"
             :mode-index="item.index" />
@@ -59,12 +59,11 @@ import Routes from '@/lib/mixins/Routes'
 import FlowUploader from '@/lib/mixins/FlowUploader'
 import {Component, Prop} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
-import {sortBy} from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
 
 @Component({})
-export class HorizontalResourceEditor extends mixins(FlowUploader, Permissions, Routes, Lang) {
+export class PerModeResourceEditor extends mixins(FlowUploader, Permissions, Routes, Lang) {
   @Prop({required: true}) block!: IBlock
 
   @flowVuexNamespace.Getter activeFlow!: IFlow
@@ -81,7 +80,7 @@ export class HorizontalResourceEditor extends mixins(FlowUploader, Permissions, 
   ])
 }
 
-export default HorizontalResourceEditor
+export default PerModeResourceEditor
 </script>
 
 <style lang="scss" scoped>

@@ -9,7 +9,7 @@
       <slot
         slot="resource-editors"
         name="resource-editors">
-        <resource-editor :block="block" />
+        <per-language-resource-editor :block="block" />
       </slot>
       <slot
         slot="extras"
