@@ -34,14 +34,13 @@
                 isPanelExpanded[`${block.uuid}-${item.mode}`] === true ? 'angle-up' : 'angle-down'
                 ]"
               class="cursor-pointer text-primary"
-              :aria-controls="`collapse-lang-panel-${block.uuid}-${item.mode}`"
-              :data-target="`#collapse-lang-panel-${block.uuid}-${item.mode}`"
-              aria-expanded="false"
-              data-toggle="collapse"
               @click="updateIsPanelExpanded(`${block.uuid}-${item.mode}`)"/>
           </div>
         </div>
-        <div :id="`collapse-lang-panel-${block.uuid}-${item.mode}`" class="resource-panel-body p-2 collapse multi-collapse">
+        <div
+            v-if="isPanelExpanded[`${block.uuid}-${item.mode}`] === true"
+            :id="`collapse-lang-panel-${block.uuid}-${item.mode}`"
+            class="resource-panel-body p-2 collapse multi-collapse show">
           <per-mode-resource-editor-row
             :block="block"
             :mode="item.mode"
