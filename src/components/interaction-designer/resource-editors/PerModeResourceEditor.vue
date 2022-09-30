@@ -28,15 +28,17 @@
             </header>
           </div>
           <div class="ml-auto">
-            <button
+            <font-awesome-icon
+              :icon="[
+                'fas',
+                isPanelExpanded[`${block.uuid}-${item.mode}`] === true ? 'angle-up' : 'angle-down'
+                ]"
+              class="cursor-pointer text-primary"
               :aria-controls="`collapse-lang-panel-${block.uuid}-${item.mode}`"
               :data-target="`#collapse-lang-panel-${block.uuid}-${item.mode}`"
               aria-expanded="false"
-              class="btn btn-sm btn-primary"
               data-toggle="collapse"
-              type="button">
-              show/hide
-            </button>
+              @click="updateIsPanelExpanded(`${block.uuid}-${item.mode}`)"/>
           </div>
         </div>
         <div :id="`collapse-lang-panel-${block.uuid}-${item.mode}`" class="resource-panel-body p-2 collapse multi-collapse">
@@ -78,6 +80,24 @@ export class PerModeResourceEditor extends mixins(FlowUploader, Permissions, Rou
     [SupportedMode.RICH_MESSAGING, ['far', 'comment-dots']],
     [SupportedMode.OFFLINE, ['fas', 'mobile-alt']],
   ])
+
+  isPanelExpanded = {}
+
+  updateIsPanelExpanded(id) {
+    if (this.isPanelExpanded[id] === true) {
+      // redefine to make the data reactive
+      this.isPanelExpanded = {
+        ...this.isPanelExpanded,
+        [id]: false,
+      }
+    } else {
+      // redefine to make the data reactive
+      this.isPanelExpanded = {
+        ...this.isPanelExpanded,
+        [id]: true,
+      }
+    }
+  }
 }
 
 export default PerModeResourceEditor
