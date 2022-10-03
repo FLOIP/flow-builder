@@ -11,6 +11,8 @@ import {
   faMobileAlt,
   faSpinner,
   faExclamationTriangle,
+  faAngleDown,
+  faAngleUp,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -50,6 +52,8 @@ library.add(
   faTrashAlt,
   faInfoCircle,
   faExclamationTriangle,
+  faAngleDown,
+  faAngleUp,
   ...CustomIcons,
 )
 

@@ -265,29 +265,30 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
       )
     }
 
-    this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
-    this.deselectBlocks()
-    this.discoverTallestBlockForDesignerWorkspaceHeight({aboveTallest: true})
+    if (this.isBuilderCanvasEnabled) {
+      this.deselectBlocks()
+      this.discoverTallestBlockForDesignerWorkspaceHeight({aboveTallest: true})
 
-    setTimeout(() => {
-      const {blockId, field} = this.$route.params
-      if (blockId) {
-        this.activateBlock({blockId})
-        scrollBlockIntoView(blockId)
-      }
-      if (field) {
-        scrollBehavior(this.$route)
-      }
-      if (this.$route.meta?.isBlockEditorShown as boolean) {
-        this.setIsBlockEditorOpen(true)
-      }
-    }, 500)
-    console.debug('Vuej tree interaction designer mounted!')
+      setTimeout(() => {
+        const {blockId, field} = this.$route.params
+        if (blockId) {
+          this.activateBlock({blockId})
+          scrollBlockIntoView(blockId)
+        }
+        if (field) {
+          scrollBehavior(this.$route)
+        }
+        if (this.$route.meta?.isBlockEditorShown as boolean) {
+          this.setIsBlockEditorOpen(true)
+        }
+      }, 500)
 
-    // get the interaction-designer-content positions, will be used to set other elements' position in the canvas (eg: for block editor)
-    if (this.activeFlow && this.$refs['interaction-designer-contents'] !== undefined) {
-      this.setInteractionDesignerBoundingClientRect((this.$refs['interaction-designer-contents'] as Element).getBoundingClientRect())
+      // get the interaction-designer-content positions, will be used to set other elements' position in the canvas (eg: for block editor)
+      if (this.activeFlow && this.$refs['interaction-designer-contents'] !== undefined) {
+        this.setInteractionDesignerBoundingClientRect((this.$refs['interaction-designer-contents'] as Element).getBoundingClientRect())
+      }
     }
+    console.debug('Vuej tree interaction designer mounted!')
   }
 
   @Watch('$route', {deep: true})
@@ -364,14 +365,6 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     return !isEditableLocked && (
       mode === 'edit' || (!mode && endsWith(hash, '/edit'))
     )
-  }
-
-  hoistResourceViewerToPushState(hash: string): void {
-    if (!endsWith(hash, '/resource-viewer')) {
-      return
-    }
-
-    this.replaceRouteInHistory(`/trees/${this.id}/resource-viewer`)
   }
 
   showOrHideSidebar(): void {
