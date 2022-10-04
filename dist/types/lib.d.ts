@@ -3439,7 +3439,7 @@ export declare const defaultLocalisations: {
     };
 };
 export declare const BaseBlock: typeof BaseBlockComponent;
-export declare const BaseBlockStore: import("vuex").Module<import("./store/flow/block-types/BaseBlock").IEmptyState, import("./store").IRootState>;
+export declare const BaseBlockStore: import("vuex").Module<import("./store/flow/block-types/BaseBlockStore").IEmptyState, import("./store").IRootState>;
 export declare const createDefaultBlockTypeInstallerFor: typeof createDefaultBlockTypeInstallerForFunction;
 export * from './components/common';
 export * from './components/interaction-designer';

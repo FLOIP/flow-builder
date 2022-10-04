@@ -1,6 +1,6 @@
 import { GetterTree, Module, MutationTree } from 'vuex';
 import { IRootState } from '../../../store';
-import { IEmptyState } from '../../../store/flow/block-types/BaseBlock';
+import { IEmptyState } from '../../../store/flow/block-types/BaseBlockStore';
 export declare const BLOCK_TYPE = "MobilePrimitives.SelectOneResponse";
 export declare const getters: GetterTree<IEmptyState, IRootState>;
 export declare const mutations: MutationTree<IEmptyState>;

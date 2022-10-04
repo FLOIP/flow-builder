@@ -16,6 +16,7 @@
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
+    "noImplicitAny": true,
     "resolveJsonModule": true,
     "plugins": [
       {
