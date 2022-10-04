@@ -50,7 +50,7 @@ export const stateFactory = (): IValidationState => ({
   validationStatuses: {} as { [key: string]: IValidationStatus },
 })
 
-export const getters: GetterTree<IValidationState, IRootState> = {
+export const validationGetters: GetterTree<IValidationState, IRootState> = {
   /**
    * Human readable errors, keys are index like `flow/flowId/path/to/prop`
    * check this repo to see more available example: https://github.com/ajv-validator/ajv-i18n/blob/master/messages/index.js
@@ -83,7 +83,7 @@ export const getters: GetterTree<IValidationState, IRootState> = {
   },
 }
 
-export const mutations: MutationTree<IValidationState> = {
+export const validationMutations: MutationTree<IValidationState> = {
   removeValidationStatusesFor(state, {key}) {
     delete state.validationStatuses[key]
   },
@@ -100,7 +100,7 @@ export const mutations: MutationTree<IValidationState> = {
   },
 }
 
-export const actions: ActionTree<IValidationState, IRootState> = {
+export const validationActions: ActionTree<IValidationState, IRootState> = {
   async validate_block({state, commit, rootGetters, dispatch}, {block}: {block: IBlock}): Promise<IValidationStatus> {
     const schemaVersion = rootGetters['flow/activeFlowContainer'].specification_version
     const status = await dispatch(`flow/${block.type}/validate`, {block, schemaVersion}, {root: true})
@@ -298,13 +298,13 @@ export const actions: ActionTree<IValidationState, IRootState> = {
   },
 }
 
-export const store: Module<IValidationState, IRootState> = {
+export const validationStore: Module<IValidationState, IRootState> = {
   namespaced: true,
   state: stateFactory,
-  getters,
-  mutations,
-  actions,
+  getters: validationGetters,
+  mutations: validationMutations,
+  actions: validationActions,
 }
 
-export default store
+export default validationStore
 export * from './validationHelpers'

@@ -3451,6 +3451,7 @@ export * from './components/interaction-designer/resource-editors';
 export * from './components/resource-editor';
 export * from './components/interaction-designer/toolbar';
 export * from './store/flow/block-types';
+export * from './store';
 export * from './router/helpers';
 export * from './store/validation';
 export * from './lib/validations';
