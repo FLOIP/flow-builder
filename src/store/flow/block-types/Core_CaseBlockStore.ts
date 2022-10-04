@@ -3,7 +3,7 @@ import {IRootState} from '@/store'
 import {ICaseBlock} from '@floip/flow-runner/src/model/block/ICaseBlock'
 import {cloneDeep} from 'lodash'
 import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.model'
-import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import BaseBlockStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlockStore'
 
 export const BLOCK_TYPE = 'Core.Case'
 
@@ -24,7 +24,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
 }
 
 const Core_CaseBlockStore: Module<IEmptyState, IRootState> = {
-  ...cloneDeep(BaseStore),
+  ...cloneDeep(BaseBlockStore),
   actions,
 }
 

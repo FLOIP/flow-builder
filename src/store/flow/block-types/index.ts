@@ -1,4 +1,4 @@
-export {default as BaseBlockStore} from './BaseBlock'
+export {default as BaseBlockStore} from './BaseBlockStore'
 export {default as SmartDevices_PhotoResponseBlockStore} from './SmartDevices_PhotoResponseBlockStore'
 export {default as SmartDevices_LocationResponseBlockStore} from './SmartDevices_LocationResponseBlockStore'
 export {default as MobilePrimitives_SelectOneResponseBlockStore} from './MobilePrimitives_SelectOneResponseBlockStore'

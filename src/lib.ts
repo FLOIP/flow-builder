@@ -13,7 +13,7 @@ import defaultLocalisationsJson from './assets/messages.json'
 
 // Block helpers
 import BaseBlockComponent from './components/interaction-designer/block-types/BaseBlock.vue'
-import BaseStore from './store/flow/block-types/BaseBlock'
+import BaseStore from './store/flow/block-types/BaseBlockStore'
 
 export const appConfig = require('../app.config')
 export const builderConfig = require('../builder.config')
