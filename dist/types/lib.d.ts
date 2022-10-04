@@ -3439,7 +3439,6 @@ export declare const defaultLocalisations: {
     };
 };
 export declare const BaseBlock: typeof BaseBlockComponent;
-export declare const BaseBlockStore: import("vuex").Module<import("./store/flow/block-types/BaseBlock").IEmptyState, import("./store").IRootState>;
 export declare const createDefaultBlockTypeInstallerFor: typeof createDefaultBlockTypeInstallerForFunction;
 export * from './components/common';
 export * from './components/interaction-designer';
@@ -3452,6 +3451,7 @@ export * from './components/interaction-designer/resource-editors';
 export * from './components/resource-editor';
 export * from './components/interaction-designer/toolbar';
 export * from './store/flow/block-types';
+export * from './store';
 export * from './router/helpers';
 export * from './store/validation';
 export * from './lib/validations';

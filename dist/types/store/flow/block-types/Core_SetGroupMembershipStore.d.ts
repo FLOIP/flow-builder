@@ -1,6 +1,6 @@
 import { Module } from 'vuex';
 import { IRootState } from '../../../store';
-import { IEmptyState } from '../../../store/flow/block-types/BaseBlock';
+import { IEmptyState } from '../../../store/flow/block-types/BaseBlockStore';
 export interface IGroupOption {
     id: string;
     name: string;

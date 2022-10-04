@@ -20,9 +20,9 @@ export interface IValidationState {
     };
 }
 export declare const stateFactory: () => IValidationState;
-export declare const getters: GetterTree<IValidationState, IRootState>;
-export declare const mutations: MutationTree<IValidationState>;
-export declare const actions: ActionTree<IValidationState, IRootState>;
-export declare const store: Module<IValidationState, IRootState>;
-export default store;
+export declare const validationGetters: GetterTree<IValidationState, IRootState>;
+export declare const validationMutations: MutationTree<IValidationState>;
+export declare const validationActions: ActionTree<IValidationState, IRootState>;
+export declare const validationStore: Module<IValidationState, IRootState>;
+export default validationStore;
 export * from './validationHelpers';

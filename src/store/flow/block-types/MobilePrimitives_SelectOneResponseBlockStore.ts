@@ -5,12 +5,12 @@ import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV
 import {ISelectOneResponseBlock} from '@floip/flow-runner/dist/model/block/ISelectOneResponseBlock'
 import Vue from 'vue'
 import {cloneDeep, find, reject} from 'lodash'
-import BaseStore, {
+import BaseBlockStore, {
   actions as baseActions,
   mutations as baseMutations,
   getters as baseGetters,
   IEmptyState,
-} from '@/store/flow/block-types/BaseBlock'
+} from '@/store/flow/block-types/BaseBlockStore'
 import {ValidationResults} from '@/lib/validations'
 import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.model'
 import * as ChoiceModule from '@/store/flow/block/choice'
@@ -164,7 +164,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
 }
 
 const MobilePrimitives_SelectOneResponseBlockStore: Module<IEmptyState, IRootState> = {
-  ...cloneDeep(BaseStore),
+  ...cloneDeep(BaseBlockStore),
   getters,
   mutations,
   actions,

@@ -2,7 +2,7 @@ import {ActionContext, ActionTree, GetterTree, Module} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlock, IFlow} from '@floip/flow-runner'
 import {cloneDeep} from 'lodash'
-import BaseStore, {actions as baseActions, getters as baseGetters, IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import BaseBlockStore, {actions as baseActions, getters as baseGetters, IEmptyState} from '@/store/flow/block-types/BaseBlockStore'
 
 export const BLOCK_TYPE = 'Core.RunFlow'
 
@@ -33,7 +33,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
 }
 
 const Core_RunFlowBlockStore: Module<IEmptyState, IRootState> = {
-  ...cloneDeep(BaseStore),
+  ...cloneDeep(BaseBlockStore),
   getters,
   actions,
 }

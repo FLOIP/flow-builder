@@ -13,7 +13,6 @@ import defaultLocalisationsJson from './assets/messages.json'
 
 // Block helpers
 import BaseBlockComponent from './components/interaction-designer/block-types/BaseBlock.vue'
-import BaseStore from './store/flow/block-types/BaseBlock'
 
 export const appConfig = require('../app.config')
 export const builderConfig = require('../builder.config')
@@ -25,7 +24,6 @@ export const ImportFlow = ImportFlowComponent
 export const Home = HomeComponent
 export const defaultLocalisations = defaultLocalisationsJson
 export const BaseBlock = BaseBlockComponent
-export const BaseBlockStore = BaseStore
 export const createDefaultBlockTypeInstallerFor = createDefaultBlockTypeInstallerForFunction
 
 // To allow importing of common components as named imports rather than part of default
@@ -40,6 +38,7 @@ export * from '@/components/interaction-designer/resource-editors'
 export * from '@/components/resource-editor'
 export * from '@/components/interaction-designer/toolbar'
 export * from '@/store/flow/block-types'
+export * from '@/store'
 export * from '@/router/helpers'
 
 // We may need those validation helpers to customize the validation in the consumer side
