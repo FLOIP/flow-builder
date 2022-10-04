@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts">
-import {cloneDeep, debounce, endsWith, forEach, get, includes, invoke, isEmpty, values} from 'lodash'
+import {cloneDeep, debounce, endsWith, forEach, get, includes, invoke, isEmpty, values, isEqual} from 'lodash'
 import {mixins} from 'vue-class-component'
 import {Component, Prop, Vue, Watch} from 'vue-property-decorator'
 import {Action, Getter, Mutation, namespace, State} from 'vuex-class'
@@ -70,7 +70,9 @@ const builderNamespace = namespace('builder')
 const clipboardNamespace = namespace('clipboard')
 const validationVuexNamespace = namespace('validation')
 
-const DEBOUNCE_VALIDATION_TIMER_MS = 300
+const DEBOUNCE_VALIDATION_TIMER_MS = 1000
+
+const DEBOUNCE_AUTO_SAVE_TIMER_MS = 3 * 1000
 
 @Component({
   components: {
@@ -100,11 +102,14 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     return cloneDeep(this.activeFlow?.blocks)
   }
 
-  // ###### Validation API Watchers [
-  @Watch('activeFlow', {deep: true, immediate: true})
-  async onActiveFlowChanged(newFlow: IFlow): Promise<void> {
-    this.debounceFlowValidation({newFlow})
-  }
+  debounceFlowValidation = debounce(function (this: any, {newFlow}: {newFlow: IFlow}) {
+    if (newFlow !== undefined) {
+      console.debug('watch/activeFlow:', 'active flow has changed', `from ${this.mainComponent}.`, 'Validating ...')
+      this.validate_flow({flow: newFlow})
+    } else {
+      console.warn('watch/activeFlow:', 'newFlow is undefined')
+    }
+  }, DEBOUNCE_VALIDATION_TIMER_MS)
 
   @Watch('blocksOnActiveFlowForWatcher', {deep: true, immediate: true})
   async onBlocksInActiveFlowChanged(newBlocks: IBlock[], oldBlocks: IBlock[]): Promise<void> {
@@ -112,14 +117,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   }
 
   @validationVuexNamespace.Action validate_flow!: ({flow}: { flow: IFlow }) => Promise<IValidationStatus>
-  debounceFlowValidation = debounce(function (this: any, {newFlow}: {newFlow: IFlow}) {
-    if (newFlow !== undefined) {
-      console.debug('watch/activeFlow:', 'active flow has changed', `from ${this.mainComponent}.`, 'Validating ...');
-      this.validate_flow({flow: newFlow})
-    } else {
-      console.warn('watch/activeFlow:', 'newFlow is undefined')
-    }
-  }, DEBOUNCE_VALIDATION_TIMER_MS)
+  @Getter autoSaveTimerForResourceViewer!: number
   @validationVuexNamespace.Action validate_allBlocksWithinFlow!: () => Promise<void>
   debounceBlockValidation = debounce(function (this: any) {
     if (this.activeFlow !== undefined) {
@@ -132,21 +130,26 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   @validationVuexNamespace.Action validate_resourcesOnSupportedValues!: (
     {resources, supportedModes, supportedLanguages}: {resources: IResource[], supportedModes: SupportedMode[], supportedLanguages: ILanguage[]}
   ) => Promise<void>
+  @Getter autoSaveTimerForBuilder!: number
+  @builderNamespace.Action persistFlowAndAnimate!: () => Promise<void>
 
-  @Watch('activeFlow.resources', {deep: true, immediate: true})
-  async onResourcesOnActiveFlowChanged(newResources: IResources, oldResources: IResources): Promise<void> {
-    console.debug('watch/activeFlow.resources:', 'resources inside active flow have changed', `from ${this.mainComponent}.`, 'Validating ...')
-    if (this.activeFlow !== undefined) {
-      await this.validate_resourcesOnSupportedValues({
-        resources: newResources,
-        supportedModes: this.activeFlow.supported_modes,
-        supportedLanguages: this.activeFlow.languages,
-      })
-    } else {
-      console.warn('watch/activeFlow.resources:', 'activeFlow is undefined')
-    }
+  /**
+   * We need a dedicated cloned getter to allow us comparing old/new value in watcher
+   */
+  get resourcesForWatcher() {
+    return cloneDeep(this.activeFlow.resources)
   }
-  // ] ######### end Validation API Watchers
+
+  // ###### Validation API & Auto save Watchers [
+  @Watch('activeFlow', {deep: true, immediate: true})
+  async onActiveFlowChanged(newFlow: IFlow): Promise<void> {
+    this.debounceFlowValidation({newFlow})
+  }
+
+  debouncePersistFlowFromResourceViewer = function () {}
+
+  debouncePersistFlowFromBuilder = function () {}
+  // ] ######### end Validation API & Auto save Watchers
 
   toolbarHeight = 102
   // TODO: Move this to BlockClassDetails spec // an inversion can be "legacy types"
@@ -230,21 +233,32 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     this.deselectBlocks()
   }
 
-  created(): void {
-    if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
-      this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig})
+  @Watch('resourcesForWatcher', {deep: true, immediate: true})
+  async onResourcesOnActiveFlowChanged(newResources: IResources, oldResources: IResources | undefined): Promise<void> {
+    console.debug('watch/activeFlow.resources:', 'resources inside active flow have changed', `from ${this.mainComponent}.`, 'Validating ...')
+    // TODO: fix why is it called 02 times for new blocks >> because the newResources[i].values are different
+    // Seems like the is a bug: when we save a flow, all non supported resources are gone
+    console.debug('calling debouncePersist 1', oldResources, newResources, isEqual(oldResources, newResources))
+    if (oldResources !== undefined
+      && this.activeFlow !== undefined
+      && !isEqual(oldResources, newResources)
+    ) {
+      console.debug('calling debouncePersist 2')
+
+      if (this.isResourceViewerCanvasEnabled) {
+        this.debouncePersistFlowFromResourceViewer()
+      } else {
+        this.debouncePersistFlowFromBuilder()
+      }
+
+      await this.validate_resourcesOnSupportedValues({
+        resources: newResources,
+        supportedModes: this.activeFlow.supported_modes,
+        supportedLanguages: this.activeFlow.languages,
+      })
+    } else {
+      console.warn('watch/activeFlow.resources:', 'activeFlow is undefined')
     }
-
-    // Initialize global reference for legacy + debugging
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (global as any).builder = this
-
-    // Listen to Flow updates to maintain "hasFlowChanges" state
-    this.$store.subscribe(this.handleFlowChanges.bind(this))
-
-    this.initializeTreeModel()
-    // `this.mode` comes from captured param in js-routes
-    this.updateIsEditableFromParams(this.mode)
   }
 
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
@@ -311,6 +325,35 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   @builderNamespace.Mutation setInteractionDesignerBoundingClientRect!: (value: DOMRect) => void
   @builderNamespace.Action setIsEditable!: (arg0: boolean) => void
   @builderNamespace.Action setHasFlowChanges!: (arg0: boolean) => void
+
+  created(): void {
+    if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
+      this.configure({appConfig: this.appConfig, builderConfig: this.builderConfig})
+    }
+
+    // Initialize global reference for legacy + debugging
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (global as any).builder = this
+
+    // Listen to Flow updates to maintain "hasFlowChanges" state
+    this.$store.subscribe(this.handleFlowChanges.bind(this))
+
+    this.initializeTreeModel()
+    // `this.mode` comes from captured param in js-routes
+    this.updateIsEditableFromParams(this.mode)
+
+    // Define debounce functions once timers are ready
+    this.debouncePersistFlowFromResourceViewer = debounce(function (this: any) {
+      console.debug('debouncePersistFlowFromResourceViewer at', Date.now())
+      this.persistFlowAndAnimate()
+    }, this.autoSaveTimerForResourceViewer, {trailing: true})
+
+    this.debouncePersistFlowFromBuilder = debounce(function (this: any) {
+      console.debug('debouncePersistFlowFromBuilder at', Date.now())
+      this.persistFlowAndAnimate()
+    }, this.autoSaveTimerForBuilder, {trailing: true})
+  }
+
   @flowNamespace.Mutation flow_setActiveFlowId!: ({flowId}: {flowId: string | null}) => void
   @Action attemptSaveTree!: () => void
   @Action discoverTallestBlockForDesignerWorkspaceHeight!: ({buffer, aboveTallest}: {buffer?: number, aboveTallest: boolean}) => void

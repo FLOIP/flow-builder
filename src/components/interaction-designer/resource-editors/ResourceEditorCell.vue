@@ -7,8 +7,7 @@
       :resource-id="resource.uuid"
       :resource-variant="findOrGenerateStubbedVariantOn(
                   resource,
-                  {language_id: languageId, content_type: contentType, modes: [mode]})"
-      @afterResourceVariantChanged="debounce_persistFlow" />
+                  {language_id: languageId, content_type: contentType, modes: [mode]})" />
 
     <div v-if="contentType === SupportedContentType.AUDIO">
       <validation-message
@@ -20,14 +19,12 @@
           :resource-id="resource.uuid"
           :selected-audio-uri="findOrGenerateStubbedVariantOn(
                       resource,
-                      {language_id: languageId, content_type: contentType, modes: [mode]}).value"
-          @select="debounce_persistFlow" />
+                      {language_id: languageId, content_type: contentType, modes: [mode]}).value" />
       </validation-message>
 
       <phone-recorder
         v-if="can(['edit-content', 'send-call-to-records'], true) && !findOrGenerateStubbedVariantOn(resource,{language_id: languageId, content_type: contentType, modes: [mode]}).value"
-        :recording-key="`${block.uuid}:${languageId}`"
-        @finish="debounce_persistFlow" />
+        :recording-key="`${block.uuid}:${languageId}`" />
 
       <template v-if="!findAudioResourceVariantFor(resource, {language_id: languageId, content_type: contentType, modes: [mode]})">
         <upload-monitor :upload-key="`${block.uuid}:${languageId}`" />
@@ -87,7 +84,6 @@ import {
 import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/ValidationException'
 import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
 import {IAudioFile} from '@/components/interaction-designer/resource-editors/ResourceEditor.model'
-import {debounce} from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
@@ -118,7 +114,6 @@ export class ResourceEditorCell extends mixins(FlowUploader, Permissions, Routes
     value,
   }: { resourceId: IResource['uuid'], filter: IResourceDefinitionVariantOverModesWithOptionalValue, value: string }) => void
   @builderVuexNamespace.Getter isEditable !: boolean
-  @builderVuexNamespace.Action persistFlowAndAnimate!: () => Promise<void>
 
   get resource(): IResource {
     return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
@@ -141,7 +136,6 @@ export class ResourceEditorCell extends mixins(FlowUploader, Permissions, Routes
   handleFilesSubmittedFor(key: string, {data}: { data: any }): void {
     console.debug('call handleFilesSubmittedFor')
     this.$store.dispatch('multimediaUpload/uploadFiles', {...data, key})
-    this.debounce_persistFlow()
   }
 
   /**
@@ -180,7 +174,6 @@ export class ResourceEditorCell extends mixins(FlowUploader, Permissions, Routes
     // remove the focus from the `upload` Tab
     event.target.blur()
     this.pushAudioIntoLibrary(uploadedAudio)
-    this.debounce_persistFlow()
   }
 
   /**
@@ -190,7 +183,6 @@ export class ResourceEditorCell extends mixins(FlowUploader, Permissions, Routes
   handleFileErrorFor(event: any): void {
     const {data: {message}} = event
     console.debug('handleFileErrorFor', message)
-    this.debounce_persistFlow()
   }
 
   findAudioResourceVariantFor(resource: IResource, filter: IResourceDefinitionVariantOverModesFilter): string | null {
@@ -204,10 +196,6 @@ export class ResourceEditorCell extends mixins(FlowUploader, Permissions, Routes
       return null
     }
   }
-
-  debounce_persistFlow = debounce(() => {
-    this.persistFlowAndAnimate()
-  }, 1500)
 }
 export default ResourceEditorCell
 </script>

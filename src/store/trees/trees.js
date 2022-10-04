@@ -57,6 +57,12 @@ export default {
         subscriberPropertyFields: [],
         blockTags: [],
         supportedFlowSpecVersionsForImport: undefined,
+        timer: {
+          auto_save: {
+            resource_viewer: 3,
+            builder: 60,
+          },
+        },
       },
     }
   },
@@ -186,6 +192,8 @@ export default {
 
     supportedModes: ({ui}) => ui.supportedModes || [],
     defaultModes: ({ui}) => ui.defaultModes || [],
+    autoSaveTimerForResourceViewer: ({ui}) => ui.timer.auto_save.resource_viewer * 1000,
+    autoSaveTimerForBuilder: ({ui}) => ui.timer.auto_save.builder * 1000,
   },
 
   mutations: {

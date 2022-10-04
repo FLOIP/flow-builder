@@ -5,7 +5,9 @@ import {IRootState} from '@/store'
 import {IBlock, IBlockExit, IBlockUIMetadataCanvasCoordinates, IContext, IFloipUIMetadata, ValidationException} from '@floip/flow-runner'
 import {IDeepBlockExitIdWithinFlow} from '@/store/flow/block'
 import {routeFrom} from '@/lib/mixins/Routes'
-import {Getter} from 'vuex-class'
+
+// The "Saving" text flashes too quickly w/o actual backend interaction
+export const SAVING_ANIMATION_DURATION = 1000
 
 // todo migrate these to flight-monitor
 export enum OperationKind {
@@ -332,7 +334,13 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     commit('setHasFlowChanges', Boolean(value))
   },
 
-  async persistFlowAndAnimate({dispatch, commit, rootGetters, rootState}): Promise<IContext | undefined> {
+  async persistFlowAndAnimate({dispatch, commit, state, rootGetters, rootState}): Promise<IContext | undefined> {
+    // Do not save if features not enabled or edit is not allowed
+    if (rootGetters['isFeatureTreeSaveEnabled'] === false || state.isEditable === false) {
+      console.debug('skipping persistFlowAndAnimate')
+      return
+    }
+
     commit('setTreeSaving', true, {root: true})
 
     const persistFlowAndReturnNewContainer = dispatch('flow/flow_persist', {
@@ -340,7 +348,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
       flowContainer: rootGetters['flow/activeFlowContainer'],
     }, {root: true})
 
-    const keepAnimatingIfPersistWasTooFast = new Promise(resolve => setTimeout(resolve, 1000))
+    const keepAnimatingIfPersistWasTooFast = new Promise(resolve => setTimeout(resolve, SAVING_ANIMATION_DURATION))
 
     const [newFlowContainer] = await Promise.all([
       persistFlowAndReturnNewContainer,

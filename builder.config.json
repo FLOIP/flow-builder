@@ -94,6 +94,26 @@
         "id": "23",
         "label": "French",
         "iso_639_3": "fra"
+      },
+      {
+        "id": "24",
+        "label": "Spanish",
+        "iso_639_3": "spa"
+      },
+      {
+        "id": "25",
+        "label": "Malagasy",
+        "iso_639_3": "mga"
+      },
+      {
+        "id": "26",
+        "label": "Portuguese",
+        "iso_639_3": "eng"
+      },
+      {
+        "id": "27",
+        "label": "Swahili",
+        "iso_639_3": "swa"
       }
     ],
     "blockClasses": {
@@ -473,6 +493,12 @@
       },
       "interactionDesigner": {
         "builderWidthAdjustment": 0
+      }
+    },
+    "timer": {
+      "auto_save": {
+        "resource_viewer": 3,
+        "builder": 60
       }
     }
   },
