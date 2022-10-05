@@ -17,7 +17,7 @@ import {BLOCK_TYPE as SelectManyBlockType} from '@/store/flow/block-types/Mobile
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import * as SetContactPropertyModule from './block/set-contact-property'
 import {IFlowsState} from '.'
-import {removeBlockValueByPath, updateBlockValueByPath} from './utils/vuexBlockHelpers'
+import {removeBlockValueByPath, updateBlockValueByPath} from './utils/vuexBlockAndFlowHelpers'
 
 export type BlockConfigFieldType = object | string | number | boolean | undefined | null
 

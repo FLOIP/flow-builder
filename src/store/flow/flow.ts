@@ -20,7 +20,7 @@ import {cloneDeep, defaults, every, forEach, get, has, includes, merge, omit, so
 import {discoverContentTypesFor, cleanupFlowResources} from '@/store/flow/resource'
 import {computeBlockCanvasCoordinates} from '@/store/builder'
 import {ErrorObject} from 'ajv'
-import {removeFlowValueByPath, updateFlowValueByPath} from '@/store/flow/utils/vuexBlockHelpers'
+import {removeFlowValueByPath, updateFlowValueByPath} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
 import {BlockConfigFieldType} from '@/store/flow/block'
 import {IFlowsState} from '.'
 import {mergeFlowContainer} from './utils/importHelpers'
