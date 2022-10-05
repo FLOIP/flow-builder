@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import {toPath} from 'lodash'
 import {IContext, findBlockOnActiveFlowWith, IBlock, IChoice, findFlowWith, IFlow} from '@floip/flow-runner'
+import {ConfigFieldType} from '@/store/flow/block'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function makePath(block: any, rawPath: string): [object, string] {
@@ -23,7 +24,7 @@ export function updateBlockValueByPath(
   state: unknown,
   blockId: IBlock['uuid'],
   path: string,
-  value: boolean | number | string | object | null | undefined,
+  value: ConfigFieldType,
 ): void {
   const base = findBlockOnActiveFlowWith(blockId, state as IContext)
   const [pointer, key] = makePath(base, path)
@@ -54,7 +55,7 @@ export function updateFlowValueByPath(
   state: unknown,
   flowId: IFlow['uuid'],
   path: string,
-  value: boolean | number | string | object | null | undefined,
+  value: ConfigFieldType,
 ): void {
   const base = findFlowWith(flowId, state as IContext)
   const [pointer, key] = makePath(base, path)

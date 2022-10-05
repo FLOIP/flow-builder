@@ -21,7 +21,7 @@ import {discoverContentTypesFor, cleanupFlowResources} from '@/store/flow/resour
 import {computeBlockCanvasCoordinates} from '@/store/builder'
 import {ErrorObject} from 'ajv'
 import {removeFlowValueByPath, updateFlowValueByPath} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
-import {BlockConfigFieldType} from '@/store/flow/block'
+import {ConfigFieldType} from '@/store/flow/block'
 import {IFlowsState} from '.'
 import {mergeFlowContainer} from './utils/importHelpers'
 
@@ -148,7 +148,7 @@ export const mutations: MutationTree<IFlowsState> = {
 
   flow_updateVendorMetadataByPath(
     state,
-    {flowId, path, value}: {flowId: string, path: string, value: BlockConfigFieldType},
+    {flowId, path, value}: {flowId: string, path: string, value: ConfigFieldType},
   ) {
     updateFlowValueByPath(state, flowId, `vendor_metadata.${path}`, value)
   },
