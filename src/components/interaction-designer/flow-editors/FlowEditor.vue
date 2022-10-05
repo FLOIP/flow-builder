@@ -54,6 +54,8 @@
             :flow="flow"
             @commitFlowModesChange="updateFlowModes" />
         </validation-message>
+
+        <results-streaming-api-editor/>
       </div>
     </fieldset>
   </div>
