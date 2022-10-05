@@ -55,9 +55,8 @@
             @commitFlowModesChange="updateFlowModes" />
         </validation-message>
       </div>
-      <div class="row px-3">
-        <results-streaming-api-editor/>
-      </div>
+
+      <results-streaming-api-editor :column-class="otherRowsClass" />
     </fieldset>
   </div>
 </template>
