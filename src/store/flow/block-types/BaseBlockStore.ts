@@ -111,7 +111,7 @@ export const actions = {
     _ctx: unknown,
     {block, schemaVersion}: {block: IBlock, schemaVersion: string},
   ): Promise<IValidationStatus> {
-    console.debug('floip/BaseBlock/validateBlockWithCustomJsonSchema()', `${block.type}`)
+    console.debug('floip/BaseBlockStore/validateBlockWithCustomJsonSchema()', `${block.type}`)
     // we can provide the customBlockJsonSchema option for validateBlockWithJsonSchema when overriding this validateBlockWithCustomJsonSchema
     return validateBlockWithJsonSchema({block, schemaVersion})
   },
@@ -127,7 +127,7 @@ export const actions = {
     _ctx: unknown,
     {block}: {block: IBlock},
   ): Promise<ValidationResults> {
-    console.debug('floip/BaseBlock/validateWithProgrammaticLogic()', `${block.type}`)
+    console.debug('floip/BaseBlockStore/validateWithProgrammaticLogic()', `${block.type}`)
     return [] as ValidationResults
   },
 
@@ -139,7 +139,7 @@ export const actions = {
     {dispatch}: ActionContext<IEmptyState, IRootState>,
     {block, schemaVersion}: {block: IBlock, schemaVersion: string},
   ): Promise<IValidationStatus> {
-    console.debug('floip/BaseBlock/validate()', `${block.type}`)
+    console.debug('floip/BaseBlockStore/validate()', `${block.type}`)
     // Validation based on JsonSchema
     const validationStatus: IValidationStatus = await dispatch('validateBlockWithCustomJsonSchema', {block, schemaVersion})
 

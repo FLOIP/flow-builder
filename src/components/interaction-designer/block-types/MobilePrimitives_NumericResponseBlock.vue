@@ -57,10 +57,6 @@ import NumericStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitive
 import Lang from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
-import {
-  IBlockWithBranchingType,
-  OutputBranchingType,
-} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.vue'
 
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)

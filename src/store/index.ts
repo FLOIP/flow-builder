@@ -4,7 +4,7 @@ import audio from '@/store/trees/audio'
 import {IClipboardState, store as clipboard} from '@/store/clipboard'
 import {IFlowsState, store as flow} from './flow'
 import {IBuilderState, store as builder} from './builder'
-import {IValidationState, store as validation} from './validation'
+import {IValidationState, validationStore as validation} from './validation'
 
 export interface IRootState {
   builder: IBuilderState,

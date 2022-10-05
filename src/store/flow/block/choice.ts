@@ -10,7 +10,7 @@ import {
 } from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {deleteChoiceValueByPath} from '@/store/flow/utils/vuexBlockHelpers'
-import {IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import {IEmptyState} from '@/store/flow/block-types/BaseBlockStore'
 import Vue from 'vue'
 
 export const BLOCK_RESPONSE_EXPRESSION = 'block.response'

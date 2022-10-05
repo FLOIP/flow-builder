@@ -4,7 +4,7 @@ import {cloneDeep, isNumber} from 'lodash'
 import {ActionContext, ActionTree, GetterTree, Module} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlockWithBranchingType, OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.model'
-import {actions as baseActions, getters as baseGetters, IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import {actions as baseActions, getters as baseGetters, IEmptyState} from '@/store/flow/block-types/BaseBlockStore'
 import MobilePrimitives_SelectOneResponseBlockStore from './MobilePrimitives_SelectOneResponseBlockStore'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectManyResponse'

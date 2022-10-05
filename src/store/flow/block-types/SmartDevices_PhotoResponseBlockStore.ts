@@ -2,7 +2,7 @@ import {ActionContext, ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlock} from '@floip/flow-runner'
 import {cloneDeep} from 'lodash'
-import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import BaseBlockStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlockStore'
 
 export const BLOCK_TYPE = 'SmartDevices.PhotoResponse'
 
@@ -21,7 +21,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
 }
 
 const SmartDevices_PhotoResponseBlockStore: Module<IEmptyState, IRootState> = {
-  ...cloneDeep(BaseStore),
+  ...cloneDeep(BaseBlockStore),
   actions,
 }
 
