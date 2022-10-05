@@ -52,7 +52,7 @@
     "bootstrap": "^4.5.3",
     "bootstrap-datetimepicker": "^0.0.7",
     "bootstrap-vue": "^2.21.1",
-    "caniuse-lite": "^1.0.30001400",
+    "caniuse-lite": "^1.0.30001416",
     "core-js": "^3.6.5",
     "cssprefix": "^2.0.16",
     "fuse.js": "^6.6.0",
