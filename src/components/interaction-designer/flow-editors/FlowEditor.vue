@@ -56,7 +56,7 @@
         </validation-message>
       </div>
 
-      <results-streaming-api-editor :column-class="otherRowsClass" />
+      <slot name="vendor-extras" />
     </fieldset>
   </div>
 </template>
