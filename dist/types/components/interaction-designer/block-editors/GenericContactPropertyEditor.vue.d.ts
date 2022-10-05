@@ -1,6 +1,6 @@
 import { IBlock } from '@floip/flow-runner';
 import Lang from '../../../lib/filters/lang';
-import { BlockConfigFieldType } from '../../../store/flow/block';
+import { ConfigFieldType } from '../../../store/flow/block';
 import { IContactPropertyOption, IContactPropertyOptionForUISelector } from '../../../store/flow/block-types/Core_SetContactPropertyStore.model';
 declare const GenericContactPropertyEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class GenericContactPropertyEditor extends GenericContactPropertyEditor_base {
@@ -35,12 +35,12 @@ export declare class GenericContactPropertyEditor extends GenericContactProperty
     block_updateConfigByPath: ({ blockId, path, value }: {
         blockId: string;
         path: string;
-        value: BlockConfigFieldType;
+        value: ConfigFieldType;
     }) => void;
     block_updateVendorMetadataByPath: ({ blockId, path, value }: {
         blockId: string;
         path: string;
-        value: BlockConfigFieldType;
+        value: ConfigFieldType;
     }) => void;
     block_removeConfigByKey: ({ blockId, key }: {
         blockId: IBlock['uuid'];

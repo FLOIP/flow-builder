@@ -1,6 +1,6 @@
 import { IBlock, SetContactProperty } from '@floip/flow-runner';
 import Lang from '../../../lib/filters/lang';
-import { BlockConfigFieldType } from '../../../store/flow/block';
+import { ConfigFieldType } from '../../../store/flow/block';
 declare const ContactPropertyEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class ContactPropertyEditor extends ContactPropertyEditor_base {
     readonly block: IBlock;
@@ -22,7 +22,7 @@ export declare class ContactPropertyEditor extends ContactPropertyEditor_base {
     block_updateConfigByPath: ({ blockId, path, value }: {
         blockId: string;
         path: string;
-        value: BlockConfigFieldType;
+        value: ConfigFieldType;
     }) => void;
     set propertyKey(value: string | undefined);
     block_setContactPropertyValueOnIndex: ({ index, blockId, propertyValue }: {
