@@ -660,7 +660,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @builderVuexNamespace.Getter isResourceViewerCanvasEnabled!: boolean
   @builderVuexNamespace.Mutation activateBlock!: ({blockId}: { blockId: IBlock['uuid'] | null}) => void
   @builderVuexNamespace.Mutation setActiveMainComponent!: ({mainComponent}: {mainComponent: string | undefined}) => void
-  @builderVuexNamespace.Action persistFlowAndAnimate!: () => Promise<void>
+  @builderVuexNamespace.Action persistFlowAndAnimate!: () => Promise<IContext | undefined>
 
   // Clipboard
   @clipboardVuexNamespace.Action setSimulatorActive!: (value: boolean) => void

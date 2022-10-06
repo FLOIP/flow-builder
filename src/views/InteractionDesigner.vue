@@ -114,7 +114,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   @validationVuexNamespace.Action validate_flow!: ({flow}: { flow: IFlow }) => Promise<IValidationStatus>
   debounceFlowValidation = debounce(function (this: any, {newFlow}: {newFlow: IFlow}) {
     if (newFlow !== undefined) {
-      console.debug('watch/activeFlow:', 'active flow has changed', `from ${this.mainComponent}.`, 'Validating ...');
+      console.debug('watch/activeFlow:', 'active flow has changed', `from ${this.mainComponent}.`, 'Validating ...')
       this.validate_flow({flow: newFlow})
     } else {
       console.warn('watch/activeFlow:', 'newFlow is undefined')

@@ -6,8 +6,8 @@
       :mode="mode"
       :resource-id="resource.uuid"
       :resource-variant="findOrGenerateStubbedVariantOn(
-                  resource,
-                  {language_id: languageId, content_type: contentType, modes: [mode]})"
+        resource,
+        {language_id: languageId, content_type: contentType, modes: [mode]})"
       @afterResourceVariantChanged="debounce_persistFlow" />
 
     <div v-if="contentType === SupportedContentType.AUDIO">
@@ -19,8 +19,8 @@
           :lang-id="languageId"
           :resource-id="resource.uuid"
           :selected-audio-uri="findOrGenerateStubbedVariantOn(
-                      resource,
-                      {language_id: languageId, content_type: contentType, modes: [mode]}).value"
+            resource,
+            {language_id: languageId, content_type: contentType, modes: [mode]}).value"
           @select="debounce_persistFlow" />
       </validation-message>
 
@@ -36,9 +36,9 @@
           <button
             v-if="isEditable && isFeatureAudioUploadEnabled"
             v-flow-uploader="{
-                        target: route('trees.resumeableAudioUpload'),
-                        token: `${block.uuid}:${languageId}`,
-                        accept: 'audio/*'}"
+              target: route('trees.resumeableAudioUpload'),
+              token: `${block.uuid}:${languageId}`,
+              accept: 'audio/*'}"
             class="btn btn-primary ivr-buttons"
             @fileError="handleFileErrorFor($event)"
             @fileSuccess="handleFileSuccessFor(`${block.uuid}:${languageId}`, languageId, $event)"
@@ -73,6 +73,7 @@ import FlowUploader from '@/lib/mixins/FlowUploader'
 import {Getter, Mutation, namespace} from 'vuex-class'
 import {
   IBlock,
+  IContext,
   IFlow,
   IResource,
   SupportedContentType,
@@ -86,11 +87,16 @@ import {
 } from '@/store/flow/resource'
 import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/ValidationException'
 import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
-import {IAudioFile} from '@/components/interaction-designer/resource-editors/ResourceEditor.model'
+import {
+  IAudioFile,
+  IResourceDefinitionVariantOverModesWithOptionalValue,
+} from '@/components/interaction-designer/resource-editors/ResourceEditor.model'
 import {debounce} from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
+
+const DEBOUNCE_FLOW_PERSIST_MS = 1500
 
 @Component({})
 export class ResourceEditorCell extends mixins(FlowUploader, Permissions, Routes, Lang) {
@@ -118,7 +124,7 @@ export class ResourceEditorCell extends mixins(FlowUploader, Permissions, Routes
     value,
   }: { resourceId: IResource['uuid'], filter: IResourceDefinitionVariantOverModesWithOptionalValue, value: string }) => void
   @builderVuexNamespace.Getter isEditable !: boolean
-  @builderVuexNamespace.Action persistFlowAndAnimate!: () => Promise<void>
+  @builderVuexNamespace.Action persistFlowAndAnimate!: () => Promise<IContext | undefined>
 
   get resource(): IResource {
     return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
@@ -204,10 +210,9 @@ export class ResourceEditorCell extends mixins(FlowUploader, Permissions, Routes
       return null
     }
   }
-
-  debounce_persistFlow = debounce(() => {
+  debounce_persistFlow = debounce(function (this: any) {
     this.persistFlowAndAnimate()
-  }, 1500)
+  }, DEBOUNCE_FLOW_PERSIST_MS)
 }
 export default ResourceEditorCell
 </script>
