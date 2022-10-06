@@ -84,8 +84,8 @@ export const validationGetters: GetterTree<IValidationState, IRootState> = {
 }
 
 export const validationMutations: MutationTree<IValidationState> = {
-  removeValidationStatusesFor(state, {key}) {
-    delete state.validationStatuses[key]
+  removeValidationStatusesFor(state, {key}: {key: string}) {
+    Vue.delete(state.validationStatuses, key)
   },
   resetValidationStatuses(state, {key}): void {
     Vue.set(state.validationStatuses, key, {ajvErrors: undefined})
@@ -140,7 +140,15 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
    *   }
    * }
    */
-  async validate_fromBackend({state, rootGetters}, {type}: {type: 'block' | 'resource'}): Promise<void> {
+  async validate_fromBackend({state, rootGetters, commit}, {type}: {type: 'block' | 'resource'}): Promise<void> {
+    // Clean previous backend validation first
+    Object.keys(state.validationStatuses).forEach((key: string) => {
+      if (key.startsWith('backend')) {
+        commit('removeValidationStatusesFor', {key})
+      }
+    })
+
+    // New validations
     const backendErrorsList = get(
     rootGetters['flow/activeFlow']?.vendor_metadata?.floip?.ui_metadata?.validation_results,
       `${type}s`,
