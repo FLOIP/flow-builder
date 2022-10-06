@@ -9,7 +9,7 @@
             :placeholder="trans('flow-builder.enter-block-code')"
             :valid-state="isValid"
             @keydown="filterName"
-            @mouseleave.native="handleCompleteEditing"/>
+            @mouseleave.native="handleCompleteEditing" />
         </div>
         <div v-else class="block-code">
           <div @mouseenter="activateEditing"> {{ blockName }} </div>
@@ -23,10 +23,13 @@
 import {Component, Prop} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
-import {IBlock, IBlockUIMetadata} from '@floip/flow-runner'
+import {IBlock, IContext} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
+import {debounce} from 'lodash'
+import {DEBOUNCE_FLOW_PERSIST_MS} from '@/components/interaction-designer/resource-viewer'
 
 const flowVuexNamespace = namespace('flow')
+const builderVuexNamespace = namespace('builder')
 
 @Component({})
 export class SimplifiedNameEditor extends mixins(Lang) {
@@ -54,6 +57,7 @@ export class SimplifiedNameEditor extends mixins(Lang) {
       value,
       lockAutoUpdate: true,
     })
+    this.debounce_persistFlow()
   }
 
   updated() {
@@ -82,7 +86,14 @@ export class SimplifiedNameEditor extends mixins(Lang) {
       // This will turn on automatic name generation from the label
       this.block_resetName({blockId: this.block.uuid})
     }
+
+    this.debounce_persistFlow()
   }
+
+  debounce_persistFlow = debounce(this.persistFlowAndAnimate.bind(this), DEBOUNCE_FLOW_PERSIST_MS)
+
+  // this should go after debounce_persistFlow
+  @builderVuexNamespace.Action persistFlowAndAnimate!: () => Promise<IContext | undefined>
 }
 export default SimplifiedNameEditor
 </script>

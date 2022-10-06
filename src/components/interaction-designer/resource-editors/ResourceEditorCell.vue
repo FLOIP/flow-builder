@@ -21,7 +21,7 @@
           :selected-audio-uri="findOrGenerateStubbedVariantOn(
             resource,
             {language_id: languageId, content_type: contentType, modes: [mode]}).value"
-          @select="debounce_persistFlow" />
+          @change="debounce_persistFlow" />
       </validation-message>
 
       <phone-recorder
@@ -75,9 +75,11 @@ import {
   IBlock,
   IContext,
   IFlow,
+  ILanguage,
   IResource,
   SupportedContentType,
   SupportedMode,
+  ValidationException,
 } from '@floip/flow-runner'
 
 import {
@@ -85,18 +87,15 @@ import {
   findResourceVariantOverModesOn,
   IResourceDefinitionVariantOverModesFilter,
 } from '@/store/flow/resource'
-import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/ValidationException'
-import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
 import {
   IAudioFile,
   IResourceDefinitionVariantOverModesWithOptionalValue,
 } from '@/components/interaction-designer/resource-editors/ResourceEditor.model'
 import {debounce} from 'lodash'
+import {DEBOUNCE_FLOW_PERSIST_MS} from '@/components/interaction-designer/resource-viewer'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
-
-const DEBOUNCE_FLOW_PERSIST_MS = 1500
 
 @Component({})
 export class ResourceEditorCell extends mixins(FlowUploader, Permissions, Routes, Lang) {
@@ -124,7 +123,6 @@ export class ResourceEditorCell extends mixins(FlowUploader, Permissions, Routes
     value,
   }: { resourceId: IResource['uuid'], filter: IResourceDefinitionVariantOverModesWithOptionalValue, value: string }) => void
   @builderVuexNamespace.Getter isEditable !: boolean
-  @builderVuexNamespace.Action persistFlowAndAnimate!: () => Promise<IContext | undefined>
 
   get resource(): IResource {
     return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
@@ -210,9 +208,11 @@ export class ResourceEditorCell extends mixins(FlowUploader, Permissions, Routes
       return null
     }
   }
-  debounce_persistFlow = debounce(function (this: any) {
-    this.persistFlowAndAnimate()
-  }, DEBOUNCE_FLOW_PERSIST_MS)
+
+  debounce_persistFlow = debounce(this.persistFlowAndAnimate.bind(this), DEBOUNCE_FLOW_PERSIST_MS)
+
+  // this should go after debounce_persistFlow
+  @builderVuexNamespace.Action persistFlowAndAnimate!: () => Promise<IContext | undefined>
 }
 export default ResourceEditorCell
 </script>
