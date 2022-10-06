@@ -1,6 +1,6 @@
 import { IBlock, ISetGroupMembershipBlockConfig, IGroupMembership } from '@floip/flow-runner';
 import Lang from '../../../lib/filters/lang';
-import { BlockConfigFieldType } from '../../../store/flow/block';
+import { ConfigFieldType } from '../../../store/flow/block';
 declare type MembershipAction = {
     id: string;
     label: string;
@@ -30,7 +30,7 @@ export declare class GroupMembershipEditor extends GroupMembershipEditor_base {
     block_updateConfigByPath: ({ blockId, path, value }: {
         blockId: string;
         path: string;
-        value: BlockConfigFieldType;
+        value: ConfigFieldType;
     }) => void;
 }
 export default GroupMembershipEditor;

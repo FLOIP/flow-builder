@@ -17,9 +17,9 @@ import {BLOCK_TYPE as SelectManyBlockType} from '@/store/flow/block-types/Mobile
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import * as SetContactPropertyModule from './block/set-contact-property'
 import {IFlowsState} from '.'
-import {removeBlockValueByPath, updateBlockValueByPath} from './utils/vuexBlockHelpers'
+import {removeBlockValueByPath, updateBlockValueByPath} from './utils/vuexBlockAndFlowHelpers'
 
-export type BlockConfigFieldType = object | string | number | boolean | undefined | null
+export type ConfigFieldType = object | string | number | boolean | undefined | null
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   ...SetContactPropertyModule.getters,
@@ -95,7 +95,7 @@ export const mutations: MutationTree<IFlowsState> = {
       .config = newConfig
   },
   // note that the {key} could be undefined inside `config` at block creation (eg: optional config)
-  block_updateConfigByKey(state, {blockId, key, value}: { blockId: string, key: string, value: BlockConfigFieldType }) {
+  block_updateConfigByKey(state, {blockId, key, value}: { blockId: string, key: string, value: ConfigFieldType }) {
     const currentConfig: { [key: string]: any } = findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config
     currentConfig[key] = value
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext).config = {...currentConfig}
@@ -106,10 +106,10 @@ export const mutations: MutationTree<IFlowsState> = {
   /**
    * update config by path, and make nested assignment reactive for vue
    */
-  block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value: BlockConfigFieldType}) {
+  block_updateConfigByPath(state, {blockId, path, value}: {blockId: string, path: string, value: ConfigFieldType}) {
     updateBlockValueByPath(state, blockId, `config.${path}`, value)
   },
-  block_updateUIMetadataByPath(state, {blockId, path, value}: {blockId: string, path: string, value: BlockConfigFieldType}) {
+  block_updateUIMetadataByPath(state, {blockId, path, value}: {blockId: string, path: string, value: ConfigFieldType}) {
     const chunks = path.split('.')
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
 
@@ -140,7 +140,7 @@ export const mutations: MutationTree<IFlowsState> = {
   },
   block_updateVendorMetadataByPath(
     state,
-    {blockId, path, value}: {blockId: string, path: string, value: BlockConfigFieldType},
+    {blockId, path, value}: {blockId: string, path: string, value: ConfigFieldType},
   ) {
     updateBlockValueByPath(state, blockId, `vendor_metadata.${path}`, value)
   },
