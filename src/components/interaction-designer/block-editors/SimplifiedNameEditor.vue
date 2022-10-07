@@ -90,10 +90,10 @@ export class SimplifiedNameEditor extends mixins(Lang) {
     this.debounce_persistFlow()
   }
 
-  debounce_persistFlow = debounce(this.persistFlowAndAnimate.bind(this), DEBOUNCE_FLOW_PERSIST_MS)
+  debounce_persistFlow = debounce(this.persistFlowAndHandleUiState.bind(this), DEBOUNCE_FLOW_PERSIST_MS)
 
   // this should go after debounce_persistFlow
-  @builderVuexNamespace.Action persistFlowAndAnimate!: () => Promise<IContext | undefined>
+  @builderVuexNamespace.Action persistFlowAndHandleUiState!: () => Promise<IContext | undefined>
 }
 export default SimplifiedNameEditor
 </script>

@@ -209,10 +209,10 @@ export class ResourceEditorCell extends mixins(FlowUploader, Permissions, Routes
     }
   }
 
-  debounce_persistFlow = debounce(this.persistFlowAndAnimate.bind(this), DEBOUNCE_FLOW_PERSIST_MS)
+  debounce_persistFlow = debounce(this.persistFlowAndHandleUiState.bind(this), DEBOUNCE_FLOW_PERSIST_MS)
 
   // this should go after debounce_persistFlow
-  @builderVuexNamespace.Action persistFlowAndAnimate!: () => Promise<IContext | undefined>
+  @builderVuexNamespace.Action persistFlowAndHandleUiState!: () => Promise<IContext | undefined>
 }
 export default ResourceEditorCell
 </script>

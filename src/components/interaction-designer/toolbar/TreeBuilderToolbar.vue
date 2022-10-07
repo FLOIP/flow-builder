@@ -506,7 +506,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
 
     //If we aren't in edit mode there should be nothing to persist
     if (this.isEditable) {
-      const flowContainer = await this.persistFlowAndAnimate()
+      const flowContainer = await this.persistFlowAndHandleUiState()
       if (!flowContainer) {
         //TODO - hook into showing validation errors design when we have it
         //This won't show normal validation errors as the frontend should have caught them. We'll use this to show server errors.
@@ -660,7 +660,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @builderVuexNamespace.Getter isResourceViewerCanvasEnabled!: boolean
   @builderVuexNamespace.Mutation activateBlock!: ({blockId}: { blockId: IBlock['uuid'] | null}) => void
   @builderVuexNamespace.Mutation setActiveMainComponent!: ({mainComponent}: {mainComponent: string | undefined}) => void
-  @builderVuexNamespace.Action persistFlowAndAnimate!: () => Promise<IContext | undefined>
+  @builderVuexNamespace.Action persistFlowAndHandleUiState!: () => Promise<IContext | undefined>
 
   // Clipboard
   @clipboardVuexNamespace.Action setSimulatorActive!: (value: boolean) => void

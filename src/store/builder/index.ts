@@ -334,10 +334,10 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     commit('setHasFlowChanges', Boolean(value))
   },
 
-  async persistFlowAndAnimate({dispatch, commit, state, rootGetters, rootState}): Promise<IContext | undefined> {
+  async persistFlowAndHandleUiState({dispatch, commit, state, rootGetters, rootState}): Promise<IContext | undefined> {
     // Do not save if features not enabled or edit is not allowed
     if (rootGetters.isFeatureTreeSaveEnabled === false || state.isEditable === false) {
-      console.debug('skipping persistFlowAndAnimate')
+      console.debug('skipping persistFlowAndHandleUiState')
       return undefined
     }
 
