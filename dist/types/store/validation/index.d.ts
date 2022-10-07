@@ -6,6 +6,7 @@ export interface IIndexedString {
 }
 export interface IValidationStatusContext {
     resourceUuid?: string;
+    isOrphanResource?: boolean;
 }
 export interface IValidationStatus {
     isValid: boolean | PromiseLike<any>;
