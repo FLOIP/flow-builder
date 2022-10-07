@@ -7,13 +7,18 @@
     <div class="block-content">
       <fieldset :disabled="!isEditable">
         <div class="d-flex">
-          <simplified-name-editor :block="block" class="col-3 p-0"/>
+          <simplified-name-editor
+            :block="block"
+            class="col-3 p-0"
+            @change="$emit('change')" />
           <div v-if="!hasContent" class="col-3">
             <div class="badge badge-info">{{trans('flow-builder.no-content-block-info')}}</div>
           </div>
         </div>
         <div v-if="hasContent">
-          <per-mode-resource-editor :block="block"/>
+          <per-mode-resource-editor
+            :block="block"
+            @change="$emit('change')" />
         </div>
       </fieldset>
     </div>

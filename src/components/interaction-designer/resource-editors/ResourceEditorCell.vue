@@ -1,13 +1,14 @@
 <template>
-  <div class="all-modes-resource-editor d-flex flex-column">
+  <div class="resource-editor-cell d-flex flex-column">
     <resource-variant-text-editor
       v-if="contentType === SupportedContentType.TEXT"
       :index="computeResourceIndex(languageIndex, modeIndex)"
       :mode="mode"
       :resource-id="resource.uuid"
       :resource-variant="findOrGenerateStubbedVariantOn(
-                  resource,
-                  {language_id: languageId, content_type: contentType, modes: [mode]})" />
+        resource,
+        {language_id: languageId, content_type: contentType, modes: [mode]})"
+      @afterResourceVariantChanged="$emit('change')" />
 
     <div v-if="contentType === SupportedContentType.AUDIO">
       <validation-message
@@ -18,13 +19,15 @@
           :lang-id="languageId"
           :resource-id="resource.uuid"
           :selected-audio-uri="findOrGenerateStubbedVariantOn(
-                      resource,
-                      {language_id: languageId, content_type: contentType, modes: [mode]}).value" />
+            resource,
+            {language_id: languageId, content_type: contentType, modes: [mode]}).value"
+          @change="$emit('change')" />
       </validation-message>
 
       <phone-recorder
         v-if="can(['edit-content', 'send-call-to-records'], true) && !findOrGenerateStubbedVariantOn(resource,{language_id: languageId, content_type: contentType, modes: [mode]}).value"
-        :recording-key="`${block.uuid}:${languageId}`" />
+        :recording-key="`${block.uuid}:${languageId}`"
+        @finish="$emit('change')" />
 
       <template v-if="!findAudioResourceVariantFor(resource, {language_id: languageId, content_type: contentType, modes: [mode]})">
         <upload-monitor :upload-key="`${block.uuid}:${languageId}`" />
@@ -33,9 +36,9 @@
           <button
             v-if="isEditable && isFeatureAudioUploadEnabled"
             v-flow-uploader="{
-                        target: route('trees.resumeableAudioUpload'),
-                        token: `${block.uuid}:${languageId}`,
-                        accept: 'audio/*'}"
+              target: route('trees.resumeableAudioUpload'),
+              token: `${block.uuid}:${languageId}`,
+              accept: 'audio/*'}"
             class="btn btn-primary ivr-buttons"
             @fileError="handleFileErrorFor($event)"
             @fileSuccess="handleFileSuccessFor(`${block.uuid}:${languageId}`, languageId, $event)"
@@ -71,9 +74,11 @@ import {Getter, Mutation, namespace} from 'vuex-class'
 import {
   IBlock,
   IFlow,
+  ILanguage,
   IResource,
   SupportedContentType,
   SupportedMode,
+  ValidationException,
 } from '@floip/flow-runner'
 
 import {
@@ -81,9 +86,10 @@ import {
   findResourceVariantOverModesOn,
   IResourceDefinitionVariantOverModesFilter,
 } from '@/store/flow/resource'
-import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/ValidationException'
-import {ILanguage} from '@floip/flow-runner/dist/flow-spec/ILanguage'
-import {IAudioFile} from '@/components/interaction-designer/resource-editors/ResourceEditor.model'
+import {
+  IAudioFile,
+  IResourceDefinitionVariantOverModesWithOptionalValue,
+} from '@/components/interaction-designer/resource-editors/ResourceEditor.model'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
@@ -136,6 +142,7 @@ export class ResourceEditorCell extends mixins(FlowUploader, Permissions, Routes
   handleFilesSubmittedFor(key: string, {data}: { data: any }): void {
     console.debug('call handleFilesSubmittedFor')
     this.$store.dispatch('multimediaUpload/uploadFiles', {...data, key})
+    this.$emit('change')
   }
 
   /**
@@ -174,6 +181,7 @@ export class ResourceEditorCell extends mixins(FlowUploader, Permissions, Routes
     // remove the focus from the `upload` Tab
     event.target.blur()
     this.pushAudioIntoLibrary(uploadedAudio)
+    this.$emit('change')
   }
 
   /**
@@ -183,6 +191,7 @@ export class ResourceEditorCell extends mixins(FlowUploader, Permissions, Routes
   handleFileErrorFor(event: any): void {
     const {data: {message}} = event
     console.debug('handleFileErrorFor', message)
+    this.$emit('change')
   }
 
   findAudioResourceVariantFor(resource: IResource, filter: IResourceDefinitionVariantOverModesFilter): string | null {

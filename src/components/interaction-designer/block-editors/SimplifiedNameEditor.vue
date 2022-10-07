@@ -9,7 +9,7 @@
             :placeholder="trans('flow-builder.enter-block-code')"
             :valid-state="isValid"
             @keydown="filterName"
-            @mouseleave.native="handleCompleteEditing"/>
+            @mouseleave.native="handleCompleteEditing" />
         </div>
         <div v-else class="block-code">
           <div @mouseenter="activateEditing"> {{ blockName }} </div>
@@ -23,7 +23,7 @@
 import {Component, Prop} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
-import {IBlock, IBlockUIMetadata} from '@floip/flow-runner'
+import {IBlock, IContext} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 
 const flowVuexNamespace = namespace('flow')
@@ -54,6 +54,7 @@ export class SimplifiedNameEditor extends mixins(Lang) {
       value,
       lockAutoUpdate: true,
     })
+    this.$emit('change')
   }
 
   updated() {
@@ -82,6 +83,8 @@ export class SimplifiedNameEditor extends mixins(Lang) {
       // This will turn on automatic name generation from the label
       this.block_resetName({blockId: this.block.uuid})
     }
+
+    this.$emit('change')
   }
 }
 export default SimplifiedNameEditor

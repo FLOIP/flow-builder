@@ -2,8 +2,12 @@ import {filter, flatMap, isEqual, keyBy, map, mapValues, union, reject} from 'lo
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IBlockExit, IBlockUIMetadataCanvasCoordinates, IFloipUIMetadata, ValidationException} from '@floip/flow-runner'
+import {IBlock, IBlockExit, IBlockUIMetadataCanvasCoordinates, IContext, IFloipUIMetadata, ValidationException} from '@floip/flow-runner'
 import {IDeepBlockExitIdWithinFlow} from '@/store/flow/block'
+import {routeFrom} from '@/lib/mixins/Routes'
+
+// The "Saving" text flashes too quickly w/o actual backend interaction
+export const SAVING_ANIMATION_DURATION = 1000
 
 // todo migrate these to flight-monitor
 export enum OperationKind {
@@ -328,6 +332,32 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
 
   setHasFlowChanges({commit}, value) {
     commit('setHasFlowChanges', Boolean(value))
+  },
+
+  async persistFlowAndHandleUiState({dispatch, commit, state, rootGetters, rootState}): Promise<IContext | undefined> {
+    // Do not save if features not enabled or edit is not allowed
+    if (rootGetters.isFeatureTreeSaveEnabled === false || state.isEditable === false) {
+      console.debug('skipping persistFlowAndHandleUiState')
+      return undefined
+    }
+
+    commit('setTreeSaving', true, {root: true})
+
+    const persistFlowAndReturnNewContainer: IContext | null = await dispatch('flow/flow_persist', {
+      persistRoute: routeFrom('flows.persistFlow', {}, rootState.trees.ui.routes),
+      flowContainer: rootGetters['flow/activeFlowContainer'],
+    }, {root: true})
+
+    const keepAnimatingIfPersistWasTooFast = new Promise(resolve => setTimeout(resolve, SAVING_ANIMATION_DURATION))
+
+    const [newFlowContainer] = await Promise.all([
+      persistFlowAndReturnNewContainer,
+      keepAnimatingIfPersistWasTooFast,
+    ])
+
+    commit('setTreeSaving', false, {root: true})
+
+    return newFlowContainer ?? undefined
   },
 }
 

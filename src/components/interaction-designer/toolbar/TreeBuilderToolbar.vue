@@ -318,7 +318,7 @@ import {BModal, BootstrapVue, BTooltip} from 'bootstrap-vue'
 import Vue from 'vue'
 import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
-import Routes from '@/lib/mixins/Routes'
+import Routes, {routeFrom} from '@/lib/mixins/Routes'
 import {identity, isEmpty, isNil, pickBy as _pickBy, reduce, omit} from 'lodash'
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
@@ -346,9 +346,6 @@ const validationVuexNamespace = namespace('validation')
 export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   isExportVisible = false
   height = 102
-
-  // The "Saving" text flashes too quickly w/o actual backend interaction
-  private readonly SAVING_ANIMATION_DURATION = 1000
 
   async mounted(): Promise<void> {
     const routeMeta = this.$route.meta ? this.$route.meta : {}
@@ -509,21 +506,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
 
     //If we aren't in edit mode there should be nothing to persist
     if (this.isEditable) {
-      this.setTreeSaving(true)
-      const flowContainer = (await Promise.all([
-        this.flow_persist({
-          persistRoute: this.route('flows.persistFlow', {}),
-          flowContainer: this.activeFlowContainer,
-        }),
-        new Promise((resolve) => {
-          global.setTimeout(() => {
-            resolve(false)
-          }, this.SAVING_ANIMATION_DURATION)
-        }),
-      ]))
-        .filter(Boolean)
-        .pop()
-      this.setTreeSaving(false)
+      const flowContainer = await this.persistFlowAndHandleUiState()
       if (!flowContainer) {
         //TODO - hook into showing validation errors design when we have it
         //This won't show normal validation errors as the frontend should have caught them. We'll use this to show server errors.
@@ -660,10 +643,6 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     flowId,
     blockId,
   }: { flowId?: string, blockId?: IBlock['uuid'] }) => Promise<IBlock>
-  @flowVuexNamespace.Action flow_persist!: ({
-    persistRoute,
-    flowContainer,
-  }: { persistRoute: any, flowContainer?: IContext }) => Promise<IContext | null>
 
   // Builder
   @builderVuexNamespace.Getter isEditable!: boolean
@@ -681,6 +660,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @builderVuexNamespace.Getter isResourceViewerCanvasEnabled!: boolean
   @builderVuexNamespace.Mutation activateBlock!: ({blockId}: { blockId: IBlock['uuid'] | null}) => void
   @builderVuexNamespace.Mutation setActiveMainComponent!: ({mainComponent}: {mainComponent: string | undefined}) => void
+  @builderVuexNamespace.Action persistFlowAndHandleUiState!: () => Promise<IContext | undefined>
 
   // Clipboard
   @clipboardVuexNamespace.Action setSimulatorActive!: (value: boolean) => void
