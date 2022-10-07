@@ -96,7 +96,6 @@ export class BlockToolbar extends mixins(Lang) {
   handleDeleteBlock(): void {
     this.block_deselect({blockId: this.block.uuid})
     this.flow_removeBlock({blockId: this.block.uuid})
-    this.removeValidationStatusesFor({key: `block/${this.block.uuid}`})
     this.isDeleting = false
     this.$emit('after-delete')
   }
@@ -145,8 +144,6 @@ export class BlockToolbar extends mixins(Lang) {
   @flowVuexNamespace.Action block_deselect!: ({blockId}: {blockId: IBlock['uuid']}) => void
   @flowVuexNamespace.Action flow_removeBlock!: ({blockId}: {blockId: IBlock['uuid']}) => void
   @flowVuexNamespace.Action flow_duplicateBlock!: ({blockId}: {blockId: IBlock['uuid']}) => Promise<IBlock>
-
-  @validationVuexNamespace.Mutation removeValidationStatusesFor!: ({key}: {key: string}) => void
 }
 export default BlockToolbar
 </script>
