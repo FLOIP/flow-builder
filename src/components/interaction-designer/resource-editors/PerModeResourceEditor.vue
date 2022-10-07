@@ -44,7 +44,8 @@
           <per-mode-resource-editor-row
             :block="block"
             :mode="item.mode"
-            :mode-index="item.index" />
+            :mode-index="item.index"
+            @change="$emit('change')" />
         </div>
       </div>
     </div>
@@ -53,7 +54,7 @@
 
 <script lang="ts">
 import {namespace} from 'vuex-class'
-import {IBlock, IFlow, SupportedMode,} from '@floip/flow-runner'
+import {IBlock, IFlow, SupportedMode} from '@floip/flow-runner'
 import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'

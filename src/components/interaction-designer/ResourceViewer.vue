@@ -5,7 +5,8 @@
         v-for="block in activeFlow.blocks"
         :id="`block/${block.uuid}`"
         :key="block.uuid"
-        :block="block"/>
+        :block="block"
+        @change="debounce_persistFlow" />
     </div>
   </div>
 </template>
@@ -15,9 +16,13 @@ import {mixins} from 'vue-class-component'
 import {Component} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
-import {IFlow} from '@floip/flow-runner'
+import {IContext, IFlow} from '@floip/flow-runner'
+import {debounce} from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
+const builderVuexNamespace = namespace('builder')
+
+export const DEBOUNCE_FLOW_PERSIST_MS = 1500
 
 @Component({})
 export class ResourceViewer extends mixins(Lang) {
@@ -30,6 +35,11 @@ export class ResourceViewer extends mixins(Lang) {
   get id(): string {
     return this.$route.params.id
   }
+
+  debounce_persistFlow = debounce(this.persistFlowAndHandleUiState.bind(this), DEBOUNCE_FLOW_PERSIST_MS)
+
+  // this should go after debounce_persistFlow
+  @builderVuexNamespace.Action persistFlowAndHandleUiState!: () => Promise<IContext | undefined>
 }
 
 export default ResourceViewer

@@ -17,7 +17,8 @@
         :language-id="languageId"
         :language-index="languageIndex"
         :mode="mode"
-        :mode-index="modeIndex" />
+        :mode-index="modeIndex"
+        @change="$emit('change')" />
     </div>
   </div>
 </template>
@@ -35,10 +36,8 @@ import {
   IFlow,
   IResource,
 } from '@floip/flow-runner'
+import {discoverContentTypesFor} from '@/store/flow/resource'
 
-import {
-  discoverContentTypesFor,
-} from '@/store/flow/resource'
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 

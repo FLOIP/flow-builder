@@ -25,11 +25,8 @@ import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
 import {IBlock, IContext} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
-import {debounce} from 'lodash'
-import {DEBOUNCE_FLOW_PERSIST_MS} from '@/components/interaction-designer/resource-viewer'
 
 const flowVuexNamespace = namespace('flow')
-const builderVuexNamespace = namespace('builder')
 
 @Component({})
 export class SimplifiedNameEditor extends mixins(Lang) {
@@ -57,7 +54,7 @@ export class SimplifiedNameEditor extends mixins(Lang) {
       value,
       lockAutoUpdate: true,
     })
-    this.debounce_persistFlow()
+    this.$emit('change')
   }
 
   updated() {
@@ -87,13 +84,8 @@ export class SimplifiedNameEditor extends mixins(Lang) {
       this.block_resetName({blockId: this.block.uuid})
     }
 
-    this.debounce_persistFlow()
+    this.$emit('change')
   }
-
-  debounce_persistFlow = debounce(this.persistFlowAndHandleUiState.bind(this), DEBOUNCE_FLOW_PERSIST_MS)
-
-  // this should go after debounce_persistFlow
-  @builderVuexNamespace.Action persistFlowAndHandleUiState!: () => Promise<IContext | undefined>
 }
 export default SimplifiedNameEditor
 </script>
