@@ -35,9 +35,8 @@ export interface IBatchMatchAudioData {
 }
 
 export interface IExpressionContext {
-  contact: unknown,
-  flow: unknown,
-  date: unknown,
+  blocks: IBlock[],
+  subscriberPropertyFields: ISubscriberPropertyField[],
 }
 
 export interface ISuggestionValue {

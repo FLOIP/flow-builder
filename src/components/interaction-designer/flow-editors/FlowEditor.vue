@@ -55,6 +55,8 @@
             @commitFlowModesChange="updateFlowModes" />
         </validation-message>
       </div>
+
+      <slot name="vendor-extras" />
     </fieldset>
   </div>
 </template>

@@ -3,7 +3,7 @@ import {IRootState} from '@/store'
 import {IBlock, INumericBlockConfig} from '@floip/flow-runner'
 import {INumericResponseBlock} from '@floip/flow-runner/src/model/block/INumericResponseBlock'
 import {cloneDeep} from 'lodash'
-import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import BaseBlockStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlockStore'
 import {ValidationResults} from '@/lib/validations'
 
 export const BLOCK_TYPE = 'MobilePrimitives.NumericResponse'
@@ -125,7 +125,7 @@ export function normalizeNumericConfigProperty(value?: number | string | null): 
 }
 
 const MobilePrimitives_NumericResponseBlockStore: Module<IEmptyState, IRootState> = {
-  ...cloneDeep(BaseStore),
+  ...cloneDeep(BaseBlockStore),
   actions,
 }
 

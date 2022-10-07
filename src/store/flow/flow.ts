@@ -20,6 +20,8 @@ import {cloneDeep, defaults, every, forEach, get, has, includes, merge, omit, so
 import {discoverContentTypesFor, cleanupFlowResources} from '@/store/flow/resource'
 import {computeBlockCanvasCoordinates} from '@/store/builder'
 import {ErrorObject} from 'ajv'
+import {removeFlowValueByPath, updateFlowValueByPath} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
+import {ConfigFieldType} from '@/store/flow/block'
 import {IFlowsState} from '.'
 import {mergeFlowContainer} from './utils/importHelpers'
 
@@ -168,6 +170,17 @@ export const mutations: MutationTree<IFlowsState> = {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
     // Make sure to follow order when populating languages, because the order may affect indexes during resource validation
     flow.languages = Array.isArray(value) ? orderLanguages(value as ILanguage[]) : [value]
+  },
+
+  flow_updateVendorMetadataByPath(
+    state,
+    {flowId, path, value}: {flowId: string, path: string, value: ConfigFieldType},
+  ) {
+    updateFlowValueByPath(state, flowId, `vendor_metadata.${path}`, value)
+  },
+
+  flow_removeVendorMetadataByPath(state, {flowId, path}: { flowId: string, path: string }) {
+    removeFlowValueByPath(state, flowId, `vendor_metadata.${path}`)
   },
 }
 

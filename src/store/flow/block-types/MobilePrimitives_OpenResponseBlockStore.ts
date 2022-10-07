@@ -2,7 +2,7 @@ import {ActionContext, ActionTree, Module} from 'vuex'
 import {IRootState} from '@/store'
 import {IOpenResponseBlock} from '@floip/flow-runner/src/model/block/IOpenResponseBlock'
 import {cloneDeep} from 'lodash'
-import BaseStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlock'
+import BaseBlockStore, {actions as baseActions, IEmptyState} from '@/store/flow/block-types/BaseBlockStore'
 
 export const BLOCK_TYPE = 'MobilePrimitives.OpenResponse'
 
@@ -38,7 +38,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
 }
 
 const MobilePrimitives_OpenResponseBlockStore: Module<IEmptyState, IRootState> = {
-  ...cloneDeep(BaseStore),
+  ...cloneDeep(BaseBlockStore),
   actions,
 }
 
