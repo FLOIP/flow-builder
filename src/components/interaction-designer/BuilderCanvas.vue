@@ -44,9 +44,14 @@ export class BuilderCanvas extends Vue {
     this.debounceFlowValidation({newFlow})
   }
 
-  debounceFlowValidation = debounce(function (this: any, {newFlow}: {newFlow: IFlow}) {
-    console.debug('watch/activeFlow:', 'active flow has changed from builder canvas, validating ...')
-    this.validate_flow({flow: newFlow})
+  debounceFlowValidation = debounce(async function (this: any, {newFlow}: {newFlow: IFlow}) {
+    console.debug('watch/activeFlow:', 'active flow has changed from builder canvas, validating flow & supported resources ...')
+    await this.validate_flow({flow: newFlow})
+    await this.validate_resourcesOnSupportedValues({
+      resources: newFlow.resources,
+      supportedModes: this.activeFlow.supported_modes,
+      supportedLanguages: this.activeFlow.languages,
+    })
   }, DEBOUNCE_VALIDATION_TIMER_MS)
 
   @Watch('blocksOnActiveFlowForWatcher', {deep: true, immediate: true})
@@ -58,16 +63,6 @@ export class BuilderCanvas extends Vue {
     console.debug('watch/activeFlow.blocks:', 'blocks inside active flow have changed, validating ...')
     this.validate_allBlocksWithinFlow()
   }, DEBOUNCE_VALIDATION_TIMER_MS)
-
-  @Watch('activeFlow.resources', {deep: true, immediate: true})
-  async onResourcesOnActiveFlowChanged(newResources: IResources, oldResources: IResources): Promise<void> {
-    console.debug('watch/activeFlow.resources:', 'resources inside active flow have changed, validating ...')
-    await this.validate_resourcesOnSupportedValues({
-      resources: newResources,
-      supportedModes: this.activeFlow.supported_modes,
-      supportedLanguages: this.activeFlow.languages,
-    })
-  }
   // ] ######### end Validation API Watchers
 
   // ##### Canvas dynamic size watchers [

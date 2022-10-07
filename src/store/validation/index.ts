@@ -31,6 +31,7 @@ export interface IIndexedString {
 
 export interface IValidationStatusContext {
   resourceUuid?: string,
+  isOrphanResource?: boolean
 }
 
 export interface IValidationStatus {
@@ -65,15 +66,18 @@ export const validationGetters: GetterTree<IValidationState, IRootState> = {
    * }
    *
    * Note that indexedErrors has more elements than validationStatuses.
+   * And we do not consider validation errors from orphan resources
    */
   flattenErrorMessages(state): IIndexedString {
     const accumulator: IIndexedString = {}
     forIn(state.validationStatuses, (validationStatus: IValidationStatus, index: string) => {
-      flatValidationStatuses({
-        keyPrefix: index,
-        errors: validationStatus.ajvErrors,
-        accumulator,
-      })
+      if (validationStatus.context?.isOrphanResource === undefined || validationStatus.context?.isOrphanResource !== true) {
+        flatValidationStatuses({
+          keyPrefix: index,
+          errors: validationStatus.ajvErrors,
+          accumulator,
+        })
+      }
     })
     return accumulator
   },
@@ -155,6 +159,7 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
       {},
     ) as Record<string, {message: string}[]>
 
+    const orphanResourceUuids: IBlock['uuid'][] = rootGetters['flow/orphanResourceUuidsOnActiveFlow'] as IBlock['uuid'][]
     Object.keys(backendErrorsList).forEach((currentUuid) => {
       const key = `backend/${type}/${currentUuid}`
       const currentErrors = backendErrorsList[currentUuid]
@@ -163,6 +168,9 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
       Vue.set(state.validationStatuses, key, {
         isValid: uniqueErrors === undefined || uniqueErrors.length === 0,
         ajvErrors: getLocalizedBackendErrors(key, uniqueErrors),
+        context: {
+          isOrphanResource: orphanResourceUuids.includes(currentUuid),
+        },
       })
 
       debugValidationStatus(state.validationStatuses[key], `${type} validation based on backend action`)
@@ -251,10 +259,14 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
       }
     }
 
+    const orphanResourceUuids: IBlock['uuid'][] = rootGetters['flow/orphanResourceUuidsOnActiveFlow'] as IBlock['uuid'][]
     Vue.set(state.validationStatuses, key, {
       isValid,
       ajvErrors: getLocalizedAjvErrors(key, validate.errors),
       type: 'resource',
+      context: {
+        isOrphanResource: orphanResourceUuids.includes(resource.uuid),
+      },
     })
 
     debugValidationStatus(state.validationStatuses[key], 'resource validation status')
