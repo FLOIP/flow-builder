@@ -78,8 +78,6 @@ export class PerLanguageResourceEditorRow extends mixins(FlowUploader, Permissio
   get resource(): IResource {
     return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
   }
-
-  @flowVuexNamespace.Getter supportedModeWithOrderInfo!: {mode: SupportedMode, index: number, order: number}[]
 }
 export default PerLanguageResourceEditorRow
 </script>

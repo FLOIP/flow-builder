@@ -42,8 +42,10 @@ export class FirstBlockEditorButton extends mixins(Lang) {
 
   // @ts-ignore
   setStartBlock(event: any): void {
-    const {flow: {uuid: flowId}, blockId} = this
-    this.flow_setFirstBlockId({flowId, blockId})
+    this.flow_setFirstBlockId({
+      flowId: this.activeFlow.uuid,
+      blockId: this.blockId,
+    })
   }
 
   get isStartBlock(): boolean {

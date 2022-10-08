@@ -29,11 +29,12 @@
 import {IBlock} from '@floip/flow-runner'
 import {lang} from '@/lib/filters/lang'
 import {mapGetters} from 'vuex'
+import {PropType} from 'vue'
 
 export default {
   name: 'ResourceViewerBlock',
   props: {
-    block: IBlock,
+    block: Object as PropType<IBlock>,
   },
   mixins: [lang],
   computed: {
