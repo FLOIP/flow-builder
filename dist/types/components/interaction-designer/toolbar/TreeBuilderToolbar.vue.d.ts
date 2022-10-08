@@ -8,17 +8,17 @@ declare const TreeBuilderToolbar_base: import("vue-class-component/lib/declarati
 export declare class TreeBuilderToolbar extends TreeBuilderToolbar_base {
     isExportVisible: boolean;
     height: number;
-    private readonly SAVING_ANIMATION_DURATION;
     mounted(): Promise<void>;
     onMetaChanged(meta: {
         [key: string]: string;
     }): void;
     isEmpty(value?: unknown): boolean;
     get flow(): string;
-    get resourceViewUrl(): string;
+    activeMainComponent?: string;
     get downloadAudioUrl(): string;
-    get editTreeUrl(): string;
-    get viewTreeUrl(): string;
+    isResourceViewerEnabled?: boolean;
+    isBuilderCanvasEnabled: boolean;
+    isResourceViewerCanvasEnabled: boolean;
     get saveButtonText(): string;
     get isSavingDisabled(): boolean;
     get blockClassesForContentCategory(): any;
@@ -48,12 +48,15 @@ export declare class TreeBuilderToolbar extends TreeBuilderToolbar_base {
     shouldDisplayDividerBefore(blockClasses: {
         [key: string]: any;
     }, className: string): string;
-    handleResourceViewerSelected(): void;
     removeNilValues(obj: any): Dictionary<unknown>;
     /**
      * We have to make sure this is called using $nextTick() because we play with DOM
      */
     handleHeightChangeFromDOM(): void;
+    setActiveMainComponent: ({ mainComponent }: {
+        mainComponent: string | undefined;
+    }) => void;
+    persistFlowAndHandleUiState: () => Promise<IContext | undefined>;
     tree: any;
     ui: any;
     hasToolbarFlowTitle: boolean;
@@ -71,7 +74,8 @@ export declare class TreeBuilderToolbar extends TreeBuilderToolbar_base {
     isFeatureViewResultsEnabled?: boolean;
     isFeatureSimulatorEnabled?: boolean;
     isFeatureUpdateInteractionTotalsEnabled?: boolean;
-    isResourceEditorEnabled?: boolean;
+
+    get resourceUrl(): string;
     setTreeSaving: (isSaving: boolean) => void;
     attemptSaveTree: void;
     getToolbarConfig: boolean;
@@ -90,17 +94,23 @@ export declare class TreeBuilderToolbar extends TreeBuilderToolbar_base {
         flowId?: string;
         blockId?: IBlock['uuid'];
     }) => Promise<IBlock>;
-    flow_persist: ({ persistRoute, flowContainer, }: {
-        persistRoute: any;
-        flowContainer?: IContext;
-    }) => Promise<IContext | null>;
     isEditable: boolean;
     hasFlowChanges: boolean;
     activeBlockId?: IBlock['uuid'];
+
+    get treeUrl(): string;
     activeBlock?: IBlock;
+
+    get editModeUrl(): string;
+
+    get viewModeUrl(): string;
     activateBlock: ({ blockId }: {
         blockId: IBlock['uuid'] | null;
     }) => void;
+
+    handleFlowViewMenu(): void;
+
+    handleResourceViewMenu(): void;
     setSimulatorActive: (value: boolean) => void;
     remove_block_validation: ({ blockId }: {
         blockId?: IBlock['uuid'];

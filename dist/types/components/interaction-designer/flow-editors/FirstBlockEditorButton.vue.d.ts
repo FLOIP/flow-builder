@@ -4,9 +4,9 @@ declare const FirstBlockEditorButton_base: import("vue-class-component/lib/decla
 export declare class FirstBlockEditorButton extends FirstBlockEditorButton_base {
     readonly isEditable: boolean;
     readonly blockId: IBlock['uuid'];
-    readonly flow: IFlow;
-    get isStartBlock(): boolean;
+    activeFlow: IFlow;
     setStartBlock(event: any): void;
+    get isStartBlock(): boolean;
     flow_setFirstBlockId: ({ flowId, blockId }: {
         flowId: IFlow['uuid'];
         blockId: IBlock['uuid'];

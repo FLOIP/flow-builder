@@ -14,6 +14,7 @@ export declare const ImportFlow: typeof ImportFlowComponent;
 export declare const Home: typeof HomeComponent;
 export declare const defaultLocalisations: {
     "en.flow-builder": {
+        "no-content-block-info": string;
         warnings: string;
         "warnings-hint-on-import": string;
         errors: string;
@@ -1691,6 +1692,7 @@ export declare const defaultLocalisations: {
         "show-less": string;
     };
     "fr.flow-builder": {
+        "no-content-block-info": string;
         warnings: string;
         "warnings-hint-on-import": string;
         errors: string;
@@ -3448,11 +3450,12 @@ export * from './components/interaction-designer/blocks';
 export * from './components/interaction-designer/flow-editors';
 export * from './components/interaction-designer/flow-editors/import';
 export * from './components/interaction-designer/resource-editors';
-export * from './components/resource-editor';
+export * from './components/interaction-designer/resource-viewer';
 export * from './components/interaction-designer/toolbar';
 export * from './store/flow/block-types';
 export * from './store';
 export * from './router/helpers';
+export { default as flowBuilderStore } from './store';
 export * from './store/validation';
 export * from './lib/validations';
 declare const Components: Record<string, any>;

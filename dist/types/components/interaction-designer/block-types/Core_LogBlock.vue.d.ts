@@ -1,10 +1,9 @@
-import { IFlow, IBlock } from '@floip/flow-runner';
+import { IBlock } from '@floip/flow-runner';
 import { ILogBlock } from '@floip/flow-runner/src/model/block/ILogBlock';
 import Lang from '../../../lib/filters/lang';
 declare const Core_LogBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class Core_LogBlock extends Core_LogBlock_base {
     readonly block: ILogBlock;
-    readonly flow: IFlow;
     readonly usesDefaultBranchingEditor: boolean;
     readonly usesDefaultContactPropsEditor: boolean;
     get value(): string;
