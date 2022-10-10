@@ -15,6 +15,7 @@ import {OutputBranchingType} from '@/components/interaction-designer/block-edito
 import {BLOCK_TYPE as SelectOneBlockType} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import {BLOCK_TYPE as SelectManyBlockType} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
+import {escapeQuotes} from '@/components/interaction-designer/block-editors/choices/expressionTransformers'
 import * as SetContactPropertyModule from './block/set-contact-property'
 import {IFlowsState} from '.'
 import {removeBlockValueByPath, updateBlockValueByPath} from './utils/vuexBlockHelpers'
@@ -413,7 +414,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
           (currentBlock as ISelectOneResponseBlock).config.choices.map((choice) => {
             choice.text_tests?.push({
               language: language.id,
-              test_expression: `@block.response = '${choice.name}'`,
+              test_expression: `@block.response = '${escapeQuotes(choice.name)}'`,
             })
 
             return choice

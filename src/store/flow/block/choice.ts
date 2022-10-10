@@ -12,15 +12,15 @@ import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {deleteChoiceValueByPath} from '@/store/flow/utils/vuexBlockHelpers'
 import {IEmptyState} from '@/store/flow/block-types/BaseBlockStore'
 import Vue from 'vue'
+import {escapeQuotes} from '@/components/interaction-designer/block-editors/choices/expressionTransformers'
 
 export const BLOCK_RESPONSE_EXPRESSION = 'block.response'
 
 export function textValueToExpression(value: string): string {
-  if (value.includes('@') === true) {
+  if (value.includes('@')) {
     return value
   } else {
-    // Do not accept single quote character for this scenario to make it simple
-    return `@block.response = '${value.replace(/'/g, '')}'`
+    return `@block.response = '${escapeQuotes(value)}'`
   }
 }
 
