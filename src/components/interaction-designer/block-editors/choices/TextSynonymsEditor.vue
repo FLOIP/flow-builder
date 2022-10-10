@@ -32,7 +32,7 @@ import {IChoice, ISelectOneResponseBlock} from '@floip/flow-runner'
 import {mapActions} from 'vuex'
 import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import Lang from '@/lib/filters/lang'
-import {BLOCK_RESPONSE_EXPRESSION} from '@/store/flow/block/choice'
+import {testExpressionToChoice} from '@/components/interaction-designer/block-editors/choices/expressionTransformers'
 
 export default {
   name: 'TextSynonymsEditor',
@@ -67,7 +67,7 @@ export default {
       return this.choiceTests
         .map((text_test, globalIndex) => ({
           ...text_test,
-          visible_expression: this.computeSynonymVisibleExpression(text_test.test_expression),
+          visible_expression: testExpressionToChoice(text_test.test_expression),
           globalIndex,
         }))
         .filter(({language}) => language === this.langId)
@@ -132,22 +132,6 @@ export default {
         this.draftExpression = ''
         this.$refs.expressionInputs.at(-1).focus()
       })
-    },
-
-    computeSynonymVisibleExpression(synonymExpression) {
-      const expressionWithoutSpaces = synonymExpression !== undefined ? synonymExpression.replace(/\s/g, '') : undefined
-      const estimatedVisibleExpression = String(expressionWithoutSpaces?.split('\'')?.[1])
-      if (
-        expressionWithoutSpaces.endsWith('\'') === true
-        && (expressionWithoutSpaces?.startsWith(`${BLOCK_RESPONSE_EXPRESSION}='`) === true
-          || expressionWithoutSpaces?.startsWith(`@${BLOCK_RESPONSE_EXPRESSION}='`) === true)
-      ) {
-        if (estimatedVisibleExpression > '') {
-          return estimatedVisibleExpression
-        }
-      }
-
-      return synonymExpression
     },
   },
 }

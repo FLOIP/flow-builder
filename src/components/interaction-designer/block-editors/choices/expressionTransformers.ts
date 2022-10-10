@@ -4,7 +4,6 @@ export function escapeQuotes(value: string): string {
   return value.replace(/(['"])/g, '\\$1')
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export function choicesToExpression(choices: IChoice[], propertyValueMapping: Record<string, string | number>): string {
   const individualLines = Object.entries(propertyValueMapping)
     .map(([choicePrompt, choiceValue]) => {
@@ -18,4 +17,24 @@ export function choicesToExpression(choices: IChoice[], propertyValueMapping: Re
     })
 
   return `@CONCATENATE(${individualLines.join(',')})`
+}
+
+export function testExpressionToChoice(expression: string): string {
+  const regex = /^@block\.response = '(?<choice>.+)'$/
+  const parsedGroups = regex.exec(expression)?.groups as {choice: string} | undefined
+
+  if (parsedGroups !== undefined) {
+    const {choice} = parsedGroups
+    return choice
+  } else {
+    return expression
+  }
+}
+
+export function choiceToTestExpression(value: string): string {
+  if (value.includes('@')) {
+    return value
+  } else {
+    return `@block.response = '${escapeQuotes(value)}'`
+  }
 }

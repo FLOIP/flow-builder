@@ -2,9 +2,12 @@
 
 import {IRootState} from '@/store'
 import {
-  findBlockWith, IBlock,
+  findBlockWith,
+  IBlock,
   IChoice,
-  IFlow, ILanguage, IResource,
+  IFlow,
+  ILanguage,
+  IResource,
   ISelectOneResponseBlock,
   ValidationException,
 } from '@floip/flow-runner'
@@ -12,17 +15,9 @@ import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {deleteChoiceValueByPath} from '@/store/flow/utils/vuexBlockHelpers'
 import {IEmptyState} from '@/store/flow/block-types/BaseBlockStore'
 import Vue from 'vue'
-import {escapeQuotes} from '@/components/interaction-designer/block-editors/choices/expressionTransformers'
+import {choiceToTestExpression} from '@/components/interaction-designer/block-editors/choices/expressionTransformers'
 
 export const BLOCK_RESPONSE_EXPRESSION = 'block.response'
-
-export function textValueToExpression(value: string): string {
-  if (value.includes('@')) {
-    return value
-  } else {
-    return `@block.response = '${escapeQuotes(value)}'`
-  }
-}
 
 export const getters: GetterTree<IEmptyState, IRootState> = {
   choice_findChoice: (state, getters, rootState, rootGetters) =>
@@ -138,7 +133,7 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
 
       const isNew = existingValue === undefined
       const hasValueToMatch = oldValue !== undefined
-      const hasMatchingValues = hasValueToMatch && existingValue === textValueToExpression(oldValue)
+      const hasMatchingValues = hasValueToMatch && existingValue === choiceToTestExpression(oldValue)
       const shouldUpdateValue = isNew || !hasValueToMatch || hasMatchingValues
 
       // Make sure the 1st synonym has not been changed by the user
@@ -166,7 +161,7 @@ export const actions: ActionTree<IEmptyState, IRootState> = {
     {blockId, resourceId, language, index = Number.POSITIVE_INFINITY, value}: { blockId: IBlock['uuid'], resourceId: IResource['uuid'], language: ILanguage['id'], index: number, value: string },
   ) {
     const choice = getters.choice_findChoice(blockId, resourceId)
-    const expressionValue = textValueToExpression(value)
+    const expressionValue = choiceToTestExpression(value)
 
     if (choice?.text_tests === undefined) {
       Vue.set(choice, 'text_tests', [])
