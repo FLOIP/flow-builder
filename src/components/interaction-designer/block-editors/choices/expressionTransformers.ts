@@ -4,6 +4,10 @@ export function escapeQuotes(value: string): string {
   return value.replace(/(['"])/g, '\\$1')
 }
 
+export function unescapeQuotes(value: string): string {
+  return value.replace(/\\(['"])/g, '$1')
+}
+
 export function choicesToExpression(choices: IChoice[], propertyValueMapping: Record<string, string | number>): string {
   const individualLines = Object.entries(propertyValueMapping)
     .map(([choicePrompt, choiceValue]) => {
@@ -25,7 +29,7 @@ export function testExpressionToChoice(expression: string): string {
 
   if (parsedGroups !== undefined) {
     const {choice} = parsedGroups
-    return choice
+    return unescapeQuotes(choice)
   } else {
     return expression
   }
