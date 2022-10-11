@@ -234,7 +234,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
     try {
       const {data} = await axios[restVerb](persistRoute, omit(cleanupFlowResources(flowContainer, rootGetters['validation/choiceMimeType']), ['isCreated']))
-      console.debug('test', data)
       commit('flow_setFlowContainer', data)
       commit('flow_updateCreatedState', true)
       dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
