@@ -1,5 +1,6 @@
 import {
   findFlowWith,
+  IBlock,
   IContext,
   IFlow,
   IResource,
@@ -23,15 +24,31 @@ import {
   map,
   pick,
   without,
+  union,
 } from 'lodash'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IFlowsState} from '@/store/flow/index'
 import {IRootState} from '@/store'
+import {findBlockRelatedResourcesUuids} from '@/store/flow/utils/resourceHelpers'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   resourcesByUuidOnActiveFlow: (_state, getters) => keyBy(getters.activeFlow.resources, 'uuid'),
 
-  resourceUuidsOnActiveFlow: (_state, getters) => compact(map(getters.activeFlow.resources, (res) => res.uuid)),
+  resourceUuidsOnActiveFlow: (_state, getters): IBlock['uuid'][] => compact(map(getters.activeFlow.resources, (res) => res.uuid)) as IBlock['uuid'][],
+
+  nonOrphanResourceUuidsOnActiveFlow: (_state, getters): IBlock['uuid'][] => {
+    let results: IBlock['uuid'][] = []
+    getters.activeFlow.blocks?.forEach((block: IBlock) => {
+      results = union(results, findBlockRelatedResourcesUuids({block}))
+    })
+
+    return results
+  },
+
+  orphanResourceUuidsOnActiveFlow: (_state, getters) => difference(
+    getters.resourceUuidsOnActiveFlow as IBlock['uuid'][],
+    getters.nonOrphanResourceUuidsOnActiveFlow as IBlock['uuid'][],
+  ),
 }
 
 export const mutations: MutationTree<IFlowsState> = {
