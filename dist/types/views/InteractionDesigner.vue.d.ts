@@ -13,15 +13,15 @@ export declare class InteractionDesigner extends InteractionDesigner_base {
     readonly mainComponent: string;
     readonly appConfig: object;
     readonly builderConfig: object;
-    debounceFlowValidation: ((this: any, { newFlow }: {
-        newFlow: IFlow;
-    }) => Promise<void>) & import("lodash").Cancelable;
-    activeMainComponent?: string;
-    isBuilderCanvasEnabled: boolean;
+    get blocksOnActiveFlowForWatcher(): IBlock[];
+    onActiveFlowChanged(newFlow: IFlow): Promise<void>;
+    onBlocksInActiveFlowChanged(newBlocks: IBlock[], oldBlocks: IBlock[]): Promise<void>;
     validate_flow: ({ flow }: {
         flow: IFlow;
     }) => Promise<IValidationStatus>;
-    isResourceViewerCanvasEnabled: boolean;
+    debounceFlowValidation: ((this: any, { newFlow }: {
+        newFlow: IFlow;
+    }) => Promise<void>) & import("lodash").Cancelable;
     validate_allBlocksWithinFlow: () => Promise<void>;
     debounceBlockValidation: ((this: any) => void) & import("lodash").Cancelable;
     validate_resourcesOnSupportedValues: ({ resources, supportedModes, supportedLanguages }: {
@@ -29,9 +29,7 @@ export declare class InteractionDesigner extends InteractionDesigner_base {
         supportedModes: SupportedMode[];
         supportedLanguages: ILanguage[];
     }) => Promise<void>;
-    setActiveMainComponent: ({ mainComponent }: {
-        mainComponent: string | undefined;
-    }) => void;
+    onResourcesOnActiveFlowChanged(newResources: IResources, oldResources: IResources): Promise<void>;
     toolbarHeight: number;
     pureVuejsBlocks: string[];
     simulateClipboard: boolean;
@@ -54,23 +52,21 @@ export declare class InteractionDesigner extends InteractionDesigner_base {
     hasClipboard?: boolean;
     blockClasses: Record<string, any>;
     activeFlow?: IFlow;
-
-    get blocksOnActiveFlowForWatcher(): IBlock[];
+    activeMainComponent?: string;
     activeBlock?: IBlock;
     isEditable: boolean;
     hasFlowChanges: boolean;
     interactionDesignerBoundingClientRect: DOMRect;
-
-    onActiveFlowChanged(newFlow: IFlow): Promise<void>;
-
-    onBlocksInActiveFlowChanged(newBlocks: IBlock[], oldBlocks: IBlock[]): Promise<void>;
+    isBuilderCanvasEnabled: boolean;
+    isResourceViewerCanvasEnabled: boolean;
     isSimulatorActive: boolean;
     get jsKey(): string;
     isPureVueBlock(): boolean;
     beforeCreate(): Promise<void>;
     onModeChanged(newMode: string): void;
-
-    onResourcesOnActiveFlowChanged(newResources: IResources, oldResources: IResources): Promise<void>;
+    setActiveMainComponent: ({ mainComponent }: {
+        mainComponent: string | undefined;
+    }) => void;
     activated(): void;
     created(): void;
     /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
