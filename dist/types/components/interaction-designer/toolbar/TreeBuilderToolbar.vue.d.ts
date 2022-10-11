@@ -14,11 +14,11 @@ export declare class TreeBuilderToolbar extends TreeBuilderToolbar_base {
     }): void;
     isEmpty(value?: unknown): boolean;
     get flow(): string;
-    activeMainComponent?: string;
+    get resourceUrl(): string;
     get downloadAudioUrl(): string;
-    isResourceViewerEnabled?: boolean;
-    isBuilderCanvasEnabled: boolean;
-    isResourceViewerCanvasEnabled: boolean;
+    get treeUrl(): string;
+    activeMainComponent?: string;
+    get editModeUrl(): string;
     get saveButtonText(): string;
     get isSavingDisabled(): boolean;
     get blockClassesForContentCategory(): any;
@@ -53,10 +53,8 @@ export declare class TreeBuilderToolbar extends TreeBuilderToolbar_base {
      * We have to make sure this is called using $nextTick() because we play with DOM
      */
     handleHeightChangeFromDOM(): void;
-    setActiveMainComponent: ({ mainComponent }: {
-        mainComponent: string | undefined;
-    }) => void;
-    persistFlowAndHandleUiState: () => Promise<IContext | undefined>;
+    handleFlowViewMenu(): void;
+    handleResourceViewMenu(): void;
     tree: any;
     ui: any;
     hasToolbarFlowTitle: boolean;
@@ -74,8 +72,7 @@ export declare class TreeBuilderToolbar extends TreeBuilderToolbar_base {
     isFeatureViewResultsEnabled?: boolean;
     isFeatureSimulatorEnabled?: boolean;
     isFeatureUpdateInteractionTotalsEnabled?: boolean;
-
-    get resourceUrl(): string;
+    isResourceViewerEnabled?: boolean;
     setTreeSaving: (isSaving: boolean) => void;
     attemptSaveTree: void;
     getToolbarConfig: boolean;
@@ -97,20 +94,17 @@ export declare class TreeBuilderToolbar extends TreeBuilderToolbar_base {
     isEditable: boolean;
     hasFlowChanges: boolean;
     activeBlockId?: IBlock['uuid'];
-
-    get treeUrl(): string;
-    activeBlock?: IBlock;
-
-    get editModeUrl(): string;
-
     get viewModeUrl(): string;
+    activeBlock?: IBlock;
+    isBuilderCanvasEnabled: boolean;
+    isResourceViewerCanvasEnabled: boolean;
     activateBlock: ({ blockId }: {
         blockId: IBlock['uuid'] | null;
     }) => void;
-
-    handleFlowViewMenu(): void;
-
-    handleResourceViewMenu(): void;
+    setActiveMainComponent: ({ mainComponent }: {
+        mainComponent: string | undefined;
+    }) => void;
+    persistFlowAndHandleUiState: () => Promise<IContext | undefined>;
     setSimulatorActive: (value: boolean) => void;
     remove_block_validation: ({ blockId }: {
         blockId?: IBlock['uuid'];
