@@ -1,6 +1,6 @@
 /// <reference types="lodash" />
 import { Vue } from 'vue-property-decorator';
-import { IBlock, IFlow, ILanguage, IResource, IResources, SupportedMode } from '@floip/flow-runner';
+import { IBlock, IFlow, ILanguage, IResource, SupportedMode } from '@floip/flow-runner';
 import { IValidationStatus } from '../../store/validation';
 export declare class BuilderCanvas extends Vue {
     block: IBlock;
@@ -8,10 +8,9 @@ export declare class BuilderCanvas extends Vue {
     onActiveFlowChanged(newFlow: IFlow): Promise<void>;
     debounceFlowValidation: ((this: any, { newFlow }: {
         newFlow: IFlow;
-    }) => void) & import("lodash").Cancelable;
+    }) => Promise<void>) & import("lodash").Cancelable;
     onBlocksInActiveFlowChanged(newBlocks: IBlock[], oldBlocks: IBlock[]): Promise<void>;
     debounceBlockValidation: ((this: any) => void) & import("lodash").Cancelable;
-    onResourcesOnActiveFlowChanged(newResources: IResources, oldResources: IResources): Promise<void>;
     onCanvasHeightChanged(newValue: number): void;
     onCanvasWidthChanged(newValue: number): void;
     debounceVerticalScroll: ((this: any) => void) & import("lodash").Cancelable;

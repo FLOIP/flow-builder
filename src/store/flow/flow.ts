@@ -24,6 +24,7 @@ import {removeFlowValueByPath, updateFlowValueByPath} from '@/store/flow/utils/v
 import {ConfigFieldType} from '@/store/flow/block'
 import {IFlowsState} from '.'
 import {mergeFlowContainer} from './utils/importHelpers'
+import {findBlockRelatedResourcesUuids} from '@/store/flow/utils/resourceHelpers'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   //We allow for an attempt to get a flow which doesn't yet exist in the state - e.g. the first_flow_id doesn't correspond to a flow
@@ -264,11 +265,20 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       throw new ValidationException('Unable to delete block absent from flow')
     }
 
+    // Clean flow resources & related validations
+    const relatedResourceUuids = findBlockRelatedResourcesUuids({block})
+    flow.resources = flow.resources.filter(item => !relatedResourceUuids.includes(item.uuid))
+    relatedResourceUuids.forEach(
+      uuid => commit('validation/removeValidationStatusesFor', {key: `resource/${uuid}`}, {root: true}),
+    )
+
+    // Remove block & it's validation
     const {blocks} = flow
     blocks.splice(
       blocks.indexOf(block),
       1,
     )
+    commit('validation/removeValidationStatusesFor', {key: `block/${block.uuid}`}, {root: true})
 
     // clean up stale references
     // 1. flow.first_block_id
