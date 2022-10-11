@@ -25,8 +25,5 @@ export declare class BlockToolbar extends BlockToolbar_base {
     flow_duplicateBlock: ({ blockId }: {
         blockId: IBlock['uuid'];
     }) => Promise<IBlock>;
-    removeValidationStatusesFor: ({ key }: {
-        key: string;
-    }) => void;
 }
 export default BlockToolbar;
