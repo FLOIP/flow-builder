@@ -114,12 +114,21 @@ export class FlowEditor extends mixins(Lang) {
   @flowVuexNamespace.Action block_updateAllBlocksAfterAddingFlowLanguage!: ({language}: {language: ILanguage}) => void
   @flowVuexNamespace.Action block_updateAllBlocksAfterDeletingFlowLanguage!: ({language}: {language: ILanguage}) => void
 
+  @flowVuexNamespace.Action flow_addMissingResourceValues!: () => void
+
+  @State(({trees: {ui}}) => ui) ui!: any
+  @flowVuexNamespace.Getter activeFlow!: IFlow
+  @flowVuexNamespace.Mutation flow_setLanguages!: ({flowId, value}: {flowId: string, value: ILanguage | ILanguage[]}) => void
+  @flowVuexNamespace.Mutation flow_setSupportedMode!: any
+
   async updateFlowModes(value: SupportedMode[] | SupportedMode): Promise<void> {
     this.flow_setSupportedMode({flowId: this.flow.uuid, value})
     // flow modes/languages could have been changed, so
-    // 1. Trigger validation for all blocks
+    // 1. Update missing resource values
+    this.flow_addMissingResourceValues()
+    // 2. Trigger validation for all blocks
     await this.validate_allBlocksWithinFlow()
-    // 2. Trigger validation for resources
+    // 3. Trigger validation for resources
     await this.validate_resourcesOnSupportedValues({
       resources: this.activeFlow.resources,
       supportedModes: this.activeFlow.supported_modes,
@@ -127,12 +136,8 @@ export class FlowEditor extends mixins(Lang) {
     })
   }
 
-  @State(({trees: {ui}}) => ui) ui!: any
-  @flowVuexNamespace.Getter activeFlow!: IFlow
-  @flowVuexNamespace.Mutation flow_setLanguages!: ({flowId, value}: {flowId: string, value: ILanguage | ILanguage[]}) => void
-  @flowVuexNamespace.Mutation flow_setSupportedMode!: any
-
   handleFlowLanguagesAdded(value: ILanguage): void {
+    this.flow_addMissingResourceValues()
     this.block_updateAllBlocksAfterAddingFlowLanguage({language: value})
   }
 
