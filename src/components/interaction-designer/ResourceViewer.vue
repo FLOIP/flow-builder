@@ -13,7 +13,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Lang from '@/lib/filters/lang'
 import {debounce} from 'lodash'
 import {mapActions, mapGetters} from 'vuex'
