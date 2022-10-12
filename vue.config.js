@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser')
 module.exports = {
   lintOnSave: false,
   runtimeCompiler: true,
+  parallel: false,
   css: {
     extract: true,
   },
