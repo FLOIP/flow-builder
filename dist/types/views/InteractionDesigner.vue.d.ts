@@ -1,15 +1,35 @@
+/// <reference types="lodash" />
 import Lang from '../lib/filters/lang';
 import Routes from '../lib/mixins/Routes';
 import { Route } from 'vue-router';
-import { IBlock, IFlow } from '@floip/flow-runner';
+import { IBlock, IFlow, ILanguage, IResource, IResources, SupportedMode } from '@floip/flow-runner';
 import { ErrorObject } from 'ajv';
 import { MutationPayload } from 'vuex';
+import { IValidationStatus } from '../store/validation';
 declare const InteractionDesigner_base: import("vue-class-component/lib/declarations").VueClass<Lang & Routes>;
 export declare class InteractionDesigner extends InteractionDesigner_base {
     readonly id: string;
     readonly mode: string;
+    readonly mainComponent: string;
     readonly appConfig: object;
     readonly builderConfig: object;
+    get blocksOnActiveFlowForWatcher(): IBlock[];
+    onActiveFlowChanged(newFlow: IFlow): Promise<void>;
+    onBlocksInActiveFlowChanged(newBlocks: IBlock[], oldBlocks: IBlock[]): Promise<void>;
+    validate_flow: ({ flow }: {
+        flow: IFlow;
+    }) => Promise<IValidationStatus>;
+    debounceFlowValidation: ((this: any, { newFlow }: {
+        newFlow: IFlow;
+    }) => Promise<void>) & import("lodash").Cancelable;
+    validate_allBlocksWithinFlow: () => Promise<void>;
+    debounceBlockValidation: ((this: any) => void) & import("lodash").Cancelable;
+    validate_resourcesOnSupportedValues: ({ resources, supportedModes, supportedLanguages }: {
+        resources: IResource[];
+        supportedModes: SupportedMode[];
+        supportedLanguages: ILanguage[];
+    }) => Promise<void>;
+    onResourcesOnActiveFlowChanged(newResources: IResources, oldResources: IResources): Promise<void>;
     toolbarHeight: number;
     pureVuejsBlocks: string[];
     simulateClipboard: boolean;
@@ -32,17 +52,23 @@ export declare class InteractionDesigner extends InteractionDesigner_base {
     hasClipboard?: boolean;
     blockClasses: Record<string, any>;
     activeFlow?: IFlow;
+    activeMainComponent?: string;
     activeBlock?: IBlock;
     isEditable: boolean;
     hasFlowChanges: boolean;
     interactionDesignerBoundingClientRect: DOMRect;
+    isBuilderCanvasEnabled: boolean;
+    isResourceViewerCanvasEnabled: boolean;
     isSimulatorActive: boolean;
     get jsKey(): string;
     isPureVueBlock(): boolean;
     beforeCreate(): Promise<void>;
     onModeChanged(newMode: string): void;
-    created(): void;
+    setActiveMainComponent: ({ mainComponent }: {
+        mainComponent: string | undefined;
+    }) => void;
     activated(): void;
+    created(): void;
     /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
     mounted(): Promise<void>;
     handleRouteUpdate(to: Route): void;
@@ -55,6 +81,7 @@ export declare class InteractionDesigner extends InteractionDesigner_base {
         blockId: IBlock['uuid'] | null;
     }) => void;
     setIsBlockEditorOpen: (value: boolean) => void;
+    updated(): void;
     setInteractionDesignerBoundingClientRect: (value: DOMRect) => void;
     setIsEditable: (arg0: boolean) => void;
     setHasFlowChanges: (arg0: boolean) => void;
@@ -82,7 +109,6 @@ export declare class InteractionDesigner extends InteractionDesigner_base {
      | mode-is-edit+view-url-suffix     |        0 (r=>view)  |     1               |
      ------------------------------------------------------------------------------ */
     discoverIsEditableFrom(mode: string, hash: string, isEditableLocked: boolean): boolean;
-    hoistResourceViewerToPushState(hash: string): void;
     showOrHideSidebar(): void;
     replaceRouteInHistory(name: string): void;
     handleFlowChanges({ type, payload }: MutationPayload): void;

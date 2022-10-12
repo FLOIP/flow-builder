@@ -1,5 +1,6 @@
 {
   "en.flow-builder": {
+    "no-content-block-info": "This block does not require any content.",
     "warnings": "Warnings",
     "warnings-hint-on-import": "These won't block you to import the flow, but you will need to fix them once imported",
     "errors": "Errors",
@@ -1677,6 +1678,7 @@
     "show-less":  "Show less…"
   },
   "fr.flow-builder": {
+    "no-content-block-info": "Ce bloc ne nécessite aucun contenu.",
     "warnings": "Avertissements",
     "warnings-hint-on-import": "Ceux-ci ne vous bloqueront pas pour importer le flux, mais vous devrez les corriger une fois importé",
     "errors": "Erreurs",

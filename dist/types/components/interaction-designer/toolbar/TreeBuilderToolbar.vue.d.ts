@@ -8,17 +8,17 @@ declare const TreeBuilderToolbar_base: import("vue-class-component/lib/declarati
 export declare class TreeBuilderToolbar extends TreeBuilderToolbar_base {
     isExportVisible: boolean;
     height: number;
-    private readonly SAVING_ANIMATION_DURATION;
     mounted(): Promise<void>;
     onMetaChanged(meta: {
         [key: string]: string;
     }): void;
     isEmpty(value?: unknown): boolean;
     get flow(): string;
-    get resourceViewUrl(): string;
+    get resourceUrl(): string;
     get downloadAudioUrl(): string;
-    get editTreeUrl(): string;
-    get viewTreeUrl(): string;
+    get treeUrl(): string;
+    activeMainComponent?: string;
+    get editModeUrl(): string;
     get saveButtonText(): string;
     get isSavingDisabled(): boolean;
     get blockClassesForContentCategory(): any;
@@ -48,12 +48,13 @@ export declare class TreeBuilderToolbar extends TreeBuilderToolbar_base {
     shouldDisplayDividerBefore(blockClasses: {
         [key: string]: any;
     }, className: string): string;
-    handleResourceViewerSelected(): void;
     removeNilValues(obj: any): Dictionary<unknown>;
     /**
      * We have to make sure this is called using $nextTick() because we play with DOM
      */
     handleHeightChangeFromDOM(): void;
+    handleFlowViewMenu(): void;
+    handleResourceViewMenu(): void;
     tree: any;
     ui: any;
     hasToolbarFlowTitle: boolean;
@@ -71,7 +72,7 @@ export declare class TreeBuilderToolbar extends TreeBuilderToolbar_base {
     isFeatureViewResultsEnabled?: boolean;
     isFeatureSimulatorEnabled?: boolean;
     isFeatureUpdateInteractionTotalsEnabled?: boolean;
-    isResourceEditorEnabled?: boolean;
+    isResourceViewerEnabled?: boolean;
     setTreeSaving: (isSaving: boolean) => void;
     attemptSaveTree: void;
     getToolbarConfig: boolean;
@@ -90,17 +91,20 @@ export declare class TreeBuilderToolbar extends TreeBuilderToolbar_base {
         flowId?: string;
         blockId?: IBlock['uuid'];
     }) => Promise<IBlock>;
-    flow_persist: ({ persistRoute, flowContainer, }: {
-        persistRoute: any;
-        flowContainer?: IContext;
-    }) => Promise<IContext | null>;
     isEditable: boolean;
     hasFlowChanges: boolean;
     activeBlockId?: IBlock['uuid'];
+    get viewModeUrl(): string;
     activeBlock?: IBlock;
+    isBuilderCanvasEnabled: boolean;
+    isResourceViewerCanvasEnabled: boolean;
     activateBlock: ({ blockId }: {
         blockId: IBlock['uuid'] | null;
     }) => void;
+    setActiveMainComponent: ({ mainComponent }: {
+        mainComponent: string | undefined;
+    }) => void;
+    persistFlowAndHandleUiState: () => Promise<IContext | undefined>;
     setSimulatorActive: (value: boolean) => void;
     remove_block_validation: ({ blockId }: {
         blockId?: IBlock['uuid'];

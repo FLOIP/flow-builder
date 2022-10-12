@@ -23,6 +23,7 @@ export * from './NameEditor.vue';
 export * from './PhoneRecorder.vue';
 export * from './PhoneRecordingRecorderSelector.vue';
 export * from './SemanticLabelEditor.vue';
+export * from './SimplifiedNameEditor.vue';
 export * from './TagSelector.vue';
 export * from './ThresholdEditor.vue';
 export * from './TimeoutEditor.vue';

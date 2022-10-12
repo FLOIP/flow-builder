@@ -1,6 +1,8 @@
 <template>
   <div
     class="block"
+    :id="`block/${block.uuid}`"
+    :ref="`block/${block.uuid}`"
     @click="selectBlock"
     @mouseenter="setIsMouseOnBlock(true)"
     @mouseleave="setIsMouseOnBlock(false)">

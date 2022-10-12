@@ -1,17 +1,12 @@
-import { IBlock, IFlow, IResource } from '@floip/flow-runner';
+import { IBlock } from '@floip/flow-runner';
 import Lang from '../../../lib/filters/lang';
 declare const SmartDevices_LocationResponseBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class SmartDevices_LocationResponseBlock extends SmartDevices_LocationResponseBlock_base {
     readonly block: IBlock;
-    readonly flow: IFlow;
     readonly usesDefaultBranchingEditor: boolean;
     readonly usesDefaultContactPropsEditor: boolean;
     updateThreshold(value: number): void;
     updateTimeout(value: number): void;
-    get promptResource(): IResource;
-    resourcesByUuidOnActiveFlow: {
-        [key: string]: IResource;
-    };
     setAccuracyThreshold: ({ blockId, value }: {
         blockId: IBlock['uuid'];
         value: number;

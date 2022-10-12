@@ -16,7 +16,7 @@ export declare class FlowEditor extends FlowEditor_base {
     block_updateAllBlocksAfterDeletingFlowLanguage: ({ language }: {
         language: ILanguage;
     }) => void;
-    updateFlowModes(value: SupportedMode[] | SupportedMode): Promise<void>;
+    flow_addMissingResourceValues: () => void;
     ui: any;
     activeFlow: IFlow;
     flow_setLanguages: ({ flowId, value }: {
@@ -24,6 +24,7 @@ export declare class FlowEditor extends FlowEditor_base {
         value: ILanguage | ILanguage[];
     }) => void;
     flow_setSupportedMode: any;
+    updateFlowModes(value: SupportedMode[] | SupportedMode): Promise<void>;
     handleFlowLanguagesAdded(value: ILanguage): void;
     handleFlowLanguagesRemoved(value: ILanguage): void;
     isEditable: boolean;

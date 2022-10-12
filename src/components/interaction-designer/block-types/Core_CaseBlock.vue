@@ -2,7 +2,6 @@
   <div class="core-case-block">
     <base-block
       :block="block"
-      :flow="flow"
       :show-semantic-label="false"
       :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
       :uses-default-branching-editor="usesDefaultBranchingEditor">
@@ -49,7 +48,6 @@ const builderVuexNamespace = namespace('builder')
 @Component({})
 export class Core_CaseBlock extends mixins(Lang) {
   @Prop() readonly block!: ICaseBlock
-  @Prop() readonly flow!: IFlow
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
   @Prop({default: false}) readonly usesDefaultContactPropsEditor!: boolean
 

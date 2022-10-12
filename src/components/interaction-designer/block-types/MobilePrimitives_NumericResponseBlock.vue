@@ -2,7 +2,6 @@
   <div class="mobile-primitive-numeric-response-block">
     <base-block
       :block="block"
-      :flow="flow"
       :show-semantic-label="false"
       :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
       :uses-default-branching-editor="usesDefaultBranchingEditor"
@@ -10,11 +9,7 @@
       <slot
         slot="resource-editors"
         name="resource-editors">
-        <resource-editor
-          v-if="promptResource"
-          :resource="promptResource"
-          :block="block"
-          :flow="flow" />
+        <per-language-resource-editor :block="block" />
       </slot>
       <slot
         slot="extras"
@@ -65,13 +60,8 @@ const builderVuexNamespace = namespace('builder')
 @Component({})
 export class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: INumericResponseBlock
-  @Prop() readonly flow!: IFlow
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
   @Prop({default: true}) readonly usesDefaultContactPropsEditor!: boolean
-
-  get promptResource(): IResource {
-    return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
-  }
 
   updateValidationMin(value: number | string): void {
     this.setValidationMinimum({blockId: this.block.uuid, value})
@@ -84,8 +74,6 @@ export class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
   updateMaxDigits(value: number | string): void {
     this.setMaxDigits({blockId: this.block.uuid, value})
   }
-
-  @flowVuexNamespace.Getter resourcesByUuidOnActiveFlow!: { [key: string]: IResource }
 
   @flowVuexNamespace.Getter hasVoiceMode!: boolean
 

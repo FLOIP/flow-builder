@@ -2,7 +2,6 @@
   <div class="mobile-primitives-select-one-response-block">
     <base-block
       :block="block"
-      :flow="flow"
       :show-semantic-label="false"
       :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
       :uses-default-branching-editor="usesDefaultBranchingEditor"
@@ -10,11 +9,7 @@
       <slot
         slot="resource-editors"
         name="resource-editors">
-        <resource-editor
-          v-if="promptResource"
-          :resource="promptResource"
-          :block="block"
-          :flow="flow" />
+        <per-language-resource-editor :block="block" />
       </slot>
       <slot
         slot="extras"
@@ -68,19 +63,11 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 @Component({})
 export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
   @Prop() readonly block!: ISelectOneResponseBlock
-  @Prop() readonly flow!: IFlow
   @Prop({default: false}) readonly usesDefaultBranchingEditor!: boolean
   @Prop({default: true}) readonly usesDefaultContactPropsEditor!: boolean
 
   SupportedMode = SupportedMode
   findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
-
-  get promptResource(): IResource | undefined {
-    if (this.block.config.prompt !== undefined) {
-      return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
-    }
-    return undefined
-  }
 
   handleChoiceChanged(): void {
     const {
@@ -114,7 +101,6 @@ export class MobilePrimitives_SelectOneResponseBlock extends mixins(Lang) {
     this.reflowExitsFromChoices({blockId})
   }
 
-  @flowVuexNamespace.Getter resourcesByUuidOnActiveFlow!: { [key: string]: IResource }
   @blockVuexNamespace.Action reflowExitsFromChoices!: ({blockId}: {blockId: IBlock['uuid']}) => void
   @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
 }

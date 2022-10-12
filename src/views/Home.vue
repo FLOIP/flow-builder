@@ -43,7 +43,7 @@
                               v-for="flow in flows"
                               :key="flow.uuid">
                               <router-link
-                                :to="route('flows.editFlow', {flowId: flow.uuid, component: 'designer', mode: 'edit'})"
+                                :to="route('flows.editFlow', {flowId: flow.uuid, component: 'builder', mode: 'edit'})"
                                 :title="trans('flow-builder.flow-details')"
                                 class="mt-3 btn btn-outline-secondary mr-2 active">
                                 {{ flow.label || flow.uuid }}

@@ -1,9 +1,8 @@
 import Lang from '../../../lib/filters/lang';
-import { IBlock, IFlow, IGroupMembership } from '@floip/flow-runner';
+import { IBlock, IGroupMembership } from '@floip/flow-runner';
 declare const Core_SetGroupMembershipBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class Core_SetGroupMembershipBlock extends Core_SetGroupMembershipBlock_base {
     readonly block: IBlock;
-    readonly flow: IFlow;
     readonly usesDefaultBranchingEditor: boolean;
     readonly usesDefaultContactPropsEditor: boolean;
     /**

@@ -6,7 +6,7 @@ import {
   getActiveFlowFrom,
   IBlock,
   IContext,
-  IFlow,
+  IFlow, ILanguage,
   IResource,
   IResourceValue,
   SupportedMode,
@@ -25,6 +25,10 @@ import {ConfigFieldType} from '@/store/flow/block'
 import {IFlowsState} from '.'
 import {mergeFlowContainer} from './utils/importHelpers'
 import {findBlockRelatedResourcesUuids} from '@/store/flow/utils/resourceHelpers'
+
+export function orderLanguages(LanguagesList: ILanguage[]): ILanguage[] {
+  return sortBy(LanguagesList, ['label'])
+}
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   //We allow for an attempt to get a flow which doesn't yet exist in the state - e.g. the first_flow_id doesn't correspond to a flow
@@ -78,6 +82,28 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   hasVoiceMode: (state, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.IVR),
   hasOfflineMode: (state, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.OFFLINE),
   currentFlowsState: (state) => state,
+  /**
+   * supportedModeWithOrderInfo for UI display
+   */
+  supportedModeWithOrderInfo: (state, getters) => getters.activeFlow.supported_modes.map((item: SupportedMode, key: number) => ({
+    mode: item,
+    index: key,
+    order: getters.orderedSupportedModes.indexOf(item),
+  })),
+  /**
+   * orderedSupportedModes for UI display
+   */
+  orderedSupportedModes: (state, getters) => {
+    const order = [
+      SupportedMode.IVR,
+      SupportedMode.SMS,
+      SupportedMode.USSD,
+      SupportedMode.TEXT,
+      SupportedMode.RICH_MESSAGING,
+      SupportedMode.OFFLINE,
+    ]
+    return sortBy(getters.activeFlow.supported_modes, (item: SupportedMode) => order.indexOf(item))
+  },
 }
 
 export const mutations: MutationTree<IFlowsState> = {
@@ -144,7 +170,7 @@ export const mutations: MutationTree<IFlowsState> = {
   flow_setLanguages(state, {flowId, value}) {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
     // Make sure to follow order when populating languages, because the order may affect indexes during resource validation
-    flow.languages = Array.isArray(value) ? sortBy(value, ['label']) : [value]
+    flow.languages = Array.isArray(value) ? orderLanguages(value as ILanguage[]) : [value]
   },
 
   flow_updateVendorMetadataByPath(
@@ -352,7 +378,9 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   async flow_createBlankResourceForEnabledModesAndLangs({rootState, dispatch}): Promise<IResource> {
     // Let's create all languages, we might need them but if they are switched off they just don't get used
-    const values: IResourceValue = rootState.trees.ui.languages.reduce((memo: object[], language: { id: string, name: string }) => {
+    // It's important to use the same order to generate resource, that will be helpful for resource validation indexes
+    const values: IResourceValue[] = orderLanguages(rootState.trees.ui.languages as ILanguage[])
+      .reduce((memo: IResourceValue[], language: ILanguage) => {
       // Let's just create all the modes, we might need them but if they are switched off they just don't get used
       Object.values(SupportedMode).forEach((mode: SupportedMode) => {
         discoverContentTypesFor(mode)?.forEach((contentType) => {
@@ -376,6 +404,41 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         values,
       },
     })
+  },
+
+  flow_addMissingResourceValues({getters, rootGetters, dispatch}): void {
+    const activeFlow: IFlow = getters.activeFlow
+    const resources = activeFlow.resources
+    const modes = activeFlow.supported_modes
+    const languages = activeFlow.languages.map(language => language.id)
+
+    resources
+      // Choices are a special case, we should not add variants
+      .filter(resource => resource.values.every(value => value.mime_type !== rootGetters['validation/choiceMimeType']))
+      .forEach(resource => {
+        modes.forEach(mode => {
+          languages.forEach(language => {
+            const resourceValue = resource.values.find(value => value.language_id === language && value.modes.includes(mode))
+            if (resourceValue === undefined) {
+              console.warn(`Adding missing variant: lang ${language}, mode: ${mode} for resource ${resource.uuid}`)
+
+              discoverContentTypesFor(mode)?.forEach((content_type) => {
+                dispatch('resource_createVariant', {
+                  resourceId: resource.uuid,
+                  variant: {
+                    content_type,
+                    language_id: language,
+                    modes: [
+                      mode,
+                    ],
+                    value: '',
+                  },
+                })
+              })
+            }
+          })
+        })
+      })
   },
 
   async flow_createWith({rootState}, {props}: { props: { uuid: string } & Partial<IFlow> }): Promise<IFlow> {

@@ -1,10 +1,9 @@
 import { IRunFlowBlock } from '@floip/flow-runner/src/model/block/IRunFlowBlock';
-import { IBlock, IFlow } from '@floip/flow-runner';
+import { IBlock } from '@floip/flow-runner';
 import Lang from '../../../lib/filters/lang';
 declare const Core_RunAnotherFlowBlock_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class Core_RunAnotherFlowBlock extends Core_RunAnotherFlowBlock_base {
     readonly block: IRunFlowBlock;
-    readonly flow: IFlow;
     readonly usesDefaultBranchingEditor: boolean;
     readonly usesDefaultContactPropsEditor: boolean;
     get destinationFlowId(): string;

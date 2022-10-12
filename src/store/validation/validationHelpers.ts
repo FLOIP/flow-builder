@@ -99,8 +99,8 @@ function getErrorMessageLocalizationKeyForProperty(keyPrefix: string, ajvErrorOb
   }
 
   property = property.replaceAll('/', '-')
-    // Replacing digits to eliminate resource indexes
-    .replaceAll(/\d/g, 'x')
+    // Replacing digits to eliminate resource indexes, multiple digits number (Eg: 10, 11, etc) should be replaced with 01 'x'
+    .replace((property.match(/\d+/) ?? '') as string, 'x')
 
   return `flow-builder-validation.${entity}-${property.substring(1)}-${ajvErrorObject.keyword}`
 }

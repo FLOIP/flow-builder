@@ -3,6 +3,7 @@ import { ActionTree, GetterTree, Module, MutationTree } from 'vuex';
 import { IRootState } from '../../store';
 import { IBlock, IBlockExit, IBlockUIMetadataCanvasCoordinates } from '@floip/flow-runner';
 import { IDeepBlockExitIdWithinFlow } from '../../store/flow/block';
+export declare const SAVING_ANIMATION_DURATION = 1000;
 export declare enum OperationKind {
     CONNECTION_SOURCE_RELOCATE = "CONNECTION_SOURCE_RELOCATE",
     CONNECTION_CREATE = "CONNECTION_CREATE",
@@ -37,6 +38,7 @@ export interface IPosition {
 export interface IBuilderState {
     activeBlockId: IBlock['uuid'] | null;
     isEditable: boolean;
+    activeMainComponent?: string;
     hasFlowChanges: boolean;
     activeConnectionsContext: IConnectionContext[];
     operations: {

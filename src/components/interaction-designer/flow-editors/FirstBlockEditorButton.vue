@@ -38,18 +38,19 @@ export class FirstBlockEditorButton extends mixins(Lang) {
 
   @Prop() readonly blockId!: IBlock['uuid']
 
-  @Prop() readonly flow!: IFlow
-
-  get isStartBlock(): boolean {
-    return this.blockId === this.flow.first_block_id
-  }
+  @flowVuexNamespace.Getter activeFlow!: IFlow
 
   // @ts-ignore
   setStartBlock(event: any): void {
-    const {flow: {uuid: flowId}, blockId} = this
-    this.flow_setFirstBlockId({flowId, blockId})
+    this.flow_setFirstBlockId({
+      flowId: this.activeFlow.uuid,
+      blockId: this.blockId,
+    })
   }
 
+  get isStartBlock(): boolean {
+    return this.blockId === this.activeFlow.first_block_id
+  }
   @flowVuexNamespace.Mutation flow_setFirstBlockId!: ({flowId, blockId}: { flowId: IFlow['uuid'], blockId: IBlock['uuid'] }) => void
 }
 

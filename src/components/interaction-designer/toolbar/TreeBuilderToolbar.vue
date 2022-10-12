@@ -74,40 +74,48 @@
 
               <div class="vertical-divider" />
 
-              <template v-if="isResourceEditorEnabled">
+              <div
+                v-if="isResourceViewerEnabled"
+                class="btn-group mr-3">
                 <router-link
-                  :to="resourceViewUrl"
+                  :class="{active: isBuilderCanvasEnabled, disabled: isTreeSaving}"
+                  :to="treeUrl"
                   class="btn btn-outline-primary btn-sm"
-                  @click.native="handleResourceViewerSelected">
+                  @click.native.prevent="handleFlowViewMenu">
+                  {{ trans('flow-builder.flow-view') }}
+                </router-link>
+                <router-link
+                  :to="resourceUrl"
+                  class="btn btn-outline-primary btn-sm"
+                  :class="{active: isResourceViewerCanvasEnabled, disabled: isTreeSaving}"
+                  @click.native.prevent="handleResourceViewMenu">
                   {{ trans('flow-builder.resource-view') }}
                 </router-link>
-
-                <div class="vertical-divider" />
-              </template>
+              </div>
 
               <div
                 v-if="!ui.isEditableLocked"
                 class="btn-group">
                 <router-link
                   v-b-tooltip.hover="trans('flow-builder.click-to-toggle-editing')"
-                  :to="viewTreeUrl"
+                  :to="viewModeUrl"
                   event=""
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: !isEditable, disabled: isTreeSaving}"
                   :aria-disabled="isTreeSaving"
                   :tabindex="isTreeSaving ? -1 : undefined"
-                  @click.native.prevent="handlePersistFlow(viewTreeUrl)">
+                  @click.native.prevent="handlePersistFlow(viewModeUrl)">
                   {{ trans('flow-builder.view-mode') }}
                 </router-link>
                 <router-link
                   v-b-tooltip.hover="trans('flow-builder.click-to-toggle-editing')"
-                  :to="editTreeUrl"
+                  :to="editModeUrl"
                   event=""
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: isEditable, disabled: isTreeSaving}"
                   :aria-disabled="isTreeSaving"
                   :tabindex="isTreeSaving ? -1 : undefined"
-                  @click.native.prevent="handlePersistFlow(editTreeUrl)">
+                  @click.native.prevent="handlePersistFlow(editModeUrl)">
                   {{ trans('flow-builder.edit-mode') }}
                 </router-link>
               </div>
@@ -117,7 +125,7 @@
 
             <div class="ml-auto mr-2">
               <button
-                v-if="hasSimulator"
+                v-if="isBuilderCanvasEnabled && hasSimulator"
                 type="button"
                 class="btn btn-outline-primary btn-sm"
                 @click="setSimulatorActive(true)">
@@ -129,7 +137,7 @@
               </div>
 
               <button
-                v-if="hasToolbarExportButton"
+                v-if="isBuilderCanvasEnabled && hasToolbarExportButton"
                 class="btn btn-outline-primary btn-sm"
                 :class="{active: isExportVisible}"
                 @click="toggleExportVisibility">
@@ -138,7 +146,7 @@
 
               <!--TODO - do disable if no changes logic-->
               <button
-                v-if="isEditable && isFeatureTreeSaveEnabled"
+                v-if="isBuilderCanvasEnabled && isEditable && isFeatureTreeSaveEnabled"
                 v-b-tooltip.hover="trans('flow-builder.save-changes-to-the-flow')"
                 type="button"
                 class="btn btn-outline-primary btn-sm ml-4 save-button"
@@ -155,8 +163,9 @@
         </div>
       </div>
 
+      <!--TODO: Extract this div into a smaller component-->
       <div
-        v-if="isEditable"
+        v-if="isBuilderCanvasEnabled && isEditable"
         class="tree-workspace-panel-heading panel-heading w-100 bg-white d-flex justify-content-start pt-0 pb-0">
         <div class="tree-workspace-panel-heading-contents">
           <ul class="nav">
@@ -296,7 +305,7 @@
         </div>
       </div>
     </div>
-    <div class="tree-builder-toolbar-alerts w-100">
+    <div v-if="isBuilderCanvasEnabled" class="tree-builder-toolbar-alerts w-100">
       <selection-banner
         v-if="isEditable"
         @updated="handleHeightChangeFromDOM" />
@@ -309,7 +318,7 @@ import {BModal, BootstrapVue, BTooltip} from 'bootstrap-vue'
 import Vue from 'vue'
 import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
-import Routes from '@/lib/mixins/Routes'
+import Routes, {routeFrom} from '@/lib/mixins/Routes'
 import {identity, isEmpty, isNil, pickBy as _pickBy, reduce, omit} from 'lodash'
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
@@ -337,9 +346,6 @@ const validationVuexNamespace = namespace('validation')
 export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   isExportVisible = false
   height = 102
-
-  // The "Saving" text flashes too quickly w/o actual backend interaction
-  private readonly SAVING_ANIMATION_DURATION = 1000
 
   async mounted(): Promise<void> {
     const routeMeta = this.$route.meta ? this.$route.meta : {}
@@ -394,9 +400,10 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     )
   }
 
-  get resourceViewUrl(): string {
+  get resourceUrl(): string {
     return this.editTreeRoute({
       component: 'resource-viewer',
+      mode: this.isEditable ? 'edit' : 'view',
     })
   }
 
@@ -406,17 +413,19 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     })
   }
 
-  get editTreeUrl(): string {
+  get treeUrl(): string {
     return this.editTreeRoute({
-      component: 'designer',
-      mode: 'edit',
+      component: 'builder',
+      mode: this.isEditable ? 'edit' : 'view',
     })
   }
 
-  get viewTreeUrl(): string {
+  @builderVuexNamespace.State activeMainComponent?: string
+
+  get editModeUrl(): string {
     return this.editTreeRoute({
-      component: 'designer',
-      mode: 'view',
+      component: this.activeMainComponent,
+      mode: 'edit',
     })
   }
 
@@ -497,21 +506,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
 
     //If we aren't in edit mode there should be nothing to persist
     if (this.isEditable) {
-      this.setTreeSaving(true)
-      const flowContainer = (await Promise.all([
-        this.flow_persist({
-          persistRoute: this.route('flows.persistFlow', {}),
-          flowContainer: this.activeFlowContainer,
-        }),
-        new Promise((resolve) => {
-          global.setTimeout(() => {
-            resolve(false)
-          }, this.SAVING_ANIMATION_DURATION)
-        }),
-      ]))
-        .filter(Boolean)
-        .pop()
-      this.setTreeSaving(false)
+      const flowContainer = await this.persistFlowAndHandleUiState()
       if (!flowContainer) {
         //TODO - hook into showing validation errors design when we have it
         //This won't show normal validation errors as the frontend should have caught them. We'll use this to show server errors.
@@ -572,9 +567,9 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     return shouldShowDividerBeforeBlock && this.isBlockAvailableByBlockClass[className]
   }
 
-  handleResourceViewerSelected(): void {
-    this.$el.scrollIntoView(true)
-  }
+  // handleResourceViewerSelected(): void {
+  //   this.$el.scrollIntoView(true)
+  // }
 
   // This could be extracted to a helper mixin of some sort so it can be used in other places
   removeNilValues(obj: any): Dictionary<unknown> {
@@ -602,6 +597,16 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     }
   }
 
+  handleFlowViewMenu() {
+    this.handlePersistFlow(this.treeUrl)
+  }
+
+  handleResourceViewMenu() {
+    this.handlePersistFlow(this.resourceUrl)
+    // scroll back to the top left in case the window has scroll bars from the builder-canvas
+    window.scrollTo(0, 0)
+  }
+
   // ########### VUEX ###############
   @State(({trees: {tree}}) => tree) tree!: any
   @State(({trees: {ui}}) => ui) ui!: any
@@ -620,7 +625,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @Getter isFeatureViewResultsEnabled?: boolean
   @Getter isFeatureSimulatorEnabled?: boolean
   @Getter isFeatureUpdateInteractionTotalsEnabled?: boolean
-  @Getter isResourceEditorEnabled?: boolean
+  @Getter isResourceViewerEnabled?: boolean
   @Mutation setTreeSaving!: (isSaving: boolean) => void
   @Action attemptSaveTree!: void
   @Getter getToolbarConfig!: boolean
@@ -638,17 +643,24 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     flowId,
     blockId,
   }: { flowId?: string, blockId?: IBlock['uuid'] }) => Promise<IBlock>
-  @flowVuexNamespace.Action flow_persist!: ({
-    persistRoute,
-    flowContainer,
-  }: { persistRoute: any, flowContainer?: IContext }) => Promise<IContext | null>
 
   // Builder
   @builderVuexNamespace.Getter isEditable!: boolean
   @builderVuexNamespace.Getter hasFlowChanges!: boolean
   @builderVuexNamespace.State activeBlockId?: IBlock['uuid']
+
+  get viewModeUrl(): string {
+    return this.editTreeRoute({
+      component: this.activeMainComponent,
+      mode: 'view',
+    })
+  }
   @builderVuexNamespace.Getter activeBlock?: IBlock
+  @builderVuexNamespace.Getter isBuilderCanvasEnabled!: boolean
+  @builderVuexNamespace.Getter isResourceViewerCanvasEnabled!: boolean
   @builderVuexNamespace.Mutation activateBlock!: ({blockId}: { blockId: IBlock['uuid'] | null}) => void
+  @builderVuexNamespace.Mutation setActiveMainComponent!: ({mainComponent}: {mainComponent: string | undefined}) => void
+  @builderVuexNamespace.Action persistFlowAndHandleUiState!: () => Promise<IContext | undefined>
 
   // Clipboard
   @clipboardVuexNamespace.Action setSimulatorActive!: (value: boolean) => void
@@ -672,14 +684,12 @@ export default TreeBuilderToolbar
 .viamo-app-container .tree-builder-toolbar {
   position: sticky;
   left: 0;
-  padding-left: 100px;
-  width: calc(100vw - 30px);
+  padding-left: 94px;
+  width: calc(100vw - 5px);
 }
 
 .tree-builder-toolbar-main-menu {
   background: $neutral-50;
-
-  box-shadow: 0 3px 6px #CACACA;
 }
 
 .btn-toolbar > .flow-label {
@@ -729,14 +739,13 @@ export default TreeBuilderToolbar
   border-color: $primary-900;
   background-color: $white;
 
-  &.active,
-  &.save-button:disabled {
-    color: $primary-900;
-    background-color: $primary-100;
-  }
-
-  &.save-button:disabled {
-    opacity: 1;
+  &.active {
+    border-color: $primary-900;
+    &.disabled {
+      color: $primary-900;
+      background-color: $primary-100;
+      opacity: 1;
+    }
   }
 }
 </style>

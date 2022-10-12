@@ -35,14 +35,20 @@
 
     <main class="interaction-designer-main">
       <builder-canvas
+        v-if="mainComponent === 'builder'"
         :width-adjustment="builderWidthAdjustment"
-        @click.native="handleCanvasSelected" />,
+        @click.native="handleCanvasSelected" />
+      <resource-viewer
+        v-else-if="mainComponent === 'resource-viewer'"/>
+      <div v-else>
+        <div class="alert alert-danger">ERROR: component '{{ mainComponent }}' is not supported</div>
+      </div>
     </main>
   </div>
 </template>
 
 <script lang="ts">
-import {endsWith, forEach, get, includes, invoke, isEmpty, values} from 'lodash'
+import {cloneDeep, debounce, endsWith, forEach, get, includes, invoke, isEmpty, values} from 'lodash'
 import {mixins} from 'vue-class-component'
 import {Component, Prop, Vue, Watch} from 'vue-property-decorator'
 import {Action, Getter, Mutation, namespace, State} from 'vuex-class'
@@ -52,15 +58,19 @@ import {scrollBehavior, scrollBlockIntoView} from '@/router/helpers'
 import {store} from '@/store'
 import ClipboardRoot from '@/components/interaction-designer/clipboard/ClipboardRoot.vue'
 import {Route} from 'vue-router'
-import {IBlock, IFlow} from '@floip/flow-runner'
+import {IBlock, IFlow, ILanguage, IResource, IResources, SupportedMode} from '@floip/flow-runner'
 import {ErrorObject} from 'ajv'
 import {MutationPayload} from 'vuex'
+import {IValidationStatus} from '@/store/validation'
 
 Component.registerHooks(['beforeRouteUpdate'])
 
 const flowNamespace = namespace('flow')
 const builderNamespace = namespace('builder')
 const clipboardNamespace = namespace('clipboard')
+const validationVuexNamespace = namespace('validation')
+
+const DEBOUNCE_VALIDATION_TIMER_MS = 300
 
 @Component({
   components: {
@@ -70,6 +80,8 @@ const clipboardNamespace = namespace('clipboard')
 export class InteractionDesigner extends mixins(Lang, Routes) {
   @Prop(String) readonly id!: string
   @Prop(String) readonly mode!: string
+  @Prop(String) readonly mainComponent!: string
+
   @Prop({
     type: Object,
     default() {
@@ -82,6 +94,67 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
       return {}
     },
   }) readonly builderConfig!: object
+
+  get blocksOnActiveFlowForWatcher(): IBlock[] {
+    // needed to make comparison between new & old values on watcher
+    return cloneDeep(this.activeFlow?.blocks)
+  }
+
+  // ###### Validation API Watchers [
+  @Watch('activeFlow', {deep: true, immediate: true})
+  async onActiveFlowChanged(newFlow: IFlow): Promise<void> {
+    this.debounceFlowValidation({newFlow})
+  }
+
+  @Watch('blocksOnActiveFlowForWatcher', {deep: true, immediate: true})
+  async onBlocksInActiveFlowChanged(newBlocks: IBlock[], oldBlocks: IBlock[]): Promise<void> {
+    this.debounceBlockValidation()
+  }
+
+  @validationVuexNamespace.Action validate_flow!: ({flow}: { flow: IFlow }) => Promise<IValidationStatus>
+  debounceFlowValidation = debounce(async function (this: any, {newFlow}: {newFlow: IFlow}) {
+    if (newFlow !== undefined) {
+      console.debug(
+        'watch/activeFlow:', 'active flow has changed', `from ${this.mainComponent}.`,
+        'Validating flow & supported resources ...',
+      )
+      await this.validate_flow({flow: newFlow})
+      await this.validate_resourcesOnSupportedValues({
+        resources: newFlow.resources,
+        supportedModes: this.activeFlow.supported_modes,
+        supportedLanguages: this.activeFlow.languages,
+      })
+    } else {
+      console.warn('watch/activeFlow:', 'newFlow is undefined')
+    }
+  }, DEBOUNCE_VALIDATION_TIMER_MS)
+  @validationVuexNamespace.Action validate_allBlocksWithinFlow!: () => Promise<void>
+  debounceBlockValidation = debounce(function (this: any) {
+    if (this.activeFlow !== undefined) {
+      console.debug('watch/activeFlow.blocks:', 'blocks inside active flow have changed', `from ${this.mainComponent}.`, 'Validating ...');
+      this.validate_allBlocksWithinFlow()
+    } else {
+      console.warn('watch/activeFlow.blocks:', 'activeFlow is undefined')
+    }
+  }, DEBOUNCE_VALIDATION_TIMER_MS)
+  @validationVuexNamespace.Action validate_resourcesOnSupportedValues!: (
+    {resources, supportedModes, supportedLanguages}: {resources: IResource[], supportedModes: SupportedMode[], supportedLanguages: ILanguage[]}
+  ) => Promise<void>
+
+  @Watch('activeFlow.resources', {deep: true, immediate: true})
+  async onResourcesOnActiveFlowChanged(newResources: IResources, oldResources: IResources): Promise<void> {
+    console.debug('watch/activeFlow.resources:', 'resources inside active flow have changed', `from ${this.mainComponent}.`, 'Validating ...')
+    if (this.activeFlow !== undefined) {
+      await this.validate_resourcesOnSupportedValues({
+        resources: newResources,
+        supportedModes: this.activeFlow.supported_modes,
+        supportedLanguages: this.activeFlow.languages,
+      })
+    } else {
+      console.warn('watch/activeFlow.resources:', 'activeFlow is undefined')
+    }
+  }
+  // ] ######### end Validation API Watchers
 
   toolbarHeight = 102
   // TODO: Move this to BlockClassDetails spec // an inversion can be "legacy types"
@@ -129,10 +202,13 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   @State(({trees: {ui}}) => ui.blockClasses) blockClasses!: Record<string, any>
 
   @flowNamespace.Getter activeFlow?: IFlow
+  @builderNamespace.State activeMainComponent?: string
   @builderNamespace.Getter activeBlock?: IBlock
   @builderNamespace.Getter isEditable!: boolean
   @builderNamespace.Getter hasFlowChanges!: boolean
   @builderNamespace.Getter interactionDesignerBoundingClientRect!: DOMRect
+  @builderNamespace.Getter isBuilderCanvasEnabled!: boolean
+  @builderNamespace.Getter isResourceViewerCanvasEnabled!: boolean
   @clipboardNamespace.Getter isSimulatorActive!: boolean
 
   get jsKey(): string {
@@ -155,6 +231,12 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   onModeChanged(newMode: string): void {
     this.updateIsEditableFromParams(newMode)
   }
+  @builderNamespace.Mutation setActiveMainComponent!: ({mainComponent}: {mainComponent: string | undefined}) => void
+
+  activated(): void {
+    // todo: remove once we have jsKey in our js-route
+    this.deselectBlocks()
+  }
 
   created(): void {
     if ((!isEmpty(this.appConfig) && !isEmpty(this.builderConfig)) || !this.isConfigured) {
@@ -171,11 +253,6 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     this.initializeTreeModel()
     // `this.mode` comes from captured param in js-routes
     this.updateIsEditableFromParams(this.mode)
-  }
-
-  activated(): void {
-    // todo: remove once we have jsKey in our js-route
-    this.deselectBlocks()
   }
 
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
@@ -196,29 +273,30 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
       )
     }
 
-    this.hoistResourceViewerToPushState.bind(this, this.$route.hash)
-    this.deselectBlocks()
-    this.discoverTallestBlockForDesignerWorkspaceHeight({aboveTallest: true})
+    if (this.isBuilderCanvasEnabled) {
+      this.deselectBlocks()
+      this.discoverTallestBlockForDesignerWorkspaceHeight({aboveTallest: true})
 
-    setTimeout(() => {
-      const {blockId, field} = this.$route.params
-      if (blockId) {
-        this.activateBlock({blockId})
-        scrollBlockIntoView(blockId)
-      }
-      if (field) {
-        scrollBehavior(this.$route)
-      }
-      if (this.$route.meta?.isBlockEditorShown as boolean) {
-        this.setIsBlockEditorOpen(true)
-      }
-    }, 500)
-    console.debug('Vuej tree interaction designer mounted!')
+      setTimeout(() => {
+        const {blockId, field} = this.$route.params
+        if (blockId) {
+          this.activateBlock({blockId})
+          scrollBlockIntoView(blockId)
+        }
+        if (field) {
+          scrollBehavior(this.$route)
+        }
+        if (this.$route.meta?.isBlockEditorShown as boolean) {
+          this.setIsBlockEditorOpen(true)
+        }
+      }, 500)
 
-    // get the interaction-designer-content positions, will be used to set other elements' position in the canvas (eg: for block editor)
-    if (this.activeFlow && this.$refs['interaction-designer-contents'] !== undefined) {
-      this.setInteractionDesignerBoundingClientRect((this.$refs['interaction-designer-contents'] as Element).getBoundingClientRect())
+      // get the interaction-designer-content positions, will be used to set other elements' position in the canvas (eg: for block editor)
+      if (this.activeFlow && this.$refs['interaction-designer-contents'] !== undefined) {
+        this.setInteractionDesignerBoundingClientRect((this.$refs['interaction-designer-contents'] as Element).getBoundingClientRect())
+      }
     }
+    console.debug('Vuej tree interaction designer mounted!')
   }
 
   @Watch('$route', {deep: true})
@@ -234,6 +312,10 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   @Mutation deselectBlocks!: () => void
   @builderNamespace.Mutation activateBlock!: ({blockId}: {blockId: IBlock['uuid'] | null}) => void
   @builderNamespace.Mutation setIsBlockEditorOpen!: (value: boolean) => void
+
+  updated() {
+    this.setActiveMainComponent({mainComponent: this.mainComponent})
+  }
   @builderNamespace.Mutation setInteractionDesignerBoundingClientRect!: (value: DOMRect) => void
   @builderNamespace.Action setIsEditable!: (arg0: boolean) => void
   @builderNamespace.Action setHasFlowChanges!: (arg0: boolean) => void
@@ -291,14 +373,6 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     return !isEditableLocked && (
       mode === 'edit' || (!mode && endsWith(hash, '/edit'))
     )
-  }
-
-  hoistResourceViewerToPushState(hash: string): void {
-    if (!endsWith(hash, '/resource-viewer')) {
-      return
-    }
-
-    this.replaceRouteInHistory(`/trees/${this.id}/resource-viewer`)
   }
 
   showOrHideSidebar(): void {

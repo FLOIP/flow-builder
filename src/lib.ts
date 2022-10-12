@@ -35,11 +35,12 @@ export * from '@/components/interaction-designer/blocks'
 export * from '@/components/interaction-designer/flow-editors'
 export * from '@/components/interaction-designer/flow-editors/import'
 export * from '@/components/interaction-designer/resource-editors'
-export * from '@/components/resource-editor'
+export * from '@/components/interaction-designer/resource-viewer'
 export * from '@/components/interaction-designer/toolbar'
 export * from '@/store/flow/block-types'
 export * from '@/store'
 export * from '@/router/helpers'
+export {default as flowBuilderStore} from '@/store'
 
 // We may need those validation helpers to customize the validation in the consumer side
 export * from '@/store/validation'

@@ -5,9 +5,7 @@
     :style="{ minWidth: `${canvasWidth}px` , minHeight: `${canvasHeight}px` }">
     <block
       v-for="block in activeFlow.blocks"
-      :id="`block/${block.uuid}`"
       :key="block.uuid"
-      :ref="`block/${block.uuid}`"
       :block="block"
       :x="block.ui_metadata.canvas_coordinates.x"
       :y="block.ui_metadata.canvas_coordinates.y" />
@@ -16,10 +14,9 @@
 
 <script lang="ts">
 import {Component, Prop, Vue, Watch} from 'vue-property-decorator'
-import {cloneDeep, debounce, maxBy} from 'lodash'
+import {debounce, maxBy} from 'lodash'
 import {namespace} from 'vuex-class'
-import {IBlock, IFlow, ILanguage, IResource, IResources, SupportedMode} from '@floip/flow-runner'
-import {IValidationStatus} from '@/store/validation'
+import {IBlock, IFlow} from '@floip/flow-runner'
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
@@ -31,39 +28,11 @@ const MARGIN_HEIGHT_CORRECTION_PX = -10
 const MARGIN_WIDTH_CORRECTION_PX = 120
 
 const DEBOUNCE_SCROLL_TIMER_MS = 300
-const DEBOUNCE_VALIDATION_TIMER_MS = 300
 
 @Component({})
 export class BuilderCanvas extends Vue {
   @Prop() block!: IBlock
   @Prop({default: 0}) widthAdjustment!: number
-
-  // ###### Validation API Watchers [
-  @Watch('activeFlow', {deep: true, immediate: true})
-  async onActiveFlowChanged(newFlow: IFlow): Promise<void> {
-    this.debounceFlowValidation({newFlow})
-  }
-
-  debounceFlowValidation = debounce(async function (this: any, {newFlow}: {newFlow: IFlow}) {
-    console.debug('watch/activeFlow:', 'active flow has changed from builder canvas, validating flow & supported resources ...')
-    await this.validate_flow({flow: newFlow})
-    await this.validate_resourcesOnSupportedValues({
-      resources: newFlow.resources,
-      supportedModes: this.activeFlow.supported_modes,
-      supportedLanguages: this.activeFlow.languages,
-    })
-  }, DEBOUNCE_VALIDATION_TIMER_MS)
-
-  @Watch('blocksOnActiveFlowForWatcher', {deep: true, immediate: true})
-  async onBlocksInActiveFlowChanged(newBlocks: IBlock[], oldBlocks: IBlock[]): Promise<void> {
-    this.debounceBlockValidation()
-  }
-
-  debounceBlockValidation = debounce(function (this: any) {
-    console.debug('watch/activeFlow.blocks:', 'blocks inside active flow have changed, validating ...')
-    this.validate_allBlocksWithinFlow()
-  }, DEBOUNCE_VALIDATION_TIMER_MS)
-  // ] ######### end Validation API Watchers
 
   // ##### Canvas dynamic size watchers [
   @Watch('canvasHeight')
@@ -95,11 +64,6 @@ export class BuilderCanvas extends Vue {
   }, DEBOUNCE_SCROLL_TIMER_MS)
 
   // ] ######## end canvas dynamic size watchers
-
-  get blocksOnActiveFlowForWatcher(): IBlock[] {
-    // needed to make comparison between new & old values on watcher
-    return cloneDeep(this.activeFlow.blocks)
-  }
 
   get blockHeight(): number {
     // it returns array as we loop blocks inside v-for
@@ -200,12 +164,6 @@ export class BuilderCanvas extends Vue {
   @flowVuexNamespace.Getter activeFlow!: IFlow
 
   @builderVuexNamespace.State isBlockEditorOpen!: boolean
-
-  @validationVuexNamespace.Action validate_flow!: ({flow}: { flow: IFlow }) => Promise<IValidationStatus>
-  @validationVuexNamespace.Action validate_allBlocksWithinFlow!: () => Promise<void>
-  @validationVuexNamespace.Action validate_resourcesOnSupportedValues!: (
-    {resources, supportedModes, supportedLanguages}: {resources: IResource[], supportedModes: SupportedMode[], supportedLanguages: ILanguage[]}
-  ) => Promise<void>
 }
 
 export default BuilderCanvas

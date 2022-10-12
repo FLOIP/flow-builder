@@ -2,7 +2,6 @@
   <div class="core-output-block">
     <base-block
       :block="block"
-      :flow="flow"
       :show-semantic-label="false"
       :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
       :uses-default-branching-editor="usesDefaultBranchingEditor"
@@ -60,7 +59,6 @@ const builderVuexNamespace = namespace('builder')
 @Component({})
 export class Core_OutputBlock extends mixins(Lang) {
   @Prop() readonly block!: IOutputBlock
-  @Prop() readonly flow!: IFlow
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
   @Prop({default: true}) readonly usesDefaultContactPropsEditor!: boolean
   @Prop({type: Number, default: 1}) readonly expressionEditorRows!: number
