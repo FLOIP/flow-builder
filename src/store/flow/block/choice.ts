@@ -12,7 +12,7 @@ import {
   ValidationException,
 } from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
-import {deleteChoiceValueByPath} from '@/store/flow/utils/vuexBlockHelpers'
+import {deleteChoiceValueByPath} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
 import {IEmptyState} from '@/store/flow/block-types/BaseBlockStore'
 import Vue from 'vue'
 import {choiceToTestExpression} from '@/components/interaction-designer/block-editors/choices/expressionTransformers'

@@ -1,6 +1,6 @@
 import { IBlock, IBlockExit } from '@floip/flow-runner';
 import Lang from '../../../lib/filters/lang';
-import { BlockConfigFieldType } from '../../../store/flow/block';
+import { ConfigFieldType } from '../../../store/flow/block';
 import { OutputBranchingType } from '../../../components/interaction-designer/block-editors/BlockOutputBranchingConfig.model';
 declare const BlockOutputBranchingConfig_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class BlockOutputBranchingConfig extends BlockOutputBranchingConfig_base {
@@ -18,7 +18,7 @@ export declare class BlockOutputBranchingConfig extends BlockOutputBranchingConf
     block_updateVendorMetadataByPath: ({ blockId, path, value }: {
         blockId: string;
         path: string;
-        value: BlockConfigFieldType;
+        value: ConfigFieldType;
     }) => void;
     block_exitClearDestinationBlockFor: ({ blockExit }: {
         blockExit: IBlockExit;
