@@ -350,6 +350,10 @@
           {
             "description": "Mango",
             "value": "mango"
+          },
+          {
+            "description": "I don't like fruits",
+            "value": "doesn't like fruits"
           }
         ]
       },
