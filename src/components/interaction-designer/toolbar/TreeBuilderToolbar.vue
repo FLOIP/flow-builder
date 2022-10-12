@@ -628,7 +628,6 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @Getter isResourceViewerEnabled?: boolean
   @Mutation setTreeSaving!: (isSaving: boolean) => void
   @Action attemptSaveTree!: void
-  @Getter getToolbarConfig!: boolean
 
   // Flow
   @flowVuexNamespace.Getter activeFlow!: IFlow
