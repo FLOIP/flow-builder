@@ -1,5 +1,6 @@
 <template>
   <div class="resource-viewer">
+    <slot name="vendor-header" />
     <div class="resource-viewer-contents">
       <resource-viewer-block
         v-for="block in activeFlow.blocks"
@@ -8,6 +9,7 @@
         :block="block"
         @change="debounce_persistFlow" />
     </div>
+    <slot name="vendor-footer" />
   </div>
 </template>
 
