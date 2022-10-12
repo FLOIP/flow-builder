@@ -14,6 +14,7 @@ import BaseBlockStore, {
 import {ValidationResults} from '@/lib/validations'
 import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.model'
 import * as ChoiceModule from '@/store/flow/block/choice'
+import {escapeQuotes} from '@/components/interaction-designer/block-editors/choices/expressionTransformers'
 
 export const BLOCK_TYPE = 'MobilePrimitives.SelectOneResponse'
 
@@ -81,7 +82,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
 
       Object.assign(exitsForChoices[i], {
         name: choice.name,
-        test: `@block.value = '${choice.name}'`,
+        test: `@block.value = '${escapeQuotes(choice.name)}'`,
       })
     }))
 
