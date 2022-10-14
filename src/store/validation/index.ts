@@ -23,6 +23,7 @@ import {
   getOrCreateFlowValidator,
   getOrCreateLanguageValidator,
   getOrCreateResourceValidator,
+  overrideValidationMessages,
 } from '@/store/validation/validationHelpers'
 
 export interface IIndexedString {
@@ -192,11 +193,13 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
   async validate_flow({state, rootGetters}, {flow}: {flow: IFlow}): Promise<IValidationStatus> {
     const validate = getOrCreateFlowValidator(rootGetters['flow/activeFlowContainer'].specification_version)
     const key = `flow/${flow.uuid}`
-    Vue.set(state.validationStatuses, key, {
+    const validationStatus = overrideValidationMessages({
       isValid: validate(flow),
       ajvErrors: getLocalizedAjvErrors(key, validate.errors),
       type: 'flow',
     })
+
+    Vue.set(state.validationStatuses, key, validationStatus)
 
     debugValidationStatus(state.validationStatuses[key], 'flow validation status')
     return state.validationStatuses[key]

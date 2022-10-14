@@ -6,6 +6,7 @@ import {JSONSchema7} from 'json-schema'
 import ajvFormat from 'ajv-formats'
 import {parse as floipExpressionParser} from '@floip/expression-parser'
 import Lang from '@/lib/filters/lang'
+import validationOverrides from '@/assets/validation-overrides.json'
 
 const DEV_ERROR_KEYWORDS = [
   // unwanted extra props
@@ -285,4 +286,34 @@ export function validateBlockWithJsonSchema({block, schemaVersion, customBlockJs
       resourceUuid: get(block, 'config.prompt'),
     },
   }
+}
+
+export function overrideValidationMessages(validationStatus: any): any {
+  const locale = (global as any).Lang.locale || 'en';
+
+  validationOverrides.forEach(({ type, dataPath, keyword, overrides }) => {
+    if (validationStatus.type !== type) {
+      return
+    }
+
+    for (let i = 0; i < validationStatus.ajvErrors.length; i += 1) {
+      const ajvError = validationStatus.ajvErrors[i];
+
+      if (ajvError.dataPath !== dataPath || ajvError.keyword !== keyword) {
+        continue
+      }
+
+      ajvError.message = overrides[locale as keyof typeof overrides].replace(
+        /({([^}]+)})/g,
+        (_match: unknown, _g1: unknown, name: string) => {
+          return ajvError.params[name] || '…'
+        }
+      )
+
+      // Remove keyword to avoid triggering default localization flow
+      ajvError.keyword = undefined
+    }
+  })
+
+  return validationStatus
 }
