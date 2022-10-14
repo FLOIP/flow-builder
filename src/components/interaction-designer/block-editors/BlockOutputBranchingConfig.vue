@@ -6,7 +6,7 @@
       <div class="btn-group d-block">
         <button
           v-if="hasExitPerChoice"
-          v-b-tooltip.hover.bottom="trans('flow-builder.separate-output-for-each-choice')"
+          v-b-tooltip.hover.bottom="trans('flow-builder.multiple-choice-mode')"
           :class="{
             active: isBranchingTypeExitPerChoice,
             'btn-primary': isBranchingTypeExitPerChoice,
@@ -21,7 +21,7 @@
 
         <button
           v-if="hasUnifiedExit"
-          v-b-tooltip.hover.bottom="trans('flow-builder.one-output-for-all-choices')"
+          v-b-tooltip.hover.bottom="trans('flow-builder.standard-mode')"
           :class="{
             active: isBranchingTypeUnified,
             'btn-primary': isBranchingTypeUnified,
@@ -35,7 +35,7 @@
         </button>
 
         <button
-          v-b-tooltip.hover.bottom="trans('flow-builder.advanced-configuration-of-outputs')"
+          v-b-tooltip.hover.bottom="trans('flow-builder.advanced-mode')"
           :class="{
             active: isBranchingTypeAdvanced,
             'btn-primary': isBranchingTypeAdvanced,
