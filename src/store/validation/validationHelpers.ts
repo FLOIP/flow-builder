@@ -289,15 +289,15 @@ export function validateBlockWithJsonSchema({block, schemaVersion, customBlockJs
 }
 
 export function overrideValidationMessages(validationStatus: any): any {
-  const locale = (global as any).Lang.locale || 'en';
+  const locale = (global as any).Lang.locale as string || 'en'
 
-  validationOverrides.forEach(({ type, dataPath, keyword, overrides }) => {
+  validationOverrides.forEach(({type, dataPath, keyword, overrides}) => {
     if (validationStatus.type !== type) {
       return
     }
 
     for (let i = 0; i < validationStatus.ajvErrors.length; i += 1) {
-      const ajvError = validationStatus.ajvErrors[i];
+      const ajvError = validationStatus.ajvErrors[i]
 
       if (ajvError.dataPath !== dataPath || ajvError.keyword !== keyword) {
         continue
@@ -305,9 +305,7 @@ export function overrideValidationMessages(validationStatus: any): any {
 
       ajvError.message = overrides[locale as keyof typeof overrides].replace(
         /({([^}]+)})/g,
-        (_match: unknown, _g1: unknown, name: string) => {
-          return ajvError.params[name] || '…'
-        }
+        (_match: unknown, _g1: unknown, name: string) => ajvError.params[name] as string || '…',
       )
 
       // Remove keyword to avoid triggering default localization flow

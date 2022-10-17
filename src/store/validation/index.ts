@@ -32,7 +32,7 @@ export interface IIndexedString {
 
 export interface IValidationStatusContext {
   resourceUuid?: string,
-  isOrphanResource?: boolean
+  isOrphanResource?: boolean,
 }
 
 export interface IValidationStatus {
