@@ -288,28 +288,27 @@ export function validateBlockWithJsonSchema({block, schemaVersion, customBlockJs
   }
 }
 
-export function overrideValidationMessages(validationStatus: any): any {
+export function overrideValidationMessages(validationStatus: IValidationStatus): IValidationStatus {
   const locale = (global as any).Lang.locale as string || 'en'
+  const validationErrors = validationStatus.ajvErrors || []
 
   validationOverrides.forEach(({type, dataPath, keyword, overrides}) => {
     if (validationStatus.type !== type) {
       return
     }
 
-    for (let i = 0; i < validationStatus.ajvErrors.length; i += 1) {
-      const ajvError = validationStatus.ajvErrors[i]
+    for (let i = 0; i < validationErrors.length; i += 1) {
+      const ajvError = validationErrors[i]
 
-      if (ajvError.dataPath !== dataPath || ajvError.keyword !== keyword) {
-        continue
+      if (ajvError.dataPath === dataPath && ajvError.keyword !== keyword) {
+        ajvError.message = overrides[locale as keyof typeof overrides].replace(
+          /({([^}]+)})/g,
+          (_match: unknown, _g1: unknown, name: string) => ajvError.params[name] as string || '…',
+        )
+
+        // Remove keyword to avoid triggering default localization flow
+        ajvError.keyword = undefined!
       }
-
-      ajvError.message = overrides[locale as keyof typeof overrides].replace(
-        /({([^}]+)})/g,
-        (_match: unknown, _g1: unknown, name: string) => ajvError.params[name] as string || '…',
-      )
-
-      // Remove keyword to avoid triggering default localization flow
-      ajvError.keyword = undefined
     }
   })
 
