@@ -288,6 +288,13 @@ export function validateBlockWithJsonSchema({block, schemaVersion, customBlockJs
   }
 }
 
+/**
+ * Overrides standard AJV error messages from validation-overrides.json.
+ * For localization purposes use messages.json instead.
+ *
+ * @param {IValidationStatus} validationStatus collection of AJV error objects
+ * @returns {IValidationStatus}
+ */
 export function overrideValidationMessages(validationStatus: IValidationStatus): IValidationStatus {
   const locale = (global as any).Lang.locale as string || 'en'
   const validationErrors = validationStatus.ajvErrors || []
