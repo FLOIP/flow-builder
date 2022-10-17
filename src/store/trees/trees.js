@@ -40,14 +40,6 @@ export default {
         selectedBlock: null,
         designerWorkspaceHeight: 1400,
         currentZoom: 1,
-        batchMatchAudio: {
-          results: null,
-          status: 0,
-          message: null,
-          isFailure: false,
-          isPending: false,
-          isComplete: false,
-        },
         treeUpdateConflict: null,
         enabledFeatures: [
           /** @see \Voto5\Http\Controllers\V3TreesController::get_editTree */
@@ -66,7 +58,6 @@ export default {
     isFeatureCallCenterQueuesEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'callCenterQueues'),
     isFeatureCallToRecordEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'callToRecord'),
     isFeatureMultimediaUploadEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'multimediaUpload'),
-    isFeatureTreesBatchLinkAudioEnabled: ({ui}) => lodash.find(ui.enabledFeatures, (feature) => feature === 'treesBatchLinkAudio'),
     isFeatureAddSubscriberPropertyFieldEnabled: ({ui}) => lodash.find(
       ui.enabledFeatures,
       (feature) => feature === 'addSubscriberPropertyField',
@@ -332,43 +323,9 @@ export default {
       }
     },
 
-    updateAudioFileFor({tree, ui}, {langId, jsKey, value}) {
-      const block = lodash.find(tree.blocks, {jsKey})
-
-      // schedules a redraw
-
-      block.audioFiles = {
-        ...block.audioFiles,
-        ...{[langId]: value},
-      }
-
-      // using delete because we depend on audioFile key presence in legacy
-      !value && delete block.audioFiles[langId]
-    },
-
     updateReviewedStateFor({tree, ui}, {langId, jsKey, value}) {
       const {customData: data} = lodash.find(tree.blocks, {jsKey})
       data.reviewed[langId] = value
-    },
-
-    setBatchMatchAudioResultsTo({tree, ui}, {value, status, message}) {
-      // ui.batchMatchAudioStatus = value
-      lodash.extend(ui.batchMatchAudio, {
-        results: value,
-        status,
-        message,
-        // isEmpty === {"block_1504124559063_84":{"7":null,"8":null,"9":null}
-        isEmpty: lodash.chain(value)
-          .values()
-          .map((matchesByLang) => lodash.values(matchesByLang))
-          .flatten()
-          .filter()
-          .isEmpty()
-          .value(),
-        isFailure: status === 0,
-        isPending: status === -1,
-        isComplete: status === 1,
-      })
     },
 
     updateIsEditable({ui}, {value}) {
@@ -807,76 +764,6 @@ export default {
       }
 
       commit('updateBlockUiDataFor', {jsKey, key: 'fieldLabels', value: fieldLabels})
-    },
-
-    batchMatchAudioTriggered({commit, dispatch, state}, {treeId, pattern, replaceExisting}) {
-      commit('setBatchMatchAudioResultsTo', {status: -1})
-
-      return axios.post(routeFrom('trees.treesBatchLinkAudio', {treeId}, state.ui.routes), {pattern})
-        .then(({data: {matches: value}}) => {
-          commit('setBatchMatchAudioResultsTo', {status: 1, value})
-          dispatch('commitAllBatchMatchAudioFiles', {replaceExisting})
-        })
-        .catch(({response: {data: {status_description: message}}}) => commit('setBatchMatchAudioResultsTo', {
-          status: 0,
-          message,
-        }))
-    },
-
-    commitAllBatchMatchAudioFiles(
-      {
-        commit, dispatch, state: {
-        ui: {
-          batchMatchAudio: {
-            isEmpty,
-            results,
-          },
-        },
-      },
-      },
-      {replaceExisting},
-    ) {
-      if (isEmpty) {
-        return
-      }
-
-      lodash.forEach(results, (byLang, jsKey) => {
-        lodash.forEach(byLang, (matches, langId) => {
-          dispatch('commitBatchMatchAudioFile', {
-            jsKey, langId, matches, replaceExisting,
-          })
-        })
-      })
-
-      dispatch('attemptSaveTree')
-    },
-
-    /** ------------------ | has-selection | no-selection | unchanged |
-     | null   + no-replace | 0             | 1            | 0         |
-     | single + no-replace | 0             | 1            | 0         |
-     | multi  + no-replace | 0             | 0            | 0         |
-     | null   + replace    | 1             | 1            | 0         |
-     | single + replace    | 1             | 1            | 0         |
-     | multi  + replace    | 0             | 0            | 0         |
-     ---------------------------------------------------------------- */
-    commitBatchMatchAudioFile(
-      {commit, dispatch, state: {tree: {blocks}}},
-      {
-        jsKey, langId, matches, replaceExisting,
-      },
-    ) {
-      const {audioFiles: {[langId]: audioFile}} = lodash.find(blocks, {jsKey})
-      const hasSelection = !!audioFile
-      const isMulti = lodash.get(matches, 'length', 0) > 1
-      const match = lodash.get(matches, 0, null)
-      const unchanged = lodash.get(audioFile, 'id') === lodash.get(match, 'id')
-
-      if (unchanged || isMulti || (hasSelection && !replaceExisting)) {
-        return
-      }
-
-      commit('updateAudioFileFor', {jsKey, langId, value: match})
-      commit('updateReviewedStateFor', {jsKey, langId, value: false})
     },
 
     addSubscriberPropertyField({commit, dispatch, state}, {displayLabel, dataType, choices}) {
