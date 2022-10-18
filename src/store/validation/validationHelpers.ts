@@ -6,7 +6,6 @@ import {JSONSchema7} from 'json-schema'
 import ajvFormat from 'ajv-formats'
 import {parse as floipExpressionParser} from '@floip/expression-parser'
 import Lang from '@/lib/filters/lang'
-import validationOverrides from '@/assets/validation-overrides.json'
 
 const DEV_ERROR_KEYWORDS = [
   // unwanted extra props
@@ -99,11 +98,12 @@ function getErrorMessageLocalizationKeyForProperty(keyPrefix: string, ajvErrorOb
     property = ajvErrorObject.dataPath
   }
 
-  property = property.replaceAll('/', '-')
-    // Replacing digits to eliminate resource indexes, multiple digits number (Eg: 10, 11, etc) should be replaced with 01 'x'
-    .replace((property.match(/\d+/) ?? '') as string, 'x')
+  property = property
+    .replaceAll('/', '-')
+    .replaceAll(/\d+/g, 'x')
+    .replace(/^-/, '')
 
-  return `flow-builder-validation.${entity}-${property.substring(1)}-${ajvErrorObject.keyword}`
+  return `flow-builder-validation.${entity}-${property}-${ajvErrorObject.keyword}`
 }
 
 function getErrorMessageLocalizationKey(keyPrefix: string, ajvErrorObject: ErrorObject) : string {
@@ -133,7 +133,13 @@ function getLocalizedErrorMessage(keyPrefix: string, ajvErrorObject: ErrorObject
   // Normal AJV errors
   const localizationKey = getErrorMessageLocalizationKey(keyPrefix, ajvErrorObject)
 
-  const localizedMessage = lang.trans(localizationKey)
+  const localizedMessage = lang
+    .trans(localizationKey)
+    .replace(
+      /({([^}]+)})/g,
+      (_match: unknown, _g1: unknown, name: string) => ajvErrorObject.params[name] as string || '…',
+    )
+
   const hasTranslation = localizedMessage !== localizationKey
 
   if (!hasTranslation) {
@@ -286,38 +292,4 @@ export function validateBlockWithJsonSchema({block, schemaVersion, customBlockJs
       resourceUuid: get(block, 'config.prompt'),
     },
   }
-}
-
-/**
- * Overrides standard AJV error messages from validation-overrides.json.
- * For localization purposes use messages.json instead.
- *
- * @param {IValidationStatus} validationStatus collection of AJV error objects
- * @returns {IValidationStatus}
- */
-export function overrideValidationMessages(validationStatus: IValidationStatus): IValidationStatus {
-  const locale = (global as any).Lang.locale as string || 'en'
-  const validationErrors = validationStatus.ajvErrors || []
-
-  validationOverrides.forEach(({type, dataPath, keyword, overrides}) => {
-    if (validationStatus.type !== type) {
-      return
-    }
-
-    for (let i = 0; i < validationErrors.length; i += 1) {
-      const ajvError = validationErrors[i]
-
-      if (ajvError.dataPath === dataPath && ajvError.keyword !== keyword) {
-        ajvError.message = overrides[locale as keyof typeof overrides].replace(
-          /({([^}]+)})/g,
-          (_match: unknown, _g1: unknown, name: string) => ajvError.params[name] as string || '…',
-        )
-
-        // Remove keyword to avoid triggering default localization flow
-        ajvError.keyword = undefined!
-      }
-    }
-  })
-
-  return validationStatus
 }
