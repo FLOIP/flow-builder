@@ -40,10 +40,11 @@ export class ValidationMessage extends mixins(Lang) {
     }
 
     const message = this.flattenErrorMessages[this.messageKey]
-
-    return this.messageOverrides.has(message)
+    const messageText = this.messageOverrides.has(message)
       ? this.messageOverrides.get(message)!
       : message
+
+    return messageText.trim().replace(/^(.)/, m => m.toUpperCase())
   }
 
   get messageOverrides(): Map<string, string> {
