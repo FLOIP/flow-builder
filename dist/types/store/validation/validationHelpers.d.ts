@@ -42,4 +42,3 @@ export declare function validateBlockWithJsonSchema({ block, schemaVersion, cust
     schemaVersion: string;
     customBlockJsonSchema?: JSONSchema7;
 }): IValidationStatus;
-export declare function overrideValidationMessages(validationStatus: IValidationStatus): IValidationStatus;
