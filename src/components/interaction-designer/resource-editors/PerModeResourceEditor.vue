@@ -130,5 +130,6 @@ export default PerModeResourceEditor
 
 .resource-panel-body {
   border-top: 1px solid $neutral-200;
+  background-color: $neutral-25;
 }
 </style>
