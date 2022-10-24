@@ -60,4 +60,16 @@ export interface IPositionLeftTop {
   top: number,
 }
 
-export type BlockClasses = string[]
+export interface IExplanatoryText {
+  title: string,
+  description: string,
+  branching_type?: string,
+  display?: boolean,
+}
+
+export interface IBlockClass {
+  type: string,
+  explanatory_texts: IExplanatoryText[],
+}
+
+export type BlockClassNames = string[]

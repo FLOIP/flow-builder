@@ -51,18 +51,9 @@
       </div>
     </div>
 
-    <dl
-      v-if="hints"
-      class="block-output-branching-config--hint">
-      <template v-for="(hint, i) in hints">
-        <dt :key="`${i}-dt`">
-          {{ hint.title }}
-        </dt>
-        <dd :key="`${i}-dd`">
-          {{ hint.description }}
-        </dd>
-      </template>
-    </dl>
+    <block-config-explanations
+      :block-type="block.type"
+      :branching-type="selectedBranchingType" />
 
     <advanced-exits-builder
       v-if="isBranchingTypeAdvanced"
@@ -79,12 +70,17 @@
   import {namespace} from 'vuex-class'
   import {ConfigFieldType} from '@/store/flow/block'
   import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.model'
+  import BlockConfigExplanations from './BlockConfigExplanations.vue'
 
   /* eslint-disable max-len */
 
   const flowVuexNamespace = namespace('flow')
 
-  @Component({})
+  @Component({
+    components: {
+      BlockConfigExplanations,
+    },
+  })
   export class BlockOutputBranchingConfig extends mixins(Lang) {
     @Prop() readonly block!: IBlock
     @Prop() readonly hasExitPerChoice!: boolean
@@ -98,69 +94,6 @@
         // todo: should this be EXIT_PER_CHOICE for SelectOne block?
         this.selectedBranchingType = OutputBranchingType.UNIFIED
       }
-    }
-
-    get hints() {
-      return [
-        {
-          title: 'Multiple choice mode',
-          description: 'When the contact provides a response which maps to a choice, the flow will continue through the corresponding exit.',
-          when: {
-            blockType: 'MobilePrimitives.SelectOneResponse',
-            branchingType: 'EXIT_PER_CHOICE',
-          },
-        },
-        {
-          title: 'Valid',
-          description: 'The flow will continue through the **valid exit** when the contact provides a response which can be mapped to a choice using the configured choice options.',
-          when: {
-            blockType: 'MobilePrimitives.SelectOneResponse',
-          },
-        },
-        {
-          title: 'Success',
-          description: 'The flow will continue through the **valid exit** when the contact gives a valid numeric response within the range specified above',
-          when: {
-            blockType: 'MobilePrimitives.NumericResponse',
-          },
-        },
-        {
-          title: 'Success',
-          description: 'The flow will continue through the **success exit** when the value to set matches the data type of the contact property. This is expected in all scenarios except when an expression is used incorrectly.',
-          when: {
-            blockType: 'Core.SetContactProperty',
-          },
-        },
-        {
-          title: 'Success',
-          description: 'The flow will continue through the **success exit** if the data type of the evaluated expression matches the expected data type configured above.',
-          when: {
-            blockType: 'Core.Output',
-          },
-        },
-        {
-          title: 'Default',
-          description: 'The flow will continue through the **default exit** in all other scenarios.',
-        },
-      ]
-      .filter(({when}) => {
-        if (when === undefined) {
-          return true
-        }
-
-        return [
-          [when.blockType, this.block.type],
-          [when.branchingType, this.selectedBranchingType],
-        ]
-          .reduce((result, [expected, actual]) => {
-            if (result) {
-              return expected !== undefined
-                ? expected === actual
-                : true
-            }
-            return false
-          }, true as boolean)
-      })
     }
 
     get selectedBranchingType(): OutputBranchingType {

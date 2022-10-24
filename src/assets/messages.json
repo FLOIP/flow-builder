@@ -1,5 +1,11 @@
 {
   "en.flow-builder": {
+    "explanation-numeric-success": "The flow will continue through the **valid exit** when the contact gives a valid numeric response within the range specified above.",
+    "explanation-scp-success": "The flow will continue through the **success exit** when the value to set matches the data type of the contact property. This is expected in all scenarios except when an expression is used incorrectly.",
+    "explanation-output-success": "The flow will continue through the **success exit** if the data type of the evaluated expression matches the expected data type configured above.",
+    "explanation-mcq-mc": "When the contact provides a response which maps to a choice, the flow will continue through the corresponding exit.",
+    "explanation-mcq-success": "The flow will continue through the **valid exit** when the contact provides a response which can be mapped to a choice using the configured choice options.",
+    "explanation-default": "The flow will continue through the **default exit** in all other scenarios.",
     "no-content-block-info": "This block does not require any content.",
     "warnings": "Warnings",
     "warnings-hint-on-import": "These won't block you to import the flow, but you will need to fix them once imported",
@@ -1383,6 +1389,7 @@
     "subscribers": "contacts",
     "subscribers-that-reached-this-block": "Contacts that reached this block",
     "success": "Success",
+    "default": "Default",
     "successfully-imported-result": "Successfully imported results",
     "summary-block-description": "This block is used to review answers to questions that are included in the summary. Clipboard users are able to Confirm or Reject responses.",
     "sun": "Sun",

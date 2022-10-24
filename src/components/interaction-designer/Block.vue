@@ -210,7 +210,7 @@ import {
   SupportedOperation,
 } from '@/store/builder'
 import Lang from '@/lib/filters/lang'
-import {BlockClasses, IPositionLeftTop} from '@/lib/types'
+import {BlockClassNames} from '@/lib/types'
 import {colorStates} from '@/components/interaction-designer/Connection.vue'
 
 const LABEL_CONTAINER_MAX_WIDTH = 650
@@ -296,7 +296,7 @@ export class Block extends mixins(Lang) {
   @builderNamespace.State draggableForExitsByUuid!: Record<string, Draggable>
   @builderNamespace.State isBlockEditorOpen!: boolean
   @builderNamespace.State isConnectionCreationInProgress!: boolean
-  @State(({trees: {ui}}) => ui.blockClasses) blockClasses!: BlockClasses
+  @State(({trees: {ui}}) => ui.blockClasses) blockClasses!: BlockClassNames
 
   @builderNamespace.Getter blocksById!: Record<IBlock['uuid'], IBlock>
   @builderNamespace.Getter isEditable!: boolean
