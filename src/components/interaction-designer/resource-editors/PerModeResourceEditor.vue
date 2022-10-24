@@ -15,7 +15,8 @@
              'radius-on-top': item.order === 0,
              'radius-on-bottom': item.order === activeFlow.supported_modes.length - 1,
            }"
-             class="resource-panel-heading p-2 d-flex">
+             class="resource-panel-heading p-2 d-flex"
+             @click="updateIsPanelExpanded(`${block.uuid}-${item.mode}`)">
           <div class="mr-auto">
             <header class="d-flex">
               <font-awesome-icon
@@ -123,6 +124,7 @@ export default PerModeResourceEditor
 
 .resource-panel-heading {
   background-color: white;
+  cursor: pointer;
 }
 
 .resource-panel-body {
