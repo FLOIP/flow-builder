@@ -1,5 +1,5 @@
 import { IBlockClass, IExplanatoryText } from '../../../lib/types';
-export declare const BlockConfigExplanations: import("vue").DefineComponent<{
+export declare const BlockOutputBranchingExplanations: import("vue").DefineComponent<{
     blockType: {
         type: StringConstructor;
         required: true;
@@ -23,4 +23,4 @@ export declare const BlockConfigExplanations: import("vue").DefineComponent<{
         required: true;
     };
 }>>, {}>;
-export default BlockConfigExplanations;
+export default BlockOutputBranchingExplanations;

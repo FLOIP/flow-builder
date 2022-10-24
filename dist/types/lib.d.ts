@@ -1699,6 +1699,12 @@ export declare const defaultLocalisations: {
         "show-less": string;
     };
     "fr.flow-builder": {
+        "explanation-numeric-success": string;
+        "explanation-scp-success": string;
+        "explanation-output-success": string;
+        "explanation-mcq-mc": string;
+        "explanation-mcq-success": string;
+        "explanation-default": string;
         "no-content-block-info": string;
         warnings: string;
         "warnings-hint-on-import": string;
