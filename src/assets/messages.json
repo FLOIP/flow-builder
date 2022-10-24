@@ -1685,6 +1685,12 @@
     "show-less":  "Show less…"
   },
   "fr.flow-builder": {
+    "explanation-numeric-success": "Le flux se poursuivra jusqu'à la **sortie valide** lorsque le contact donnera une réponse numérique valide dans la plage spécifiée ci-dessus.",
+    "explanation-scp-success": "Le flux se poursuivra jusqu'à la **sortie réussie** lorsque la valeur à définir correspond au type de données de la propriété de contact. Ceci est attendu dans tous les scénarios, sauf lorsqu'une expression est utilisée de manière incorrecte.",
+    "explanation-output-success": "Le flux se poursuivra jusqu'à la **sortie réussie** si le type de données de l'expression évaluée correspond au type de données attendu configuré ci-dessus.",
+    "explanation-mcq-mc": "Lorsque le contact fournit une réponse correspondant à un choix, le flux se poursuit jusqu'à la sortie correspondante.",
+    "explanation-mcq-success": "Le flux se poursuivra jusqu'à la **sortie valide** lorsque le contact fournit une réponse qui peut être mappée à un choix à l'aide des options de choix configurées.",
+    "explanation-default": "Le flux se poursuivra jusqu'à la **sortie par défaut** dans tous les autres scénarios.",
     "no-content-block-info": "Ce bloc ne nécessite aucun contenu.",
     "warnings": "Avertissements",
     "warnings-hint-on-import": "Ceux-ci ne vous bloqueront pas pour importer le flux, mais vous devrez les corriger une fois importé",
