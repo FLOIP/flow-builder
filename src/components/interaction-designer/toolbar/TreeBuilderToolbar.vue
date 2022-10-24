@@ -675,8 +675,6 @@ export default TreeBuilderToolbar
 @import "../../../scss/custom_variables";
 
 .tree-builder-toolbar {
-  background: $neutral-40;
-
   .flows-exporter textarea {
     display: block;
     width: 100%;
@@ -692,6 +690,10 @@ export default TreeBuilderToolbar
 
 .tree-builder-toolbar-main-menu {
   background: $neutral-50;
+}
+
+.tree-builder-toolbar-alerts {
+  background: $neutral-40;
 }
 
 .btn-toolbar > .flow-label {
