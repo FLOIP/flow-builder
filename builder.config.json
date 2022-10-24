@@ -247,7 +247,7 @@
             "test": "NOT(block.value = false)"
           },
           "default": {
-            "name": "Invalid"
+            "name": "Default"
           }
         }
       },
@@ -264,7 +264,7 @@
             "test": "NOT(block.value = false)"
           },
           "default": {
-            "name": "Invalid"
+            "name": "Default"
           }
         }
       }
