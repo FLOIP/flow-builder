@@ -337,8 +337,8 @@ configurations
 `title` and `description` are displayed as a list of definitions under the
 Output Branching config of block's sidebar editor.
 
-`show_for_branching_types` regulates which output branching settings should
-should make a particular text visible; all tyoes are acceoted by default.
+`show_for_branching_types' regulates which output branching settings should
+make a particular text visible; all types are accepted by default
 
 ## Overriding and customising non block components
 
