@@ -67,28 +67,4 @@ export const BlockConfigExplanations = defineComponent({
 })
 
 export default BlockConfigExplanations
-// return [
-//       {
-//         title: 'Default',
-//         description: 'The flow will continue through the **default exit** in all other scenarios.',
-//       },
-//     ]
-//     .filter(({when}) => {
-//       if (when === undefined) {
-//         return true
-//       }
-
-//       return [
-//         [when.blockType, this.block.type],
-//         [when.branchingType, this.selectedBranchingType],
-//       ]
-//         .reduce((result, [expected, actual]) => {
-//           if (result) {
-//             return expected !== undefined
-//               ? expected === actual
-//               : true
-//           }
-//           return false
-//         }, true as boolean)
-//     })
 </script>
