@@ -18,8 +18,8 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import {lang} from '@/lib/filters/lang'
-import {marked} from 'marked'
 import {IBlockClass, IExplanatoryText} from '@/lib/types'
+import {markdownToHtml} from '@/lib/markdown'
 
 export const BlockOutputBranchingExplanations = defineComponent({
   name: 'BlockOutputBranchingExplanations',
@@ -56,7 +56,7 @@ export const BlockOutputBranchingExplanations = defineComponent({
         ) {
           definitions.push({
             title: lang.trans(text.title),
-            description: marked.parse(lang.trans(text.description) as string),
+            description: markdownToHtml(lang.trans(text.description) as string),
           })
         }
       }

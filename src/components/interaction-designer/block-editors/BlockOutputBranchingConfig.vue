@@ -72,8 +72,6 @@
   import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.model'
   import BlockOutputBranchingExplanations from './BlockOutputBranchingExplanations.vue'
 
-  /* eslint-disable max-len */
-
   const flowVuexNamespace = namespace('flow')
 
   @Component({
