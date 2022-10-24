@@ -75,7 +75,6 @@ export declare class TreeBuilderToolbar extends TreeBuilderToolbar_base {
     isResourceViewerEnabled?: boolean;
     setTreeSaving: (isSaving: boolean) => void;
     attemptSaveTree: void;
-    getToolbarConfig: boolean;
     activeFlow: IFlow;
     activeFlowContainer?: IContext;
     hasOfflineMode?: boolean;

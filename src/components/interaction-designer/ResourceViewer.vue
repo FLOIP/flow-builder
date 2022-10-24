@@ -1,5 +1,6 @@
 <template>
   <div class="resource-viewer">
+    <slot name="vendor-header" />
     <div class="resource-viewer-contents">
       <resource-viewer-block
         v-for="block in activeFlow.blocks"
@@ -8,41 +9,40 @@
         :block="block"
         @change="debounce_persistFlow" />
     </div>
+    <slot name="vendor-footer" />
   </div>
 </template>
 
 <script lang="ts">
-import {mixins} from 'vue-class-component'
-import {Component} from 'vue-property-decorator'
-import {namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
-import {IContext, IFlow} from '@floip/flow-runner'
 import {debounce} from 'lodash'
-
-const flowVuexNamespace = namespace('flow')
-const builderVuexNamespace = namespace('builder')
+import {mapActions, mapGetters} from 'vuex'
 
 export const DEBOUNCE_FLOW_PERSIST_MS = 1500
 
-@Component({})
-export class ResourceViewer extends mixins(Lang) {
-  @flowVuexNamespace.Getter activeFlow!: IFlow
-
-  mounted(): void {
+export default {
+  name: 'ResourceViewer',
+  mixins: [Lang],
+  computed: {
+    ...mapGetters('flow', [
+      'activeFlow',
+    ]),
+    id() {
+      return this.$route.params.id
+    },
+  },
+  mounted() {
     console.debug('VueJS flow resources viewer mounted!')
-  }
-
-  get id(): string {
-    return this.$route.params.id
-  }
-
-  debounce_persistFlow = debounce(this.persistFlowAndHandleUiState.bind(this), DEBOUNCE_FLOW_PERSIST_MS)
-
-  // this should go after debounce_persistFlow
-  @builderVuexNamespace.Action persistFlowAndHandleUiState!: () => Promise<IContext | undefined>
+  },
+  methods: {
+    ...mapActions('builder', [
+      'persistFlowAndHandleUiState',
+    ]),
+    debounce_persistFlow: debounce(function () {
+      return this.persistFlowAndHandleUiState()
+    }, DEBOUNCE_FLOW_PERSIST_MS),
+  },
 }
-
-export default ResourceViewer
 </script>
 
 <style lang="scss">
