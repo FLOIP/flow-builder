@@ -175,7 +175,9 @@
           {
             "title": "flow-builder.multiple-choice-mode",
             "description": "flow-builder.explanation-mcq-mc",
-            "branching_type": "EXIT_PER_CHOICE"
+            "show_for_branching_types": [
+              "EXIT_PER_CHOICE"
+            ]
           }
         ]
       },

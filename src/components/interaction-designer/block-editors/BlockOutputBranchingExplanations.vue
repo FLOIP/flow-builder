@@ -3,7 +3,7 @@
 <template>
   <dl
     v-if="definitions"
-    class="block-config-explanations">
+    class="block-output-branching-explanations">
     <template v-for="(definition, i) in definitions">
       <dt :key="`${i}-dt`">
         {{ definition.title }}
@@ -21,8 +21,8 @@ import {lang} from '@/lib/filters/lang'
 import {marked} from 'marked'
 import {IBlockClass, IExplanatoryText} from '@/lib/types'
 
-export const BlockConfigExplanations = defineComponent({
-  name: 'BlockConfigExplanations',
+export const BlockOutputBranchingExplanations = defineComponent({
+  name: 'BlockOutputBranchingExplanations',
   props: {
     blockType: {
       type: String,
@@ -51,8 +51,8 @@ export const BlockConfigExplanations = defineComponent({
         const text: IExplanatoryText = this.explanatoryTexts[i]
 
         if (
-          text.branching_type === undefined
-          || text.branching_type === this.branchingType
+          text.show_for_branching_types === undefined
+          || text.show_for_branching_types.includes(this.branchingType)
         ) {
           definitions.push({
             title: lang.trans(text.title),
@@ -66,5 +66,5 @@ export const BlockConfigExplanations = defineComponent({
   },
 })
 
-export default BlockConfigExplanations
+export default BlockOutputBranchingExplanations
 </script>

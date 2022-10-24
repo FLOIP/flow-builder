@@ -317,6 +317,29 @@ You then have several options:
 
   By using an existing BLOCK_TYPE already used by a flow-spec block, you can override the default store for that flow spec block (e.g. to change how to validate your extended customised version)
 
+### Customizing block output branching explanatory texts
+
+Every `blockClass` may have one or more explanatory texts for various exits
+configurations
+
+```
+"explanatory_texts": [
+    {
+        "title": "flow-builder.multiple-choice-mode",
+        "description": "flow-builder.explanation-mcq-mc",
+        "show_for_branching_types": [
+            "EXIT_PER_CHOICE"
+        ]
+    }
+]
+```
+
+`title` and `description` are displayed as a list of definitions under the
+Output Branching config of block's sidebar editor.
+
+`show_for_branching_types` regulates which output branching settings should
+should make a particular text visible; all tyoes are acceoted by default.
+
 ## Overriding and customising non block components
 
 At the top level - views - this is simple enough to do by extending or wrapping those components but we want to make such customisation as atomic as possible to allow keeping in sync with this community version of the builder and to allow changing the smallest amount possible.

@@ -63,8 +63,7 @@ export interface IPositionLeftTop {
 export interface IExplanatoryText {
   title: string,
   description: string,
-  branching_type?: string,
-  display?: boolean,
+  show_for_branching_types?: string[],
 }
 
 export interface IBlockClass {

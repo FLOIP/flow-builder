@@ -51,7 +51,7 @@
       </div>
     </div>
 
-    <block-config-explanations
+    <block-output-branching-explanations
       :block-type="block.type"
       :branching-type="selectedBranchingType" />
 
@@ -70,7 +70,7 @@
   import {namespace} from 'vuex-class'
   import {ConfigFieldType} from '@/store/flow/block'
   import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.model'
-  import BlockConfigExplanations from './BlockConfigExplanations.vue'
+  import BlockOutputBranchingExplanations from './BlockOutputBranchingExplanations.vue'
 
   /* eslint-disable max-len */
 
@@ -78,7 +78,7 @@
 
   @Component({
     components: {
-      BlockConfigExplanations,
+      BlockOutputBranchingExplanations,
     },
   })
   export class BlockOutputBranchingConfig extends mixins(Lang) {
