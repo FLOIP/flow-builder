@@ -14,6 +14,12 @@ export declare const ImportFlow: typeof ImportFlowComponent;
 export declare const Home: typeof HomeComponent;
 export declare const defaultLocalisations: {
     "en.flow-builder": {
+        "explanation-numeric-success": string;
+        "explanation-scp-success": string;
+        "explanation-output-success": string;
+        "explanation-mcq-mc": string;
+        "explanation-mcq-success": string;
+        "explanation-default": string;
         "no-content-block-info": string;
         warnings: string;
         "warnings-hint-on-import": string;
@@ -1062,7 +1068,7 @@ export declare const defaultLocalisations: {
         "oldest-to-newest": string;
         on: string;
         "on-line": string;
-        "one-output-for-all-choices": string;
+        "standard-mode": string;
         "only-accepts-word-characters": string;
         "only-display-latest-interaction-if-multiple-interactions-exist-for-the-same-session-and-block": string;
         "only-question-blocks": string;
@@ -1304,8 +1310,8 @@ export declare const defaultLocalisations: {
         "sends-call-immediately": string;
         "sends-call-repeating-based-on-options": string;
         "sensitive-data": string;
-        "separate-output-for-each-choice": string;
-        "advanced-configuration-of-outputs": string;
+        "multiple-choice-mode": string;
+        "advanced-mode": string;
         "september-month": string;
         sessions: string;
         "set-as-a-starting-block": string;
@@ -1397,6 +1403,7 @@ export declare const defaultLocalisations: {
         subscribers: string;
         "subscribers-that-reached-this-block": string;
         success: string;
+        default: string;
         "successfully-imported-result": string;
         "summary-block-description": string;
         sun: string;
@@ -2738,7 +2745,7 @@ export declare const defaultLocalisations: {
         "oldest-to-newest": string;
         on: string;
         "on-line": string;
-        "one-output-for-all-choices": string;
+        "standard-mode": string;
         "only-accepts-word-characters": string;
         "only-display-latest-interaction-if-multiple-interactions-exist-for-the-same-session-and-block": string;
         "only-question-blocks": string;
@@ -2980,8 +2987,8 @@ export declare const defaultLocalisations: {
         "sends-call-immediately": string;
         "sends-call-repeating-based-on-options": string;
         "sensitive-data": string;
-        "separate-output-for-each-choice": string;
-        "advanced-configuration-of-outputs": string;
+        "multiple-choice-mode": string;
+        "advanced-mode": string;
         "september-month": string;
         sessions: string;
         "set-as-a-starting-block": string;
