@@ -18,12 +18,14 @@
              class="resource-panel-heading p-2 d-flex"
              @click="updateIsPanelExpanded(`${block.uuid}-${item.mode}`)">
           <div class="mr-auto">
-            <header class="d-flex">
+            <header class="d-flex channel-name">
               <font-awesome-icon
                 v-if="iconsMap.get(item.mode)"
+                class="ml-3"
                 :class="{'custom-icons': iconsMap.get(item.mode)[0] === 'fac', 'library-icons': iconsMap.get(item.mode)[0] !== 'fac'}"
-                :icon="iconsMap.get(item.mode)" />
-              <h6 class="ml-1">
+                :icon="iconsMap.get(item.mode)"
+                size="lg"/>
+              <h6 class="ml-3 align-self-center mb-0">
                 {{ `flow-builder.${item.mode.toLowerCase()}-content` | trans }}
               </h6>
             </header>
@@ -34,8 +36,7 @@
                 'fas',
                 isPanelExpanded[`${block.uuid}-${item.mode}`] === true ? 'angle-up' : 'angle-down'
                 ]"
-              class="cursor-pointer text-primary"
-              @click="updateIsPanelExpanded(`${block.uuid}-${item.mode}`)"/>
+              class="cursor-pointer text-primary align-self-center"/>
           </div>
         </div>
         <div
@@ -74,7 +75,7 @@ export class PerModeResourceEditor extends mixins(FlowUploader, Permissions, Rou
 
   SupportedMode = SupportedMode
   iconsMap = new Map<string, object>([
-    [SupportedMode.SMS, ['far', 'envelope']],
+    [SupportedMode.SMS, ['fac', 'message']],
     [SupportedMode.TEXT, ['fac', 'text']],
     [SupportedMode.USSD, ['fac', 'ussd']],
     [SupportedMode.IVR, ['fac', 'audio']],
