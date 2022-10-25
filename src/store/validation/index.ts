@@ -7,7 +7,6 @@ import {
   IContainer,
   IFlow,
   ILanguage,
-  getFlowStructureErrors,
   IResource,
   SupportedContentType,
   SupportedMode,
@@ -31,7 +30,7 @@ export interface IIndexedString {
 
 export interface IValidationStatusContext {
   resourceUuid?: string,
-  isOrphanResource?: boolean
+  isOrphanResource?: boolean,
 }
 
 export interface IValidationStatus {
@@ -192,6 +191,7 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
   async validate_flow({state, rootGetters}, {flow}: {flow: IFlow}): Promise<IValidationStatus> {
     const validate = getOrCreateFlowValidator(rootGetters['flow/activeFlowContainer'].specification_version)
     const key = `flow/${flow.uuid}`
+
     Vue.set(state.validationStatuses, key, {
       isValid: validate(flow),
       ajvErrors: getLocalizedAjvErrors(key, validate.errors),
