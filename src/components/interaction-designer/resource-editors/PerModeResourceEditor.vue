@@ -12,9 +12,9 @@
            }"
            class="resource-panel">
         <div :class="{
-             'radius-on-top': item.order === 0,
-             'radius-on-bottom': item.order === activeFlow.supported_modes.length - 1,
-           }"
+               'radius-on-top': item.order === 0,
+               'radius-on-bottom': item.order === activeFlow.supported_modes.length - 1,
+             }"
              class="resource-panel-heading p-2 d-flex"
              @click="updateIsPanelExpanded(`${block.uuid}-${item.mode}`)">
           <div class="mr-auto">
@@ -24,7 +24,7 @@
                 class="ml-3"
                 :class="{'custom-icons': iconsMap.get(item.mode)[0] === 'fac', 'library-icons': iconsMap.get(item.mode)[0] !== 'fac'}"
                 :icon="iconsMap.get(item.mode)"
-                size="lg"/>
+                size="lg" />
               <h6 class="ml-3 align-self-center mb-0">
                 {{ `flow-builder.${item.mode.toLowerCase()}-content` | trans }}
               </h6>
@@ -35,8 +35,8 @@
               :icon="[
                 'fas',
                 isPanelExpanded[`${block.uuid}-${item.mode}`] === true ? 'angle-up' : 'angle-down'
-                ]"
-              class="cursor-pointer text-primary align-self-center"/>
+              ]"
+              class="cursor-pointer text-primary align-self-center" />
           </div>
         </div>
         <div
