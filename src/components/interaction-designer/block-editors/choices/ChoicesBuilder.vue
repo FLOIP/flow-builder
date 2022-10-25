@@ -57,7 +57,7 @@
 
 <script lang="ts">
 import {intersectionWith, isEmpty, last} from 'lodash'
-import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
+import {findOrGenerateStubbedVariantOn} from '@/store/flow/utils/resourceHelpers'
 import {Component, Prop} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
