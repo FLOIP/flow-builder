@@ -146,7 +146,7 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
   async validate_fromBackend({state, rootGetters, commit}, {type}: {type: 'block' | 'resource'}): Promise<void> {
     // Clean previous backend validation first
     Object.keys(state.validationStatuses).forEach((key: string) => {
-      if (key.startsWith('backend')) {
+      if (key.startsWith(`backend/${type}`)) {
         commit('removeValidationStatusesFor', {key})
       }
     })
