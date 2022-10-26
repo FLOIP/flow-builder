@@ -47,6 +47,8 @@ export default ResourceViewer
 
 <style lang="scss">
 .resource-viewer {
+  background: white;
+
   .block-content-filter {
     margin-top: 5px;
     padding-right: 15px;
