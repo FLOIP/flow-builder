@@ -3,7 +3,7 @@ import Permissions from '../../../lib/mixins/Permissions';
 import Routes from '../../../lib/mixins/Routes';
 import FlowUploader from '../../../lib/mixins/FlowUploader';
 import { IBlock, IFlow, ILanguage, IResource, SupportedContentType, SupportedMode } from '@floip/flow-runner';
-import { findOrGenerateStubbedVariantOn, findResourceVariantOverModesOn, IResourceDefinitionVariantOverModesFilter } from '../../../store/flow/resource';
+import { findOrGenerateStubbedVariantOn, findResourceVariantOverModesOn, IResourceDefinitionVariantOverModesFilter } from '../../../store/flow/utils/resourceHelpers';
 import { IAudioFile, IResourceDefinitionVariantOverModesWithOptionalValue } from '../../../components/interaction-designer/resource-editors/ResourceEditor.model';
 declare const ResourceEditorCell_base: import("vue-class-component/lib/declarations").VueClass<Lang & Permissions & Routes & FlowUploader>;
 export declare class ResourceEditorCell extends ResourceEditorCell_base {
