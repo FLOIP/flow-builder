@@ -75,14 +75,13 @@
 
 <script lang="ts">
 import Lang from '@/lib/filters/lang'
-import {castArray, filter, has, pickBy, size} from 'lodash'
+import {castArray, filter, has, pickBy, size, union} from 'lodash'
 import {IValidationStatus} from '@/store/validation'
 import Routes from '@/lib/mixins/Routes'
 import Component, {mixins} from 'vue-class-component'
 import {namespace} from 'vuex-class'
 import {IBlock, IFlow, IResource} from '@floip/flow-runner'
 import {ErrorObject} from 'ajv'
-import {union} from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
