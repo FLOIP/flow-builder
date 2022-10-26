@@ -17,14 +17,13 @@ import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {cloneDeep, defaults, every, forEach, get, has, includes, merge, omit, sortBy} from 'lodash'
-import {discoverContentTypesFor, cleanupFlowResources} from '@/store/flow/resource'
+import {cleanupFlowResources, discoverContentTypesFor, findBlockRelatedResourcesUuids} from '@/store/flow/utils/resourceHelpers'
 import {computeBlockCanvasCoordinates} from '@/store/builder'
 import {ErrorObject} from 'ajv'
 import {removeFlowValueByPath, updateFlowValueByPath} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
 import {ConfigFieldType} from '@/store/flow/block'
 import {IFlowsState} from '.'
 import {mergeFlowContainer} from './utils/importHelpers'
-import {findBlockRelatedResourcesUuids} from '@/store/flow/utils/resourceHelpers'
 
 export function orderLanguages(LanguagesList: ILanguage[]): ILanguage[] {
   return sortBy(LanguagesList, ['label'])

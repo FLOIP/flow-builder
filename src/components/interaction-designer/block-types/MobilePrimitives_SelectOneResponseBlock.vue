@@ -52,7 +52,7 @@ import SelectOneStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimiti
 import Lang from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
 import {mixins} from 'vue-class-component'
-import {findOrGenerateStubbedVariantOn} from '@/store/flow/resource'
+import {findOrGenerateStubbedVariantOn} from '@/store/flow/utils/resourceHelpers'
 import {
   IBlockWithBranchingType, OutputBranchingType,
 } from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.model'

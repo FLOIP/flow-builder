@@ -47,9 +47,7 @@ import {
   SupportedMode,
 } from '@floip/flow-runner'
 
-import {
-  discoverContentTypesFor,
-} from '@/store/flow/resource'
+import {discoverContentTypesFor} from '@/store/flow/utils/resourceHelpers'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')

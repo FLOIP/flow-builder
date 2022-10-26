@@ -85,7 +85,7 @@ import {
   findOrGenerateStubbedVariantOn,
   findResourceVariantOverModesOn,
   IResourceDefinitionVariantOverModesFilter,
-} from '@/store/flow/resource'
+} from '@/store/flow/utils/resourceHelpers'
 import {
   IAudioFile,
   IResourceDefinitionVariantOverModesWithOptionalValue,

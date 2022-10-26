@@ -6,7 +6,7 @@ import Component from 'vue-class-component'
 import Vuex from 'vuex'
 import caseBlockStore, {BLOCK_TYPE as CASE_BLOCK_TYPE} from '@/store/flow/block-types/Core_CaseBlockStore'
 import {IRootState, store} from '@/store'
-import {IResourceDefinitionVariantOverModesFilter} from '@/store/flow/resource'
+import {IResourceDefinitionVariantOverModesFilter} from '@/store/flow/utils/resourceHelpers'
 import registerCustomComponents from '@/common-imports'
 
 const flowVuexNamespace = namespace('flow')
