@@ -3086,6 +3086,7 @@ export declare const defaultLocalisations: {
         subscribers: string;
         "subscribers-that-reached-this-block": string;
         success: string;
+        default: string;
         "successfully-imported-result": string;
         "summary-block-description": string;
         sun: string;
