@@ -1,36 +1,47 @@
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IBlock} from '@floip/flow-runner'
+import {map} from 'lodash'
 
 export interface IResourceViewerState {
   /**
-   * Filtered blocks.
+   * Block uuids to hide,
    * Will be used for resource-viewer component, so the consumer repo can set a custom filters and override this state if needed
+   *
+   * By default, it's empty, meaning there is no filter at all
    */
-  filteredBlocks: IBlock[],
+  blockUuidsToHide: IBlock['uuid'][],
 }
 
 export const resourceViewerStateFactory = (): IResourceViewerState => ({
-  filteredBlocks: [],
+  blockUuidsToHide: [],
 })
 
 export const resourceViewerGetters: GetterTree<IResourceViewerState, IRootState> = {
-  filteredBlocks: (state) => state.filteredBlocks,
+  filteredBlocks(state, _getters, _rootState, rootGetters) {
+    const {blocks}: {blocks: IBlock[]} = rootGetters['flow/activeFlow'] ? rootGetters['flow/activeFlow'] : {blocks: [] as IBlock[]}
+    // Display the block if it is NOT in blockUuidsToHide
+    return blocks.filter(block => state.blockUuidsToHide.includes(block.uuid) === false)
+  },
 }
 
 export const resourceViewerMutations: MutationTree<IResourceViewerState> = {
-  setFilteredBlocks(state, {blocks}: {blocks: IBlock[] | undefined}) {
-    if (blocks === undefined) {
-      state.filteredBlocks = []
+  setBlockUuidsToHide(state, {uuids}: {uuids: IBlock['uuid'][] | undefined}) {
+    if (uuids === undefined) {
+      state.blockUuidsToHide = [] as IBlock['uuid'][]
     } else {
-      state.filteredBlocks = blocks
+      state.blockUuidsToHide = uuids
     }
   },
 }
 
 export const resourceViewerActions: ActionTree<IResourceViewerState, IRootState> = {
-  setFilteredBlocks({commit}, {blocks}: {blocks: IBlock[] | undefined}) {
-    commit('commit', {blocks})
+  setBlockUuidsToHide({commit}, {uuids}: {uuids: IBlock['uuid'][] | undefined}) {
+    commit('setBlockUuidsToHide', {uuids})
+  },
+  hideBlocks({commit}, {blocks}: {blocks: IBlock['uuid']}) {
+    const uuids: IBlock['uuid'][] = map(blocks, 'uuid')
+    commit('setBlockUuidsToHide', {uuids})
   },
 }
 
