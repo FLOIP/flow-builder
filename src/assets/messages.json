@@ -3072,6 +3072,7 @@
     "subscribers": "Contacts",
     "subscribers-that-reached-this-block": "Les contacts qui ont atteint ce bloc",
     "success": "Succès",
+    "default": "Défaut",
     "successfully-imported-result": "Importation de résultats avec succès",
     "summary-block-description": "Ce bloc est utilisé pour répondre aux questions d'examen qui sont inclus dans le résumé. Les utilisateurs du Presse-papiers sont en mesure de confirmer ou d'infirmer les réponses.",
     "sun": "Dim.",
