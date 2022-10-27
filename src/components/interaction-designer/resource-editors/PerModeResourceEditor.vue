@@ -28,6 +28,7 @@
             </header>
           </div>
           <div class="ml-auto">
+            <slot name="right" />
             <font-awesome-icon
               :icon="[
                 'fas',
