@@ -692,6 +692,10 @@ export default TreeBuilderToolbar
   background: $neutral-50;
 }
 
+.tree-builder-toolbar-alerts {
+  background: $neutral-40;
+}
+
 .btn-toolbar > .flow-label {
   max-width: 25%;
   white-space: nowrap;

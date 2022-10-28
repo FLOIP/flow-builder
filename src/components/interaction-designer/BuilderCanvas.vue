@@ -169,7 +169,8 @@ export class BuilderCanvas extends Vue {
 export default BuilderCanvas
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import "../../scss/custom_variables";
 .no-select * {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
@@ -183,5 +184,6 @@ export default BuilderCanvas
   /*standard proportion min-width and min-height here so that initial render on slower machines*/
   min-width: 1024px;
   min-height: 768px;
+  background: $neutral-40;
 }
 </style>
