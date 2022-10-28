@@ -6,7 +6,7 @@
       <div class="btn-group d-block">
         <button
           v-if="hasExitPerChoice"
-          v-b-tooltip.hover.bottom="trans('flow-builder.separate-output-for-each-choice')"
+          v-b-tooltip.hover.bottom="trans('flow-builder.multiple-choice-mode')"
           :class="{
             active: isBranchingTypeExitPerChoice,
             'btn-primary': isBranchingTypeExitPerChoice,
@@ -21,7 +21,7 @@
 
         <button
           v-if="hasUnifiedExit"
-          v-b-tooltip.hover.bottom="trans('flow-builder.one-output-for-all-choices')"
+          v-b-tooltip.hover.bottom="trans('flow-builder.standard-mode')"
           :class="{
             active: isBranchingTypeUnified,
             'btn-primary': isBranchingTypeUnified,
@@ -35,7 +35,7 @@
         </button>
 
         <button
-          v-b-tooltip.hover.bottom="trans('flow-builder.advanced-configuration-of-outputs')"
+          v-b-tooltip.hover.bottom="trans('flow-builder.advanced-mode')"
           :class="{
             active: isBranchingTypeAdvanced,
             'btn-primary': isBranchingTypeAdvanced,
@@ -50,6 +50,10 @@
         </button>
       </div>
     </div>
+
+    <block-output-branching-explanations
+      :block-type="block.type"
+      :branching-type="selectedBranchingType" />
 
     <advanced-exits-builder
       v-if="isBranchingTypeAdvanced"
@@ -66,10 +70,15 @@
   import {namespace} from 'vuex-class'
   import {ConfigFieldType} from '@/store/flow/block'
   import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.model'
+  import BlockOutputBranchingExplanations from './BlockOutputBranchingExplanations.vue'
 
   const flowVuexNamespace = namespace('flow')
 
-  @Component({})
+  @Component({
+    components: {
+      BlockOutputBranchingExplanations,
+    },
+  })
   export class BlockOutputBranchingConfig extends mixins(Lang) {
     @Prop() readonly block!: IBlock
     @Prop() readonly hasExitPerChoice!: boolean

@@ -170,7 +170,16 @@
           "default": {
             "name": "Default"
           }
-        }
+        },
+        "explanatory_texts": [
+          {
+            "title": "flow-builder.multiple-choice-mode",
+            "description": "flow-builder.explanation-mcq-mc",
+            "show_for_branching_types": [
+              "EXIT_PER_CHOICE"
+            ]
+          }
+        ]
       },
       "MobilePrimitives.SelectManyResponse": {
         "name": "MobilePrimitives.SelectManyResponse",
@@ -204,7 +213,17 @@
           "default": {
             "name": "Default"
           }
-        }
+        },
+        "explanatory_texts": [
+          {
+            "title": "flow-builder.valid",
+            "description": "flow-builder.explanation-numeric-success"
+          },
+          {
+            "title": "flow-builder.default",
+            "description": "flow-builder.explanation-default"
+          }
+        ]
       },
       "MobilePrimitives.OpenResponse": {
         "name": "MobilePrimitives.OpenResponse",

@@ -1,7 +1,7 @@
 import { IBlock, IBlockExit, IFlow } from '@floip/flow-runner';
 import { ConnectionLayout, IConnectionContext, IPosition, OperationKind, SupportedOperation } from '../../store/builder';
 import Lang from '../../lib/filters/lang';
-import { BlockClasses } from '../../lib/types';
+import { BlockClassNames } from '../../lib/types';
 declare type Draggable = any;
 declare type BlockAction = ({ block }: {
     block: IBlock;
@@ -55,7 +55,7 @@ export declare class Block extends Block_base {
     draggableForExitsByUuid: Record<string, Draggable>;
     isBlockEditorOpen: boolean;
     isConnectionCreationInProgress: boolean;
-    blockClasses: BlockClasses;
+    blockClasses: BlockClassNames;
     blocksById: Record<IBlock['uuid'], IBlock>;
     isEditable: boolean;
     interactionDesignerBoundingClientRect: DOMRect;
