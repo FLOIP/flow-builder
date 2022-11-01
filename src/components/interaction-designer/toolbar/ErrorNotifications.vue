@@ -75,7 +75,7 @@
 
 <script lang="ts">
 import Lang from '@/lib/filters/lang'
-import {castArray, filter, has, pickBy, size} from 'lodash'
+import {castArray, filter, has, pickBy, size, union} from 'lodash'
 import {IValidationStatus} from '@/store/validation'
 import Routes from '@/lib/mixins/Routes'
 import Component, {mixins} from 'vue-class-component'
@@ -93,8 +93,12 @@ export class ErrorNotifications extends mixins(Routes, Lang) {
   }
 
   get flowValidationErrors(): ErrorObject[] {
-    const flowKey = `flow/${this.activeFlow?.uuid}`
-    return this.validationStatuses[flowKey]?.ajvErrors || []
+    const frontendFlowKey = `flow/${this.activeFlow?.uuid}`
+    const backendFlowKey = `backend/flow/${this.activeFlow?.uuid}`
+    return union(
+      this.validationStatuses[frontendFlowKey]?.ajvErrors || [],
+      this.validationStatuses[backendFlowKey]?.ajvErrors || [],
+    )
   }
 
   /**
@@ -103,16 +107,18 @@ export class ErrorNotifications extends mixins(Routes, Lang) {
   get blockValidationStatuses(): { [key: string]: IValidationStatus } {
     const blocksMap = this.activeFlow?.blocks.reduce((map: { [key: string]: boolean }, block) => {
       map[`block/${block.uuid}`] = true
+      map[`backend/block/${block.uuid}`] = true
       return map
     }, {})
     if (!blocksMap || size(blocksMap) === 0) {
       return {}
     }
+    // frontend or backend validation keys have `block/` string
     return pickBy(this.validationStatuses, (value: IValidationStatus, key) => key.includes('block/') && blocksMap[key])
   }
 
   hasBlockValidationErrors(uuid: string): boolean {
-    return has(this.blockValidationStatuses, `block/${uuid}`)
+    return has(this.blockValidationStatuses, `block/${uuid}`) || has(this.blockValidationStatuses, `backend/block/${uuid}`)
   }
 
   hasResourceValidationErrors(uuidOrUuids: string | string[]): boolean {

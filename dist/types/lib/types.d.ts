@@ -41,4 +41,13 @@ export interface IPositionLeftTop {
     left: number;
     top: number;
 }
-export declare type BlockClasses = string[];
+export interface IExplanatoryText {
+    title: string;
+    description: string;
+    show_for_branching_types?: string[];
+}
+export interface IBlockClass {
+    type: string;
+    explanatory_texts: IExplanatoryText[];
+}
+export declare type BlockClassNames = string[];
