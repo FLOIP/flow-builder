@@ -20,15 +20,6 @@ export interface IAudioFileSelection {
     value: IAudioFile;
     langId: ILanguage['id'];
 }
-export interface IBatchMatchAudioData {
-    results: unknown;
-    status: number;
-    message: string;
-    isEmpty: boolean;
-    isFailure: boolean;
-    isPending: boolean;
-    isComplete: boolean;
-}
 export interface IExpressionContext {
     blocks: IBlock[];
     subscriberPropertyFields: ISubscriberPropertyField[];

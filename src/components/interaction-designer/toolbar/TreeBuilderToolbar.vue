@@ -318,7 +318,7 @@ import {BModal, BootstrapVue, BTooltip} from 'bootstrap-vue'
 import Vue from 'vue'
 import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
-import Routes, {routeFrom} from '@/lib/mixins/Routes'
+import Routes from '@/lib/mixins/Routes'
 import {identity, isEmpty, isNil, pickBy as _pickBy, reduce, omit} from 'lodash'
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'
@@ -628,7 +628,6 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @Getter isResourceViewerEnabled?: boolean
   @Mutation setTreeSaving!: (isSaving: boolean) => void
   @Action attemptSaveTree!: void
-  @Getter getToolbarConfig!: boolean
 
   // Flow
   @flowVuexNamespace.Getter activeFlow!: IFlow

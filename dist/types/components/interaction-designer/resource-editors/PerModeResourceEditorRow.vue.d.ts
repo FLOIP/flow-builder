@@ -3,7 +3,7 @@ import Permissions from '../../../lib/mixins/Permissions';
 import Routes from '../../../lib/mixins/Routes';
 import FlowUploader from '../../../lib/mixins/FlowUploader';
 import { IBlock, IFlow, IResource } from '@floip/flow-runner';
-import { discoverContentTypesFor } from '../../../store/flow/resource';
+import { discoverContentTypesFor } from '../../../store/flow/utils/resourceHelpers';
 declare const PerModeResourceEditorRow_base: import("vue-class-component/lib/declarations").VueClass<Lang & Permissions & Routes & FlowUploader>;
 export declare class PerModeResourceEditorRow extends PerModeResourceEditorRow_base {
     block: IBlock;
