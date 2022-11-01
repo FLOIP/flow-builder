@@ -1,5 +1,5 @@
 <template>
-  <div class="block-errors-expandable card">
+  <div class="block-errors-expandable card w-100">
     <div class="card-title m-0 px-2 pt-1 menu-bg-color">
       {{ trans(`flow-builder.${block.type}`) }}
       <div class="text-secondary">

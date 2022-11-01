@@ -12,17 +12,20 @@
            }"
            class="resource-panel">
         <div :class="{
-             'radius-on-top': item.order === 0,
-             'radius-on-bottom': item.order === activeFlow.supported_modes.length - 1,
-           }"
-             class="resource-panel-heading p-2 d-flex">
+               'radius-on-top': item.order === 0,
+               'radius-on-bottom': item.order === activeFlow.supported_modes.length - 1,
+             }"
+             class="resource-panel-heading p-2 d-flex"
+             @click="updateIsPanelExpanded(`${block.uuid}-${item.mode}`)">
           <div class="mr-auto">
-            <header class="d-flex">
+            <header class="d-flex channel-name">
               <font-awesome-icon
                 v-if="iconsMap.get(item.mode)"
+                class="ml-3"
                 :class="{'custom-icons': iconsMap.get(item.mode)[0] === 'fac', 'library-icons': iconsMap.get(item.mode)[0] !== 'fac'}"
-                :icon="iconsMap.get(item.mode)" />
-              <h6 class="ml-1">
+                :icon="iconsMap.get(item.mode)"
+                size="lg" />
+              <h6 class="ml-3 align-self-center mb-0">
                 {{ `flow-builder.${item.mode.toLowerCase()}-content` | trans }}
               </h6>
             </header>
@@ -33,9 +36,8 @@
               :icon="[
                 'fas',
                 isPanelExpanded[`${block.uuid}-${item.mode}`] === true ? 'angle-up' : 'angle-down'
-                ]"
-              class="cursor-pointer text-primary"
-              @click="updateIsPanelExpanded(`${block.uuid}-${item.mode}`)"/>
+              ]"
+              class="cursor-pointer text-primary align-self-center" />
           </div>
         </div>
         <div
@@ -74,7 +76,7 @@ export class PerModeResourceEditor extends mixins(FlowUploader, Permissions, Rou
 
   SupportedMode = SupportedMode
   iconsMap = new Map<string, object>([
-    [SupportedMode.SMS, ['far', 'envelope']],
+    [SupportedMode.SMS, ['fac', 'message']],
     [SupportedMode.TEXT, ['fac', 'text']],
     [SupportedMode.USSD, ['fac', 'ussd']],
     [SupportedMode.IVR, ['fac', 'audio']],
@@ -124,9 +126,11 @@ export default PerModeResourceEditor
 
 .resource-panel-heading {
   background-color: white;
+  cursor: pointer;
 }
 
 .resource-panel-body {
   border-top: 1px solid $neutral-200;
+  background-color: $neutral-25;
 }
 </style>

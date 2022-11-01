@@ -429,7 +429,6 @@ export default InteractionDesigner
   $sidebar-width: 365px;
 
   .interaction-designer-contents {
-    background: #F5F5F5;
     min-height: 100vh;
     display:inline-block;
     margin: 0;

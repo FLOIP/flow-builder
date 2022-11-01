@@ -9,12 +9,12 @@
         [`order-${item.order}`]: true
       }"
       class="mbx-4">
-      <header class="d-flex">
+      <header class="d-flex mb-2">
         <font-awesome-icon
           v-if="iconsMap.get(item.mode)"
           :class="{'custom-icons': iconsMap.get(item.mode)[0] === 'fac', 'library-icons': iconsMap.get(item.mode)[0] !== 'fac'}"
           :icon="iconsMap.get(item.mode)" />
-        <h6 class="ml-1">
+        <h6 class="ml-3 mb-0 align-self-center">
           {{ `flow-builder.${item.mode.toLowerCase()}-content` | trans }}
         </h6>
       </header>
@@ -61,7 +61,7 @@ export class PerLanguageResourceEditorRow extends mixins(FlowUploader, Permissio
   SupportedMode = SupportedMode
   SupportedContentType = SupportedContentType
   iconsMap = new Map<string, object>([
-    [SupportedMode.SMS, ['far', 'envelope']],
+    [SupportedMode.SMS, ['fac', 'message']],
     [SupportedMode.TEXT, ['fac', 'text']],
     [SupportedMode.USSD, ['fac', 'ussd']],
     [SupportedMode.IVR, ['fac', 'audio']],
