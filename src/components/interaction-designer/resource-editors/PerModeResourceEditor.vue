@@ -31,7 +31,7 @@
             </header>
           </div>
           <div class="ml-auto">
-            <slot name="right" />
+            <slot name="right" :mode="item.mode" :modeIndex="item.index" :modeOrder="item.order"/>
             <font-awesome-icon
               :icon="[
                 'fas',
