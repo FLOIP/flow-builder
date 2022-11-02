@@ -37,7 +37,7 @@ export declare class ResourceEditorCell extends ResourceEditorCell_base {
      * @param languageIndex
      * @param modeIndex
      */
-    computeResourceIndex(languageIndex: number, modeIndex: number): number;
+    computeResourceIndexForCurrentFlow(languageIndex: number, modeIndex: number): number;
     triggerRecordViaPhoneFor(langId: ILanguage['id']): void;
     handleFilesSubmittedFor(key: string, { data }: {
         data: any;
