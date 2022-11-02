@@ -165,3 +165,14 @@ export function findBlockRelatedResourcesUuids({block}: {block: IBlock}): IResou
 
   return resources
 }
+
+/**
+ * Compute resource index (cell index) for a table having X languages and Y modes
+ *
+ * @param languageIndex
+ * @param modeIndex
+ * @param supportedModeLength
+ */
+export function computeResourceIndex(languageIndex: number, modeIndex: number, supportedModeLength: number): number {
+  return languageIndex * supportedModeLength + modeIndex
+}
