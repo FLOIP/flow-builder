@@ -19,6 +19,6 @@ export declare function findBlockRelatedResourcesUuids({ block }: {
  *
  * @param languageIndex
  * @param modeIndex
- * @param supportedModeLength
+ * @param supportedModesCount
  */
-export declare function computeResourceIndex(languageIndex: number, modeIndex: number, supportedModeLength: number): number;
+export declare function computeResourceIndex(languageIndex: number, modeIndex: number, supportedModesCount: number): number;

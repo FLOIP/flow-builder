@@ -9,9 +9,17 @@ export interface IValidationStatusContext {
     isOrphanResource?: boolean;
 }
 /**
- * Is valid by mode index OR lang index:
- * - if 1st key is mode index, then the array values are lang index
- * - if the 1st key is lang index, then the array values are mode index
+ * Is valid by mode index OR lang index
+ *
+ * eg:
+ * {
+ *   modeIndex: {
+ *     "0": 12 // there are 12 invalid resources for mode with index "0"
+ *   },
+ *   langIndex: {
+ *     "1": 34 // there are 34 invalid resources for language with index "1"
+ *   }
+ * }
  */
 export interface IInvalidResourcesCounterBy {
     modeIndex?: {
