@@ -171,8 +171,8 @@ export function findBlockRelatedResourcesUuids({block}: {block: IBlock}): IResou
  *
  * @param languageIndex
  * @param modeIndex
- * @param supportedModeLength
+ * @param supportedModesCount
  */
-export function computeResourceIndex(languageIndex: number, modeIndex: number, supportedModeLength: number): number {
-  return languageIndex * supportedModeLength + modeIndex
+export function computeResourceIndex(languageIndex: number, modeIndex: number, supportedModesCount: number): number {
+  return languageIndex * supportedModesCount + modeIndex
 }

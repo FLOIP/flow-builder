@@ -12,7 +12,7 @@ import {
   SupportedMode,
 
 } from '@floip/flow-runner'
-import {cloneDeep, each, filter, get, forIn, includes, intersection, isEmpty, map, set, uniqBy} from 'lodash'
+import {cloneDeep, each, filter, get, forIn, includes, intersection, isEmpty, map, set, uniqBy, update} from 'lodash'
 import {
   debugValidationStatus,
   flatValidationStatuses,
@@ -35,9 +35,17 @@ export interface IValidationStatusContext {
 }
 
 /**
- * Is valid by mode index OR lang index:
- * - if 1st key is mode index, then the array values are lang index
- * - if the 1st key is lang index, then the array values are mode index
+ * Is valid by mode index OR lang index
+ *
+ * eg:
+ * {
+ *   modeIndex: {
+ *     "0": 12 // there are 12 invalid resources for mode with index "0"
+ *   },
+ *   langIndex: {
+ *     "1": 34 // there are 34 invalid resources for language with index "1"
+ *   }
+ * }
  */
 export interface IInvalidResourcesCounterBy {
   modeIndex?: {[key: number]: number},
@@ -352,8 +360,8 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
           const resourceIndex: string = computeResourceIndex(langIndex, modeIndex, modes.length).toString()
           // if resourceIndex === currentResourceIndex, isValid === true, false otherwise
           if (resourceIndex === currentResourceIndex) {
-            set(invalidCounterByMode, modeIndex, get(invalidCounterByMode, modeIndex, 0) + 1)
-            set(invalidCounterByLang, langIndex, get(invalidCounterByLang, langIndex, 0) + 1)
+            update(invalidCounterByMode, modeIndex, (count: number) => (count ? count + 1 : 1))
+            update(invalidCounterByLang, langIndex, (count: number) => (count ? count + 1 : 1))
           }
         })
       })
