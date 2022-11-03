@@ -44,15 +44,6 @@ export const mutations: MutationTree<IFlowsState> = {
     findFlowWith(flowId, state as unknown as IContext).resources.push(resource)
   },
 
-  /*
-   * TODO in VMO-6643 We need an action that can clean resources and then call this to actual remove.
-   * TODO in VMO-6643 We need logic to truly check resources are unused
-   *
-   * resource_delete({resources}, {resourceId}: { resourceId: string }) {
-   *   const resourceIndex = findIndex(resources, (resource) => resource.uuid === resourceId)
-   *   resources.splice(resourceIndex, 1)
-   */
-
   resource_createVariantOnFlow(
     state,
     {flowId, resourceId, variant}: {flowId: IFlow['uuid'], resourceId: string, variant: IResourceDefinitionVariantOverModes},

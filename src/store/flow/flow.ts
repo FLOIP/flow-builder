@@ -16,7 +16,7 @@ import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV
 import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {cloneDeep, defaults, every, forEach, get, has, includes, merge, omit, sortBy} from 'lodash'
+import {cloneDeep, defaults, every, forEach, get, has, includes, intersection, isEmpty, merge, omit, sortBy} from 'lodash'
 import {cleanupFlowResources, discoverContentTypesFor, findBlockRelatedResourcesUuids} from '@/store/flow/utils/resourceHelpers'
 import {computeBlockCanvasCoordinates} from '@/store/builder'
 import {ErrorObject} from 'ajv'
@@ -281,7 +281,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return flow
   },
 
-  flow_removeBlock({state, commit}, {flowId, blockId}: { flowId: string, blockId: IBlock['uuid'] }) {
+  flow_removeBlock({state, commit, dispatch}, {flowId, blockId}: { flowId: string, blockId: IBlock['uuid'] }) {
     const flow = findFlowWith(flowId || state.first_flow_id || '', state as unknown as IContext)
     // @throws ValidationException when block absent
     const block: IBlock = findBlockWith(blockId, flow)
@@ -290,12 +290,9 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       throw new ValidationException('Unable to delete block absent from flow')
     }
 
-    // Clean flow resources & related validations
-    const relatedResourceUuids = findBlockRelatedResourcesUuids({block})
-    flow.resources = flow.resources.filter(item => !relatedResourceUuids.includes(item.uuid))
-    relatedResourceUuids.forEach(
-      uuid => commit('validation/removeValidationStatusesFor', {key: `resource/${uuid}`}, {root: true}),
-    )
+    dispatch('flow_removeResourcesAndRelatedValidationsOnActiveFlow', {
+      resourceUuids: findBlockRelatedResourcesUuids({block}),
+    })
 
     // Remove block & it's validation
     const {blocks} = flow
@@ -330,6 +327,27 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
 
     commit('builder/activateBlock', {blockId: null}, {root: true})
+  },
+
+  /**
+   * Clean flow resources & related validations
+   * @param state
+   * @param commit
+   * @param flowId
+   * @param resourceUuids
+   */
+  flow_removeResourcesAndRelatedValidationsOnActiveFlow({state, commit, getters, rootGetters}, {resourceUuids}: {resourceUuids: IResource['uuid'][] }) {
+    const flow: IFlow = getters.activeFlow
+    const nonOrphanResourceUuids: IResource['uuid'][] = rootGetters['nonOrphanResourceUuidsOnActiveFlow']
+    console.log('test orphanResourceUuids', nonOrphanResourceUuids)
+    const nonOrphanResourceUuidsToBeDeleted = intersection(nonOrphanResourceUuids, resourceUuids)
+    if (!isEmpty(nonOrphanResourceUuidsToBeDeleted)) {
+      throw new Error(`Unsafe action: trying to delete non orphaned resources ${nonOrphanResourceUuidsToBeDeleted}`)
+    }
+    flow.resources = flow.resources.filter(item => !resourceUuids.includes(item.uuid))
+    resourceUuids.forEach(
+      uuid => commit('validation/removeValidationStatusesFor', {key: `resource/${uuid}`}, {root: true}),
+    )
   },
 
   async flow_addBlankBlockByType({commit, dispatch}, {type, ...props}: Partial<IBlock>): Promise<IBlock> {

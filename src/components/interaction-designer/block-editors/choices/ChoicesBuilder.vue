@@ -143,16 +143,20 @@ export class ChoicesBuilder extends mixins(Lang) {
     const hasEmptyValue = isEmpty(value)
 
     if (isLast && hasEmptyValue) {
-      // TODO in VMO-6643: clean up resource, but should we first check for references?
-      // this.resource_delete({resourceId: resource.uuid})
       this.deleteChoiceByResourceIdFrom({blockId: this.block.uuid, resourceId})
+      // important to delete the choice before removing the resource, otherwise this will throw an error
+      this.flow_removeResourcesAndRelatedValidationsOnActiveFlow({
+        resourceUuids: [resourceId],
+      })
       let previousIndex = choiceIndex - 1
       let previousLastChoice: IChoice = this.block.config.choices[previousIndex]
       while (previousIndex >= 0 && previousLastChoice.name === '') {
         console.debug('delete previous empty choice at index', previousIndex)
-        // TODO in VMO-6643: clean up resource, but should we first check for references?
-        // this.resource_delete({resourceId: resource.uuid})
         this.deleteChoiceByResourceIdFrom({blockId: this.block.uuid, resourceId: previousLastChoice.prompt})
+        // important to delete the choice before removing the resource, otherwise this will throw an error
+        this.flow_removeResourcesAndRelatedValidationsOnActiveFlow({
+          resourceUuids: [resourceId],
+        })
         previousIndex -= 1
         previousLastChoice = this.block.config.choices[previousIndex]
       }
@@ -179,6 +183,7 @@ export class ChoicesBuilder extends mixins(Lang) {
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Action resource_add!: ({resource}: {resource: IResource}) => void
   @flowVuexNamespace.Action resource_createWith!: ({props}: { props: { uuid: string } & Partial<IResource> }) => Promise<IResource>
+  @flowVuexNamespace.Action flow_removeResourcesAndRelatedValidationsOnActiveFlow!: ({resourceUuids}: { resourceUuids: IResource['uuid'][] }) => Promise<void>
 
   @blockVuexNamespace.Action deleteChoiceByResourceIdFrom!:
     ({blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) => void
