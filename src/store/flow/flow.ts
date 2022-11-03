@@ -199,7 +199,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
     try {
       const {data: {createdContainer}} = await axios[restVerb](persistRoute, omit(flowContainer, ['isCreated']))
-      console.debug('test', createdContainer)
+
       commit('flow_setFlowContainer', createdContainer)
       // commit('flow_setFlowContainer', data)
       commit('flow_updateCreatedState', true)
@@ -234,7 +234,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     // Clean orphan resources first, eg: old orphan resources, or orphan resource after the import
     dispatch('flow_removeResourcesAndRelatedValidationsOnActiveFlow', {
-      resourceUuids: rootGetters['orphanResourceUuidsOnActiveFlow'] ?? [],
+      resourceUuids: getters.orphanResourceUuidsOnActiveFlow ?? [],
     })
 
     try {
@@ -344,7 +344,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
    */
   flow_removeResourcesAndRelatedValidationsOnActiveFlow({state, commit, getters, rootGetters}, {resourceUuids}: {resourceUuids: IResource['uuid'][] }) {
     const flow: IFlow = getters.activeFlow
-    const nonOrphanResourceUuids: IResource['uuid'][] = rootGetters['nonOrphanResourceUuidsOnActiveFlow']
+    const nonOrphanResourceUuids: IResource['uuid'][] = getters.nonOrphanResourceUuidsOnActiveFlow ?? []
     console.debug('trying to clean those resources:', resourceUuids)
     const nonOrphanResourceUuidsToBeDeleted = intersection(nonOrphanResourceUuids, resourceUuids)
     if (!isEmpty(nonOrphanResourceUuidsToBeDeleted)) {

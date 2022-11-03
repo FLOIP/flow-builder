@@ -20,13 +20,13 @@ import {
 } from '@/store/flow/utils/resourceHelpers'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
-  resourcesByUuidOnActiveFlow: (_state, getters) => keyBy(getters.activeFlow.resources, 'uuid'),
+  resourcesByUuidOnActiveFlow: (_state, getters) => keyBy(getters.activeFlow?.resources, 'uuid'),
 
-  resourceUuidsOnActiveFlow: (_state, getters): IBlock['uuid'][] => compact(map(getters.activeFlow.resources, (res) => res.uuid)) as IBlock['uuid'][],
+  resourceUuidsOnActiveFlow: (_state, getters): IBlock['uuid'][] => compact(map(getters.activeFlow?.resources, (res) => res.uuid)) as IBlock['uuid'][],
 
   nonOrphanResourceUuidsOnActiveFlow: (_state, getters): IBlock['uuid'][] => {
     let results: IBlock['uuid'][] = []
-    getters.activeFlow.blocks?.forEach((block: IBlock) => {
+    getters.activeFlow?.blocks?.forEach((block: IBlock) => {
       results = union(results, findBlockRelatedResourcesUuids({block}))
     })
 
