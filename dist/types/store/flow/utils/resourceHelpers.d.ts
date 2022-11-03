@@ -14,3 +14,11 @@ export declare function cleanupFlowResources(container: IContext, choiceMimeType
 export declare function findBlockRelatedResourcesUuids({ block }: {
     block: IBlock;
 }): IResource['uuid'][];
+/**
+ * Compute resource index (cell index) for a table having X languages and Y modes
+ *
+ * @param languageIndex
+ * @param modeIndex
+ * @param supportedModesCount
+ */
+export declare function computeResourceIndex(languageIndex: number, modeIndex: number, supportedModesCount: number): number;

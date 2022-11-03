@@ -8,12 +8,34 @@ export interface IValidationStatusContext {
     resourceUuid?: string;
     isOrphanResource?: boolean;
 }
+/**
+ * Is valid by mode index OR lang index
+ *
+ * eg:
+ * {
+ *   modeIndex: {
+ *     "0": 12 // there are 12 invalid resources for mode with index "0"
+ *   },
+ *   langIndex: {
+ *     "1": 34 // there are 34 invalid resources for language with index "1"
+ *   }
+ * }
+ */
+export interface IInvalidResourcesCounterBy {
+    modeIndex?: {
+        [key: number]: number;
+    };
+    langIndex?: {
+        [key: number]: number;
+    };
+}
 export interface IValidationStatus {
     isValid: boolean | PromiseLike<any>;
     ajvErrors?: null | Array<ErrorObject>;
     type: string;
     label?: string;
     context?: IValidationStatusContext;
+    invalidCounterBy?: IInvalidResourcesCounterBy;
 }
 export interface IValidationState {
     validationStatuses: {
