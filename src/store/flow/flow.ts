@@ -231,6 +231,12 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       commit('flow_setFlowContainer', flowContainer)
       return getters.activeFlowContainer
     }
+
+    // Clean orphan resources first, eg: old orphan resources, or orphan resource after the import
+    dispatch('flow_removeResourcesAndRelatedValidationsOnActiveFlow', {
+      resourceUuids: rootGetters['orphanResourceUuidsOnActiveFlow'] ?? [],
+    })
+
     try {
       const {data} = await axios[restVerb](persistRoute, omit(cleanupFlowResources(flowContainer, rootGetters['validation/choiceMimeType']), ['isCreated']))
       commit('flow_setFlowContainer', data)
