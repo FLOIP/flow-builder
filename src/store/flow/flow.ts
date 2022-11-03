@@ -345,7 +345,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   flow_removeResourcesAndRelatedValidationsOnActiveFlow({state, commit, getters, rootGetters}, {resourceUuids}: {resourceUuids: IResource['uuid'][] }) {
     const flow: IFlow = getters.activeFlow
     const nonOrphanResourceUuids: IResource['uuid'][] = rootGetters['nonOrphanResourceUuidsOnActiveFlow']
-    console.log('test orphanResourceUuids', nonOrphanResourceUuids)
+    console.debug('trying to clean those resources:', resourceUuids)
     const nonOrphanResourceUuidsToBeDeleted = intersection(nonOrphanResourceUuids, resourceUuids)
     if (!isEmpty(nonOrphanResourceUuidsToBeDeleted)) {
       throw new Error(`Unsafe action: trying to delete non orphaned resources ${nonOrphanResourceUuidsToBeDeleted}`)
