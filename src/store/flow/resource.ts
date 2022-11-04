@@ -20,13 +20,13 @@ import {
 } from '@/store/flow/utils/resourceHelpers'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
-  resourcesByUuidOnActiveFlow: (_state, getters) => keyBy(getters.activeFlow.resources, 'uuid'),
+  resourcesByUuidOnActiveFlow: (_state, getters) => keyBy(getters.activeFlow?.resources, 'uuid'),
 
-  resourceUuidsOnActiveFlow: (_state, getters): IBlock['uuid'][] => compact(map(getters.activeFlow.resources, (res) => res.uuid)) as IBlock['uuid'][],
+  resourceUuidsOnActiveFlow: (_state, getters): IBlock['uuid'][] => compact(map(getters.activeFlow?.resources, (res) => res.uuid)) as IBlock['uuid'][],
 
   nonOrphanResourceUuidsOnActiveFlow: (_state, getters): IBlock['uuid'][] => {
     let results: IBlock['uuid'][] = []
-    getters.activeFlow.blocks?.forEach((block: IBlock) => {
+    getters.activeFlow?.blocks?.forEach((block: IBlock) => {
       results = union(results, findBlockRelatedResourcesUuids({block}))
     })
 
@@ -43,15 +43,6 @@ export const mutations: MutationTree<IFlowsState> = {
   resource_addOnFlow(state, {flowId, resource}: {flowId: IFlow['uuid'], resource: IResource}) {
     findFlowWith(flowId, state as unknown as IContext).resources.push(resource)
   },
-
-  /*
-   * TODO in VMO-6643 We need an action that can clean resources and then call this to actual remove.
-   * TODO in VMO-6643 We need logic to truly check resources are unused
-   *
-   * resource_delete({resources}, {resourceId}: { resourceId: string }) {
-   *   const resourceIndex = findIndex(resources, (resource) => resource.uuid === resourceId)
-   *   resources.splice(resourceIndex, 1)
-   */
 
   resource_createVariantOnFlow(
     state,
