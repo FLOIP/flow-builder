@@ -47,6 +47,9 @@ export declare class ChoicesBuilder extends ChoicesBuilder_base {
             uuid: string;
         } & Partial<IResource>;
     }) => Promise<IResource>;
+    flow_removeResourcesAndRelatedValidationsOnActiveFlow: ({ resourceUuids }: {
+        resourceUuids: IResource['uuid'][];
+    }) => Promise<void>;
     deleteChoiceByResourceIdFrom: ({ blockId, resourceId }: {
         blockId: IBlock['uuid'];
         resourceId: IResource['uuid'];
