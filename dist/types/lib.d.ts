@@ -355,6 +355,7 @@ export declare const defaultLocalisations: {
         "choose-which-numbered-key": string;
         "clear-floip-config": string;
         "clear-selection": string;
+        "clear-all": string;
         "click-and-drag-to-create-a-new-connection": string;
         "click-and-drag-to-move-this-block": string;
         "click-here-to-download-the-file": string;
@@ -2039,6 +2040,7 @@ export declare const defaultLocalisations: {
         "choose-which-numbered-key": string;
         "clear-floip-config": string;
         "clear-selection": string;
+        "clear-all": string;
         "click-and-drag-to-create-a-new-connection": string;
         "click-and-drag-to-move-this-block": string;
         "click-here-to-download-the-file": string;
