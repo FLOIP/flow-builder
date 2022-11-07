@@ -13,6 +13,7 @@ import {
   faExclamationTriangle,
   faAngleDown,
   faAngleUp,
+  faTimesCircle as faSolidTimesCircle,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -49,6 +50,7 @@ library.add(
   faMobileAlt,
   faSpinner,
   faTimesCircle,
+  faSolidTimesCircle,
   faTrashAlt,
   faInfoCircle,
   faExclamationTriangle,

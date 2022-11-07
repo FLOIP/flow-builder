@@ -3,7 +3,7 @@
     #input-control="{isValid}"
     :message-key="`block/${block.uuid}/tags`">
     <div class="tag-selector">
-      <label>{{ 'flow-builder.tags-label' | trans }}</label>
+      <label v-if="!noLabel">{{ 'flow-builder.tags-label' | trans }}</label>
       <vue-multiselect
         v-model="selectedTags"
         track-by="name"
@@ -17,7 +17,17 @@
         :close-on-select="false"
         :taggable="taggable"
         :tag-placeholder="taggable ? trans('flow-builder.create-a-tag-prompt') : ''"
-        @tag="addTag" />
+        @tag="addTag">
+        <template #clear>
+          <font-awesome-icon
+            v-if="selectedTags.length"
+            v-b-tooltip.hover="trans('flow-builder.clear-all')"
+            style="position: absolute; right: 41px; top: 13px; cursor: pointer"
+            :icon="['fas', 'times-circle']"
+            class="cursor-pointer"
+            @click="clearAll()" />
+        </template>
+      </vue-multiselect>
     </div>
   </validation-message>
 </template>
@@ -33,6 +43,11 @@ import {mixins} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 
+type Option = {
+  id: string,
+  name: string,
+}
+
 @Component({
   components: {
     VueMultiselect,
@@ -41,8 +56,9 @@ const flowVuexNamespace = namespace('flow')
 export class TagSelector extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop({default: true}) readonly taggable!: boolean
+  @Prop({default: false}) readonly noLabel!: boolean
 
-  get selectedTags() {
+  get selectedTags(): Option[] {
     return this.stringListToOptions(this.block.tags || [])
   }
 
@@ -53,20 +69,24 @@ export class TagSelector extends mixins(Lang) {
     })
   }
 
-  get availableTagOptions() {
+  get availableTagOptions(): Option[] {
     return this.stringListToOptions(this.blockTags)
   }
 
-  stringListToOptions(list: string[]) {
+  stringListToOptions(list: string[]): Option[] {
     return map(list, (value) => ({id: value, name: value}))
   }
 
-  addTag(newTag: string) {
+  addTag(newTag: string): void {
     this.blockTags.push(newTag)
     this.block_addTag({
       blockId: this.block.uuid,
       value: newTag,
     })
+  }
+
+  clearAll(): void {
+    this.selectedTags = []
   }
 
   @flowVuexNamespace.Mutation block_setTags!: ({blockId, value}: {blockId: IBlock['uuid'], value: string[]}) => void
