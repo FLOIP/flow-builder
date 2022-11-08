@@ -17,15 +17,16 @@
         :close-on-select="false"
         :taggable="taggable"
         :tag-placeholder="taggable ? trans('flow-builder.create-a-tag-prompt') : ''"
+        :disabled="!isEditable"
         @tag="addTag">
         <template #clear>
-          <font-awesome-icon
+          <div
             v-if="selectedTags.length"
             v-b-tooltip.hover="trans('flow-builder.clear-all')"
-            style="position: absolute; right: 41px; top: 13px; cursor: pointer"
-            :icon="['fas', 'times-circle']"
-            class="cursor-pointer"
-            @click="clearAll()" />
+            class="multiselect__clear-all"
+            @click="clearAll()">
+            <font-awesome-icon :icon="['fas', 'times-circle']" />
+          </div>
         </template>
       </vue-multiselect>
     </div>
@@ -42,6 +43,7 @@ import {map} from 'lodash'
 import {mixins} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
+const builderVuexNamespace = namespace('builder')
 
 type Option = {
   id: string,
@@ -57,6 +59,7 @@ export class TagSelector extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop({default: true}) readonly taggable!: boolean
   @Prop({default: false}) readonly noLabel!: boolean
+  @builderVuexNamespace.Getter isEditable!: boolean
 
   get selectedTags(): Option[] {
     return this.stringListToOptions(this.block.tags || [])
@@ -101,5 +104,17 @@ export default TagSelector
 <style lang="css" scoped>
 .invalid >>> .multiselect__tags {
   border-color: #dc3545;
+}
+.multiselect >>> .multiselect__clear-all {
+  position: absolute;
+  right: 41px;
+  top: 1px;
+  box-sizing: border-box;
+  width: 18px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 </style>
