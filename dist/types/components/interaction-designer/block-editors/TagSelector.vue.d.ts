@@ -9,6 +9,7 @@ export declare class TagSelector extends TagSelector_base {
     readonly block: IBlock;
     readonly taggable: boolean;
     readonly noLabel: boolean;
+    isEditable: boolean;
     get selectedTags(): Option[];
     set selectedTags(value: Option[]);
     get availableTagOptions(): Option[];
