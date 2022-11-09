@@ -6,7 +6,7 @@ declare const _default: {
     mixins: (typeof Lang)[];
     computed: {
         id(): any;
-        activeFlow: import("vuex").Computed;
+        filteredBlocks: import("vuex").Computed;
     };
     mounted(): void;
     methods: {

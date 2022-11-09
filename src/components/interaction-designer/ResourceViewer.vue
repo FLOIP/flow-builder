@@ -3,7 +3,7 @@
     <slot name="vendor-header" />
     <div class="resource-viewer-contents">
       <resource-viewer-block
-        v-for="block in activeFlow.blocks"
+        v-for="block in filteredBlocks"
         :id="`block/${block.uuid}`"
         :key="block.uuid"
         :block="block"
@@ -24,8 +24,8 @@ export default {
   name: 'ResourceViewer',
   mixins: [Lang],
   computed: {
-    ...mapGetters('flow', [
-      'activeFlow',
+    ...mapGetters('resource-viewer', [
+      'filteredBlocks',
     ]),
     id() {
       return this.$route.params.id

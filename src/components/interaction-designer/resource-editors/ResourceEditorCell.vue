@@ -2,7 +2,7 @@
   <div class="resource-editor-cell d-flex flex-column">
     <resource-variant-text-editor
       v-if="contentType === SupportedContentType.TEXT"
-      :index="computeResourceIndex(languageIndex, modeIndex)"
+      :index="computeResourceIndexForCurrentFlow(languageIndex, modeIndex)"
       :mode="mode"
       :resource-id="resource.uuid"
       :resource-variant="findOrGenerateStubbedVariantOn(
@@ -13,7 +13,7 @@
     <div v-if="contentType === SupportedContentType.AUDIO">
       <validation-message
         #input-control="{ isValid }"
-        :message-key="`resource/${resource.uuid}/values/${computeResourceIndex(languageIndex, modeIndex)}/value`">
+        :message-key="`resource/${resource.uuid}/values/${computeResourceIndexForCurrentFlow(languageIndex, modeIndex)}/value`">
         <audio-library-selector
           :audio-files="availableAudioFiles"
           :lang-id="languageId"
@@ -82,6 +82,7 @@ import {
 } from '@floip/flow-runner'
 
 import {
+  computeResourceIndex,
   findOrGenerateStubbedVariantOn,
   findResourceVariantOverModesOn,
   IResourceDefinitionVariantOverModesFilter,
@@ -131,8 +132,8 @@ export class ResourceEditorCell extends mixins(FlowUploader, Permissions, Routes
    * @param languageIndex
    * @param modeIndex
    */
-  computeResourceIndex(languageIndex: number, modeIndex: number): number {
-    return languageIndex * this.activeFlow.supported_modes.length + modeIndex
+  computeResourceIndexForCurrentFlow(languageIndex: number, modeIndex: number): number {
+    return computeResourceIndex(languageIndex, modeIndex, this.activeFlow.supported_modes.length)
   }
 
   triggerRecordViaPhoneFor(langId: ILanguage['id']): void {
