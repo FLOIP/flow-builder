@@ -2439,10 +2439,10 @@
   resolved "https://registry.yarnpkg.com/@floip/expression-parser/-/expression-parser-1.11.3.tgz#da32541845ec482b60daabe963ccb6200870781c"
   integrity sha512-r8433SL1ZjOZKcgIkLMci9LUAYM7aJQGIdE9+37/op5H0DOhB8qh6HvQe7wDhpoOyrCiMYUx/6FBruOf9HT91w==
 
-"@floip/flow-runner@^1.0.0-rc4":
-  version "1.0.0-rc4.15"
-  resolved "https://registry.yarnpkg.com/@floip/flow-runner/-/flow-runner-1.0.0-rc4.15.tgz#9a4613414bfaf9c516edd7bd11e9b4e03260f573"
-  integrity sha512-uxg7wnKbK6JnH07NLAqev5Heh7n1YGbNk6KDgWHjd18xFL8FA7BEc1LiKR9ykN77otMdugQmgAeZk6RlHh5x+Q==
+"@floip/flow-runner@^1.0.11-rc4":
+  version "1.0.11-rc4.15"
+  resolved "https://registry.yarnpkg.com/@floip/flow-runner/-/flow-runner-1.0.11-rc4.15.tgz#e83c6e97d550690150eedbcb020a5a933c7a998e"
+  integrity sha512-2GlXOhnVc8b9rOhRJ+lk0s5rwXRghCUXOfN6Nf8uMp7ieMPH0VqGGPnTo5En7UEWqprbGPv94iP5d0rQkqKwwQ==
   dependencies:
     "@floip/expression-evaluator" "^2.1.3"
     ajv "^7.2.1"
