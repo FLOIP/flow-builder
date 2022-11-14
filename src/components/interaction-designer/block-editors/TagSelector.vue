@@ -28,6 +28,13 @@
             <font-awesome-icon :icon="['fas', 'times-circle']" />
           </div>
         </template>
+        <template #tag="slotProps">
+          <slot
+            name="tag"
+            :option="slotProps.option"
+            :search="slotProps.search"
+            :remove="slotProps.removeElement" />
+        </template>
       </vue-multiselect>
     </div>
   </validation-message>
