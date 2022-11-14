@@ -26,7 +26,7 @@ export default {
   props: {
     filteredBlocks: {
       type: Array,
-      default: () => [],
+      default: () => null,
     },
   },
   computed: {
@@ -34,7 +34,7 @@ export default {
       activeFlow: 'flow/activeFlow',
     }),
     visibleBlocks() {
-      return Array.isArray(this.filteredBlocks) && this.filteredBlocks.length > 0
+      return Array.isArray(this.filteredBlocks)
         ? this.filteredBlocks
         : this.activeFlow?.blocks ?? []
     },
