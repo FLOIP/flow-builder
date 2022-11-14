@@ -7,7 +7,7 @@ declare const _default: {
     props: {
         filteredBlocks: {
             type: ArrayConstructor;
-            default: () => any[];
+            default: () => any;
         };
     };
     computed: {
