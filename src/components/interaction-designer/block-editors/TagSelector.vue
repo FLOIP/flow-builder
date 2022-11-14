@@ -28,12 +28,12 @@
             <font-awesome-icon :icon="['fas', 'times-circle']" />
           </div>
         </template>
-        <template #tag="slotProps">
+        <template #tag="{ remove, option, search }">
           <slot
             name="tag"
-            :option="slotProps.option"
-            :search="slotProps.search"
-            :remove="slotProps.removeElement" />
+            :remove="remove"
+            :option="option"
+            :search="search" />
         </template>
       </vue-multiselect>
     </div>
