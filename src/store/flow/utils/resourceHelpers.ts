@@ -9,13 +9,12 @@ import {
   SupportedContentType,
   SupportedMode,
 } from '@floip/flow-runner'
-import {cloneDeep, difference, find, isEmpty, isEqual, map, pick, without} from 'lodash'
+import {cloneDeep, difference, find, findIndex, isEmpty, isEqual, map, pick, without} from 'lodash'
 import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/ValidationException'
 
+export type IResourceVariantFilter = Partial<IResourceDefinitionVariantOverModes>
 export type IResourceDefinitionVariantOverModesFilter = Partial<IResourceDefinitionVariantOverModes>
 export type IResourceDefinitionVariantOverModesFilterAsKey = Omit<IResourceDefinitionVariantOverModes, 'value'>
-export type IResourceDefinitionVariantOverModesFilterWithResourceId =
-  Partial<IResourceDefinitionVariantOverModes> & { resourceId: string }
 
 export function findResourceWith(uuid: string, {resources}: IFlow): IResource {
   const resource = find(resources, {uuid})
@@ -67,6 +66,24 @@ export function findResourceVariantOverModesOn(
   }
 
   return variant
+}
+
+/** Returns the index of the resource variant in the resource.values array, or -1 if not found. */
+export function findIndexForResourceVariant(
+  resource: IResource,
+  filter: IResourceVariantFilter,
+): number {
+  return findIndex(resource.values, variant =>
+    // Override variant fields with filter fields, sort modes to ignore their order.
+    // If it remains equal, we've got a match.
+    isEqual({
+      ...variant,
+      modes: variant.modes.sort(),
+    }, {
+      ...variant,
+      ...filter,
+      modes: filter.modes?.sort(),
+    }))
 }
 
 export function findOrGenerateStubbedVariantFor(
@@ -167,12 +184,11 @@ export function findBlockRelatedResourcesUuids({block}: {block: IBlock}): IResou
 }
 
 /**
- * Compute resource index (cell index) for a table having X languages and Y modes
+ * Extract resource variant index from error dataPath, e.g. `values/1/value` -> 1
  *
- * @param languageIndex
- * @param modeIndex
- * @param supportedModesCount
+ * @param errorDataPath
  */
-export function computeResourceIndex(languageIndex: number, modeIndex: number, supportedModesCount: number): number {
-  return languageIndex * supportedModesCount + modeIndex
+export function extractResourceVariantIndex(errorDataPath: string): number | undefined {
+  const indexAsString = /^\/values\/(?<index>\d+)/.exec(errorDataPath)?.groups?.index
+  return indexAsString !== undefined ? Number(indexAsString) : undefined
 }

@@ -43,7 +43,6 @@ export class LanguagesEditor extends mixins(Lang) {
   }
 
   get languages(): ILanguage[] {
-    // Make sure to follow order when populating languages, because the order may affect indexes during resource validation
     return sortBy(this.ui.languages, ['label'])
   }
 

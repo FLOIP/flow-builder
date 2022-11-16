@@ -2,7 +2,7 @@
   <div class="resource-editor-cell d-flex flex-column">
     <resource-variant-text-editor
       v-if="contentType === SupportedContentType.TEXT"
-      :index="computeResourceIndexForCurrentFlow(languageIndex, modeIndex)"
+      :index="findIndexForResourceVariant(languageId, mode)"
       :mode="mode"
       :resource-id="resource.uuid"
       :resource-variant="findOrGenerateStubbedVariantOn(
@@ -13,7 +13,7 @@
     <div v-if="contentType === SupportedContentType.AUDIO">
       <validation-message
         #input-control="{ isValid }"
-        :message-key="`resource/${resource.uuid}/values/${computeResourceIndexForCurrentFlow(languageIndex, modeIndex)}/value`">
+        :message-key="`resource/${resource.uuid}/values/${findIndexForResourceVariant(languageId, mode)}/value`">
         <audio-library-selector
           :audio-files="availableAudioFiles"
           :lang-id="languageId"
@@ -82,7 +82,7 @@ import {
 } from '@floip/flow-runner'
 
 import {
-  computeResourceIndex,
+  findIndexForResourceVariant,
   findOrGenerateStubbedVariantOn,
   findResourceVariantOverModesOn,
   IResourceDefinitionVariantOverModesFilter,
@@ -99,16 +99,15 @@ const builderVuexNamespace = namespace('builder')
 export class ResourceEditorCell extends mixins(FlowUploader, Permissions, Routes, Lang) {
   @Prop({required: true}) block!: IBlock
   @Prop({required: true}) contentType!: string
-  @Prop({required: true}) languageIndex!: string
   @Prop({required: true}) languageId!: string
-  @Prop({required: true}) modeIndex!: string
-  @Prop({required: true}) mode!: string
+  @Prop({required: true}) mode!: SupportedMode
 
   SupportedMode = SupportedMode
   SupportedContentType = SupportedContentType
 
   findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
   findResourceVariantOverModesOn = findResourceVariantOverModesOn
+  findIndexForResourceVariant = findIndexForResourceVariant
 
   @Getter availableAudioFiles!: IAudioFile[]
   @Getter isFeatureAudioUploadEnabled!: boolean
@@ -124,16 +123,6 @@ export class ResourceEditorCell extends mixins(FlowUploader, Permissions, Routes
 
   get resource(): IResource {
     return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
-  }
-
-  /**
-   * Compute resource index (cell index) for a table having X languages and Y modes
-   *
-   * @param languageIndex
-   * @param modeIndex
-   */
-  computeResourceIndexForCurrentFlow(languageIndex: number, modeIndex: number): number {
-    return computeResourceIndex(languageIndex, modeIndex, this.activeFlow.supported_modes.length)
   }
 
   triggerRecordViaPhoneFor(langId: ILanguage['id']): void {

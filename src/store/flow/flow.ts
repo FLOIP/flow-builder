@@ -154,14 +154,14 @@ export const mutations: MutationTree<IFlowsState> = {
 
   flow_setSupportedMode(state, {flowId, value}: {flowId: string, value: SupportedMode[] | SupportedMode}) {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
-    // we should not sort and rely on the modes' order because the flow spec doesn't enforce supported_modes to be ordered
+    // we should not sort nor rely on the modes' order because the flow spec doesn't enforce supported_modes to be ordered
     flow.supported_modes = castArray(value)
   },
 
-  flow_setLanguages(state, {flowId, value}) {
+  flow_setLanguages(state, {flowId, value}: {flowId: string, value: ILanguage[] | ILanguage}) {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
-    // Make sure to follow order when populating languages, because the order may affect indexes during resource validation
-    flow.languages = Array.isArray(value) ? orderLanguages(value as ILanguage[]) : [value]
+    // we should not sort nor rely on the languages' order because the flow spec doesn't enforce languages to be ordered
+    flow.languages = castArray(value)
   },
 
   flow_updateVendorMetadataByPath(
