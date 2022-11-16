@@ -3,7 +3,7 @@
     <slot name="vendor-header" />
     <div class="resource-viewer-contents">
       <resource-viewer-block
-        v-for="block in filteredBlocks"
+        v-for="block in visibleBlocks"
         :id="`block/${block.uuid}`"
         :key="block.uuid"
         :block="block"
@@ -23,10 +23,21 @@ export const DEBOUNCE_FLOW_PERSIST_MS = 1500
 export default {
   name: 'ResourceViewer',
   mixins: [Lang],
+  props: {
+    filteredBlocks: {
+      type: Array,
+      default: () => null,
+    },
+  },
   computed: {
-    ...mapGetters('resource-viewer', [
-      'filteredBlocks',
-    ]),
+    ...mapGetters({
+      activeFlow: 'flow/activeFlow',
+    }),
+    visibleBlocks() {
+      return Array.isArray(this.filteredBlocks)
+        ? this.filteredBlocks
+        : this.activeFlow?.blocks ?? []
+    },
     id() {
       return this.$route.params.id
     },
