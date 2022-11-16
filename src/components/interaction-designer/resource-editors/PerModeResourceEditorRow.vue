@@ -1,12 +1,16 @@
 <template>
   <!--Resource editors grouped by mode (channel)-->
-  <div v-if="resource"
-       class="mode-resource-editor d-flex flex-wrap">
-    <div v-for="({id: languageId, label: language}, languageIndex) in activeFlow.languages"
-         :key="languageId"
-         class="col-3">
+  <div
+    v-if="resource"
+    class="per-mode-resource-editor-row d-flex flex-wrap">
+    <div
+      v-for="({id: languageId, label: language}, languageIndex) in activeFlow.languages"
+      :key="languageId"
+      class="col-3">
       <header class="d-flex">
-        <div class="mr-auto">{{language || trans('flow-builder.unknown-language')}}</div>
+        <div class="mr-auto">
+          {{ language || trans('flow-builder.unknown-language') }}
+        </div>
       </header>
 
       <resource-editor-cell

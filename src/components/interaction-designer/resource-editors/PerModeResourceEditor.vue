@@ -1,53 +1,57 @@
 <template>
   <div
-    v-if="activeFlow.supported_modes.length > 0"
+    v-if="orderedSupportedModes.length > 0"
     class="per-mode-resource-editor">
     <div class="d-flex flex-column">
-      <div v-for="(item) in supportedModeWithOrderInfo"
-           :key="item.index"
-           :class="{
-             [`order-${item.order}`]: true,
-             'radius-on-top': item.order === 0,
-             'radius-on-bottom': item.order === activeFlow.supported_modes.length - 1
-           }"
-           class="resource-panel">
-        <div :class="{
-               'radius-on-top': item.order === 0,
-               'radius-on-bottom': item.order === activeFlow.supported_modes.length - 1,
-             }"
-             class="resource-panel-heading p-2 d-flex"
-             @click="updateIsPanelExpanded(`${block.uuid}-${item.mode}`)">
+      <div
+        v-for="(mode, modeIndex) in orderedSupportedModes"
+        :key="modeIndex"
+        :class="{
+          'radius-on-top': modeIndex === 0,
+          'radius-on-bottom': modeIndex === orderedSupportedModes.length - 1
+        }"
+        class="resource-panel">
+        <div
+          :class="{
+            'radius-on-top': modeIndex === 0,
+            'radius-on-bottom': modeIndex === orderedSupportedModes.length - 1,
+          }"
+          class="resource-panel-heading p-2 d-flex"
+          @click="updateIsPanelExpanded(`${block.uuid}-${mode}`)">
           <div class="mr-auto">
             <header class="d-flex channel-name">
               <font-awesome-icon
-                v-if="iconsMap.get(item.mode)"
+                v-if="iconsMap.get(mode)"
                 class="ml-3"
-                :class="{'custom-icons': iconsMap.get(item.mode)[0] === 'fac', 'library-icons': iconsMap.get(item.mode)[0] !== 'fac'}"
-                :icon="iconsMap.get(item.mode)"
+                :class="{'custom-icons': iconsMap.get(mode)[0] === 'fac', 'library-icons': iconsMap.get(mode)[0] !== 'fac'}"
+                :icon="iconsMap.get(mode)"
                 size="lg" />
               <h6 class="ml-3 align-self-center mb-0">
-                {{ `flow-builder.${item.mode.toLowerCase()}-content` | trans }}
+                {{ `flow-builder.${mode.toLowerCase()}-content` | trans }}
               </h6>
             </header>
           </div>
           <div class="ml-auto">
-            <slot name="right" :mode="item.mode" :modeIndex="item.index" :modeOrder="item.order"/>
+            <slot
+              name="right"
+              :mode="mode"
+              :mode-index="modeIndex" />
             <font-awesome-icon
               :icon="[
                 'fas',
-                isPanelExpanded[`${block.uuid}-${item.mode}`] === true ? 'angle-up' : 'angle-down'
+                isPanelExpanded[`${block.uuid}-${mode}`] === true ? 'angle-up' : 'angle-down'
               ]"
               class="cursor-pointer text-primary align-self-center" />
           </div>
         </div>
         <div
-            v-if="isPanelExpanded[`${block.uuid}-${item.mode}`] === true"
-            :id="`collapse-lang-panel-${block.uuid}-${item.mode}`"
-            class="resource-panel-body p-2 collapse multi-collapse show">
+          v-if="isPanelExpanded[`${block.uuid}-${mode}`] === true"
+          :id="`collapse-lang-panel-${block.uuid}-${mode}`"
+          class="resource-panel-body p-2 collapse multi-collapse show">
           <per-mode-resource-editor-row
             :block="block"
-            :mode="item.mode"
-            :mode-index="item.index"
+            :mode="mode"
+            :mode-index="modeIndex"
             @change="$emit('change')" />
         </div>
       </div>
@@ -72,7 +76,7 @@ export class PerModeResourceEditor extends mixins(FlowUploader, Permissions, Rou
   @Prop({required: true}) block!: IBlock
 
   @flowVuexNamespace.Getter activeFlow!: IFlow
-  @flowVuexNamespace.Getter supportedModeWithOrderInfo!: {mode: SupportedMode, index: number, order: number}[]
+  @flowVuexNamespace.Getter orderedSupportedModes!: SupportedMode[]
 
   SupportedMode = SupportedMode
   iconsMap = new Map<string, object>([
@@ -86,7 +90,7 @@ export class PerModeResourceEditor extends mixins(FlowUploader, Permissions, Rou
 
   isPanelExpanded = {}
 
-  updateIsPanelExpanded(id) {
+  updateIsPanelExpanded(id): void {
     if (this.isPanelExpanded[id] === true) {
       // redefine to make the data reactive
       this.isPanelExpanded = {

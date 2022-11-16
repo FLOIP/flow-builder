@@ -119,7 +119,7 @@ export class FlowEditor extends mixins(Lang) {
   @State(({trees: {ui}}) => ui) ui!: any
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Mutation flow_setLanguages!: ({flowId, value}: {flowId: string, value: ILanguage | ILanguage[]}) => void
-  @flowVuexNamespace.Mutation flow_setSupportedMode!: any
+  @flowVuexNamespace.Mutation flow_setSupportedMode!: ({flowId, value}: {flowId: string, value: SupportedMode[] | SupportedMode}) => void
 
   async updateFlowModes(value: SupportedMode[] | SupportedMode): Promise<void> {
     this.flow_setSupportedMode({flowId: this.flow.uuid, value})

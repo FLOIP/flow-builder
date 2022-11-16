@@ -1,33 +1,31 @@
 <template>
   <!--Resource editors grouped by language-->
-  <div v-if="resource"
-       class="per-language-resource-editor d-flex flex-column">
+  <div
+    v-if="resource"
+    class="per-language-resource-editor-row d-flex flex-column">
     <div
-      v-for="(item) in supportedModeWithOrderInfo"
-      :key="item.index"
-      :class="{
-        [`order-${item.order}`]: true
-      }"
+      v-for="(mode, modeIndex) in orderedSupportedModes"
+      :key="modeIndex"
       class="mbx-4">
       <header class="d-flex mb-2">
         <font-awesome-icon
-          v-if="iconsMap.get(item.mode)"
-          :class="{'custom-icons': iconsMap.get(item.mode)[0] === 'fac', 'library-icons': iconsMap.get(item.mode)[0] !== 'fac'}"
-          :icon="iconsMap.get(item.mode)" />
+          v-if="iconsMap.get(mode)"
+          :class="{'custom-icons': iconsMap.get(mode)[0] === 'fac', 'library-icons': iconsMap.get(mode)[0] !== 'fac'}"
+          :icon="iconsMap.get(mode)" />
         <h6 class="ml-3 mb-0 align-self-center">
-          {{ `flow-builder.${item.mode.toLowerCase()}-content` | trans }}
+          {{ `flow-builder.${mode.toLowerCase()}-content` | trans }}
         </h6>
       </header>
 
       <resource-editor-cell
-        v-for="contentType in discoverContentTypesFor(item.mode)"
+        v-for="contentType in discoverContentTypesFor(mode)"
         :key="contentType"
         :block="block"
         :content-type="contentType"
         :language-id="languageId"
         :language-index="languageIndex"
-        :mode="item.mode"
-        :mode-index="item.index" />
+        :mode="mode"
+        :mode-index="modeIndex" />
     </div>
   </div>
 </template>
@@ -71,7 +69,7 @@ export class PerLanguageResourceEditorRow extends mixins(FlowUploader, Permissio
 
   discoverContentTypesFor = discoverContentTypesFor
   @flowVuexNamespace.Getter resourcesByUuidOnActiveFlow!: { [key: string]: IResource }
-  @flowVuexNamespace.Getter supportedModeWithOrderInfo!: {mode: SupportedMode, index: number, order: number}[]
+  @flowVuexNamespace.Getter orderedSupportedModes!: SupportedMode[]
 
   get resource(): IResource {
     return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]

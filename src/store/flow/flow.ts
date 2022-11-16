@@ -16,7 +16,7 @@ import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV
 import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {cloneDeep, defaults, every, forEach, get, has, includes, intersection, isEmpty, merge, omit, sortBy} from 'lodash'
+import {castArray, cloneDeep, defaults, every, forEach, get, has, includes, intersection, isEmpty, merge, omit, sortBy} from 'lodash'
 import {cleanupFlowResources, discoverContentTypesFor, findBlockRelatedResourcesUuids} from '@/store/flow/utils/resourceHelpers'
 import {computeBlockCanvasCoordinates} from '@/store/builder'
 import {ErrorObject} from 'ajv'
@@ -81,16 +81,9 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   hasVoiceMode: (state, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.IVR),
   hasOfflineMode: (state, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.OFFLINE),
   currentFlowsState: (state) => state,
+
   /**
-   * supportedModeWithOrderInfo for UI display
-   */
-  supportedModeWithOrderInfo: (state, getters) => getters.activeFlow.supported_modes.map((item: SupportedMode, key: number) => ({
-    mode: item,
-    index: key,
-    order: getters.orderedSupportedModes.indexOf(item),
-  })),
-  /**
-   * orderedSupportedModes for UI display
+   * Sort supported modes to display them in a particular order
    */
   orderedSupportedModes: (state, getters) => {
     const order = [
@@ -159,11 +152,10 @@ export const mutations: MutationTree<IFlowsState> = {
     findFlowWith(flowId, state as unknown as IContext).interaction_timeout = value
   },
 
-  flow_setSupportedMode(state, {flowId, value}) {
+  flow_setSupportedMode(state, {flowId, value}: {flowId: string, value: SupportedMode[] | SupportedMode}) {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
-    const supportedModesOrder = Object.values(SupportedMode)
-    // Make sure to follow order when populating supported_modes, because the order may affect indexes during resource validation
-    flow.supported_modes = Array.isArray(value) ? sortBy(value, (o) => supportedModesOrder.indexOf(o)) : [value]
+    // we should not sort and rely on the modes' order because the flow spec doesn't enforce supported_modes to be ordered
+    flow.supported_modes = castArray(value)
   },
 
   flow_setLanguages(state, {flowId, value}) {
@@ -276,7 +268,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return dispatch('flow_add', {flow})
   },
 
-  async flow_add({state}, {flow}): Promise<IFlow> {
+  async flow_add({state}, {flow}: {flow: IFlow}): Promise<IFlow> {
     // mutating here, because we need to define a root-level scope for this type of action
     state.flows.push(flow)
     //TODO - understand why this was here? Surely we can have an active flow that isn't the first and only one?
@@ -342,7 +334,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
    * @param flowId
    * @param resourceUuids
    */
-  flow_removeResourcesAndRelatedValidationsOnActiveFlow({state, commit, getters, rootGetters}, {resourceUuids}: {resourceUuids: IResource['uuid'][] }) {
+  flow_removeResourcesAndRelatedValidationsOnActiveFlow(
+    {state, commit, getters, rootGetters},
+    {resourceUuids}: {resourceUuids: IResource['uuid'][]},
+  ) {
     const flow: IFlow = getters.activeFlow
     const nonOrphanResourceUuids: IResource['uuid'][] = getters.nonOrphanResourceUuidsOnActiveFlow ?? []
     console.debug('trying to clean those resources:', resourceUuids)
@@ -482,7 +477,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
   },
 
-  async flow_duplicateBlock({commit, state, getters, dispatch}, {flowId, blockId}: { flowId: string, blockId: IBlock['uuid'] }): Promise<IBlock> {
+  async flow_duplicateBlock(
+    {commit, state, getters, dispatch},
+    {flowId, blockId}: {flowId: string, blockId: IBlock['uuid']},
+  ): Promise<IBlock> {
     const flow = findFlowWith(flowId || state.first_flow_id || '', state as unknown as IContext)
     // @throws ValidationException when block absent
     const block: IBlock = findBlockWith(blockId, flow)
