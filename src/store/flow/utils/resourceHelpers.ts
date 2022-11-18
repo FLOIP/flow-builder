@@ -68,14 +68,17 @@ export function findResourceVariantOverModesOn(
   return variant
 }
 
-/** Returns the index of the resource variant in the resource.values array, or -1 if not found. */
+/**
+ * The same as findResourceVariantOverModesOn but returns resource variant's index (in the resource.values array)
+ * instead of the variant's value. Returns -1 if not found.
+ */
 export function findIndexForResourceVariant(
   resource: IResource,
   filter: IResourceVariantFilter,
 ): number {
   return findIndex(resource.values, variant =>
     // Override variant fields with filter fields, sort modes to ignore their order.
-    // If it remains equal, we've got a match.
+    // If it remains equal, it means the variant had the same values as the filter, and we've got a match.
     isEqual({
       ...variant,
       modes: variant.modes.sort(),
