@@ -2,34 +2,30 @@
   <div class="resource-editor-cell d-flex flex-column">
     <resource-variant-text-editor
       v-if="contentType === SupportedContentType.TEXT"
-      :index="findIndexForResourceVariant(languageId, mode)"
+      :index="index"
       :mode="mode"
       :resource-id="resource.uuid"
-      :resource-variant="findOrGenerateStubbedVariantOn(
-        resource,
-        {language_id: languageId, content_type: contentType, modes: [mode]})"
+      :resource-variant="resourceVariant"
       @afterResourceVariantChanged="$emit('change')" />
 
     <div v-if="contentType === SupportedContentType.AUDIO">
       <validation-message
         #input-control="{ isValid }"
-        :message-key="`resource/${resource.uuid}/values/${findIndexForResourceVariant(languageId, mode)}/value`">
+        :message-key="`resource/${resource.uuid}/values/${index}/value`">
         <audio-library-selector
           :audio-files="availableAudioFiles"
           :lang-id="languageId"
           :resource-id="resource.uuid"
-          :selected-audio-uri="findOrGenerateStubbedVariantOn(
-            resource,
-            {language_id: languageId, content_type: contentType, modes: [mode]}).value"
+          :selected-audio-uri="resourceVariant.value"
           @change="$emit('change')" />
       </validation-message>
 
       <phone-recorder
-        v-if="can(['edit-content', 'send-call-to-records'], true) && !findOrGenerateStubbedVariantOn(resource,{language_id: languageId, content_type: contentType, modes: [mode]}).value"
+        v-if="can(['edit-content', 'send-call-to-records'], true) && !resourceVariant.value"
         :recording-key="`${block.uuid}:${languageId}`"
         @finish="$emit('change')" />
 
-      <template v-if="!findAudioResourceVariantFor(resource, {language_id: languageId, content_type: contentType, modes: [mode]})">
+      <template v-if="!resourceVariant.value">
         <upload-monitor :upload-key="`${block.uuid}:${languageId}`" />
 
         <div class="d-flex mt-2 mb-3">
@@ -76,16 +72,14 @@ import {
   IFlow,
   ILanguage,
   IResource,
+  IResourceValue,
   SupportedContentType,
   SupportedMode,
-  ValidationException,
 } from '@floip/flow-runner'
 
 import {
   findIndexForResourceVariant,
   findOrGenerateStubbedVariantOn,
-  findResourceVariantOverModesOn,
-  IResourceDefinitionVariantOverModesFilter,
 } from '@/store/flow/utils/resourceHelpers'
 import {
   IAudioFile,
@@ -102,12 +96,7 @@ export class ResourceEditorCell extends mixins(FlowUploader, Permissions, Routes
   @Prop({required: true}) languageId!: string
   @Prop({required: true}) mode!: SupportedMode
 
-  SupportedMode = SupportedMode
   SupportedContentType = SupportedContentType
-
-  findOrGenerateStubbedVariantOn = findOrGenerateStubbedVariantOn
-  findResourceVariantOverModesOn = findResourceVariantOverModesOn
-  findIndexForResourceVariant = findIndexForResourceVariant
 
   @Getter availableAudioFiles!: IAudioFile[]
   @Getter isFeatureAudioUploadEnabled!: boolean
@@ -184,16 +173,18 @@ export class ResourceEditorCell extends mixins(FlowUploader, Permissions, Routes
     this.$emit('change')
   }
 
-  findAudioResourceVariantFor(resource: IResource, filter: IResourceDefinitionVariantOverModesFilter): string | null {
-    try {
-      return findResourceVariantOverModesOn(resource, filter).value
-    } catch (e) {
-      if (!(e instanceof ValidationException)) {
-        throw e
-      }
+  get resourceVariant(): IResourceValue {
+    return findOrGenerateStubbedVariantOn(
+      this.resource,
+      {language_id: this.languageId, content_type: this.contentType, modes: [this.mode]},
+    )
+  }
 
-      return null
-    }
+  get index(): number {
+    return findIndexForResourceVariant(
+      this.resource,
+      {language_id: this.languageId, content_type: this.contentType, modes: [this.mode]},
+    )
   }
 }
 export default ResourceEditorCell
