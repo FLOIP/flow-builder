@@ -1,0 +1,10 @@
+{
+  "main" : "flow-2.0.0.js",
+  "devDependencies" : {},
+  "dependencies" : {},
+  "peerDependencies" : {},
+  "optionalDependencies" : {},
+  "bundledDependencies" : [],
+  "name" : "flow",
+  "version" : "2.0.0"
+}
