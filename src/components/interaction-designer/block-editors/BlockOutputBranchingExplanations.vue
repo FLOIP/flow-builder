@@ -42,7 +42,7 @@ export const BlockOutputBranchingExplanations = defineComponent({
       return this.blockClasses[this.blockType]
     },
     explanatoryTexts(): IExplanatoryText[] {
-      return this.blockClass.explanatory_texts
+      return this.blockClass.explanatory_texts ?? [] as IExplanatoryText[]
     },
     definitions() {
       const definitions = []

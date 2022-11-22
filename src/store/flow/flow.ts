@@ -233,9 +233,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
 
     // Clean orphan resources first, eg: old orphan resources, or orphan resource after the import
-    dispatch('flow_removeResourcesAndRelatedValidationsOnActiveFlow', {
-      resourceUuids: getters.orphanResourceUuidsOnActiveFlow ?? [],
-    })
+    dispatch('flow_removeOrphanedResourcesAndRelatedValidationsOnActiveFlow')
 
     try {
       const {data} = await axios[restVerb](persistRoute, omit(cleanupFlowResources(flowContainer, rootGetters['validation/choiceMimeType']), ['isCreated']))
@@ -296,10 +294,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       throw new ValidationException('Unable to delete block absent from flow')
     }
 
-    dispatch('flow_removeResourcesAndRelatedValidationsOnActiveFlow', {
-      resourceUuids: findBlockRelatedResourcesUuids({block}),
-    })
-
     // Remove block & it's validation
     const {blocks} = flow
     blocks.splice(
@@ -307,6 +301,9 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       1,
     )
     commit('validation/removeValidationStatusesFor', {key: `block/${block.uuid}`}, {root: true})
+
+    // remove resources when they become orphaned, i.e. after removing the block
+    dispatch('flow_removeOrphanedResourcesAndRelatedValidationsOnActiveFlow')
 
     // clean up stale references
     // 1. flow.first_block_id
@@ -342,18 +339,21 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
    * @param flowId
    * @param resourceUuids
    */
-  flow_removeResourcesAndRelatedValidationsOnActiveFlow({state, commit, getters, rootGetters}, {resourceUuids}: {resourceUuids: IResource['uuid'][] }) {
-    const flow: IFlow = getters.activeFlow
-    const nonOrphanResourceUuids: IResource['uuid'][] = getters.nonOrphanResourceUuidsOnActiveFlow ?? []
+  async flow_removeResourcesAndRelatedValidationsOnActiveFlow(
+    {commit, getters},
+    {resourceUuids}: {resourceUuids: IResource['uuid'][]},
+  ): Promise<void> {
     console.debug('trying to clean those resources:', resourceUuids)
-    const nonOrphanResourceUuidsToBeDeleted = intersection(nonOrphanResourceUuids, resourceUuids)
-    if (!isEmpty(nonOrphanResourceUuidsToBeDeleted)) {
-      throw new Error(`Unsafe action: trying to delete non orphaned resources ${nonOrphanResourceUuidsToBeDeleted}`)
-    }
+
+    const flow: IFlow = getters.activeFlow
     flow.resources = flow.resources.filter(item => !resourceUuids.includes(item.uuid))
     resourceUuids.forEach(
       uuid => commit('validation/removeValidationStatusesFor', {key: `resource/${uuid}`}, {root: true}),
     )
+  },
+
+  async flow_removeOrphanedResourcesAndRelatedValidationsOnActiveFlow({dispatch, getters}): Promise<void> {
+    await dispatch('flow_removeResourcesAndRelatedValidationsOnActiveFlow', {resourceUuids: getters.orphanResourceUuidsOnActiveFlow})
   },
 
   async flow_addBlankBlockByType({commit, dispatch}, {type, ...props}: Partial<IBlock>): Promise<IBlock> {

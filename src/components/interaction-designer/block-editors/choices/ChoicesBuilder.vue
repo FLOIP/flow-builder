@@ -183,7 +183,8 @@ export class ChoicesBuilder extends mixins(Lang) {
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Action resource_add!: ({resource}: {resource: IResource}) => void
   @flowVuexNamespace.Action resource_createWith!: ({props}: { props: { uuid: string } & Partial<IResource> }) => Promise<IResource>
-  @flowVuexNamespace.Action flow_removeResourcesAndRelatedValidationsOnActiveFlow!: ({resourceUuids}: { resourceUuids: IResource['uuid'][] }) => Promise<void>
+  @flowVuexNamespace.Action flow_removeResourcesAndRelatedValidationsOnActiveFlow!:
+    ({resourceUuids}: { resourceUuids: IResource['uuid'][] }) => Promise<void>
 
   @blockVuexNamespace.Action deleteChoiceByResourceIdFrom!:
     ({blockId, resourceId}: {blockId: IBlock['uuid'], resourceId: IResource['uuid']}) => void
