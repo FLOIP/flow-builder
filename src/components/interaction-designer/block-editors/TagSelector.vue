@@ -46,7 +46,7 @@ import {IBlock} from '@floip/flow-runner'
 import {Component, Prop} from 'vue-property-decorator'
 import {State, namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
-import {map} from 'lodash'
+import {map, uniq} from 'lodash'
 import {mixins} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
@@ -84,7 +84,7 @@ export class TagSelector extends mixins(Lang) {
   }
 
   stringListToOptions(list: string[]): Option[] {
-    return map(list, (value) => ({id: value, name: value}))
+    return map(uniq(list), (value) => ({id: value, name: value}))
   }
 
   addTag(newTag: string): void {
