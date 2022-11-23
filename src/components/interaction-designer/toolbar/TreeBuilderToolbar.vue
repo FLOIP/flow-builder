@@ -94,7 +94,7 @@
               </div>
 
               <div
-                v-if="!ui.isEditableLocked"
+                v-if="!ui.isEditableLocked && !isResourceViewerEnabled"
                 class="btn-group">
                 <router-link
                   v-b-tooltip.hover="trans('flow-builder.click-to-toggle-editing')"
