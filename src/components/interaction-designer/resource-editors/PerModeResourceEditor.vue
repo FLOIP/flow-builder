@@ -62,7 +62,7 @@ import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
 import FlowUploader from '@/lib/mixins/FlowUploader'
-import {Component, Prop} from 'vue-property-decorator'
+import {Component, Prop, Watch} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
@@ -70,6 +70,7 @@ const flowVuexNamespace = namespace('flow')
 @Component({})
 export class PerModeResourceEditor extends mixins(FlowUploader, Permissions, Routes, Lang) {
   @Prop({required: true}) block!: IBlock
+  @Prop({}) openResources?: string[]
 
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Getter supportedModeWithOrderInfo!: {mode: SupportedMode, index: number, order: number}[]
@@ -84,7 +85,34 @@ export class PerModeResourceEditor extends mixins(FlowUploader, Permissions, Rou
     [SupportedMode.OFFLINE, ['fas', 'mobile-alt']],
   ])
 
-  isPanelExpanded = {}
+  expandedPanels = {}
+  expandedPanelsSearch = {}
+
+  get isPanelExpanded() {
+    return this.openResources === undefined
+      ? this.expandedPanels
+      : this.expandedPanelsSearch
+  }
+
+  set isPanelExpanded(value) {
+    if (this.openResources === undefined) {
+      this.expandedPanels = value
+    } else {
+      this.expandedPanelsSearch = value
+    }
+  }
+
+  @Watch('openResources')
+  overrideOpenResources(resources: string[]) {
+    if (resources !== undefined) {
+      this.expandedPanelsSearch = resources.reduce((map, key) => ({
+        ...map,
+        [key]: true,
+      }), {})
+    } else {
+      this.expandedPanelsSearch = {}
+    }
+  }
 
   updateIsPanelExpanded(id) {
     if (this.isPanelExpanded[id] === true) {
