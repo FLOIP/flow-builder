@@ -88,17 +88,21 @@ export class PerModeResourceEditor extends mixins(FlowUploader, Permissions, Rou
   expandedPanels = {}
   expandedPanelsSearch = {}
 
+  get hasOpenPanelsOverriden() {
+    return this.openResources === undefined || this.openResources.length === 0
+  }
+
   get isPanelExpanded() {
-    return this.openResources === undefined
-      ? this.expandedPanels
-      : this.expandedPanelsSearch
+    return this.hasOpenPanelsOverriden
+      ? this.expandedPanelsSearch
+      : this.expandedPanels
   }
 
   set isPanelExpanded(value) {
-    if (this.openResources === undefined) {
-      this.expandedPanels = value
-    } else {
+    if (this.hasOpenPanelsOverriden) {
       this.expandedPanelsSearch = value
+    } else {
+      this.expandedPanels = value
     }
   }
 
