@@ -17,6 +17,7 @@ export declare class PerModeResourceEditor extends PerModeResourceEditor_base {
     iconsMap: Map<string, object>;
     expandedPanels: {};
     expandedPanelsSearch: {};
+    get hasOpenPanelsOverriden(): boolean;
     get isPanelExpanded(): {};
     set isPanelExpanded(value: {});
     overrideOpenResources(resources: string[]): void;
