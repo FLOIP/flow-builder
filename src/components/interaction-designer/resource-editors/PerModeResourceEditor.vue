@@ -85,51 +85,41 @@ export class PerModeResourceEditor extends mixins(FlowUploader, Permissions, Rou
     [SupportedMode.OFFLINE, ['fas', 'mobile-alt']],
   ])
 
-  expandedPanels = {}
-  expandedPanelsSearch = {}
+  expandedPanels: Record<string, boolean> = {}
+  expandedPanelsOverridden: Record<string, boolean> = {}
 
-  get hasOpenPanelsOverridden() {
+  get hasOpenPanelsOverridden(): boolean {
     return this.openResources === undefined || this.openResources.length > 0
   }
 
-  get isPanelExpanded() {
-    return this.hasOpenPanelsOverridden
-      ? this.expandedPanelsSearch
-      : this.expandedPanels
-  }
-
-  set isPanelExpanded(value) {
-    if (this.hasOpenPanelsOverridden) {
-      this.expandedPanelsSearch = value
-    } else {
-      this.expandedPanels = value
-    }
-  }
-
   @Watch('openResources')
-  overrideOpenResources(resources: string[]) {
+  overrideOpenResources(resources: string[]): void {
     if (resources !== undefined) {
-      this.expandedPanelsSearch = resources.reduce((map, key) => ({
+      this.expandedPanelsOverridden = resources.reduce((map, key) => ({
         ...map,
         [key]: true,
       }), {})
     } else {
-      this.expandedPanelsSearch = {}
+      this.expandedPanelsOverridden = {}
     }
   }
 
-  updateIsPanelExpanded(id) {
-    if (this.isPanelExpanded[id] === true) {
-      // redefine to make the data reactive
-      this.isPanelExpanded = {
-        ...this.isPanelExpanded,
-        [id]: false,
+  get isPanelExpanded(): Record<string, boolean> {
+    return this.hasOpenPanelsOverridden
+      ? this.expandedPanelsOverridden
+      : this.expandedPanels
+  }
+
+  updateIsPanelExpanded(id): void {
+    if (this.hasOpenPanelsOverridden) {
+      this.expandedPanelsOverridden = {
+        ...this.expandedPanelsOverridden,
+        [id]: !this.expandedPanelsOverridden[id],
       }
     } else {
-      // redefine to make the data reactive
-      this.isPanelExpanded = {
-        ...this.isPanelExpanded,
-        [id]: true,
+      this.expandedPanels = {
+        ...this.expandedPanels,
+        [id]: !this.expandedPanels[id],
       }
     }
   }
