@@ -5,13 +5,12 @@ declare const _default: {
     name: string;
     mixins: (typeof Lang)[];
     props: {
-        filteredBlocks: {
+        visibleBlocks: {
             type: ArrayConstructor;
             default: () => any;
         };
     };
     computed: {
-        visibleBlocks(): any;
         id(): any;
         activeFlow: import("vuex").Computed;
     };
