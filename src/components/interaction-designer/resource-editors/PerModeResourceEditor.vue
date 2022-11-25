@@ -41,9 +41,9 @@
           </div>
         </div>
         <div
-            v-if="isPanelExpanded[`${block.uuid}-${item.mode}`] === true"
-            :id="`collapse-lang-panel-${block.uuid}-${item.mode}`"
-            class="resource-panel-body p-2 collapse multi-collapse show">
+          v-show="isPanelExpanded[`${block.uuid}-${item.mode}`] === true"
+          :id="`collapse-lang-panel-${block.uuid}-${item.mode}`"
+          class="resource-panel-body p-2 collapse multi-collapse show">
           <per-mode-resource-editor-row
             :block="block"
             :mode="item.mode"
