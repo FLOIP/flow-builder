@@ -15,12 +15,11 @@ export declare class PerModeResourceEditor extends PerModeResourceEditor_base {
     }[];
     SupportedMode: typeof SupportedMode;
     iconsMap: Map<string, object>;
-    expandedPanels: {};
-    expandedPanelsSearch: {};
-    get hasOpenPanelsOverriden(): boolean;
-    get isPanelExpanded(): {};
-    set isPanelExpanded(value: {});
+    expandedPanels: Record<string, boolean>;
+    expandedPanelsOverridden: Record<string, boolean>;
+    get hasOpenPanelsOverridden(): boolean;
     overrideOpenResources(resources: string[]): void;
+    get isPanelExpanded(): Record<string, boolean>;
     updateIsPanelExpanded(id: any): void;
 }
 export default PerModeResourceEditor;
