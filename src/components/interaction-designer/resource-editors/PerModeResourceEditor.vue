@@ -41,9 +41,9 @@
           </div>
         </div>
         <div
-            v-if="isPanelExpanded[`${block.uuid}-${item.mode}`] === true"
-            :id="`collapse-lang-panel-${block.uuid}-${item.mode}`"
-            class="resource-panel-body p-2 collapse multi-collapse show">
+          v-show="isPanelExpanded[`${block.uuid}-${item.mode}`] === true"
+          :id="`collapse-lang-panel-${block.uuid}-${item.mode}`"
+          class="resource-panel-body p-2 collapse multi-collapse show">
           <per-mode-resource-editor-row
             :block="block"
             :mode="item.mode"
@@ -62,7 +62,7 @@ import Lang from '@/lib/filters/lang'
 import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
 import FlowUploader from '@/lib/mixins/FlowUploader'
-import {Component, Prop} from 'vue-property-decorator'
+import {Component, Prop, Watch} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
@@ -70,6 +70,7 @@ const flowVuexNamespace = namespace('flow')
 @Component({})
 export class PerModeResourceEditor extends mixins(FlowUploader, Permissions, Routes, Lang) {
   @Prop({required: true}) block!: IBlock
+  @Prop({}) openResources?: string[]
 
   @flowVuexNamespace.Getter activeFlow!: IFlow
   @flowVuexNamespace.Getter supportedModeWithOrderInfo!: {mode: SupportedMode, index: number, order: number}[]
@@ -84,20 +85,41 @@ export class PerModeResourceEditor extends mixins(FlowUploader, Permissions, Rou
     [SupportedMode.OFFLINE, ['fas', 'mobile-alt']],
   ])
 
-  isPanelExpanded = {}
+  expandedPanels: Record<string, boolean> = {}
+  expandedPanelsOverridden: Record<string, boolean> = {}
 
-  updateIsPanelExpanded(id) {
-    if (this.isPanelExpanded[id] === true) {
-      // redefine to make the data reactive
-      this.isPanelExpanded = {
-        ...this.isPanelExpanded,
-        [id]: false,
+  get hasOpenPanelsOverridden(): boolean {
+    return this.openResources === undefined || this.openResources.length > 0
+  }
+
+  @Watch('openResources')
+  overrideOpenResources(resources: string[]): void {
+    if (resources !== undefined) {
+      this.expandedPanelsOverridden = resources.reduce((map, key) => ({
+        ...map,
+        [key]: true,
+      }), {})
+    } else {
+      this.expandedPanelsOverridden = {}
+    }
+  }
+
+  get isPanelExpanded(): Record<string, boolean> {
+    return this.hasOpenPanelsOverridden
+      ? this.expandedPanelsOverridden
+      : this.expandedPanels
+  }
+
+  updateIsPanelExpanded(id): void {
+    if (this.hasOpenPanelsOverridden) {
+      this.expandedPanelsOverridden = {
+        ...this.expandedPanelsOverridden,
+        [id]: !this.expandedPanelsOverridden[id],
       }
     } else {
-      // redefine to make the data reactive
-      this.isPanelExpanded = {
-        ...this.isPanelExpanded,
-        [id]: true,
+      this.expandedPanels = {
+        ...this.expandedPanels,
+        [id]: !this.expandedPanels[id],
       }
     }
   }
