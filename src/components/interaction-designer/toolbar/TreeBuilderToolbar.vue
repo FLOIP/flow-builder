@@ -94,7 +94,7 @@
               </div>
 
               <div
-                v-if="!ui.isEditableLocked"
+                v-if="!ui.isEditableLocked && !isResourceViewerCanvasEnabled"
                 class="btn-group">
                 <router-link
                   v-b-tooltip.hover="trans('flow-builder.click-to-toggle-editing')"
@@ -123,7 +123,7 @@
               <slot name="extra-buttons" />
             </div>
 
-            <div class="ml-auto mr-2">
+            <div class="ml-auto">
               <button
                 v-if="isBuilderCanvasEnabled && hasSimulator"
                 type="button"
@@ -132,7 +132,7 @@
                 {{ trans('flow-builder.show-clipboard-simulator') }}
               </button>
 
-              <div class="btn-group mr-2">
+              <div class="btn-group">
                 <slot name="right-grouped-buttons" />
               </div>
 
