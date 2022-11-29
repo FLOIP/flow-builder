@@ -41,9 +41,9 @@ import {IValidationStatus} from '@/store/validation'
 import Lang from '@/lib/filters/lang'
 import {ErrorObject} from 'ajv'
 import {Prop} from 'vue-property-decorator'
-import {IBlock, IFlow, IResource, IResources} from '@floip/flow-runner'
+import {IBlock, IFlow, IResource} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
-import {get, map} from 'lodash'
+import {get, map, uniqBy} from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
@@ -58,8 +58,8 @@ export class BlockErrorsExpandable extends mixins(Lang) {
 
   get errorsToShow(): ErrorObject[] {
     return this.isExpanded
-      ? this.allErrors ?? []
-      : this.allErrors?.slice(0, DEFAULT_LIST_SIZE) ?? []
+      ? this.allErrors
+      : this.allErrors.slice(0, DEFAULT_LIST_SIZE)
   }
 
   /**
@@ -114,15 +114,13 @@ export class BlockErrorsExpandable extends mixins(Lang) {
 
   getAjvErrorsFor(type: 'block' | 'resource' | 'backend/block' | 'backend/resource', uuid: string): ErrorObject[] {
     const validationStatus = get(this.validationStatuses, `${type}/${uuid}`)
+    const ajvErrors: ErrorObject[] = validationStatus?.ajvErrors ?? []
 
-    if (validationStatus === undefined || !validationStatus.ajvErrors) {
-      return []
-    }
-
-    return validationStatus.ajvErrors.map((ajvError) => ({
-      ...ajvError,
-      dataPath: `${type}/${uuid}${ajvError.dataPath}`,
-    }))
+    return uniqBy(ajvErrors, ajvError => ajvError.dataPath)
+      .map(ajvError => ({
+        ...ajvError,
+        dataPath: `${type}/${uuid}${ajvError.dataPath}`,
+      }))
   }
 
   toggleList(): void {
