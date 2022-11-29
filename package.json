@@ -5,7 +5,7 @@
   "main": "./dist/flow-builder.common.js",
   "types": "./dist/types/lib.d.ts",
   "files": [
-    "dist/*"
+    "dist/**/*"
   ],
   "scripts": {
     "build": "vue-cli-service build",
