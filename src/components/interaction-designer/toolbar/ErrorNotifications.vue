@@ -75,7 +75,7 @@
 
 <script lang="ts">
 import Lang from '@/lib/filters/lang'
-import {castArray, filter, has, pickBy, size, union} from 'lodash'
+import {castArray, filter, get, pickBy, size, union} from 'lodash'
 import {IValidationStatus} from '@/store/validation'
 import Routes from '@/lib/mixins/Routes'
 import Component, {mixins} from 'vue-class-component'
@@ -118,7 +118,18 @@ export class ErrorNotifications extends mixins(Routes, Lang) {
   }
 
   hasBlockValidationErrors(uuid: string): boolean {
-    return has(this.blockValidationStatuses, `block/${uuid}`) || has(this.blockValidationStatuses, `backend/block/${uuid}`)
+    const frontendValidationStatuses = get(this.blockValidationStatuses, `block/${uuid}`)
+    const backendValidationStatuses = get(this.blockValidationStatuses, `backend/block/${uuid}`)
+    if (frontendValidationStatuses === undefined && backendValidationStatuses === undefined) {
+      return false
+    }
+
+    if ((frontendValidationStatuses?.isValid === true || frontendValidationStatuses?.isValid === undefined)
+      && (backendValidationStatuses?.isValid === true || backendValidationStatuses?.isValid === undefined)) {
+      return false
+    }
+
+    return true
   }
 
   hasResourceValidationErrors(uuidOrUuids: string | string[]): boolean {
