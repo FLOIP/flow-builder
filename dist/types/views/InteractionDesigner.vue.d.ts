@@ -64,6 +64,7 @@ export declare class InteractionDesigner extends InteractionDesigner_base {
     isPureVueBlock(): boolean;
     beforeCreate(): Promise<void>;
     onModeChanged(newMode: string): void;
+    onMainComponentChanged(newMainComponent: string): void;
     setActiveMainComponent: ({ mainComponent }: {
         mainComponent: string | undefined;
     }) => void;
@@ -81,7 +82,6 @@ export declare class InteractionDesigner extends InteractionDesigner_base {
         blockId: IBlock['uuid'] | null;
     }) => void;
     setIsBlockEditorOpen: (value: boolean) => void;
-    updated(): void;
     setInteractionDesignerBoundingClientRect: (value: DOMRect) => void;
     setIsEditable: (arg0: boolean) => void;
     setHasFlowChanges: (arg0: boolean) => void;

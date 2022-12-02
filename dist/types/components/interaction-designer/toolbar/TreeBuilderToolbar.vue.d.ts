@@ -100,9 +100,6 @@ export declare class TreeBuilderToolbar extends TreeBuilderToolbar_base {
     activateBlock: ({ blockId }: {
         blockId: IBlock['uuid'] | null;
     }) => void;
-    setActiveMainComponent: ({ mainComponent }: {
-        mainComponent: string | undefined;
-    }) => void;
     persistFlowAndHandleUiState: () => Promise<IContext | undefined>;
     setSimulatorActive: (value: boolean) => void;
     remove_block_validation: ({ blockId }: {
