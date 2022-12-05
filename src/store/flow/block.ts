@@ -246,13 +246,22 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return {
       ...defaults(props, {
         name: '',
-        vendor_metadata: {},
+        vendor_metadata: await dispatch('block_initiateExtraVendorExitMetadata'),
         // prerequisite for reactivity, even optional params
         destination_block: undefined,
         test: '',
         semantic_label: undefined,
       }),
     }
+  },
+
+  /**
+   * Override this method on the consumer side to add extra vendor metadata to an exit
+   *
+   * @returns {Promise<Partial<IBlockExit['vendor_metadata']>>}
+   */
+  async block_initiateExtraVendorExitMetadata(): Promise<IBlockExit['vendor_metadata']> {
+    return {}
   },
 
   /**
