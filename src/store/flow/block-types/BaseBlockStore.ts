@@ -1,6 +1,6 @@
 import {ActionContext, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock} from '@floip/flow-runner'
+import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {defaultsDeep} from 'lodash'
 import {IValidationStatus, validateBlockWithJsonSchema} from '@/store/validation'
 import {ValidationResults} from '@/lib/validations'
@@ -54,10 +54,16 @@ export const actions = {
 
     // Define exits after we have the whole final props, this is important for dynamic test value
     if (props?.exits === undefined) {
-      mainProps.exits = await dispatch('flow/block_generateExitsBasedOnUiConfig', {
-        blockType: props.type,
-        primaryExitTest: getters.primaryExitTest(mainProps),
-      }, {root: true})
+      mainProps.exits = await Promise.all(
+        (await dispatch('flow/block_generateExitsBasedOnUiConfig', {
+          blockType: props.type,
+          primaryExitTest: getters.primaryExitTest(mainProps),
+        }, {root: true}))
+          .map(async (exit: IBlockExit) => ({
+            ...exit,
+            vendor_metadata: await dispatch('initiateExtraVendorExitMetadata'),
+          })) as Promise<IBlockExit>[],
+      )
     }
 
     return mainProps
@@ -97,6 +103,15 @@ export const actions = {
    * }
    */
   async initiateExtraVendorConfig(_ctx: unknown): Promise<object> {
+    return {}
+  },
+  
+  /**
+   * Override this method on the consumer side to add extra vendor metadata to an exit
+   *
+   * @returns {Promise<Partial<IBlockExit['vendor_metadata']>>}
+   */
+   async initiateExtraVendorExitMetadata(): Promise<IBlockExit['vendor_metadata']> {
     return {}
   },
 
