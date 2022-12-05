@@ -1,6 +1,6 @@
 import { ActionContext, GetterTree, Module, MutationTree } from 'vuex';
 import { IRootState } from '../../../store';
-import { IBlock } from '@floip/flow-runner';
+import { IBlock, IBlockExit } from '@floip/flow-runner';
 import { IValidationStatus } from '../../../store/validation';
 import { ValidationResults } from '../../../lib/validations';
 export interface IEmptyState {
@@ -34,6 +34,12 @@ export declare const actions: {
      * }
      */
     initiateExtraVendorConfig(_ctx: unknown): Promise<object>;
+    /**
+     * Override this method on the consumer side to add extra vendor metadata to an exit
+     *
+     * @returns {Promise<Partial<IBlockExit['vendor_metadata']>>}
+     */
+    initiateExtraVendorExitMetadata(): Promise<IBlockExit['vendor_metadata']>;
     /**
      * Validate the Consumer block
      * By overriding this action in the consumer side, we will be able to customize it using different json schema for eg.
