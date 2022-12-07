@@ -90,6 +90,11 @@ export const mutations: MutationTree<IFlowsState> = {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     block.exits = reject(block.exits, (e) => e.uuid === exit.uuid)
   },
+  block_updateExitVendorMetadata(state, {blockId, exitId, vendorMetadata}: {blockId: string, exitId: string, vendorMetadata: object}) {
+    const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
+    const exit = findBlockExitWith(exitId, block)
+    exit.vendor_metadata = vendorMetadata
+  },
 
   block_updateConfig(state, {blockId, newConfig}: { blockId: string, newConfig: object }) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
