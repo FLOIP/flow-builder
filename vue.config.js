@@ -124,7 +124,7 @@ module.exports = {
         const container = req.body
         res.writeHead(200, { 'Content-Type': 'application/json' })
         console.debug('Simulating flow creation ...')
-        res.end(JSON.stringify(container))
+        res.end(JSON.stringify({data: container}))
       })
       // To persist flow import via "import flow page"
       // In the success case, just echo the flow back: the response might have multiple data, but we fetch from createdContainer

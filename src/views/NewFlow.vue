@@ -99,7 +99,7 @@ class NewFlow extends mixins(Lang, Routes) {
     }
 
     this.flowError = null
-    const flowContainer = await this.flow_persist({
+    const {data: flowContainer} = await this.flow_persist({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore TODO: Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
       persistRoute: this.route('flows.persistFlow', {}),
