@@ -104,6 +104,15 @@ export const actions = {
   async initiateExtraVendorConfig(_ctx: unknown): Promise<object> {
     return {}
   },
+  
+  /**
+   * Override this method on the consumer side to add extra vendor metadata to an exit
+   *
+   * @returns {Promise<Partial<IBlockExit['vendor_metadata']>>}
+   */
+   async initiateExtraVendorExitMetadata(): Promise<IBlockExit['vendor_metadata']> {
+    return {}
+  },
 
   /**
    * Override this method on the consumer side to add extra vendor metadata to an exit
