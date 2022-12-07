@@ -60,7 +60,12 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/FlowContainer'
+              type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FlowContainer'
         required: true
       responses:
         200:
@@ -97,7 +102,12 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/FlowContainer'
+              type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FlowContainer'
         required: true
       responses:
         200:

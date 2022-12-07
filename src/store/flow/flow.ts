@@ -198,7 +198,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       return getters.activeFlowContainer
     }
     try {
-      const {data: {createdContainer}} = await axios[restVerb](persistRoute, omit(flowContainer, ['isCreated']))
+      const {data: {createdContainer}} = await axios[restVerb](
+        persistRoute,
+        {data: omit(flowContainer, ['isCreated'])},
+      )
 
       commit('flow_setFlowContainer', createdContainer)
       // commit('flow_setFlowContainer', data)
@@ -236,7 +239,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     dispatch('flow_removeOrphanedResourcesAndRelatedValidationsOnActiveFlow')
 
     try {
-      const {data: {data: container}} = await axios[restVerb](persistRoute, omit(cleanupFlowResources(flowContainer, rootGetters['validation/choiceMimeType']), ['isCreated']))
+      const {data: {data: container}} = await axios[restVerb](
+        persistRoute,
+        {data: omit(cleanupFlowResources(flowContainer, rootGetters['validation/choiceMimeType']), ['isCreated'])},
+      )
       commit('flow_setFlowContainer', container)
       commit('flow_updateCreatedState', true)
       dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
