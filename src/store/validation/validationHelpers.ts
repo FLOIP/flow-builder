@@ -143,7 +143,16 @@ function getLocalizedErrorMessage(keyPrefix: string, ajvErrorObject: ErrorObject
   const hasTranslation = localizedMessage !== localizationKey
 
   if (!hasTranslation) {
-    console.warn(`Error message not localized: ${localizationKey}`, JSON.parse(JSON.stringify(ajvErrorObject)))
+    console.warn(
+      `Error message not localized: ${localizationKey}`,
+      {
+        dataPath: ajvErrorObject.dataPath,
+        keyword: ajvErrorObject.keyword,
+        message: ajvErrorObject.message,
+        params: ajvErrorObject.params,
+        schemaPath: ajvErrorObject.schemaPath,
+      },
+    )
     return ajvErrorObject.message ?? ''
   }
 
