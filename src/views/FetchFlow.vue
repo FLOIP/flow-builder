@@ -64,7 +64,7 @@ class FetchFlow extends mixins(Routes, Lang) {
     const urlParams = url.searchParams.toString()
     const baseFetchRoute = this.route('flows.fetchFlowServer', {flowId: this.uuid})
     const fetchRoute = `${baseFetchRoute}?${urlParams}`
-    const flowContainer = await this.flow_fetch({fetchRoute})
+    const {data: flowContainer} = await this.flow_fetch({fetchRoute})
     if (flowContainer) {
       this.flow_setActiveFlowId({flowId: this.uuid})
       if (nextUrl) {

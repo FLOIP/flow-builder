@@ -35,7 +35,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FlowContainer'
+                type: object
+                  required:
+                    - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/FlowContainer'
         404:
           description: Flow not found
           content: {}
@@ -66,7 +71,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FlowContainer'
+                type: object
+                  required:
+                    - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/FlowContainer'
         500:
           description: Error in flow creation including validation errors (the builder
             should prevent these client side before we get to that point though)
@@ -98,7 +108,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FlowContainer'
+                type: object
+                  required:
+                    - data
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/FlowContainer'
         500:
           description: Error in flow update including validation errors.
             The builder should prevent these client side before we get to that point but that cannot always be done due to race conditions around concurrent use.

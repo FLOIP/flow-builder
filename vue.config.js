@@ -112,10 +112,10 @@ module.exports = {
         try {
           const flow = fs.readFileSync(`src/store/builder/${req.params.id}-flow.json`)
           res.writeHead(200, { 'Content-Type': 'application/json' })
-          res.end(flow)
+          res.end({data: flow})
         } catch (err) {
           res.writeHead(404, { 'Content-Type': 'application/json' })
-          res.end("Flow not found")
+          res.end({errors: "Flow not found"})
         }
       })
       // To persist new flow via "new flow page"
