@@ -213,7 +213,7 @@ class ImportFlow extends mixins(Lang, Routes) {
   }: { persistRoute: string, flowContainer: IContext }) => Promise<IContext>
 
   async handleImportFlow(route: string) {
-    const {data: flowContainer} = await this.flow_persistImport({
+    const flowContainer = await this.flow_persistImport({
       // @ts-ignore - Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
       persistRoute: this.route('flows.persistFlowImport', {}),
       flowContainer: this.flowContainer,

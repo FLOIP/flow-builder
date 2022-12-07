@@ -112,10 +112,10 @@ module.exports = {
         try {
           const flow = fs.readFileSync(`src/store/builder/${req.params.id}-flow.json`)
           res.writeHead(200, { 'Content-Type': 'application/json' })
-          res.end({data: flow})
+          res.end(JSON.stringify({data: flow}))
         } catch (err) {
           res.writeHead(404, { 'Content-Type': 'application/json' })
-          res.end({errors: "Flow not found"})
+          res.end(JSON.stringify({errors: "Flow not found"}))
         }
       })
       // To persist new flow via "new flow page"
@@ -124,7 +124,8 @@ module.exports = {
         const container = req.body
         res.writeHead(200, { 'Content-Type': 'application/json' })
         console.debug('Simulating flow creation ...')
-        res.end(JSON.stringify({data: container}))
+        res.write(JSON.stringify({data: container}))
+        res.end()
       })
       // To persist flow import via "import flow page"
       // In the success case, just echo the flow back: the response might have multiple data, but we fetch from createdContainer
@@ -192,7 +193,8 @@ module.exports = {
         } else {
           console.debug('No block found to simulate backend validation, on this container:', container)
         }
-        res.end(JSON.stringify(container))
+        res.write(JSON.stringify({data: container}))
+        res.end()
       })
 
       //In the success case, just echo the language back

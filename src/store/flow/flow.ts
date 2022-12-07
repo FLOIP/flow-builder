@@ -236,8 +236,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     dispatch('flow_removeOrphanedResourcesAndRelatedValidationsOnActiveFlow')
 
     try {
-      const {data} = await axios[restVerb](persistRoute, omit(cleanupFlowResources(flowContainer, rootGetters['validation/choiceMimeType']), ['isCreated']))
-      commit('flow_setFlowContainer', data)
+      const {data: {data: container}} = await axios[restVerb](persistRoute, omit(cleanupFlowResources(flowContainer, rootGetters['validation/choiceMimeType']), ['isCreated']))
+      commit('flow_setFlowContainer', container)
       commit('flow_updateCreatedState', true)
       dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
       return getters.activeFlowContainer
@@ -255,10 +255,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       return getters.activeFlow
     }
     try {
-      const {data} = await axios.get(fetchRoute)
-      commit('flow_setFlowContainer', data)
+      const {data: {data: container}} = await axios.get(fetchRoute)
+      commit('flow_setFlowContainer', container)
       commit('flow_updateCreatedState', true)
-      return data
+      return container
     } catch (error) {
       console.info(`Server error fetching flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
       return null
