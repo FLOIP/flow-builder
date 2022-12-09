@@ -1,20 +1,20 @@
 <template>
   <div
-    v-if="orderedSupportedModes.length > 0"
+    v-if="modes.length > 0"
     class="per-mode-resource-editor">
     <div class="d-flex flex-column">
       <div
-        v-for="(mode, modeIndex) in orderedSupportedModes"
-        :key="modeIndex"
+        v-for="(mode, modeIndex) in modes"
+        :key="mode"
         :class="{
           'radius-on-top': modeIndex === 0,
-          'radius-on-bottom': modeIndex === orderedSupportedModes.length - 1
+          'radius-on-bottom': modeIndex === modes.length - 1
         }"
         class="resource-panel">
         <div
           :class="{
             'radius-on-top': modeIndex === 0,
-            'radius-on-bottom': modeIndex === orderedSupportedModes.length - 1,
+            'radius-on-bottom': modeIndex === modes.length - 1,
           }"
           class="resource-panel-heading p-2 d-flex"
           @click="updateIsPanelExpanded(`${block.uuid}-${mode}`)">
@@ -34,8 +34,7 @@
           <div class="ml-auto">
             <slot
               name="right"
-              :mode="mode"
-              :mode-index="modeIndex" />
+              :mode="mode" />
             <font-awesome-icon
               :icon="[
                 'fas',
@@ -51,7 +50,6 @@
           <per-mode-resource-editor-row
             :block="block"
             :mode="mode"
-            :mode-index="modeIndex"
             @change="$emit('change')" />
         </div>
       </div>
@@ -68,6 +66,7 @@ import Routes from '@/lib/mixins/Routes'
 import FlowUploader from '@/lib/mixins/FlowUploader'
 import {Component, Prop, Watch} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
+import {orderModes} from '@/store/flow/flow'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -77,9 +76,11 @@ export class PerModeResourceEditor extends mixins(FlowUploader, Permissions, Rou
   @Prop({}) openResources?: string[]
 
   @flowVuexNamespace.Getter activeFlow!: IFlow
-  @flowVuexNamespace.Getter orderedSupportedModes!: SupportedMode[]
 
-  SupportedMode = SupportedMode
+  get modes(): SupportedMode[] {
+    return orderModes(this.activeFlow.supported_modes)
+  }
+
   iconsMap = new Map<string, object>([
     [SupportedMode.SMS, ['fac', 'message']],
     [SupportedMode.TEXT, ['fac', 'text']],

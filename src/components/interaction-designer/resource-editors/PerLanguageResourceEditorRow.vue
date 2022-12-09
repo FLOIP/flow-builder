@@ -4,8 +4,8 @@
     v-if="resource"
     class="per-language-resource-editor-row d-flex flex-column">
     <div
-      v-for="(mode, modeIndex) in orderedSupportedModes"
-      :key="modeIndex"
+      v-for="mode in modes"
+      :key="mode"
       class="mbx-4">
       <header class="d-flex mb-2">
         <font-awesome-icon
@@ -23,9 +23,7 @@
         :block="block"
         :content-type="contentType"
         :language-id="languageId"
-        :language-index="languageIndex"
-        :mode="mode"
-        :mode-index="modeIndex" />
+        :mode="mode" />
     </div>
   </div>
 </template>
@@ -38,14 +36,9 @@ import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
 import FlowUploader from '@/lib/mixins/FlowUploader'
 import {namespace} from 'vuex-class'
-import {
-  IBlock,
-  IResource,
-  SupportedContentType,
-  SupportedMode,
-} from '@floip/flow-runner'
-
+import {IBlock, IFlow, IResource, SupportedMode} from '@floip/flow-runner'
 import {discoverContentTypesFor} from '@/store/flow/utils/resourceHelpers'
+import {orderModes} from '@/store/flow/flow'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
@@ -53,11 +46,8 @@ const builderVuexNamespace = namespace('builder')
 @Component({})
 export class PerLanguageResourceEditorRow extends mixins(FlowUploader, Permissions, Routes, Lang) {
   @Prop({required: true}) block!: IBlock
-  @Prop({required: true}) languageIndex!: string
   @Prop({required: true}) languageId!: string
 
-  SupportedMode = SupportedMode
-  SupportedContentType = SupportedContentType
   iconsMap = new Map<string, object>([
     [SupportedMode.SMS, ['fac', 'message']],
     [SupportedMode.TEXT, ['fac', 'text']],
@@ -69,10 +59,14 @@ export class PerLanguageResourceEditorRow extends mixins(FlowUploader, Permissio
 
   discoverContentTypesFor = discoverContentTypesFor
   @flowVuexNamespace.Getter resourcesByUuidOnActiveFlow!: { [key: string]: IResource }
-  @flowVuexNamespace.Getter orderedSupportedModes!: SupportedMode[]
+  @flowVuexNamespace.Getter activeFlow: IFlow
 
   get resource(): IResource {
     return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
+  }
+
+  get modes(): SupportedMode[] {
+    return orderModes(this.activeFlow.supported_modes)
   }
 }
 export default PerLanguageResourceEditorRow

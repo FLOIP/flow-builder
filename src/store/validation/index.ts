@@ -149,7 +149,7 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
   },
 
   /**
-   * Validate block/resource form backend, pick info from active flow's vendor_metadata:
+   * Validate block/resource from backend, using info from active flow's vendor_metadata:
    * floip: {
    *   ui_metadata:{
    *      validation_results: {
@@ -173,7 +173,7 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
 
     // New validations
     const backendErrorsList = get(
-    rootGetters['flow/activeFlow']?.vendor_metadata?.floip?.ui_metadata?.validation_results,
+      rootGetters['flow/activeFlow']?.vendor_metadata?.floip?.ui_metadata?.validation_results,
       `${type}s`,
       {},
     ) as Record<string, {message: string}[]>

@@ -9,10 +9,9 @@ import {
   SupportedContentType,
   SupportedMode,
 } from '@floip/flow-runner'
-import {cloneDeep, difference, find, findIndex, isEmpty, isEqual, map, pick, without} from 'lodash'
+import {cloneDeep, difference, find, isEmpty, isEqual, map, pick, without} from 'lodash'
 import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/ValidationException'
 
-export type IResourceVariantFilter = Partial<IResourceDefinitionVariantOverModes>
 export type IResourceDefinitionVariantOverModesFilter = Partial<IResourceDefinitionVariantOverModes>
 export type IResourceDefinitionVariantOverModesFilterAsKey = Omit<IResourceDefinitionVariantOverModes, 'value'>
 
@@ -68,25 +67,16 @@ export function findResourceVariantOverModesOn(
   return variant
 }
 
-/**
- * The same as findResourceVariantOverModesOn but returns resource variant's index (in the resource.values array)
- * instead of the variant's value. Returns -1 if not found.
- */
+/** @returns resource variant's index in the resource.values array, -1 if not found */
 export function findIndexForResourceVariant(
   resource: IResource,
-  filter: IResourceVariantFilter,
+  filter: IResourceDefinitionVariantOverModesFilter,
 ): number {
-  return findIndex(resource.values, variant =>
-    // Override variant fields with filter fields, sort modes to ignore their order.
-    // If it remains equal, it means the variant had the same values as the filter, and we've got a match.
-    isEqual({
-      ...variant,
-      modes: variant.modes.sort(),
-    }, {
-      ...variant,
-      ...filter,
-      modes: filter.modes?.sort(),
-    }))
+  const keysForComparison = without(Object.keys(filter), 'modes')
+  const filterWithComparatorKeys = pick(filter, keysForComparison)
+  return resource.values.findIndex(v =>
+    isEqual(filterWithComparatorKeys, pick(v, keysForComparison))
+    && difference(filter.modes, v.modes).length === 0)
 }
 
 export function findOrGenerateStubbedVariantFor(

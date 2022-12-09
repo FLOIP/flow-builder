@@ -76,11 +76,7 @@ import {
   SupportedContentType,
   SupportedMode,
 } from '@floip/flow-runner'
-
-import {
-  findIndexForResourceVariant,
-  findOrGenerateStubbedVariantOn,
-} from '@/store/flow/utils/resourceHelpers'
+import {findIndexForResourceVariant, findOrGenerateStubbedVariantOn} from '@/store/flow/utils/resourceHelpers'
 import {
   IAudioFile,
   IResourceDefinitionVariantOverModesWithOptionalValue,

@@ -16,18 +16,14 @@ import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV
 import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {castArray, cloneDeep, defaults, every, forEach, get, has, includes, intersection, isEmpty, merge, omit, sortBy} from 'lodash'
-import {cleanupFlowResources, discoverContentTypesFor, findBlockRelatedResourcesUuids} from '@/store/flow/utils/resourceHelpers'
+import {castArray, clone, cloneDeep, defaults, difference, every, forEach, get, has, includes, merge, omit, sortBy} from 'lodash'
+import {cleanupFlowResources, discoverContentTypesFor} from '@/store/flow/utils/resourceHelpers'
 import {computeBlockCanvasCoordinates} from '@/store/builder'
 import {ErrorObject} from 'ajv'
 import {removeFlowValueByPath, updateFlowValueByPath} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
 import {ConfigFieldType} from '@/store/flow/block'
 import {IFlowsState} from '.'
 import {mergeFlowContainer} from './utils/importHelpers'
-
-export function orderLanguages(LanguagesList: ILanguage[]): ILanguage[] {
-  return sortBy(LanguagesList, ['label'])
-}
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   //We allow for an attempt to get a flow which doesn't yet exist in the state - e.g. the first_flow_id doesn't correspond to a flow
@@ -81,21 +77,6 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
   hasVoiceMode: (state, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.IVR),
   hasOfflineMode: (state, getters) => includes(getters.activeFlow.supported_modes || [], SupportedMode.OFFLINE),
   currentFlowsState: (state) => state,
-
-  /**
-   * Sort supported modes to display them in a particular order
-   */
-  orderedSupportedModes: (state, getters) => {
-    const order = [
-      SupportedMode.IVR,
-      SupportedMode.SMS,
-      SupportedMode.USSD,
-      SupportedMode.TEXT,
-      SupportedMode.RICH_MESSAGING,
-      SupportedMode.OFFLINE,
-    ]
-    return sortBy(getters.activeFlow.supported_modes, (item: SupportedMode) => order.indexOf(item))
-  },
 }
 
 export const mutations: MutationTree<IFlowsState> = {
@@ -328,7 +309,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
    * Clean flow resources & related validations
    * @param state
    * @param commit
-   * @param flowId
    * @param resourceUuids
    */
   async flow_removeResourcesAndRelatedValidationsOnActiveFlow(
@@ -393,8 +373,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   async flow_createBlankResourceForEnabledModesAndLangs({rootState, dispatch}): Promise<IResource> {
     // Let's create all languages, we might need them but if they are switched off they just don't get used
-    // It's important to use the same order to generate resource, that will be helpful for resource validation indexes
-    const values: IResourceValue[] = orderLanguages(rootState.trees.ui.languages as ILanguage[])
+    const values: IResourceValue[] = (rootState.trees.ui.languages as ILanguage[])
       .reduce((memo: IResourceValue[], language: ILanguage) => {
       // Let's just create all the modes, we might need them but if they are switched off they just don't get used
       Object.values(SupportedMode).forEach((mode: SupportedMode) => {
@@ -537,4 +516,53 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
     state.selectedBlocks = newBlocksUuid
   },
+
+  async flow_updateModes({state, getters, commit, dispatch}, {flowId, newModes}: {flowId: string, newModes: SupportedMode[]}) {
+    const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
+    commit('flow_setSupportedMode', {flowId, value: newModes})
+
+    await dispatch('flow_addMissingResourceValues')
+    await dispatch('validation/validate_allBlocksWithinFlow', null, {root: true})
+    await dispatch('validation/validate_resourcesOnSupportedValues', {
+      resources: flow.resources,
+      supportedModes: flow.supported_modes,
+      supportedLanguages: flow.languages,
+    }, {root: true})
+  },
+
+  async flow_updateLanguages({state, getters, commit, dispatch}, {flowId, newLanguages}: {flowId: string, newLanguages: ILanguage[]}) {
+    const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
+    const oldLanguages = clone(flow.languages)
+    commit('flow_setLanguages', {flowId, value: newLanguages})
+
+    await dispatch('flow_addMissingResourceValues')
+    await dispatch('block_updateBlocksAfterLanguagesChange', {
+      addedLanguageIds: difference(newLanguages, oldLanguages).map(lang => lang.id),
+      removedLanguageIds: difference(oldLanguages, newLanguages).map(lang => lang.id),
+    })
+    await dispatch('validation/validate_allBlocksWithinFlow', null, {root: true})
+    await dispatch('validation/validate_resourcesOnSupportedValues', {
+      resources: flow.resources,
+      supportedModes: flow.supported_modes,
+      supportedLanguages: flow.languages,
+    }, {root: true})
+  },
+}
+
+/** Sort languages to display them in a particular order */
+export function orderLanguages(languages: ILanguage[]): ILanguage[] {
+  return sortBy(languages, ['label'])
+}
+
+/** Sort modes to display them in a particular order */
+export function orderModes(modes: SupportedMode[]): SupportedMode[] {
+  const order = [
+    SupportedMode.IVR,
+    SupportedMode.SMS,
+    SupportedMode.USSD,
+    SupportedMode.TEXT,
+    SupportedMode.RICH_MESSAGING,
+    SupportedMode.OFFLINE,
+  ]
+  return sortBy(modes, (item: SupportedMode) => order.indexOf(item))
 }

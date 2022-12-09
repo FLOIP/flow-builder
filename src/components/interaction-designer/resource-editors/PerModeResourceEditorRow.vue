@@ -4,7 +4,7 @@
     v-if="resource"
     class="per-mode-resource-editor-row d-flex flex-wrap">
     <div
-      v-for="({id: languageId, label: language}, languageIndex) in activeFlow.languages"
+      v-for="({id: languageId, label: language}) in languages"
       :key="languageId"
       class="col-3">
       <header class="d-flex">
@@ -19,9 +19,7 @@
         :block="block"
         :content-type="contentType"
         :language-id="languageId"
-        :language-index="languageIndex"
         :mode="mode"
-        :mode-index="modeIndex"
         @change="$emit('change')" />
     </div>
   </div>
@@ -35,12 +33,9 @@ import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
 import FlowUploader from '@/lib/mixins/FlowUploader'
 import {namespace} from 'vuex-class'
-import {
-  IBlock,
-  IFlow,
-  IResource,
-} from '@floip/flow-runner'
+import {IBlock, IFlow, ILanguage, IResource} from '@floip/flow-runner'
 import {discoverContentTypesFor} from '@/store/flow/utils/resourceHelpers'
+import {orderLanguages} from '@/store/flow/flow'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
@@ -48,14 +43,18 @@ const builderVuexNamespace = namespace('builder')
 @Component({})
 export class PerModeResourceEditorRow extends mixins(FlowUploader, Permissions, Routes, Lang) {
   @Prop({required: true}) block!: IBlock
-  @Prop({required: true}) modeIndex!: string
   @Prop({required: true}) mode!: string
 
   discoverContentTypesFor = discoverContentTypesFor
   @flowVuexNamespace.Getter resourcesByUuidOnActiveFlow!: { [key: string]: IResource }
   @flowVuexNamespace.Getter activeFlow!: IFlow
+
   get resource(): IResource {
     return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
+  }
+
+  get languages(): ILanguage[] {
+    return orderLanguages(this.activeFlow.languages ?? [])
   }
 }
 export default PerModeResourceEditorRow
