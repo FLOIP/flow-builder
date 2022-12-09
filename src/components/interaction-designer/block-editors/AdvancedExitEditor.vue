@@ -13,6 +13,11 @@
           :placeholder="trans('flow-builder.advanced-exit-name-placeholder')"
           class="form-control"
           rows="1" />
+        <button
+          class="btn btn-outline-primary ml-3"
+          @click="$emit('deleteExit', exit)">
+          <font-awesome-icon :icon="['far', 'trash-alt']" />
+        </button>
       </div>
       <h6 class="mt-2">
         {{ trans('flow-builder.test-expression') }}

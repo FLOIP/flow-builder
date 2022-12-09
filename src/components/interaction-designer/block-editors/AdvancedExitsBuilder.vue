@@ -13,19 +13,10 @@
           :label="(i + 1).toString()"
           class="advanced-block-exit-builder-item mb-2"
           @afterExitTestChanged="handleExitChanged(exit, i)"
-          @afterExitNameChanged="handleExitChanged(exit, i)" />
+          @afterExitNameChanged="handleExitChanged(exit, i)"
+          @deleteExit="handleDeleteExit" />
       </div>
     </template>
-
-    <advanced-exit-editor
-      v-if="draftExit"
-      ref="draftExitEditor"
-      :block="block"
-      :exit="draftExit"
-      :label="block.exits.length.toString()"
-      class="advanced-block-exit-builder-item mb-3"
-      @beforeExitTestChanged="addDraftExitToBlock"
-      @beforeExitNameChanged="addDraftExitToBlock" />
 
     <input
       class="btn btn-outline-primary btn-sm w-100"
@@ -111,6 +102,10 @@ export class AdvancedExitsBuilder extends mixins(Lang) {
 
   getTestInputFrom(exitEditor?: Vue): HTMLInputElement {
     return (exitEditor?.$refs.testExpressionInput as Vue).$refs.input as HTMLInputElement
+  }
+
+  handleDeleteExit(exit: IBlockExit): void {
+    this.block_removeExit({blockId: this.block.uuid, exit})
   }
 
   @flowVuexNamespace.Mutation block_addExit!: ({blockId, exit}: {blockId: IBlock['uuid'], exit: IBlockExit}) => void
