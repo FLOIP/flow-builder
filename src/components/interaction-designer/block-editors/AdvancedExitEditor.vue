@@ -4,8 +4,7 @@
       <div class="input-group">
         <div class="input-group-prepend bg-grey">
           <span class="input-group-text">
-            <!-- TODO: CORE-19 Should this be `Exit` or Index? -->
-            {{ label ?? trans('flow-builder.exit') }}
+            {{ label }}
           </span>
         </div>
         <textarea
