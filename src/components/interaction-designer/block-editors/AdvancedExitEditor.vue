@@ -1,24 +1,6 @@
 <template>
-  <div class="advanced-exit-editor remove-margin-left-right">
+  <div class="advanced-exit-editor remove-margin-left-right bg-grey pt-2 pb-1">
     <div class="put-back-margin-left-right">
-      <div class="input-group">
-        <div class="input-group-prepend bg-grey">
-          <span class="input-group-text">
-            {{ label }}
-          </span>
-        </div>
-        <textarea
-          ref="name"
-          v-model="name"
-          :placeholder="trans('flow-builder.advanced-exit-name-placeholder')"
-          class="form-control"
-          rows="1" />
-        <button
-          class="btn btn-outline-primary ml-3"
-          @click="$emit('deleteExit', exit)">
-          <font-awesome-icon :icon="['far', 'trash-alt']" />
-        </button>
-      </div>
       <h6 class="mt-2">
         {{ trans('flow-builder.test-expression') }}
       </h6>
@@ -27,12 +9,23 @@
           <expression-input
             ref="testExpressionInput"
             label=""
-            :placeholder="trans('flow-builder.advanced-exit-expression-placeholder')"
+            :placeholder="'flow-builder.advanced-exit-expression-placeholder' | trans"
             :current-expression="test"
             :rows="1"
+            :prepend-text="label"
             @commitExpressionChange="commitExpressionChange" />
         </template>
       </validation-message>
+
+      <h6 class="mt-2">
+        {{ 'flow-builder.advanced-exit-name' | trans }}
+      </h6>
+      <textarea
+        ref="name"
+        v-model="name"
+        :placeholder="'flow-builder.advanced-exit-name-placeholder' | trans"
+        class="form-control"
+        rows="1" />
     </div>
   </div>
 </template>
