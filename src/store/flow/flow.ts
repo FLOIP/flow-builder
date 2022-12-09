@@ -209,6 +209,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
       return getters.activeFlowContainer
     } catch (error) {
+      console.error('Server error persisting flow:', error)
       commit('flow_updateCreatedState', oldCreatedState)
       commit('validation/pushAjvErrorToValidationStatuses', {
         key: 'container_import',
@@ -218,7 +219,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
           message: error.response.data?.error ?? error.response.data,
         } as ErrorObject,
       }, {root: true})
-      console.error(`Server error persisting flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
       return null
     }
   },
