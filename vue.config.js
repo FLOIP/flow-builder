@@ -133,7 +133,7 @@ module.exports = {
         const container = req.body?.data
         console.debug('Simulating flow import ...', container)
         res.writeHead(200, { 'Content-Type': 'application/json' })
-        res.end(JSON.stringify({message: 'anything', createdContainer: container}))
+        res.end(JSON.stringify({message: 'anything', data: container}))
         // For dev: to simulate a failure, just uncomment the follow 02 lines, and comment the 02 previous lines for status 200
         // and re-serve the app. Then test an import.
         // res.writeHead(500, { 'Content-Type': 'application/json' })

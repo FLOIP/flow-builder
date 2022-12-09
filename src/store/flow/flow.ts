@@ -198,7 +198,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       return getters.activeFlowContainer
     }
     try {
-      const {data: {createdContainer}} = await axios[restVerb](
+      const {data: {data: createdContainer}} = await axios[restVerb](
         persistRoute,
         {data: omit(flowContainer, ['isCreated'])},
       )
