@@ -24,6 +24,12 @@
       class="advanced-block-exit-builder-item mb-3"
       @beforeExitTestChanged="addDraftExitToBlock"
       @beforeExitNameChanged="addDraftExitToBlock" />
+
+    <input
+      class="btn btn-outline-primary btn-sm w-100"
+      type="button"
+      :value="trans('flow-builder.btn-add-exit')"
+      @click="addDraftExitToBlock">
   </div>
 </template>
 
@@ -60,7 +66,7 @@ export class AdvancedExitsBuilder extends mixins(Lang) {
         'interaction-designer/block-editors/AdvancedExitsBuilder',
         'Unable to add absent draft exit to block.',
         {block: this.block},
-)
+      )
       return
     }
 
