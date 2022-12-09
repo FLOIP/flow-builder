@@ -43,7 +43,7 @@ export class ModesEditor extends mixins(Lang) {
   }
 
   @State(state => state.trees.ui.supportedModes) availableModes: SupportedMode[]
-  @flowNamespace.Action flow_updateModes!: (value: SupportedMode[]) => void
+  @flowNamespace.Action flow_updateModes!: (args: {flowId: string, newModes: SupportedMode[]}) => void
 }
 
 export default ModesEditor

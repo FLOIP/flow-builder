@@ -16,7 +16,22 @@ import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV
 import moment from 'moment'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {castArray, clone, cloneDeep, defaults, difference, every, forEach, get, has, includes, merge, omit, sortBy} from 'lodash'
+import {
+  castArray,
+  clone,
+  cloneDeep,
+  defaults,
+  difference,
+  every,
+  forEach,
+  get,
+  has,
+  includes,
+  intersection,
+  merge,
+  omit,
+  sortBy,
+} from 'lodash'
 import {cleanupFlowResources, discoverContentTypesFor} from '@/store/flow/utils/resourceHelpers'
 import {computeBlockCanvasCoordinates} from '@/store/builder'
 import {ErrorObject} from 'ajv'
@@ -366,31 +381,29 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return resource
   },
   async flow_addBlankResourceForEnabledModesAndLangs({dispatch}): Promise<IResource> {
-    const resource = await dispatch('flow_createBlankResourceForEnabledModesAndLangs')
+    const resource = await dispatch('flow_createBlankResource')
     dispatch('resource_add', {resource})
     return resource
   },
 
-  async flow_createBlankResourceForEnabledModesAndLangs({rootState, dispatch}): Promise<IResource> {
-    // Let's create all languages, we might need them but if they are switched off they just don't get used
-    const values: IResourceValue[] = (rootState.trees.ui.languages as ILanguage[])
-      .reduce((memo: IResourceValue[], language: ILanguage) => {
-      // Let's just create all the modes, we might need them but if they are switched off they just don't get used
-      Object.values(SupportedMode).forEach((mode: SupportedMode) => {
+  async flow_createBlankResource({getters, dispatch}): Promise<IResource> {
+    const activeFlow: IFlow = getters.activeFlow
+    const modes = activeFlow.supported_modes
+    const languageIds = activeFlow.languages.map(language => language.id)
+
+    const values: IResourceValue[] = []
+    languageIds.forEach(languageId => {
+      modes.forEach(mode => {
         discoverContentTypesFor(mode)?.forEach((contentType) => {
-          memo.push({
-            language_id: language.id,
+          values.push({
+            language_id: languageId,
             value: '',
             content_type: contentType,
-            modes: [
-              mode,
-            ],
+            modes: [mode],
           })
         })
       })
-
-      return memo
-    }, [])
+    })
 
     return dispatch('resource_createWith', {
       props: {
@@ -400,12 +413,26 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
-  flow_addMissingResourceValues({getters, rootGetters, dispatch}): void {
+  /** add (or remove) resource values, e.g. if a language or mode is added (or removed) from the flow */
+  async flow_updateResourceValues({getters, rootGetters, dispatch}): Promise<void> {
     const activeFlow: IFlow = getters.activeFlow
     const resources = activeFlow.resources
     const modes = activeFlow.supported_modes
     const languages = activeFlow.languages.map(language => language.id)
 
+    const promises: Promise<void>[] = []
+
+    // remove unused variants
+    resources.forEach(resource => {
+      const variantsToRemove = resource.values.filter(variant => {
+        const hasUnusedLanguage = !languages.includes(variant.language_id)
+        const hasUnusedModes = intersection(variant.modes, modes).length === 0
+        return (hasUnusedLanguage || hasUnusedModes)
+      })
+      promises.push(dispatch('resource_removeVariants', {resourceId: resource.uuid, variants: variantsToRemove}) as Promise<void>)
+    })
+
+    // add missing variants
     resources
       // Choices are a special case, we should not add variants
       .filter(resource => resource.values.every(value => value.mime_type !== rootGetters['validation/choiceMimeType']))
@@ -417,22 +444,24 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
               console.warn(`Adding missing variant: lang ${language}, mode: ${mode} for resource ${resource.uuid}`)
 
               discoverContentTypesFor(mode)?.forEach((content_type) => {
-                dispatch('resource_createVariant', {
-                  resourceId: resource.uuid,
-                  variant: {
-                    content_type,
-                    language_id: language,
-                    modes: [
-                      mode,
-                    ],
-                    value: '',
-                  },
-                })
+                promises.push(
+                  dispatch('resource_createVariant', {
+                    resourceId: resource.uuid,
+                    variant: {
+                      content_type,
+                      language_id: language,
+                      modes: [mode],
+                      value: '',
+                    },
+                  }) as Promise<void>,
+                )
               })
             }
           })
         })
       })
+
+    await Promise.all(promises)
   },
 
   async flow_createWith({rootState}, {props}: { props: { uuid: string } & Partial<IFlow> }): Promise<IFlow> {
@@ -521,7 +550,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
     commit('flow_setSupportedMode', {flowId, value: newModes})
 
-    await dispatch('flow_addMissingResourceValues')
+    await dispatch('flow_updateResourceValues')
     await dispatch('validation/validate_allBlocksWithinFlow', null, {root: true})
     await dispatch('validation/validate_resourcesOnSupportedValues', {
       resources: flow.resources,
@@ -535,7 +564,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const oldLanguages = clone(flow.languages)
     commit('flow_setLanguages', {flowId, value: newLanguages})
 
-    await dispatch('flow_addMissingResourceValues')
+    await dispatch('flow_updateResourceValues')
     await dispatch('block_updateBlocksAfterLanguagesChange', {
       addedLanguageIds: difference(newLanguages, oldLanguages).map(lang => lang.id),
       removedLanguageIds: difference(oldLanguages, newLanguages).map(lang => lang.id),

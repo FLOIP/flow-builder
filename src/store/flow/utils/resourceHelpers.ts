@@ -178,7 +178,6 @@ export function findBlockRelatedResourcesUuids({block}: {block: IBlock}): IResou
 
 /**
  * Extract resource variant index from error dataPath, e.g. `values/1/value` -> 1
- *
  * @param errorDataPath
  */
 export function extractResourceVariantIndex(errorDataPath: string): number | undefined {

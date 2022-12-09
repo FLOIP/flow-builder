@@ -346,6 +346,7 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
    *
    * @param rootGetters
    * @param errors
+   * @param resource
    */
   async computeInvalidResourcesBy(
     {rootGetters},
