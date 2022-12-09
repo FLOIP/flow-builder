@@ -1,6 +1,19 @@
 <template>
-  <div class="advanced-exit-editor remove-margin-left-right bg-grey pt-2 pb-1">
+  <div class="advanced-exit-editor remove-margin-left-right">
     <div class="put-back-margin-left-right">
+      <div class="input-group">
+        <div class="input-group-prepend bg-grey">
+          <span class="input-group-text">
+            {{ trans('flow-builder.exit') }}
+          </span>
+        </div>
+        <textarea
+          ref="name"
+          v-model="name"
+          :placeholder="trans('flow-builder.advanced-exit-name-placeholder')"
+          class="form-control"
+          rows="1" />
+      </div>
       <h6 class="mt-2">
         {{ trans('flow-builder.test-expression') }}
       </h6>
@@ -12,20 +25,9 @@
             :placeholder="trans('flow-builder.advanced-exit-expression-placeholder')"
             :current-expression="test"
             :rows="1"
-            :prepend-text="label"
             @commitExpressionChange="commitExpressionChange" />
         </template>
       </validation-message>
-
-      <h6 class="mt-2">
-        {{ trans('flow-builder.advanced-exit-name') }}
-      </h6>
-      <textarea
-        ref="name"
-        v-model="name"
-        :placeholder="trans('flow-builder.advanced-exit-name-placeholder')"
-        class="form-control"
-        rows="1" />
     </div>
   </div>
 </template>

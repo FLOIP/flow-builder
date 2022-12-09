@@ -3,16 +3,18 @@
     <h6>{{ trans('flow-builder.hint-to-set-advance-exit') }}</h6>
 
     <template v-for="(exit, i) in block.exits">
-      <advanced-exit-editor
-        v-if="!exit.default"
-        ref="exitEditors"
-        :key="exit.uuid"
-        :block="block"
-        :exit="exit"
-        :label="(i + 1).toString()"
-        class="advanced-block-exit-builder-item mb-2"
-        @afterExitTestChanged="handleExitChanged(exit, i)"
-        @afterExitNameChanged="handleExitChanged(exit, i)" />
+      <div :key="exit.uuid">
+        <hr v-if="i > 0">
+        <advanced-exit-editor
+          v-if="!exit.default"
+          ref="exitEditors"
+          :block="block"
+          :exit="exit"
+          :label="(i + 1).toString()"
+          class="advanced-block-exit-builder-item mb-2"
+          @afterExitTestChanged="handleExitChanged(exit, i)"
+          @afterExitNameChanged="handleExitChanged(exit, i)" />
+      </div>
     </template>
 
     <advanced-exit-editor
