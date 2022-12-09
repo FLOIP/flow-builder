@@ -80,10 +80,10 @@ export const mutations: MutationTree<IFlowsState> = {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     findBlockExitWith(exitId, block).semantic_label = value
   },
-  block_addExit(state, {blockId, exit, append}: {blockId: string, exit: IBlockExit, append?: boolean}) {
+  block_addExit(state, {blockId, exit, shouldAppend}: {blockId: string, exit: IBlockExit, shouldAppend?: boolean}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
 
-    if (append) {
+    if (shouldAppend) {
       block.exits.push(exit)
     } else {
       block.exits.splice(block.exits.length - 1, 0, exit)
