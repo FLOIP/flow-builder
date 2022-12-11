@@ -13,8 +13,3 @@ export declare function cleanupFlowResources(container: IContext, choiceMimeType
 export declare function findBlockRelatedResourcesUuids({ block }: {
     block: IBlock;
 }): IResource['uuid'][];
-/**
- * Extract resource variant index from error dataPath, e.g. `values/1/value` -> 1
- * @param errorDataPath
- */
-export declare function extractResourceVariantIndex(errorDataPath: string): number | undefined;
