@@ -175,12 +175,3 @@ export function findBlockRelatedResourcesUuids({block}: {block: IBlock}): IResou
 
   return resources
 }
-
-/**
- * Extract resource variant index from error dataPath, e.g. `values/1/value` -> 1
- * @param errorDataPath
- */
-export function extractResourceVariantIndex(errorDataPath: string): number | undefined {
-  const indexAsString = /^\/values\/(?<index>\d+)/.exec(errorDataPath)?.groups?.index
-  return indexAsString !== undefined ? Number(indexAsString) : undefined
-}

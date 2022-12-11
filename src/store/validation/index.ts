@@ -2,19 +2,11 @@ import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {ErrorObject} from 'ajv'
-import {
-  IBlock,
-  IContainer,
-  IFlow,
-  ILanguage,
-  IResource,
-  SupportedContentType,
-  SupportedMode,
-
-} from '@floip/flow-runner'
-import {cloneDeep, each, filter, get, forIn, includes, intersection, isEmpty, map, uniqBy, update} from 'lodash'
+import {IBlock, IContainer, IFlow, ILanguage, IResource, SupportedContentType, SupportedMode} from '@floip/flow-runner'
+import {cloneDeep, each, filter, forIn, get, includes, intersection, isEmpty, map, uniqBy, update} from 'lodash'
 import {
   debugValidationStatus,
+  extractResourceVariantIndex,
   flatValidationStatuses,
   getLocalizedAjvErrors,
   getLocalizedBackendErrors,
@@ -22,8 +14,8 @@ import {
   getOrCreateFlowValidator,
   getOrCreateLanguageValidator,
   getOrCreateResourceValidator,
+  isNotUndefined,
 } from '@/store/validation/validationHelpers'
-import {extractResourceVariantIndex, findIndexForResourceVariant} from '@/store/flow/utils/resourceHelpers'
 
 export interface IIndexedString {
   [key: string]: string,
@@ -264,20 +256,18 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
 
     const isValid = validate(resource)
 
-    if (validate.errors) {
-      for (let i = 0; i < validate.errors.length; i += 1) {
-        const {keyword, dataPath} = validate.errors[i]
-
-        if (keyword === 'pattern') {
-          const index = extractResourceVariantIndex(dataPath)
-          const {content_type: contentType} = resource.values[Number(index)]
+    validate.errors?.forEach(error => {
+      if (error.keyword === 'pattern') {
+        const index = extractResourceVariantIndex(error.dataPath)
+        if (index !== undefined) {
+          const {content_type: contentType} = resource.values[index]
 
           if (contentType === 'AUDIO') {
-            validate.errors[i].keyword = 'pattern-ivr'
+            error.keyword = 'pattern-ivr'
           }
         }
       }
-    }
+    })
 
     const orphanResourceUuids: IBlock['uuid'][] = rootGetters['flow/orphanResourceUuidsOnActiveFlow'] as IBlock['uuid'][]
     Vue.set(state.validationStatuses, key, {
@@ -354,21 +344,27 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
   ): Promise<IInvalidResourcesCounterBy> {
     const invalidCounterByMode: {[key: string]: number} = {}
     const invalidCounterByLang: {[key: string]: number} = {}
-    const languages = rootGetters['flow/activeFlow'].languages as ILanguage[]
-    const modes = rootGetters['flow/activeFlow'].supported_modes as SupportedMode[]
-    errors?.forEach(error => {
-      const currentResourceVariantIndex = extractResourceVariantIndex(error.dataPath)
-      modes.forEach(mode => {
-        languages.forEach(language => {
-          const resourceVariantIndex = findIndexForResourceVariant(resource, {language_id: language.id, modes: [mode]})
-          // if resourceVariantIndex === currentResourceVariantIndex, isValid === true, false otherwise
-          if (resourceVariantIndex === currentResourceVariantIndex) {
-            update(invalidCounterByMode, mode, (count: number) => (count ? count + 1 : 1))
-            update(invalidCounterByLang, language.id, (count: number) => (count ? count + 1 : 1))
-          }
-        })
+
+    const activeFlow = rootGetters['flow/activeFlow'] as IFlow
+    const flowLanguageIds = activeFlow.languages.map(language => language.id)
+    const flowModes = activeFlow.supported_modes
+
+    errors
+      ?.map(error => extractResourceVariantIndex(error.dataPath))
+      .filter(isNotUndefined)
+      .map(invalidVariantIndex => resource.values[invalidVariantIndex])
+
+      .forEach(invalidVariant => {
+        const languageId = invalidVariant.language_id
+        const mode = invalidVariant.modes[0]
+        if (!flowLanguageIds.includes(languageId) || !flowModes.includes(mode)) {
+          console.warn('A resource variant exists that has unsupported mode or language:', invalidVariant)
+          return
+        }
+        update(invalidCounterByMode, mode, (count: number) => (count ? count + 1 : 1))
+        update(invalidCounterByLang, languageId, (count: number) => (count ? count + 1 : 1))
       })
-    })
+
     return {
       mode: invalidCounterByMode,
       languageId: invalidCounterByLang,
