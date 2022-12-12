@@ -578,12 +578,22 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 }
 
-/** Sort languages to display them in a particular order */
+/**
+ * Sort languages to display them in a particular order
+ *
+ * Caution: use this in the UI only, "on the surface" - for consistent UX when the languages get rearranged.
+ * In other cases, avoid sorting or relying on their order because the flow spec doesn't enforce it.
+ */
 export function orderLanguages(languages: ILanguage[]): ILanguage[] {
   return sortBy(languages, ['label'])
 }
 
-/** Sort modes to display them in a particular order */
+/**
+ * Sort modes to display them in a particular order
+ *
+ * Caution: use this in the UI only, "on the surface" - for consistent UX when the modes get rearranged.
+ * In other cases, avoid sorting or relying on their order because the flow spec doesn't enforce it.
+ */
 export function orderModes(modes: SupportedMode[]): SupportedMode[] {
   const order = [
     SupportedMode.IVR,
