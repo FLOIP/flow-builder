@@ -177,8 +177,10 @@ export function getLocalizedBackendErrors(keyPrefix: string, blockErrors: { mess
   }
 
   return blockErrors.map((error: { message: string }) => {
+    // replace all digital indexes to 'x' so we can easily localize them
+    const noIndexMessage = error.message.replaceAll(/\d+/g, 'x')
     const errorWithRightSchema: ErrorObject = {
-      message: lang.trans(`flow-builder-validation.${error.message}`),
+      message: lang.trans(`flow-builder-validation.${noIndexMessage}`),
       keyword: 'backend',
       dataPath: error.message,
       schemaPath: error.message,
