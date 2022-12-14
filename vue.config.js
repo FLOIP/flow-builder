@@ -112,27 +112,28 @@ module.exports = {
         try {
           const flow = fs.readFileSync(`src/store/builder/${req.params.id}-flow.json`)
           res.writeHead(200, { 'Content-Type': 'application/json' })
-          res.end(flow)
+          res.end(JSON.stringify({data: flow}))
         } catch (err) {
           res.writeHead(404, { 'Content-Type': 'application/json' })
-          res.end("Flow not found")
+          res.end(JSON.stringify({errors: "Flow not found"}))
         }
       })
       // To persist new flow via "new flow page"
       // In the success case, just echo the flow back
       app.post('/backend/flows', bodyParser.json(), (req, res) => {
-        const container = req.body
+        const container = req.body?.data
         res.writeHead(200, { 'Content-Type': 'application/json' })
-        console.debug('Simulating flow creation ...')
-        res.end(JSON.stringify(container))
+        console.debug('Simulating flow creation ...', container)
+        res.write(JSON.stringify({data: container}))
+        res.end()
       })
       // To persist flow import via "import flow page"
       // In the success case, just echo the flow back: the response might have multiple data, but we fetch from createdContainer
       app.post('/backend/flows/import', bodyParser.json(), (req, res) => {
-        const container = req.body
-        console.debug('Simulating flow import ...')
+        const container = req.body?.data
+        console.debug('Simulating flow import ...', container)
         res.writeHead(200, { 'Content-Type': 'application/json' })
-        res.end(JSON.stringify({message: 'anything', createdContainer: container}))
+        res.end(JSON.stringify({message: 'anything', data: container}))
         // For dev: to simulate a failure, just uncomment the follow 02 lines, and comment the 02 previous lines for status 200
         // and re-serve the app. Then test an import.
         // res.writeHead(500, { 'Content-Type': 'application/json' })
@@ -153,9 +154,9 @@ module.exports = {
        * }
        */
       app.put('/backend/flows', bodyParser.json(), (req, res) => {
-        const container = req.body
+        const container = req.body?.data
         res.writeHead(200, { 'Content-Type': 'application/json' })
-        console.debug('Simulating flow update ...')
+        console.debug('Simulating flow update ...', container)
         if (container.flows?.length && container.flows[0].blocks?.length > 0) {
           console.debug('Simulating validation errors from backend on 1st flow\'s 1st block')
           let blockWithValidationIssue = container.flows[0].blocks[0]
@@ -192,7 +193,8 @@ module.exports = {
         } else {
           console.debug('No block found to simulate backend validation, on this container:', container)
         }
-        res.end(JSON.stringify(container))
+        res.write(JSON.stringify({data: container}))
+        res.end()
       })
 
       //In the success case, just echo the language back
