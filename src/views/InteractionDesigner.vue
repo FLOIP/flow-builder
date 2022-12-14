@@ -231,6 +231,10 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   onModeChanged(newMode: string): void {
     this.updateIsEditableFromParams(newMode)
   }
+  @Watch('mainComponent')
+  onMainComponentChanged(newMainComponent: string): void {
+    this.setActiveMainComponent({mainComponent: newMainComponent})
+  }
   @builderNamespace.Mutation setActiveMainComponent!: ({mainComponent}: {mainComponent: string | undefined}) => void
 
   activated(): void {
@@ -251,8 +255,10 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     this.$store.subscribe(this.handleFlowChanges.bind(this))
 
     this.initializeTreeModel()
+
     // `this.mode` comes from captured param in js-routes
     this.updateIsEditableFromParams(this.mode)
+    this.setActiveMainComponent({mainComponent: this.mainComponent})
   }
 
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
@@ -312,10 +318,6 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   @Mutation deselectBlocks!: () => void
   @builderNamespace.Mutation activateBlock!: ({blockId}: {blockId: IBlock['uuid'] | null}) => void
   @builderNamespace.Mutation setIsBlockEditorOpen!: (value: boolean) => void
-
-  updated() {
-    this.setActiveMainComponent({mainComponent: this.mainComponent})
-  }
   @builderNamespace.Mutation setInteractionDesignerBoundingClientRect!: (value: DOMRect) => void
   @builderNamespace.Action setIsEditable!: (arg0: boolean) => void
   @builderNamespace.Action setHasFlowChanges!: (arg0: boolean) => void
