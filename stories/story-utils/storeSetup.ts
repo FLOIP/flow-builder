@@ -122,7 +122,7 @@ export class BaseMountedVueClass extends Vue {
 })
 export class BaseMountedVueClassWithResourceAndMode extends BaseMountedVueClass {
   @flowVuexNamespace.Action resource_setValue: any
-  @flowVuexNamespace.Mutation flow_setSupportedMode: any
+  @flowVuexNamespace.Mutation flow_setSupportedMode!: ({flowId, value}: {flowId: string, value: SupportedMode[] | SupportedMode}) => void
 
   setResourceData({shouldSetChoices, configPath}: { shouldSetChoices: boolean, configPath: string }) {
     const {

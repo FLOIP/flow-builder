@@ -302,3 +302,24 @@ export function validateBlockWithJsonSchema({block, schemaVersion, customBlockJs
     },
   }
 }
+
+/**
+ * Extract resource variant index from error dataPath.
+ * Return undefined if it does not match the resource value pattern
+ *
+ * @example
+ * // returns 1
+ * extractResourceVariantIndex('values/1/value')
+ */
+export function extractResourceVariantIndex(errorDataPath: string): number | undefined {
+  const indexAsString: string | undefined = /^\/values\/(?<index>\d+)/.exec(errorDataPath)?.groups?.index
+
+  if (indexAsString === undefined) {
+    return undefined
+  }
+  return Number(indexAsString)
+}
+
+export function isNotUndefined<T>(value: T | undefined): value is T {
+  return value !== undefined
+}

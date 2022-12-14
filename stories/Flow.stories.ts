@@ -39,7 +39,7 @@ class CurrentClass extends BaseMountedVueClass {
     this.flow_setSupportedMode({flowId, value: []})
   }
 
-  @flowVuexNamespace.Mutation flow_setSupportedMode: any
+  @flowVuexNamespace.Mutation flow_setSupportedMode!: ({flowId, value}: {flowId: string, value: SupportedMode[] | SupportedMode}) => void
 }
 
 export const Default = () => (CurrentClass)
@@ -75,7 +75,7 @@ class CurrentClass2 extends BaseMountedVueClass {
   @flowVuexNamespace.Mutation flow_setNameFromLabel: any
   @flowVuexNamespace.Mutation flow_setLabel: any
   @flowVuexNamespace.Mutation flow_setInteractionTimeout: any
-  @flowVuexNamespace.Mutation flow_setSupportedMode: any
+  @flowVuexNamespace.Mutation flow_setSupportedMode!: ({flowId, value}: {flowId: string, value: SupportedMode[] | SupportedMode}) => void
   @flowVuexNamespace.Mutation flow_setLanguages: any
 }
 
