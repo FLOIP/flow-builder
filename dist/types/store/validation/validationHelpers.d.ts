@@ -42,3 +42,13 @@ export declare function validateBlockWithJsonSchema({ block, schemaVersion, cust
     schemaVersion: string;
     customBlockJsonSchema?: JSONSchema7;
 }): IValidationStatus;
+/**
+ * Extract resource variant index from error dataPath.
+ * Return undefined if it does not match the resource value pattern
+ *
+ * @example
+ * // returns 1
+ * extractResourceVariantIndex('values/1/value')
+ */
+export declare function extractResourceVariantIndex(errorDataPath: string): number | undefined;
+export declare function isNotUndefined<T>(value: T | undefined): value is T;

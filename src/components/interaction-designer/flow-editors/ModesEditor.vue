@@ -2,9 +2,9 @@
   <div class="modes-editor form-group">
     <label class="text-primary">{{ 'flow-builder.modes' | trans }}</label>
     <vue-multiselect
-      v-model="flowSelectedModes"
+      v-model="selectedModes"
       :placeholder="'flow-builder.select-modes' | trans"
-      :options="supportedModes"
+      :options="allModes"
       :multiple="true"
       :show-labels="false"
       :searchable="true" />
@@ -15,10 +15,12 @@
 import VueMultiselect from 'vue-multiselect'
 import {Component, Prop} from 'vue-property-decorator'
 import {IFlow, SupportedMode} from '@floip/flow-runner'
-
 import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
-import {Getter} from 'vuex-class'
+import {namespace, State} from 'vuex-class'
+import {orderModes} from '@/store/flow/flow'
+
+const flowNamespace = namespace('flow')
 
 @Component({
   components: {
@@ -28,15 +30,20 @@ import {Getter} from 'vuex-class'
 export class ModesEditor extends mixins(Lang) {
   @Prop() readonly flow!: IFlow
 
-  get flowSelectedModes(): SupportedMode[] {
-    return this.flow.supported_modes
+  get allModes(): SupportedMode[] {
+    return orderModes(this.availableModes ?? [])
   }
 
-  set flowSelectedModes(value: SupportedMode[]) {
-    this.$emit('commitFlowModesChange', value)
+  get selectedModes(): SupportedMode[] {
+    return orderModes(this.flow.supported_modes ?? [])
   }
 
-  @Getter supportedModes!: SupportedMode[]
+  set selectedModes(newModes: SupportedMode[]) {
+    this.flow_updateModes({flowId: this.flow.uuid, newModes})
+  }
+
+  @State(state => state.trees.ui.supportedModes) availableModes: SupportedMode[]
+  @flowNamespace.Action flow_updateModes!: (args: {flowId: string, newModes: SupportedMode[]}) => void
 }
 
 export default ModesEditor

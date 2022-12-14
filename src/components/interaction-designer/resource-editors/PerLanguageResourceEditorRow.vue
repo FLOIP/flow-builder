@@ -1,33 +1,29 @@
 <template>
   <!--Resource editors grouped by language-->
-  <div v-if="resource"
-       class="per-language-resource-editor d-flex flex-column">
+  <div
+    v-if="resource"
+    class="per-language-resource-editor-row d-flex flex-column">
     <div
-      v-for="(item) in supportedModeWithOrderInfo"
-      :key="item.index"
-      :class="{
-        [`order-${item.order}`]: true
-      }"
+      v-for="mode in modes"
+      :key="mode"
       class="mbx-4">
       <header class="d-flex mb-2">
         <font-awesome-icon
-          v-if="iconsMap.get(item.mode)"
-          :class="{'custom-icons': iconsMap.get(item.mode)[0] === 'fac', 'library-icons': iconsMap.get(item.mode)[0] !== 'fac'}"
-          :icon="iconsMap.get(item.mode)" />
+          v-if="iconsMap.get(mode)"
+          :class="{'custom-icons': iconsMap.get(mode)[0] === 'fac', 'library-icons': iconsMap.get(mode)[0] !== 'fac'}"
+          :icon="iconsMap.get(mode)" />
         <h6 class="ml-3 mb-0 align-self-center">
-          {{ `flow-builder.${item.mode.toLowerCase()}-content` | trans }}
+          {{ `flow-builder.${mode.toLowerCase()}-content` | trans }}
         </h6>
       </header>
 
       <resource-editor-cell
-        v-for="contentType in discoverContentTypesFor(item.mode)"
+        v-for="contentType in discoverContentTypesFor(mode)"
         :key="contentType"
         :block="block"
         :content-type="contentType"
         :language-id="languageId"
-        :language-index="languageIndex"
-        :mode="item.mode"
-        :mode-index="item.index" />
+        :mode="mode" />
     </div>
   </div>
 </template>
@@ -40,14 +36,9 @@ import Permissions from '@/lib/mixins/Permissions'
 import Routes from '@/lib/mixins/Routes'
 import FlowUploader from '@/lib/mixins/FlowUploader'
 import {namespace} from 'vuex-class'
-import {
-  IBlock,
-  IResource,
-  SupportedContentType,
-  SupportedMode,
-} from '@floip/flow-runner'
-
+import {IBlock, IFlow, IResource, SupportedMode} from '@floip/flow-runner'
 import {discoverContentTypesFor} from '@/store/flow/utils/resourceHelpers'
+import {orderModes} from '@/store/flow/flow'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
@@ -55,11 +46,8 @@ const builderVuexNamespace = namespace('builder')
 @Component({})
 export class PerLanguageResourceEditorRow extends mixins(FlowUploader, Permissions, Routes, Lang) {
   @Prop({required: true}) block!: IBlock
-  @Prop({required: true}) languageIndex!: string
   @Prop({required: true}) languageId!: string
 
-  SupportedMode = SupportedMode
-  SupportedContentType = SupportedContentType
   iconsMap = new Map<string, object>([
     [SupportedMode.SMS, ['fac', 'message']],
     [SupportedMode.TEXT, ['fac', 'text']],
@@ -71,10 +59,14 @@ export class PerLanguageResourceEditorRow extends mixins(FlowUploader, Permissio
 
   discoverContentTypesFor = discoverContentTypesFor
   @flowVuexNamespace.Getter resourcesByUuidOnActiveFlow!: { [key: string]: IResource }
-  @flowVuexNamespace.Getter supportedModeWithOrderInfo!: {mode: SupportedMode, index: number, order: number}[]
+  @flowVuexNamespace.Getter activeFlow: IFlow
 
   get resource(): IResource {
     return this.resourcesByUuidOnActiveFlow[this.block.config.prompt]
+  }
+
+  get modes(): SupportedMode[] {
+    return orderModes(this.activeFlow.supported_modes)
   }
 }
 export default PerLanguageResourceEditorRow

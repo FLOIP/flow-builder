@@ -14,8 +14,6 @@ import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/Vali
 
 export type IResourceDefinitionVariantOverModesFilter = Partial<IResourceDefinitionVariantOverModes>
 export type IResourceDefinitionVariantOverModesFilterAsKey = Omit<IResourceDefinitionVariantOverModes, 'value'>
-export type IResourceDefinitionVariantOverModesFilterWithResourceId =
-  Partial<IResourceDefinitionVariantOverModes> & { resourceId: string }
 
 export function findResourceWith(uuid: string, {resources}: IFlow): IResource {
   const resource = find(resources, {uuid})
@@ -67,6 +65,18 @@ export function findResourceVariantOverModesOn(
   }
 
   return variant
+}
+
+/** @returns resource variant's index in the resource.values array, -1 if not found */
+export function findIndexForResourceVariant(
+  resource: IResource,
+  filter: IResourceDefinitionVariantOverModesFilter,
+): number {
+  const keysForComparison = without(Object.keys(filter), 'modes')
+  const filterWithComparatorKeys = pick(filter, keysForComparison)
+  return resource.values.findIndex(v =>
+    isEqual(filterWithComparatorKeys, pick(v, keysForComparison))
+    && difference(filter.modes, v.modes).length === 0)
 }
 
 export function findOrGenerateStubbedVariantFor(
@@ -164,15 +174,4 @@ export function findBlockRelatedResourcesUuids({block}: {block: IBlock}): IResou
   })
 
   return resources
-}
-
-/**
- * Compute resource index (cell index) for a table having X languages and Y modes
- *
- * @param languageIndex
- * @param modeIndex
- * @param supportedModesCount
- */
-export function computeResourceIndex(languageIndex: number, modeIndex: number, supportedModesCount: number): number {
-  return languageIndex * supportedModesCount + modeIndex
 }

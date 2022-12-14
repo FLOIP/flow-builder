@@ -2,19 +2,11 @@ import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {ErrorObject} from 'ajv'
-import {
-  IBlock,
-  IContainer,
-  IFlow,
-  ILanguage,
-  IResource,
-  SupportedContentType,
-  SupportedMode,
-
-} from '@floip/flow-runner'
-import {cloneDeep, each, filter, get, forIn, includes, intersection, isEmpty, map, set, uniqBy, update} from 'lodash'
+import {IBlock, IContainer, IFlow, ILanguage, IResource, SupportedContentType, SupportedMode} from '@floip/flow-runner'
+import {cloneDeep, each, filter, forIn, get, includes, intersection, isEmpty, map, uniqBy, update} from 'lodash'
 import {
   debugValidationStatus,
+  extractResourceVariantIndex,
   flatValidationStatuses,
   getLocalizedAjvErrors,
   getLocalizedBackendErrors,
@@ -22,8 +14,8 @@ import {
   getOrCreateFlowValidator,
   getOrCreateLanguageValidator,
   getOrCreateResourceValidator,
+  isNotUndefined,
 } from '@/store/validation/validationHelpers'
-import {computeResourceIndex} from '@/store/flow/utils/resourceHelpers'
 
 export interface IIndexedString {
   [key: string]: string,
@@ -35,21 +27,21 @@ export interface IValidationStatusContext {
 }
 
 /**
- * Is valid by mode index OR lang index
+ * Is valid by mode OR languageId
  *
  * eg:
  * {
- *   modeIndex: {
- *     "0": 12 // there are 12 invalid resources for mode with index "0"
+ *   mode: {
+ *     "USSD": 12 // there are 12 invalid resources for USSD mode
  *   },
- *   langIndex: {
- *     "1": 34 // there are 34 invalid resources for language with index "1"
+ *   languageId: {
+ *     "eng": 34 // there are 34 invalid resources for "eng" language
  *   }
  * }
  */
 export interface IInvalidResourcesCounterBy {
-  modeIndex?: {[key: number]: number},
-  langIndex?: {[key: number]: number},
+  mode?: {[key: string]: number},
+  languageId?: {[key: string]: number},
 }
 
 export interface IValidationStatus {
@@ -149,7 +141,7 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
   },
 
   /**
-   * Validate block/resource form backend, pick info from active flow's vendor_metadata:
+   * Validate block/resource from backend, using info from active flow's vendor_metadata:
    * floip: {
    *   ui_metadata:{
    *      validation_results: {
@@ -173,7 +165,7 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
 
     // New validations
     const backendErrorsList = get(
-    rootGetters['flow/activeFlow']?.vendor_metadata?.floip?.ui_metadata?.validation_results,
+      rootGetters['flow/activeFlow']?.vendor_metadata?.floip?.ui_metadata?.validation_results,
       `${type}s`,
       {},
     ) as Record<string, {message: string}[]>
@@ -264,20 +256,18 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
 
     const isValid = validate(resource)
 
-    if (validate.errors) {
-      for (let i = 0; i < validate.errors.length; i += 1) {
-        const {keyword, dataPath} = validate.errors[i]
-
-        if (keyword === 'pattern') {
-          const index = /^\/values\/(?<index>\d+)/.exec(dataPath)?.groups?.index
-          const {content_type: contentType} = resource.values[Number(index)]
+    validate.errors?.forEach(error => {
+      if (error.keyword === 'pattern') {
+        const index = extractResourceVariantIndex(error.dataPath)
+        if (index !== undefined) {
+          const {content_type: contentType} = resource.values[index]
 
           if (contentType === 'AUDIO') {
-            validate.errors[i].keyword = 'pattern-ivr'
+            error.keyword = 'pattern-ivr'
           }
         }
       }
-    }
+    })
 
     const orphanResourceUuids: IBlock['uuid'][] = rootGetters['flow/orphanResourceUuidsOnActiveFlow'] as IBlock['uuid'][]
     Vue.set(state.validationStatuses, key, {
@@ -287,7 +277,7 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
       context: {
         isOrphanResource: orphanResourceUuids.includes(resource.uuid),
       },
-      invalidCounterBy: await dispatch('computeInvalidResourcesBy', validate.errors),
+      invalidCounterBy: await dispatch('computeInvalidResourcesBy', {errors: validate.errors, resource}),
     })
 
     debugValidationStatus(state.validationStatuses[key], 'resource validation status')
@@ -339,36 +329,45 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
   },
 
   /**
-   * Compute how many resources are invalid and key them by mode and lang indexes
+   * Compute how many resources are invalid and key them by mode and languageId
    * eg:
    * - if we have 02 languages FR, EN, 03 modes SMS, USSD, IVR, the 1st mode has a content on the 1st language
-   * - then, we expect {"modeIndex":{"0":1,"1":2,"2":2},"langIndex":{"0":2,"1":3}}
+   * - then, we expect {"mode":{"SMS":1,"USSD":2,"IVR":2},"languageId":{"FR":2,"EN":3}}
    *
    * @param rootGetters
    * @param errors
+   * @param resource
    */
-  async computeInvalidResourcesBy({rootGetters}, errors: ErrorObject[] | null): Promise<IInvalidResourcesCounterBy> {
-    const invalidCounterByMode: {[key: number]: number} = {}
-    const invalidCounterByLang: {[key: number]: number} = {}
-    const languages = rootGetters['flow/activeFlow'].languages as ILanguage[]
-    const modes = rootGetters['flow/activeFlow'].supported_modes as SupportedMode[]
-    errors?.forEach((error, index) => {
-      // replace non-numeric characters from dataPath (which could be something like `values/1/value`)
-      const currentResourceIndex = error.dataPath.replace(/\D/g, '')
-      modes.forEach((mode: SupportedMode, modeIndex: number) => {
-        languages.forEach((lang: ILanguage, langIndex: number) => {
-          const resourceIndex: string = computeResourceIndex(langIndex, modeIndex, modes.length).toString()
-          // if resourceIndex === currentResourceIndex, isValid === true, false otherwise
-          if (resourceIndex === currentResourceIndex) {
-            update(invalidCounterByMode, modeIndex, (count: number) => (count ? count + 1 : 1))
-            update(invalidCounterByLang, langIndex, (count: number) => (count ? count + 1 : 1))
-          }
-        })
+  async computeInvalidResourcesBy(
+    {rootGetters},
+    {errors, resource}: {errors: ErrorObject[] | null, resource: IResource},
+  ): Promise<IInvalidResourcesCounterBy> {
+    const invalidCounterByMode: {[key: string]: number} = {}
+    const invalidCounterByLang: {[key: string]: number} = {}
+
+    const activeFlow = rootGetters['flow/activeFlow'] as IFlow
+    const flowLanguageIds = activeFlow.languages.map(language => language.id)
+    const flowModes = activeFlow.supported_modes
+
+    errors
+      ?.map(error => extractResourceVariantIndex(error.dataPath))
+      .filter(isNotUndefined)
+      .map(invalidVariantIndex => resource.values[invalidVariantIndex])
+
+      .forEach(invalidVariant => {
+        const languageId = invalidVariant.language_id
+        const mode = invalidVariant.modes[0]
+        if (!flowLanguageIds.includes(languageId) || !flowModes.includes(mode)) {
+          console.warn('A resource variant exists that has unsupported mode or language:', invalidVariant)
+          return
+        }
+        update(invalidCounterByMode, mode, (count: number) => (count ? count + 1 : 1))
+        update(invalidCounterByLang, languageId, (count: number) => (count ? count + 1 : 1))
       })
-    })
+
     return {
-      modeIndex: invalidCounterByMode,
-      langIndex: invalidCounterByLang,
+      mode: invalidCounterByMode,
+      languageId: invalidCounterByLang,
     } as IInvalidResourcesCounterBy
   },
 }

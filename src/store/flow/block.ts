@@ -1,12 +1,5 @@
 import Vue from 'vue'
-import {
-  findBlockExitWith,
-  findBlockOnActiveFlowWith,
-  IBlock,
-  IBlockExit,
-  IContext,
-  ILanguage,
-} from '@floip/flow-runner'
+import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext} from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {cloneDeep, defaults, has, isArray, isNil, last, reject, snakeCase} from 'lodash'
@@ -15,6 +8,7 @@ import {OutputBranchingType} from '@/components/interaction-designer/block-edito
 import {BLOCK_TYPE as SelectOneBlockType} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
 import {BLOCK_TYPE as SelectManyBlockType} from '@/store/flow/block-types/MobilePrimitives_SelectManyResponseBlockStore'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
+import {ISelectManyResponseBlock} from '@floip/flow-runner/src/model/block/ISelectManyResponseBlock'
 import {escapeQuotes} from '@/components/interaction-designer/block-editors/choices/expressionTransformers'
 import * as SetContactPropertyModule from './block/set-contact-property'
 import {IFlowsState} from '.'
@@ -421,41 +415,30 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
   },
 
-  block_updateAllBlocksAfterAddingFlowLanguage({rootGetters, dispatch}, {language}: {language: ILanguage}): void {
-    rootGetters['flow/activeFlow'].blocks.map((currentBlock: IBlock) => {
-      if (currentBlock.type === SelectOneBlockType || currentBlock.type === SelectManyBlockType) {
-        const hasTextMode = rootGetters['flow/hasTextMode']
-        if (hasTextMode === true) {
-          (currentBlock as ISelectOneResponseBlock).config.choices.map((choice) => {
+  block_updateBlocksAfterLanguagesChange(
+    {rootGetters, dispatch, getters},
+    {addedLanguageIds, removedLanguageIds}: { addedLanguageIds: string[], removedLanguageIds: string[] },
+  ): void {
+    if (rootGetters['flow/hasTextMode'] === false) {
+      return
+    }
+    getters.activeFlow.blocks
+      .filter((block: IBlock) => block.type === SelectOneBlockType || block.type === SelectManyBlockType)
+      .forEach((block: ISelectOneResponseBlock | ISelectManyResponseBlock) => {
+        // handle removed languages
+        block.config.choices.forEach(choice => {
+          choice.text_tests = choice.text_tests?.filter(({language}) => language !== undefined && !removedLanguageIds.includes(language))
+        })
+        // handle added languages
+        block.config.choices.forEach(choice => {
+          addedLanguageIds.forEach(langId => {
             choice.text_tests?.push({
-              language: language.id,
+              language: langId,
               test_expression: `@block.response = '${escapeQuotes(choice.name)}'`,
             })
-
-            return choice
           })
-        }
-      }
-
-      return currentBlock
-    })
-  },
-
-  block_updateAllBlocksAfterDeletingFlowLanguage({rootGetters, dispatch}, {language}: {language: ILanguage}): void {
-    rootGetters['flow/activeFlow'].blocks.map((currentBlock: IBlock) => {
-      if (currentBlock.type === SelectOneBlockType || currentBlock.type === SelectManyBlockType) {
-        const hasTextMode = rootGetters['flow/hasTextMode']
-        if (hasTextMode === true) {
-          (currentBlock as ISelectOneResponseBlock).config.choices.map((choice) => {
-            choice.text_tests = choice.text_tests?.filter((test) => test.language !== language.id)
-
-            return choice
-          })
-        }
-      }
-
-      return currentBlock
-    })
+        })
+      })
   },
 }
 

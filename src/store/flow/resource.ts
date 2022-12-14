@@ -55,6 +55,15 @@ export const mutations: MutationTree<IFlowsState> = {
       .push(cloneDeep(variant))
   },
 
+  resource_removeVariantsOnFlow(
+    state,
+    {flowId, resourceId, variants}: {flowId: IFlow['uuid'], resourceId: string, variants: IResourceDefinitionVariantOverModes[]},
+  ): void {
+    const flow = findFlowWith(flowId, state as unknown as IContext)
+    const resource = findResourceWith(resourceId, flow)
+    resource.values = resource.values.filter(value => !variants.includes(value))
+  },
+
   resource_setValueOnFlow(
     state,
     {flowId, resourceId, filter, value}: {
@@ -101,6 +110,13 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     {resourceId, variant}: {resourceId: IResource['uuid'], variant: IResourceDefinitionVariantOverModes},
   ) {
     commit('resource_createVariantOnFlow', {flowId: getters.activeFlow.uuid, resourceId, variant})
+  },
+
+  resource_removeVariants(
+    {commit, getters},
+    {resourceId, variants}: {resourceId: IResource['uuid'], variants: IResourceDefinitionVariantOverModes},
+  ) {
+    commit('resource_removeVariantsOnFlow', {flowId: getters.activeFlow.uuid, resourceId, variants})
   },
 
   resource_setValue(
@@ -150,19 +166,13 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   resource_setValueModeSpecific(
     {commit, state, dispatch, getters},
-    {
-      resourceId,
-      filter,
-      value,
-    }: {resourceId: string, filter: IResourceDefinitionVariantOverModes } & { value: string, mode: SupportedMode },
+    {resourceId, filter, value}: {resourceId: IResource['uuid'], filter: IResourceDefinitionVariantOverModes, value: string },
   ) {
     // find resource variant over modes
-    const
-      mode = first(filter.modes)
+    const mode = first(filter.modes)
     const variant = findResourceVariantOverModesWith(resourceId, filter, getters.activeFlow)
 
     // need to disambiguate b/c value is spread over multiple modes
-
     if (variant.modes.length > 1) {
       // remove mode from existing variant
       dispatch('resource_setModes', {
@@ -172,8 +182,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       })
 
       // generate new variant-over-modes with single targeted mode
-
-      //
       dispatch('resource_createVariant', {
         resourceId,
         variant: Object.assign(
@@ -183,7 +191,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       })
 
       // specialized case, we're done here
-
       return
     }
 
