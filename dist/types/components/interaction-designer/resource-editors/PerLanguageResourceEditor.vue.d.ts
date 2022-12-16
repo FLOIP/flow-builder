@@ -1,4 +1,4 @@
-import { IBlock, IFlow } from '@floip/flow-runner';
+import { IBlock, IFlow, ILanguage } from '@floip/flow-runner';
 import Lang from '../../../lib/filters/lang';
 import Permissions from '../../../lib/mixins/Permissions';
 import Routes from '../../../lib/mixins/Routes';
@@ -7,5 +7,6 @@ declare const PerLanguageResourceEditor_base: import("vue-class-component/lib/de
 export declare class PerLanguageResourceEditor extends PerLanguageResourceEditor_base {
     block: IBlock;
     activeFlow: IFlow;
+    get languages(): ILanguage[];
 }
 export default PerLanguageResourceEditor;

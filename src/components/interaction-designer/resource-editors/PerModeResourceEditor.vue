@@ -1,53 +1,55 @@
 <template>
   <div
-    v-if="activeFlow.supported_modes.length > 0"
+    v-if="modes.length > 0"
     class="per-mode-resource-editor">
     <div class="d-flex flex-column">
-      <div v-for="(item) in supportedModeWithOrderInfo"
-           :key="item.index"
-           :class="{
-             [`order-${item.order}`]: true,
-             'radius-on-top': item.order === 0,
-             'radius-on-bottom': item.order === activeFlow.supported_modes.length - 1
-           }"
-           class="resource-panel">
-        <div :class="{
-               'radius-on-top': item.order === 0,
-               'radius-on-bottom': item.order === activeFlow.supported_modes.length - 1,
-             }"
-             class="resource-panel-heading p-2 d-flex"
-             @click="updateIsPanelExpanded(`${block.uuid}-${item.mode}`)">
+      <div
+        v-for="(mode, modeIndex) in modes"
+        :key="mode"
+        :class="{
+          'radius-on-top': modeIndex === 0,
+          'radius-on-bottom': modeIndex === modes.length - 1
+        }"
+        class="resource-panel">
+        <div
+          :class="{
+            'radius-on-top': modeIndex === 0,
+            'radius-on-bottom': modeIndex === modes.length - 1,
+          }"
+          class="resource-panel-heading p-2 d-flex"
+          @click="updateIsPanelExpanded(`${block.uuid}-${mode}`)">
           <div class="mr-auto">
             <header class="d-flex channel-name">
               <font-awesome-icon
-                v-if="iconsMap.get(item.mode)"
+                v-if="iconsMap.get(mode)"
                 class="ml-3"
-                :class="{'custom-icons': iconsMap.get(item.mode)[0] === 'fac', 'library-icons': iconsMap.get(item.mode)[0] !== 'fac'}"
-                :icon="iconsMap.get(item.mode)"
+                :class="{'custom-icons': iconsMap.get(mode)[0] === 'fac', 'library-icons': iconsMap.get(mode)[0] !== 'fac'}"
+                :icon="iconsMap.get(mode)"
                 size="lg" />
               <h6 class="ml-3 align-self-center mb-0">
-                {{ `flow-builder.${item.mode.toLowerCase()}-content` | trans }}
+                {{ `flow-builder.${mode.toLowerCase()}-content` | trans }}
               </h6>
             </header>
           </div>
           <div class="ml-auto">
-            <slot name="right" :mode="item.mode" :modeIndex="item.index" :modeOrder="item.order"/>
+            <slot
+              name="right"
+              :mode="mode" />
             <font-awesome-icon
               :icon="[
                 'fas',
-                isPanelExpanded[`${block.uuid}-${item.mode}`] === true ? 'angle-up' : 'angle-down'
+                isPanelExpanded[`${block.uuid}-${mode}`] === true ? 'angle-up' : 'angle-down'
               ]"
               class="cursor-pointer text-primary align-self-center" />
           </div>
         </div>
         <div
-          v-show="isPanelExpanded[`${block.uuid}-${item.mode}`] === true"
-          :id="`collapse-lang-panel-${block.uuid}-${item.mode}`"
+          v-show="isPanelExpanded[`${block.uuid}-${mode}`] === true"
+          :id="`collapse-lang-panel-${block.uuid}-${mode}`"
           class="resource-panel-body p-2 collapse multi-collapse show">
           <per-mode-resource-editor-row
             :block="block"
-            :mode="item.mode"
-            :mode-index="item.index"
+            :mode="mode"
             @change="$emit('change')" />
         </div>
       </div>
@@ -64,6 +66,7 @@ import Routes from '@/lib/mixins/Routes'
 import FlowUploader from '@/lib/mixins/FlowUploader'
 import {Component, Prop, Watch} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
+import {orderModes} from '@/store/flow/flow'
 
 const flowVuexNamespace = namespace('flow')
 
@@ -73,9 +76,11 @@ export class PerModeResourceEditor extends mixins(FlowUploader, Permissions, Rou
   @Prop({}) openResources?: string[]
 
   @flowVuexNamespace.Getter activeFlow!: IFlow
-  @flowVuexNamespace.Getter supportedModeWithOrderInfo!: {mode: SupportedMode, index: number, order: number}[]
 
-  SupportedMode = SupportedMode
+  get modes(): SupportedMode[] {
+    return orderModes(this.activeFlow.supported_modes)
+  }
+
   iconsMap = new Map<string, object>([
     [SupportedMode.SMS, ['fac', 'message']],
     [SupportedMode.TEXT, ['fac', 'text']],

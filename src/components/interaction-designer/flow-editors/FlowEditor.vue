@@ -38,11 +38,7 @@
           :class="otherRowsClass"
           :message-key="`flow/${flow.uuid}/languages`"
           :should-hide-validation="!didUserSubmit">
-          <languages-editor
-            :flow="flow"
-            @commitFlowLanguagesChange="updateFlowLanguages"
-            @flowLanguagesAdded="handleFlowLanguagesAdded"
-            @flowLanguagesRemoved="handleFlowLanguagesRemoved" />
+          <languages-editor :flow="flow" />
         </validation-message>
 
         <validation-message
@@ -50,9 +46,7 @@
           :class="otherRowsClass"
           :message-key="`flow/${flow.uuid}/supported_modes`"
           :should-hide-validation="!didUserSubmit">
-          <modes-editor
-            :flow="flow"
-            @commitFlowModesChange="updateFlowModes" />
+          <modes-editor :flow="flow" />
         </validation-message>
       </div>
 
@@ -98,59 +92,8 @@ export class FlowEditor extends mixins(Lang) {
     return this.isOnSmallContainer ? 'col-12' : 'col-xl-6 col-lg-6 col-md-12 col-sm-12'
   }
 
-  async updateFlowLanguages(value: ILanguage[] | ILanguage): Promise<void> {
-    this.flow_setLanguages({flowId: this.flow.uuid, value})
-    // flow modes/languages could have been changed, so
-    // 1. Trigger validation for all blocks
-    await this.validate_allBlocksWithinFlow()
-    // 2. Trigger validation for resources
-    await this.validate_resourcesOnSupportedValues({
-      resources: this.activeFlow.resources,
-      supportedModes: this.activeFlow.supported_modes,
-      supportedLanguages: this.activeFlow.languages,
-    })
-  }
-
-  @flowVuexNamespace.Action block_updateAllBlocksAfterAddingFlowLanguage!: ({language}: {language: ILanguage}) => void
-  @flowVuexNamespace.Action block_updateAllBlocksAfterDeletingFlowLanguage!: ({language}: {language: ILanguage}) => void
-
-  @flowVuexNamespace.Action flow_addMissingResourceValues!: () => void
-
   @State(({trees: {ui}}) => ui) ui!: any
-  @flowVuexNamespace.Getter activeFlow!: IFlow
-  @flowVuexNamespace.Mutation flow_setLanguages!: ({flowId, value}: {flowId: string, value: ILanguage | ILanguage[]}) => void
-  @flowVuexNamespace.Mutation flow_setSupportedMode!: any
-
-  async updateFlowModes(value: SupportedMode[] | SupportedMode): Promise<void> {
-    this.flow_setSupportedMode({flowId: this.flow.uuid, value})
-    // flow modes/languages could have been changed, so
-    // 1. Update missing resource values
-    this.flow_addMissingResourceValues()
-    // 2. Trigger validation for all blocks
-    await this.validate_allBlocksWithinFlow()
-    // 3. Trigger validation for resources
-    await this.validate_resourcesOnSupportedValues({
-      resources: this.activeFlow.resources,
-      supportedModes: this.activeFlow.supported_modes,
-      supportedLanguages: this.activeFlow.languages,
-    })
-  }
-
-  handleFlowLanguagesAdded(value: ILanguage): void {
-    this.flow_addMissingResourceValues()
-    this.block_updateAllBlocksAfterAddingFlowLanguage({language: value})
-  }
-
-  handleFlowLanguagesRemoved(value: ILanguage): void {
-    this.block_updateAllBlocksAfterDeletingFlowLanguage({language: value})
-  }
-
   @builderVuexNamespace.Getter isEditable!: boolean
-
-  @validationVuexNamespace.Action validate_allBlocksWithinFlow!: () => Promise<void>
-  @validationVuexNamespace.Action validate_resourcesOnSupportedValues!: (
-    {resources, supportedModes, supportedLanguages}: {resources: IResource[], supportedModes: SupportedMode[], supportedLanguages: ILanguage[]}
-  ) => Promise<void>
 }
 
 export default FlowEditor

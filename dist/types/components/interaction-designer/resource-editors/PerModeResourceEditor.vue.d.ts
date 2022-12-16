@@ -8,12 +8,7 @@ export declare class PerModeResourceEditor extends PerModeResourceEditor_base {
     block: IBlock;
     openResources?: string[];
     activeFlow: IFlow;
-    supportedModeWithOrderInfo: {
-        mode: SupportedMode;
-        index: number;
-        order: number;
-    }[];
-    SupportedMode: typeof SupportedMode;
+    get modes(): SupportedMode[];
     iconsMap: Map<string, object>;
     expandedPanels: Record<string, boolean>;
     expandedPanelsOverridden: Record<string, boolean>;

@@ -9,24 +9,24 @@ export interface IValidationStatusContext {
     isOrphanResource?: boolean;
 }
 /**
- * Is valid by mode index OR lang index
+ * Is valid by mode OR languageId
  *
  * eg:
  * {
- *   modeIndex: {
- *     "0": 12 // there are 12 invalid resources for mode with index "0"
+ *   mode: {
+ *     "USSD": 12 // there are 12 invalid resources for USSD mode
  *   },
- *   langIndex: {
- *     "1": 34 // there are 34 invalid resources for language with index "1"
+ *   languageId: {
+ *     "eng": 34 // there are 34 invalid resources for "eng" language
  *   }
  * }
  */
 export interface IInvalidResourcesCounterBy {
-    modeIndex?: {
-        [key: number]: number;
+    mode?: {
+        [key: string]: number;
     };
-    langIndex?: {
-        [key: number]: number;
+    languageId?: {
+        [key: string]: number;
     };
 }
 export interface IValidationStatus {
