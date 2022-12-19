@@ -60,7 +60,7 @@ export const actions = {
         }, {root: true}))
           .map(async (exit: IBlockExit) => ({
             ...exit,
-            vendor_metadata: await dispatch('initiateExtraVendorExitMetadata'),
+            vendor_metadata: await dispatch('initiateExtraVendorExitMetadata', {exit}),
           })) as Promise<IBlockExit>[],
       )
     }
@@ -108,9 +108,12 @@ export const actions = {
   /**
    * Override this method on the consumer side to add extra vendor metadata to an exit
    *
+   * @param _ctx
+   * @param exit
+   *
    * @returns {Promise<Partial<IBlockExit['vendor_metadata']>>}
    */
-   async initiateExtraVendorExitMetadata(): Promise<IBlockExit['vendor_metadata']> {
+   async initiateExtraVendorExitMetadata(_ctx: unknown, {exit}: {exit: IBlockExit}): Promise<IBlockExit['vendor_metadata']> {
     return {}
   },
 
