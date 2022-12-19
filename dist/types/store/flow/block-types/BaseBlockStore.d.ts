@@ -37,9 +37,14 @@ export declare const actions: {
     /**
      * Override this method on the consumer side to add extra vendor metadata to an exit
      *
+     * @param _ctx
+     * @param exit
+     *
      * @returns {Promise<Partial<IBlockExit['vendor_metadata']>>}
      */
-    initiateExtraVendorExitMetadata(): Promise<IBlockExit['vendor_metadata']>;
+    initiateExtraVendorExitMetadata(_ctx: unknown, { exit }: {
+        exit: IBlockExit;
+    }): Promise<IBlockExit['vendor_metadata']>;
     /**
      * Validate the Consumer block
      * By overriding this action in the consumer side, we will be able to customize it using different json schema for eg.
