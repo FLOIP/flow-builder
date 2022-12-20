@@ -1,6 +1,6 @@
 import {ActionContext, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock} from '@floip/flow-runner'
+import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {defaultsDeep} from 'lodash'
 import {IValidationStatus, validateBlockWithJsonSchema} from '@/store/validation'
 import {ValidationResults} from '@/lib/validations'
@@ -27,10 +27,11 @@ export const actions = {
     {getters, dispatch}: ActionContext<IEmptyState, IRootState>,
     {props}: { props: { uuid: string } & Partial<IBlock> },
   ): Promise<IBlock> {
-    const mainProps = defaultsDeep(
-      {},
-      // Props from the block type createWith
-      props, {
+    const vendorMetadata = {
+      vendor_metadata: await dispatch('initiateExtraVendorConfig'),
+    }
+
+    const defaultProps = {
       // Default props if not provided yet
       type: '',
       name: '',
@@ -46,18 +47,22 @@ export const actions = {
           },
         },
       },
-    }, {
-      // Extra vendor_metadata from consumer side (eg: some configs under a new namespace)
-      vendor_metadata: await dispatch('initiateExtraVendorConfig'),
-    },
-    )
+    }
+
+    const mainProps = defaultsDeep({}, vendorMetadata, props, defaultProps)
 
     // Define exits after we have the whole final props, this is important for dynamic test value
     if (props?.exits === undefined) {
-      mainProps.exits = await dispatch('flow/block_generateExitsBasedOnUiConfig', {
-        blockType: props.type,
-        primaryExitTest: getters.primaryExitTest(mainProps),
-      }, {root: true})
+      mainProps.exits = await Promise.all(
+        (await dispatch('flow/block_generateExitsBasedOnUiConfig', {
+          blockType: props.type,
+          primaryExitTest: getters.primaryExitTest(mainProps),
+        }, {root: true}))
+          .map(async (exit: IBlockExit) => ({
+            ...exit,
+            vendor_metadata: await dispatch('initiateExtraVendorExitMetadata', {exit}),
+          })) as Promise<IBlockExit>[],
+      )
     }
 
     return mainProps
@@ -97,6 +102,18 @@ export const actions = {
    * }
    */
   async initiateExtraVendorConfig(_ctx: unknown): Promise<object> {
+    return {}
+  },
+
+  /**
+   * Override this method on the consumer side to add extra vendor metadata to an exit
+   *
+   * @param _ctx
+   * @param exit
+   *
+   * @returns {Promise<Partial<IBlockExit['vendor_metadata']>>}
+   */
+   async initiateExtraVendorExitMetadata(_ctx: unknown, {exit}: {exit: IBlockExit}): Promise<IBlockExit['vendor_metadata']> {
     return {}
   },
 

@@ -7,6 +7,9 @@
       :uses-default-branching-editor="usesDefaultBranchingEditor"
       @handleBranchingTypeChangedToUnified="handleBranchingTypeChangedToUnified({block})">
       <slot
+        slot="description"
+        name="description" />
+      <slot
         slot="resource-editors"
         name="resource-editors" />
       <slot

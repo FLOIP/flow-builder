@@ -6,6 +6,9 @@
       :uses-default-contact-props-editor="usesDefaultContactPropsEditor"
       :uses-default-branching-editor="usesDefaultBranchingEditor">
       <slot
+        slot="description"
+        name="description" />
+      <slot
         slot="resource-editors"
         name="resource-editors" />
       <slot
