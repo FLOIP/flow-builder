@@ -12,7 +12,12 @@ import {ISelectManyResponseBlock} from '@floip/flow-runner/src/model/block/ISele
 import {escapeQuotes} from '@/components/interaction-designer/block-editors/choices/expressionTransformers'
 import * as SetContactPropertyModule from './block/set-contact-property'
 import {IFlowsState} from '.'
-import {removeBlockValueByPath, updateBlockExitValueByPath, updateBlockValueByPath} from './utils/vuexBlockAndFlowHelpers'
+import {
+  removeBlockExitValueByPath,
+  removeBlockValueByPath,
+  updateBlockExitValueByPath,
+  updateBlockValueByPath,
+} from './utils/vuexBlockAndFlowHelpers'
 
 export type ConfigFieldType = object | string | number | boolean | undefined | null
 
@@ -99,7 +104,12 @@ export const mutations: MutationTree<IFlowsState> = {
   ) {
     updateBlockExitValueByPath(state, blockId, exitId, `vendor_metadata.${path}`, value)
   },
-
+  block_removeExitVendorMetadataByPath(
+    state,
+    {blockId, exitId, path}: {blockId: IBlock['uuid'], exitId: IBlockExit['uuid'], path: string},
+  ) {
+    removeBlockExitValueByPath(state, blockId, exitId, `vendor_metadata.${path}`)
+  },
   block_updateConfig(state, {blockId, newConfig}: { blockId: string, newConfig: object }) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .config = newConfig
