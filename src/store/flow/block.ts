@@ -2,7 +2,7 @@ import Vue from 'vue'
 import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext} from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {cloneDeep, defaults, has, isArray, isNil, last, reject, snakeCase} from 'lodash'
+import {cloneDeep, defaults, has, isArray, isNil, last, reject} from 'lodash'
 import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV4'
 import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.model'
 import {BLOCK_TYPE as SelectOneBlockType} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
@@ -10,7 +10,7 @@ import {BLOCK_TYPE as SelectManyBlockType} from '@/store/flow/block-types/Mobile
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {ISelectManyResponseBlock} from '@floip/flow-runner/src/model/block/ISelectManyResponseBlock'
 import {escapeQuotes} from '@/components/interaction-designer/block-editors/choices/expressionTransformers'
-import {removeUnderScoreCharBeforeDigits} from '@/utils/string-utils'
+import {snakeCaseNonDigits} from '@/utils/string-utils'
 import * as SetContactPropertyModule from './block/set-contact-property'
 import {IFlowsState} from '.'
 import {removeBlockValueByPath, updateBlockExitValueByPath, updateBlockValueByPath} from './utils/vuexBlockAndFlowHelpers'
@@ -168,7 +168,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   block_setLabel({commit, dispatch}, {blockId, value}) {
     commit('block_setLabel', {blockId, value})
-    dispatch('block_setName', {blockId, value: removeUnderScoreCharBeforeDigits(snakeCase(value))})
+    dispatch('block_setName', {blockId, value: snakeCaseNonDigits(value as string)})
   },
 
   /**
@@ -227,7 +227,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   block_resetName({commit, state}, {blockId}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
 
-    commit('block_setName', {blockId, value: removeUnderScoreCharBeforeDigits(snakeCase(block.label))})
+    commit('block_setName', {blockId, value: snakeCaseNonDigits(block.label)})
     commit('block_updateVendorMetadataByPath', {
       blockId,
       path: 'floip.ui_metadata.should_auto_update_name',
