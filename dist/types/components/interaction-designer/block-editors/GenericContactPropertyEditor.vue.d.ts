@@ -1,6 +1,6 @@
 import { IBlock } from '@floip/flow-runner';
 import Lang from '../../../lib/filters/lang';
-import { ConfigFieldType } from '../../../store/flow/block';
+import { ConfigFieldType } from '../../../store/flow/utils/vuexBlockAndFlowHelpers';
 import { IContactPropertyOption, IContactPropertyOptionForUISelector } from '../../../store/flow/block-types/Core_SetContactPropertyStore.model';
 declare const GenericContactPropertyEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class GenericContactPropertyEditor extends GenericContactPropertyEditor_base {

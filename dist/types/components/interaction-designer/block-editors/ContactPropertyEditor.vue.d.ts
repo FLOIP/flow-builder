@@ -1,6 +1,6 @@
 import { IBlock, SetContactProperty } from '@floip/flow-runner';
 import Lang from '../../../lib/filters/lang';
-import { ConfigFieldType } from '../../../store/flow/block';
+import { ConfigFieldType } from '../../../store/flow/utils/vuexBlockAndFlowHelpers';
 declare const ContactPropertyEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class ContactPropertyEditor extends ContactPropertyEditor_base {
     readonly block: IBlock;
