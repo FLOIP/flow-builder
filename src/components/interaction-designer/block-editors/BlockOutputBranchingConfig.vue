@@ -68,7 +68,7 @@
   import {mixins} from 'vue-class-component'
   import Lang from '@/lib/filters/lang'
   import {namespace} from 'vuex-class'
-  import {ConfigFieldType} from '@/store/flow/block'
+  import {ConfigFieldType} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
   import {OutputBranchingType} from '@/components/interaction-designer/block-editors/BlockOutputBranchingConfig.model'
   import BlockOutputBranchingExplanations from './BlockOutputBranchingExplanations.vue'
 

@@ -12,9 +12,7 @@ import {ISelectManyResponseBlock} from '@floip/flow-runner/src/model/block/ISele
 import {escapeQuotes} from '@/components/interaction-designer/block-editors/choices/expressionTransformers'
 import * as SetContactPropertyModule from './block/set-contact-property'
 import {IFlowsState} from '.'
-import {removeBlockValueByPath, updateBlockExitValueByPath, updateBlockValueByPath} from './utils/vuexBlockAndFlowHelpers'
-
-export type ConfigFieldType = object | string | number | boolean | undefined | null
+import {ConfigFieldType, removeBlockValueByPath, updateBlockExitValueByPath, updateBlockValueByPath} from './utils/vuexBlockAndFlowHelpers'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   ...SetContactPropertyModule.getters,

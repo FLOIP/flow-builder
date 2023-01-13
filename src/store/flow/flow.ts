@@ -35,8 +35,7 @@ import {
 import {cleanupFlowResources, discoverContentTypesFor} from '@/store/flow/utils/resourceHelpers'
 import {computeBlockCanvasCoordinates} from '@/store/builder'
 import {ErrorObject} from 'ajv'
-import {removeFlowValueByPath, updateFlowValueByPath} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
-import {ConfigFieldType} from '@/store/flow/block'
+import {ConfigFieldType, removeFlowValueByPath, updateFlowValueByPath} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
 import {IFlowsState} from '.'
 import {mergeFlowContainer} from './utils/importHelpers'
 
