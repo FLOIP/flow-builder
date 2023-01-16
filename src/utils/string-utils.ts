@@ -15,3 +15,20 @@ export function snakeCaseNonDigits(value?: string | null) {
 
   return snakeCase(value).replace(/_(\d+)/g, '$1')
 }
+
+/**
+ * Snake case on spaces only
+ * eg:
+ *  - 1message >>> 1message (no changes)
+ *  - message_1 >>> message_1 (no changes)
+ *  - message 1 >>> message_1 (with changes)
+ * @param value
+ * @param char
+ */
+export function snakeCaseOnSpaces(value?: string | null, char = '_') {
+  if (value === null || value === undefined) {
+    return value
+  }
+
+  return value.replaceAll(' ', char).toLowerCase()
+}
