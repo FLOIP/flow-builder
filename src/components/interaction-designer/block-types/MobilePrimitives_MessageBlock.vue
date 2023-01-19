@@ -53,7 +53,7 @@ const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 class MobilePrimitives_MessageBlock extends mixins(Lang) {
   @Prop() readonly block!: IMessageBlock
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
-  @Prop({default: true}) readonly usesDefaultContactPropsEditor!: boolean
+  @Prop({default: false}) readonly usesDefaultContactPropsEditor!: boolean
 
   @builderVuexNamespace.Getter isEditable !: boolean
 

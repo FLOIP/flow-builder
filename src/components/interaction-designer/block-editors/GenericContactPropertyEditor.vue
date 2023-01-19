@@ -25,7 +25,7 @@
       class="form-group">
       <validation-message
         #input-control="{ isValid }"
-        :message-key="`block/${block.uuid}/config/set_contact_property/x/property_key`">
+        :message-key="`block/${block.uuid}/config/set_contact_property/0/property_key`">
         <div class="block-contact-property-key">
           <div v-if="hasSubscriberPropertyFields">
             <label for="contact-property-selector">{{ trans('flow-builder.property') }}</label>
@@ -147,8 +147,8 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
     FROM_CURRENT_BLOCK_RESPONSE: 'fromCurrentBlockResponse',
   }
   propertyValueAction = ''
-  // undefined will help us to enforce validation error on empty value
-  propertyKey?: string = undefined
+  // null will help us to enforce validation error on empty value
+  propertyKey?: string = null
   propertyValue?: string = ''
 
   created(): void {
@@ -234,12 +234,12 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
     })
   }
 
-  get firstContactPropertyKey(): string | undefined {
-    return this.block.config.set_contact_property?.[0].property_key
+  get firstContactPropertyKey(): string | null {
+    return this.block.config.set_contact_property?.[0].property_key ?? null
   }
 
-  get firstContactPropertyValue(): string | undefined {
-    return this.block.config.set_contact_property?.[0].property_value
+  get firstContactPropertyValue(): string | null {
+    return this.block.config.set_contact_property?.[0].property_value ?? null
   }
 
   get flowSelectedContactPropertyField(): IContactPropertyOption | null {
