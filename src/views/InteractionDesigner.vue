@@ -58,7 +58,8 @@ import {scrollBehavior, scrollBlockIntoView} from '@/router/helpers'
 import {store} from '@/store'
 import ClipboardRoot from '@/components/interaction-designer/clipboard/ClipboardRoot.vue'
 import {Route} from 'vue-router'
-import {IBlock, IFlow, ILanguage, IResource, IResources, SupportedMode} from '@floip/flow-runner'
+import * as jsondiffpatch from 'jsondiffpatch'
+import {IBlock, IContext, IFlow, ILanguage, IResource, IResources, SupportedMode} from '@floip/flow-runner'
 import {ErrorObject} from 'ajv'
 import {MutationPayload} from 'vuex'
 import {IValidationStatus} from '@/store/validation'
@@ -202,6 +203,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   @State(({trees: {ui}}) => ui.blockClasses) blockClasses!: Record<string, any>
 
   @flowNamespace.Getter activeFlow?: IFlow
+  @flowNamespace.Getter activeFlowContainer?: IContext
   @builderNamespace.State activeMainComponent?: string
   @builderNamespace.Getter activeBlock?: IBlock
   @builderNamespace.Getter isEditable!: boolean
@@ -312,6 +314,26 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
       scrollBlockIntoView(to.params.blockId)
       this.setIsBlockEditorOpen(true)
     }
+  }
+
+  get containerClone(): IContext {
+    return cloneDeep(this.activeFlowContainer)
+  }
+
+  // watching container directly gives equal new/old values, see https://github.com/vuejs/vue/issues/2164#issuecomment-432872718
+  @Watch('containerClone', {deep: true})
+  handleActiveFlowContainerUpdate(newContainer: IContext, oldContainer: IContext): void {
+    console.log('newContainer', newContainer)
+    console.log('oldContainer', oldContainer)
+
+    const delta = jsondiffpatch.diff(cloneDeep(oldContainer), newContainer)
+    console.log('diff', delta)
+
+    console.log('after patch')
+    const undoneContainer = jsondiffpatch.unpatch(newContainer, delta)
+
+    const shouldBeZeroDelta = jsondiffpatch.diff(undoneContainer, oldContainer)
+    console.log('shouldBeZeroDelta', shouldBeZeroDelta)
   }
 
   @Mutation configure!: ({appConfig, builderConfig}: {appConfig: object, builderConfig: object}) => void
