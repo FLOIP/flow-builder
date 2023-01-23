@@ -63,6 +63,7 @@
     "iso-639-3": "^3.0.0",
     "jquery": "^3.5.1",
     "json-schema": "0.2.3",
+    "jsondiffpatch": "^0.4.1",
     "lang.js": "^1.1.14",
     "leader-line": "^1.0.7",
     "lodash": "^4.17.19",
