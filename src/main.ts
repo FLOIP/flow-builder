@@ -10,6 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'vue-multiselect/dist/vue-multiselect.min.css'
 import 'scss/main.scss'
+import {createPinia, PiniaVuePlugin} from 'pinia'
 
 import registerCustomComponents from '@/common-imports'
 
@@ -19,13 +20,15 @@ import App from './App.vue'
 registerCustomComponents()
 
 Vue.use(Vuex)
+Vue.use(PiniaVuePlugin)
 
 Vue.config.productionTip = false
 
-async function main() {
+async function main(): Promise<void> {
   new Vue({
     router,
     store: new Vuex.Store({}),
+    pinia: createPinia(),
     render: (h) => h(Vue.extend(App)),
   }).$mount('#app')
 }
