@@ -5,6 +5,7 @@ import {IClipboardState, store as clipboard} from '@/store/clipboard'
 import {IFlowsState, store as flow} from './flow'
 import {IBuilderState, store as builder} from './builder'
 import {IValidationState, validationStore as validation} from './validation'
+import {IUndoState, store as undo} from './undo'
 
 export interface IRootState {
   builder: IBuilderState,
@@ -13,6 +14,7 @@ export interface IRootState {
   trees: any,
   audio: any,
   clipboard: IClipboardState,
+  undo: IUndoState,
 }
 
 export const store: StoreOptions<IRootState> = {
@@ -24,6 +26,7 @@ export const store: StoreOptions<IRootState> = {
     trees,
     audio,
     clipboard,
+    undo,
   },
 }
 
