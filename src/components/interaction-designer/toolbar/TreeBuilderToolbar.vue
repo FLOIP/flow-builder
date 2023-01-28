@@ -120,6 +120,10 @@
                 </router-link>
               </div>
 
+              <div class="vertical-divider" />
+
+              <UndoRedoButtonGroup />
+
               <slot name="extra-buttons" />
             </div>
 
@@ -329,6 +333,7 @@ import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
 import {RawLocation} from 'vue-router'
 import {Dictionary} from 'vue-router/types/router'
 import {Watch} from 'vue-property-decorator'
+import UndoRedoButtonGroup from './UndoRedoButtonGroup'
 
 Vue.use(BootstrapVue)
 Vue.component('BTooltip', BTooltip)
@@ -341,6 +346,7 @@ const validationVuexNamespace = namespace('validation')
 @Component({
   components: {
     BModal,
+    UndoRedoButtonGroup,
   },
 })
 export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
