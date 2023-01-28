@@ -3,6 +3,7 @@ import {IRootState} from '@/store'
 import {IContainer} from '@floip/flow-runner'
 import {SimpleStack} from '@/store/undo/SimpleStack'
 import {Stack} from '@/store/undo/Stack'
+import {cloneDeep} from 'lodash'
 
 type Snapshot = IContainer
 
@@ -20,14 +21,17 @@ export const getters: GetterTree<IUndoState, IRootState> = {
   canUndo: state => !state.undoStack.isEmpty(),
   canRedo: state => !state.redoStack.isEmpty(),
 
-  currentState: (_, __, ___, rootGetters) => rootGetters['flow/activeFlowContainer'],
+  undoTooltip: state => state.undoStack.tooltip(),
+  redoTooltip: state => state.redoStack.tooltip(),
+
+  currentState: (_, __, ___, rootGetters) => cloneDeep(rootGetters['flow/activeFlowContainer']),
 }
 
 export const mutations: MutationTree<IUndoState> = {}
 
 export const actions: ActionTree<IUndoState, IRootState> = {
-  applyState({dispatch}, snapshot: Snapshot) {
-    dispatch('flow/flow_setFlowContainer', snapshot, {root: true})
+  applyState({commit}, snapshot: Snapshot) {
+    commit('flow/flow_setFlowContainer', snapshot, {root: true})
   },
 
   undo({state, getters, dispatch}): void {
@@ -35,7 +39,7 @@ export const actions: ActionTree<IUndoState, IRootState> = {
       return
     }
     const namedSnapshot = state.undoStack.pop()!
-    state.redoStack.push(namedSnapshot)
+    state.redoStack.push({snapshot: getters.currentState, name: namedSnapshot.name})
     dispatch('applyState', namedSnapshot.snapshot)
   },
 

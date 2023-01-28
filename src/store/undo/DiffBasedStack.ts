@@ -12,8 +12,9 @@ export type NamedDiff = {
 }
 
 /**
- * A Stack implementation that stores the first snapshot as is, but only diffs for the subsequent snapshots.
- * The aim is to save memory.
+ * A Stack implementation that saves memory by:
+ * - storing the first snapshot as is
+ * - storing the subsequent snapshots as diffs
  */
 export class DiffBasedStack<T> implements Stack<T> {
   private initialNamedSnapshot?: NamedSnapshot<T> = undefined
@@ -29,7 +30,6 @@ export class DiffBasedStack<T> implements Stack<T> {
       }
       this.diffStack.push(newNamedDiff)
     }
-    console.log('after push', JSON.stringify(this))
   }
 
   pop(): NamedSnapshot<T> | undefined {
