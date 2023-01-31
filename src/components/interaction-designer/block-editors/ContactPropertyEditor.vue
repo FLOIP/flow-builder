@@ -36,7 +36,7 @@
 
       <validation-message
         #input-control="{ isValid }"
-        :message-key="`block/${block.uuid}/config/set_contact_property/x/property_key`">
+        :message-key="`block/${block.uuid}/config/set_contact_property/0/property_key`">
         <div class="block-contact-property-key">
           <text-editor
             v-model="propertyKey"
@@ -50,7 +50,7 @@
       <validation-message
         v-if="propertyAction === PROPERTY_ACTION.SET"
         #input-control="{ isValid }"
-        :message-key="`block/${block.uuid}/config/set_contact_property/x/property_value`">
+        :message-key="`block/${block.uuid}/config/set_contact_property/0/property_value`">
         <expression-input
           :label="'flow-builder.value-expression' | trans"
           :placeholder="'flow-builder.enter-expression' | trans"
@@ -68,7 +68,7 @@ import {IBlock, SetContactProperty} from '@floip/flow-runner'
 import {Component, Prop} from 'vue-property-decorator'
 import {namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
-import {first} from 'lodash'
+import {first, has} from 'lodash'
 import {mixins} from 'vue-class-component'
 import {ConfigFieldType} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
 
@@ -84,6 +84,12 @@ export class ContactPropertyEditor extends mixins(Lang) {
   PROPERTY_ACTION = {
     SET: 'set',
     CLEAR: 'clear',
+  }
+
+  created(): void {
+    if (this.propertyKey === undefined) {
+      this.propertyKey = null
+    }
   }
 
   get propertyAction(): string {
@@ -109,7 +115,7 @@ export class ContactPropertyEditor extends mixins(Lang) {
     return first(this.block.config.set_contact_property)
   }
 
-  get propertyKey(): string | undefined {
+  get propertyKey(): string | null | undefined {
     return this.firstProperty?.property_key
   }
 
@@ -130,12 +136,12 @@ export class ContactPropertyEditor extends mixins(Lang) {
     {blockId, path, value}: { blockId: string, path: string, value: ConfigFieldType }
   ) => void
 
-  set propertyKey(value: string | undefined) {
+  set propertyKey(value: string | null | undefined) {
     this.block_setContactPropertyKeyOnIndex({
       blockId: this.block.uuid,
       // Consider the 1st element only
       index: 0,
-      propertyKey: value === '' || value === undefined ? undefined : value,
+      propertyKey: value === '' || value === undefined ? null : value,
     })
   }
   @flowVuexNamespace.Action block_setContactPropertyValueOnIndex!: (

@@ -3418,6 +3418,7 @@ export declare const defaultLocalisations: {
         "importer-currently-supports-single-flow-only": string;
         "non-supported-spec-version": string;
         "unsupported-blocks-detected": string;
+        "block-config-set_contact_property-x-property_key-type": string;
     };
     "fr.flow-builder-validation": {
         "floip-format": string;
@@ -3454,6 +3455,7 @@ export declare const defaultLocalisations: {
         "importer-currently-supports-single-flow-only": string;
         "non-supported-spec-version": string;
         "unsupported-blocks-detected": string;
+        "block-config-set_contact_property-x-property_key-type": string;
     };
 };
 export declare const BaseBlock: typeof BaseBlockComponent;

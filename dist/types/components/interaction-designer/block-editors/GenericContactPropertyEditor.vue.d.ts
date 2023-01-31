@@ -26,8 +26,8 @@ export declare class GenericContactPropertyEditor extends GenericContactProperty
     get shouldUseOpenExpression(): boolean;
     updateFirstContactPropertyKey(value: string): void;
     updateFirstContactPropertyValue(value: string): void;
-    get firstContactPropertyKey(): string | undefined;
-    get firstContactPropertyValue(): string | undefined;
+    get firstContactPropertyKey(): string | null;
+    get firstContactPropertyValue(): string | null;
     get flowSelectedContactPropertyField(): IContactPropertyOption | null;
     set flowSelectedContactPropertyField(option: IContactPropertyOption | null);
     get hasSubscriberPropertyFields(): boolean;

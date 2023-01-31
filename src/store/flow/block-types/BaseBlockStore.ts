@@ -176,6 +176,10 @@ export const actions = {
       }
     })
 
+    if ((validationStatus.ajvErrors?.length ?? 0) > 0) {
+      validationStatus.isValid = false
+    }
+
     return validationStatus
   },
 
