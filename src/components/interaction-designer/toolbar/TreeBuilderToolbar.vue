@@ -235,39 +235,50 @@
                 <slot name="extra-dropdown-items-for-category2" />
               </div>
             </li>
-            <li
-              v-if="!isEmpty(blockClassesForBranchingCategory)"
-              class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                data-toggle="dropdown"
-                href="#"
-                role="button"
-                aria-haspopup="true"
-                aria-expanded="false"
-                @mouseover="openDropdownMenu($event.target)">
-                <span class="nav-link-text">{{ 'flow-builder.branching' | trans }}</span>
-              </a>
-              <div class="dropdown-menu mt-0">
-                <template v-for="(classDetails, className) in blockClassesForBranchingCategory">
-                  <div
-                    v-if="shouldDisplayDividerBefore(blockClassesForBranchingCategory, className)"
-                    :key="`${className}divider`"
-                    class="dropdown-divider" />
-                  <a
-                    v-if="isBlockAvailableByBlockClass[className]"
-                    :key="className + 'item'"
-                    href="#"
-                    class="dropdown-item"
-                    :data-block-type="className"
-                    :data-default-num-connections="classDetails['defaultConnections']"
-                    @click.prevent="handleAddBlockByTypeSelected(classDetails)">
-                    {{ translateTreeClassName(className) }}
-                  </a>
-                </template>
-                <slot name="extra-dropdown-items-for-category3" />
-              </div>
-            </li>
+            <template v-if="!isEmpty(blockClassesForBranchingCategory)">
+              <li class="nav-item" v-if="Object.keys(blockClassesForBranchingCategory).length === 1">
+                <a v-for="(classDetails, className) in blockClassesForBranchingCategory"
+                   :key="className + 'item'"
+                   class="nav-link single-menu"
+                   href="#"
+                   @click.prevent="handleAddBlockByTypeSelected(classDetails)">
+                  {{ 'flow-builder.branching' | trans }}
+                </a>
+              </li>
+              <li
+                v-else
+                class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  data-toggle="dropdown"
+                  href="#"
+                  role="button"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  @mouseover="openDropdownMenu($event.target)">
+                  <span class="nav-link-text">{{ 'flow-builder.branching' | trans }}</span>
+                </a>
+                <div class="dropdown-menu mt-0">
+                  <template v-for="(classDetails, className) in blockClassesForBranchingCategory">
+                    <div
+                      v-if="shouldDisplayDividerBefore(blockClassesForBranchingCategory, className)"
+                      :key="`${className}divider`"
+                      class="dropdown-divider" />
+                    <a
+                      v-if="isBlockAvailableByBlockClass[className]"
+                      :key="className + 'item'"
+                      href="#"
+                      class="dropdown-item"
+                      :data-block-type="className"
+                      :data-default-num-connections="classDetails['defaultConnections']"
+                      @click.prevent="handleAddBlockByTypeSelected(classDetails)">
+                      {{ translateTreeClassName(className) }}
+                    </a>
+                  </template>
+                  <slot name="extra-dropdown-items-for-category3" />
+                </div>
+              </li>
+            </template>
             <li
               v-if="!isEmpty(blockClassesForDeveloperCategory)"
               class="nav-item dropdown">
@@ -720,13 +731,13 @@ export default TreeBuilderToolbar
 .tree-workspace-panel-heading-contents .nav .nav-item.show>a:hover,
 .tree-workspace-panel-heading-contents nav .nav-item.show>a:focus {
   color: #ffffff;
-  background-color: #8C215C;
+  background-color: $primary-600;
 }
 
 .tree-workspace-panel-heading-contents .dropdown-item:hover,
 .tree-workspace-panel-heading-contents .dropdown-item:focus {
   color: #ffffff !important;
-  background-color: #8C215C;
+  background-color: $primary-600;
 }
 
 .vertical-divider {
@@ -749,5 +760,10 @@ export default TreeBuilderToolbar
       opacity: 1;
     }
   }
+}
+
+.single-menu:hover {
+  color: #ffffff !important;
+  background-color: $primary-600;
 }
 </style>
