@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import {toPath} from 'lodash'
 import {IContext, findBlockOnActiveFlowWith, IBlock, IChoice, findFlowWith, IFlow, IBlockExit, findBlockExitWith} from '@floip/flow-runner'
-import {ConfigFieldType} from '@/store/flow/block'
+
+export type ConfigFieldType = object | string | number | boolean | undefined | null
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function makePath(block: any, rawPath: string): [object, string] {
