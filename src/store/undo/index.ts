@@ -57,7 +57,7 @@ export const actions: ActionTree<IUndoState, IRootState> = {
     dispatch('applyState', namedSnapshot.snapshot)
   },
 
-  do({state, getters, dispatch}, name: string) {
+  createSnapshot({state, getters, dispatch}, name: string) {
     state.undoStack.push({snapshot: getters.currentState, name})
     state.redoStack.clear()
   },
