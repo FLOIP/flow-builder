@@ -21,8 +21,13 @@ export const getters: GetterTree<IUndoState, IRootState> = {
   canUndo: state => !state.undoStack.isEmpty(),
   canRedo: state => !state.redoStack.isEmpty(),
 
-  undoTooltip: state => state.undoStack.tooltip(),
-  redoTooltip: state => state.redoStack.tooltip(),
+  undoTooltip: (state, getters) => (getters.canUndo
+    ? `Undo ${state.undoStack.tooltip()!}`
+    : ''),
+
+  redoTooltip: (state, getters) => (getters.canRedo
+    ? `Redo ${state.redoStack.tooltip()!}`
+    : ''),
 
   currentState: (_, __, ___, rootGetters) => cloneDeep(rootGetters['flow/activeFlowContainer']),
 }

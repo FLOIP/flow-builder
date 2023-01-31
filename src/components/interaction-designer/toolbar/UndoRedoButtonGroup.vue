@@ -1,14 +1,14 @@
 <template>
   <div class="undo-redo-button-group btn-group">
     <button
-      v-b-tooltip.hover="undoTooltip ?? ''"
+      v-b-tooltip.hover="undoTooltip"
       class="btn btn-sm btn-outline-primary"
       :disabled="!canUndo"
       @click="undo">
       Undo
     </button>
     <button
-      v-b-tooltip.hover="redoTooltip ?? ''"
+      v-b-tooltip.hover="redoTooltip"
       class="btn btn-sm btn-outline-primary"
       :disabled="!canRedo"
       @click="redo">
@@ -27,8 +27,8 @@ const undoVuexNamespace = namespace('undo')
 export default class UndoRedoButtonGroup {
   @undoVuexNamespace.Getter canUndo: boolean
   @undoVuexNamespace.Getter canRedo: boolean
-  @undoVuexNamespace.Getter undoTooltip: string | undefined
-  @undoVuexNamespace.Getter redoTooltip: string | undefined
+  @undoVuexNamespace.Getter undoTooltip: string
+  @undoVuexNamespace.Getter redoTooltip: string
 
   @undoVuexNamespace.Action undo: () => void
   @undoVuexNamespace.Action redo: () => void
