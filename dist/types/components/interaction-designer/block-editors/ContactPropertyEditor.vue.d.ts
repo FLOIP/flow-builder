@@ -8,6 +8,7 @@ export declare class ContactPropertyEditor extends ContactPropertyEditor_base {
         SET: string;
         CLEAR: string;
     };
+    created(): void;
     get propertyAction(): string;
     set propertyAction(value: string);
     block_setContactPropertyKeyOnIndex: ({ index, blockId, propertyKey }: {
@@ -16,7 +17,7 @@ export declare class ContactPropertyEditor extends ContactPropertyEditor_base {
         propertyKey?: string;
     }) => void;
     get firstProperty(): SetContactProperty | undefined;
-    get propertyKey(): string | undefined;
+    get propertyKey(): string | null | undefined;
     get propertyValue(): string;
     updatePropertyValue(value: string): void;
     block_updateConfigByPath: ({ blockId, path, value }: {
@@ -24,7 +25,7 @@ export declare class ContactPropertyEditor extends ContactPropertyEditor_base {
         path: string;
         value: ConfigFieldType;
     }) => void;
-    set propertyKey(value: string | undefined);
+    set propertyKey(value: string | null | undefined);
     block_setContactPropertyValueOnIndex: ({ index, blockId, propertyValue }: {
         index: number;
         blockId: string;
