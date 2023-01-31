@@ -51,6 +51,7 @@ import {mixins} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
+const undoVuexNamespace = namespace('undo')
 
 type Option = {
   id: string,
@@ -73,6 +74,8 @@ export class TagSelector extends mixins(Lang) {
   }
 
   set selectedTags(value) {
+    this.createSnapshot('Change block tags')
+
     this.block_setTags({
       blockId: this.block.uuid,
       value: map(value, 'name'),
@@ -88,6 +91,8 @@ export class TagSelector extends mixins(Lang) {
   }
 
   addTag(newTag: string): void {
+    this.createSnapshot('Add block tag')
+
     this.blockTags.push(newTag)
     this.block_addTag({
       blockId: this.block.uuid,
@@ -101,6 +106,7 @@ export class TagSelector extends mixins(Lang) {
 
   @flowVuexNamespace.Mutation block_setTags!: ({blockId, value}: {blockId: IBlock['uuid'], value: string[]}) => void
   @flowVuexNamespace.Mutation block_addTag!: ({blockId, value}: {blockId: IBlock['uuid'], value: string}) => void
+  @undoVuexNamespace.Action createSnapshot: (name: string) => void
 
   @State(({trees: {ui: {blockTags}}}) => blockTags) blockTags!: string[]
 }

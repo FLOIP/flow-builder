@@ -47,10 +47,11 @@
 import {Component, Prop} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
-import {IBlock, IBlockUIMetadata} from '@floip/flow-runner'
+import {IBlock} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 
 const flowVuexNamespace = namespace('flow')
+const undoVuexNamespace = namespace('undo')
 
 @Component({})
 export class NameEditor extends mixins(Lang) {
@@ -63,6 +64,7 @@ export class NameEditor extends mixins(Lang) {
   }
 
   set blockName(value: IBlock['name']) {
+    this.createSnapshot('Change block name')
     this.block_setName({
       blockId: this.block.uuid,
       value,
@@ -99,6 +101,7 @@ export class NameEditor extends mixins(Lang) {
   }) => void;
 
   @flowVuexNamespace.Action block_resetName!: ({blockId}: { blockId: IBlock['uuid'] }) => void;
+  @undoVuexNamespace.Action createSnapshot: (name: string) => void
 }
 export default NameEditor
 </script>

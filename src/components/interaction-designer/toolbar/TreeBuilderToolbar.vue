@@ -342,6 +342,7 @@ const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 const clipboardVuexNamespace = namespace('clipboard')
 const validationVuexNamespace = namespace('validation')
+const undoVuexNamespace = namespace('undo')
 
 @Component({
   components: {
@@ -489,6 +490,8 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   // Methods #####################
 
   async handleAddBlockByTypeSelected({type}: { type: IBlock['type'] }): Promise<void> {
+    this.createSnapshot(`Add ${type.split('.').pop()} block`)
+
     const {uuid: blockId} = await this.flow_addBlankBlockByType({
       type,
       ui_metadata: {
@@ -648,6 +651,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     flowId,
     blockId,
   }: { flowId?: string, blockId?: IBlock['uuid'] }) => Promise<IBlock>
+  @undoVuexNamespace.Action createSnapshot: (name: string) => void
 
   // Builder
   @builderVuexNamespace.Getter isEditable!: boolean

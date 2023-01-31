@@ -29,6 +29,7 @@ import ExpressionInput from '@/components/common/ExpressionInput.vue'
 import {SupportedMode} from '@floip/flow-runner/src/flow-spec/SupportedMode'
 
 const flowVuexNamespace = namespace('flow')
+const undoVuexNamespace = namespace('undo')
 
 @Component({
   components: {ExpressionInput},
@@ -62,6 +63,8 @@ export class ResourceVariantTextEditor extends mixins(Lang) {
       filter.mime_type = mimeType
     }
 
+    this.createSnapshot(`Change ${mode} resource`)
+
     this.$emit('beforeResourceVariantChanged', {variant: resourceVariant, resourceId, value})
     this.resource_setOrCreateValueModeSpecific({
       resourceId,
@@ -73,6 +76,7 @@ export class ResourceVariantTextEditor extends mixins(Lang) {
 
   @flowVuexNamespace.Action resource_setOrCreateValueModeSpecific!:
     ({resourceId, filter, value}: { resourceId: IResource['uuid'], filter: {}, value: string }) => void
+  @undoVuexNamespace.Action createSnapshot: (name: string) => void
 }
 
 export default ResourceVariantTextEditor

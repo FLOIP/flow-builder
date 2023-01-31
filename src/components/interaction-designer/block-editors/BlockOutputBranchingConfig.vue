@@ -73,6 +73,7 @@
   import BlockOutputBranchingExplanations from './BlockOutputBranchingExplanations.vue'
 
   const flowVuexNamespace = namespace('flow')
+  const undoVuexNamespace = namespace('undo')
 
   @Component({
     components: {
@@ -99,6 +100,8 @@
     }
 
     set selectedBranchingType(value: OutputBranchingType) {
+      this.createSnapshot('Change branching type')
+
       const {uuid: blockId} = this.block
       this.block_updateVendorMetadataByPath({blockId, path: 'floip.ui_metadata.branching_type', value})
 
@@ -139,6 +142,7 @@
       ({blockId, path, value}: { blockId: string, path: string, value: ConfigFieldType }) => void
     @flowVuexNamespace.Mutation block_exitClearDestinationBlockFor!:
       ({blockExit}: {blockExit: IBlockExit}) => void
+    @undoVuexNamespace.Action createSnapshot: (name: string) => void
   }
   export default BlockOutputBranchingConfig
 </script>

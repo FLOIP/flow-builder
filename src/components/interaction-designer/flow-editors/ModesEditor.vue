@@ -21,6 +21,7 @@ import {namespace, State} from 'vuex-class'
 import {orderModes} from '@/store/flow/flow'
 
 const flowNamespace = namespace('flow')
+const undoVuexNamespace = namespace('undo')
 
 @Component({
   components: {
@@ -39,11 +40,13 @@ export class ModesEditor extends mixins(Lang) {
   }
 
   set selectedModes(newModes: SupportedMode[]) {
+    this.createSnapshot('Change supported modes')
     this.flow_updateModes({flowId: this.flow.uuid, newModes})
   }
 
   @State(state => state.trees.ui.supportedModes) availableModes: SupportedMode[]
   @flowNamespace.Action flow_updateModes!: (args: {flowId: string, newModes: SupportedMode[]}) => void
+  @undoVuexNamespace.Action createSnapshot: (name: string) => void
 }
 
 export default ModesEditor

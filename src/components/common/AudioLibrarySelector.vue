@@ -52,6 +52,10 @@ export const AudioLibrarySelector = {
       'resource_setOrCreateValueModeSpecific',
     ]),
 
+    ...mapActions('undo', [
+      'createSnapshot',
+    ]),
+
     clearSelection() {
       this.resource_setOrCreateValueModeSpecific({
         resourceId: this.resourceId,
@@ -62,6 +66,7 @@ export const AudioLibrarySelector = {
     },
 
     selectAudioFile({value, langId}) {
+      this.createSnapshot('Select audio file')
       this.resource_setOrCreateValueModeSpecific({
         resourceId: this.resourceId,
         filter: {language_id: langId, content_type: SupportedContentType.AUDIO, modes: [SupportedMode.IVR]},

@@ -17,6 +17,7 @@ import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
+const undoVuexNamespace = namespace('undo')
 
 @Component({})
 export class InteractionTimeoutEditor extends mixins(Lang) {
@@ -28,6 +29,7 @@ export class InteractionTimeoutEditor extends mixins(Lang) {
   }
 
   set interactionTimeout(value: number) {
+    this.createSnapshot('Change interaction timeout')
     this.flow_setInteractionTimeout({flowId: this.flow.uuid, value})
   }
 
@@ -35,6 +37,7 @@ export class InteractionTimeoutEditor extends mixins(Lang) {
     flowId,
     value,
   }: { flowId: IFlow['uuid'], value: IFlow['interaction_timeout'] }) => void
+  @undoVuexNamespace.Action createSnapshot: (name: string) => void
 }
 
 export default InteractionTimeoutEditor

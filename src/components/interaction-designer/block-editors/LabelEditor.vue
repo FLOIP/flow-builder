@@ -33,6 +33,7 @@ import {IBlock} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 
 const flowVuexNamespace = namespace('flow')
+const undoVuexNamespace = namespace('undo')
 
 @Component
 export class LabelEditor extends mixins(Lang) {
@@ -43,6 +44,7 @@ export class LabelEditor extends mixins(Lang) {
   }
 
   set blockLabel(value: IBlock['label']) {
+    this.createSnapshot('Change block label')
     this.block_setLabel({blockId: this.block.uuid, value})
   }
 
@@ -51,6 +53,7 @@ export class LabelEditor extends mixins(Lang) {
   }
 
   @flowVuexNamespace.Action block_setLabel!: ({blockId, value}: { blockId: IBlock['uuid'], value: IBlock['label'] }) => void
+  @undoVuexNamespace.Action createSnapshot: (name: string) => void
 }
 export default LabelEditor
 </script>

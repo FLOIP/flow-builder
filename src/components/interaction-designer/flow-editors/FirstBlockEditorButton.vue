@@ -31,6 +31,7 @@ import {namespace} from 'vuex-class'
 import {mixins} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
+const undoVuexNamespace = namespace('undo')
 
 @Component({})
 export class FirstBlockEditorButton extends mixins(Lang) {
@@ -42,6 +43,8 @@ export class FirstBlockEditorButton extends mixins(Lang) {
 
   // @ts-ignore
   setStartBlock(event: any): void {
+    this.createSnapshot('Change starting block')
+
     this.flow_setFirstBlockId({
       flowId: this.activeFlow.uuid,
       blockId: this.blockId,
@@ -52,6 +55,7 @@ export class FirstBlockEditorButton extends mixins(Lang) {
     return this.blockId === this.activeFlow.first_block_id
   }
   @flowVuexNamespace.Mutation flow_setFirstBlockId!: ({flowId, blockId}: { flowId: IFlow['uuid'], blockId: IBlock['uuid'] }) => void
+  @undoVuexNamespace.Action createSnapshot: (name: string) => void
 }
 
 export default FirstBlockEditorButton

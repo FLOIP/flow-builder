@@ -45,6 +45,7 @@ import {IBlock, IBlockExit} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 
 const flowVuexNamespace = namespace('flow')
+const undoVuexNamespace = namespace('undo')
 
 @Component({})
 export class AdvancedExitEditor extends mixins(Lang) {
@@ -65,6 +66,8 @@ export class AdvancedExitEditor extends mixins(Lang) {
   }
 
   set name(value: IBlockExit['name']) {
+    this.createSnapshot('Change exit name')
+
     const {uuid: blockId} = this.block
     const {uuid: exitId} = this.exit
 
@@ -74,6 +77,8 @@ export class AdvancedExitEditor extends mixins(Lang) {
   }
 
   async commitExpressionChange(value: IBlockExit['test']): Promise<void> {
+    this.createSnapshot('Change exit expression')
+
     this.$emit('beforeExitTestChanged', {exitId: this.exit.uuid, blockId: this.block.uuid, value})
     this.block_setExitTest({exitId: this.exit.uuid, blockId: this.block.uuid, value})
     this.$emit('afterExitTestChanged', {exitId: this.exit.uuid, blockId: this.block.uuid, value})
@@ -83,6 +88,7 @@ export class AdvancedExitEditor extends mixins(Lang) {
     ({exitId, blockId, value}: { exitId: string, blockId: string, value: IBlockExit['test'] }) => void
   @flowVuexNamespace.Mutation block_setExitName!:
     ({exitId, blockId, value}: {exitId: IBlockExit['uuid'], blockId: IBlock['uuid'], value: IBlockExit['name']}) => void
+  @undoVuexNamespace.Action createSnapshot: (name: string) => void
 }
 
 export default AdvancedExitEditor

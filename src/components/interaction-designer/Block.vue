@@ -221,6 +221,7 @@ const SIDEBAR_POSITION_UPDATE_COUNT = SIDEBAR_POSITION_SETTLE_TIME_MS / SIDEBAR_
 
 const flowNamespace = namespace('flow')
 const builderNamespace = namespace('builder')
+const undoVuexNamespace = namespace('undo')
 
 type Draggable = any
 
@@ -407,6 +408,7 @@ export class Block extends mixins(Lang) {
   @flowNamespace.Action block_updateShouldShowBlockToolBar!: (
     {blockId, value}: { blockId: string, value: boolean }
   ) => void
+  @undoVuexNamespace.Action createSnapshot: (name: string) => void
 
   get shouldShowBlockToolBar(): boolean {
     return this.block?.vendor_metadata?.floip?.ui_metadata?.should_show_block_tool_bar ?? false
@@ -542,6 +544,8 @@ export class Block extends mixins(Lang) {
   }
 
   onMoved({position: {left: x, top: y}}: {position: {left: number, top: number}}): void {
+    this.createSnapshot(`Move ${this.block.type.split('.').pop()} block`)
+
     // todo: try this the vuejs way where we push the change into state, then return false + modify draggable w/in store ?
 
     const {block} = this
@@ -562,6 +566,8 @@ export class Block extends mixins(Lang) {
 
   handleRemoveConnectionFrom(exit: IBlockExit): void {
     const {block} = this
+    this.createSnapshot('Remove connection')
+
     this.setLineClicked(exit, false)
     this.deactivateConnectionFromExitUuid({exitUuid: exit.uuid})
     this.removeConnectionFrom({block, exit})

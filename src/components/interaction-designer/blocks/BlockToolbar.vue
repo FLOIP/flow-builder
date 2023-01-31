@@ -82,6 +82,7 @@ import {namespace} from 'vuex-class'
 const builderVuexNamespace = namespace('builder')
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
+const undoVuexNamespace = namespace('undo')
 
 @Component({})
 export class BlockToolbar extends mixins(Lang) {
@@ -94,6 +95,7 @@ export class BlockToolbar extends mixins(Lang) {
   isDeleting = false
 
   handleDeleteBlock(): void {
+    this.createSnapshot(`Delete ${this.block.type.split('.').pop()} block`)
     this.block_deselect({blockId: this.block.uuid})
     this.flow_removeBlock({blockId: this.block.uuid})
     this.isDeleting = false
@@ -101,6 +103,8 @@ export class BlockToolbar extends mixins(Lang) {
   }
 
   handleDuplicateBlock(): void {
+    this.createSnapshot(`Duplicate ${this.block.type.split('.').pop()} block`)
+
     this.flow_duplicateBlock({blockId: this.block.uuid}).then((duplicatedBlock) => {
       this.$router.replace({
         name: 'block-selected-details',
@@ -144,6 +148,7 @@ export class BlockToolbar extends mixins(Lang) {
   @flowVuexNamespace.Action block_deselect!: ({blockId}: {blockId: IBlock['uuid']}) => void
   @flowVuexNamespace.Action flow_removeBlock!: ({blockId}: {blockId: IBlock['uuid']}) => void
   @flowVuexNamespace.Action flow_duplicateBlock!: ({blockId}: {blockId: IBlock['uuid']}) => Promise<IBlock>
+  @undoVuexNamespace.Action createSnapshot: (name: string) => void
 }
 export default BlockToolbar
 </script>

@@ -128,6 +128,7 @@ import VueMultiselect from 'vue-multiselect'
 import {IContactPropertyOption, IContactPropertyOptionForUISelector} from '@/store/flow/block-types/Core_SetContactPropertyStore.model'
 
 const flowVuexNamespace = namespace('flow')
+const undoVuexNamespace = namespace('undo')
 
 const EMPTY_STRING_EXPRESSION = ''
 const BLOCK_RESPONSE_EXPRESSION = '@block.value'
@@ -174,6 +175,8 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
 
   // for checkbox ######################
   toggleSetContactProperty(): void {
+    this.createSnapshot('Toggle set contact property')
+
     this.$emit('toggleSetContactProperty', !this.shouldSetContactProperty)
 
     this.shouldSetContactProperty = !this.shouldSetContactProperty
@@ -251,6 +254,8 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
   }
 
   set flowSelectedContactPropertyField(option: IContactPropertyOption | null) {
+    this.createSnapshot('Select contact property')
+
     if (this.flowSelectedContactPropertyField?.data_type !== option?.data_type) {
       this.$emit('changeContactPropertyType')
     }
@@ -292,6 +297,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
   @flowVuexNamespace.Action block_setContactPropertyOnIndex!: (
     {blockId, index, propertyKey, propertyValue}: { blockId: string, index: number, propertyKey?: string, propertyValue?: string},
   ) => void
+  @undoVuexNamespace.Action createSnapshot: (name: string) => void
 
   @Getter subscriberPropertyFields!: IContactPropertyOption[]
   @Getter subscriberPropertyFieldDataTypesMapping!: Record<string, string[]>

@@ -34,12 +34,15 @@ import {IdGeneratorUuidV4} from '@floip/flow-runner/dist/domain/IdGeneratorUuidV
 import Vue from 'vue'
 
 const flowVuexNamespace = namespace('flow')
+const undoVuexNamespace = namespace('undo')
 
 @Component({})
 export class AdvancedExitsBuilder extends mixins(Lang) {
   @Prop() readonly block!: IBlock
 
   async addDraftExitToBlock(): Promise<void> {
+    this.createSnapshot('Add exit')
+
     const uuid = await (new IdGeneratorUuidV4()).generate()
 
     this.block_addExit({
@@ -58,12 +61,14 @@ export class AdvancedExitsBuilder extends mixins(Lang) {
   }
 
   handleDeleteExit(exit: IBlockExit): void {
+    this.createSnapshot('Remove exit')
     this.block_removeExit({blockId: this.block.uuid, exit})
   }
 
   @flowVuexNamespace.Mutation block_addExit!: ({blockId, exit}: {blockId: IBlock['uuid'], exit: IBlockExit}) => void
   @flowVuexNamespace.Mutation block_removeExit!: ({blockId, exit}: {blockId: IBlock['uuid'], exit: IBlockExit}) => void
   @flowVuexNamespace.Action block_createBlockExitWith!: ({props}: { props: { uuid: string } & Partial<IBlockExit> }) => Promise<IBlockExit>
+  @undoVuexNamespace.Action createSnapshot: (name: string) => void
 }
 export default AdvancedExitsBuilder
 </script>

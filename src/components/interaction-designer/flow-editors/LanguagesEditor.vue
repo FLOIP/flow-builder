@@ -24,6 +24,7 @@ import {namespace, State} from 'vuex-class'
 import {orderLanguages} from '@/store/flow/flow'
 
 const flowNamespace = namespace('flow')
+const undoVuexNamespace = namespace('undo')
 
 @Component({
   components: {
@@ -42,11 +43,13 @@ export class LanguagesEditor extends mixins(Lang) {
   }
 
   set selectedLanguages(newLanguages: ILanguage[]) {
+    this.createSnapshot('Change selected languages')
     this.flow_updateLanguages({flowId: this.flow.uuid, newLanguages})
   }
 
   @State(state => state.trees.ui.languages) availableLanguages: ILanguage[]
   @flowNamespace.Action flow_updateLanguages: ({flowId, newLanguages}: {flowId: string, newLanguages: ILanguage[]}) => void
+  @undoVuexNamespace.Action createSnapshot: (name: string) => void
 }
 
 export default LanguagesEditor

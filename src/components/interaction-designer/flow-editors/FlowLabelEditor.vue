@@ -17,6 +17,7 @@ import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
+const undoVuexNamespace = namespace('undo')
 
 @Component
 export class FlowLabelEditor extends mixins(Lang) {
@@ -33,6 +34,8 @@ export class FlowLabelEditor extends mixins(Lang) {
   }
 
   set label(label: IBlock['label']) {
+    this.createSnapshot('Change flow label')
+
     this.flow_setLabel({flowId: this.flow.uuid, label})
     //Also set the name
     this.flow_setNameFromLabel({flowId: this.flow.uuid, label})
@@ -40,6 +43,7 @@ export class FlowLabelEditor extends mixins(Lang) {
 
   @flowVuexNamespace.Mutation flow_setLabel!: ({flowId, label}: {flowId: IFlow['uuid'], label: IFlow['label']}) => void
   @flowVuexNamespace.Mutation flow_setNameFromLabel!: ({flowId, label}: {flowId: IFlow['uuid'], label: IFlow['label']}) => void
+  @undoVuexNamespace.Action createSnapshot: (name: string) => void
 }
 
 export default FlowLabelEditor
