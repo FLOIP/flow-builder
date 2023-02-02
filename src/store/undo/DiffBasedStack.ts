@@ -1,41 +1,31 @@
 import * as jsondiffpatch from 'jsondiffpatch'
-import {Delta} from 'jsondiffpatch'
-import {NamedSnapshot, Stack} from '@/store/undo/Stack'
-
-/** how we actually store it in the stack */
-export type NamedDiff = {
-  /** diff between two state snapshots */
-  diff: Delta | undefined,
-
-  /** name of the user's action, for undo/redo button tooltip */
-  name: string,
-}
+import {IStack, Snapshot, SnapshotDiff} from '@/store/undo/IStack'
 
 /**
- * A Stack implementation that saves memory by:
+ * An IStack implementation that saves memory by:
  * - storing the first snapshot as is
  * - storing the subsequent snapshots as diffs
  */
-export class DiffBasedStack<T> implements Stack<T> {
-  private initialNamedSnapshot?: NamedSnapshot<T> = undefined
-  private diffStack: NamedDiff[] = []
+export default class DiffBasedStack<S> implements IStack<S> {
+  private initialSnapshot?: Snapshot<S> = undefined
+  private diffStack: SnapshotDiff[] = []
 
-  push({snapshot, name}: NamedSnapshot<T>): void {
-    if (this.initialNamedSnapshot === undefined) {
-      this.initialNamedSnapshot = {snapshot, name}
+  push({value, name}: Snapshot<S>): void {
+    if (this.initialSnapshot === undefined) {
+      this.initialSnapshot = {value, name}
     } else {
-      const newNamedDiff: NamedDiff = {
-        diff: jsondiffpatch.diff(this.last?.snapshot, snapshot),
+      const newDiff: SnapshotDiff = {
+        value: jsondiffpatch.diff(this.last?.value, value),
         name,
       }
-      this.diffStack.push(newNamedDiff)
+      this.diffStack.push(newDiff)
     }
   }
 
-  pop(): NamedSnapshot<T> | undefined {
+  pop(): Snapshot<S> | undefined {
     if (this.diffStack.length === 0) {
-      const snapshot = this.initialNamedSnapshot
-      this.initialNamedSnapshot = undefined
+      const snapshot = this.initialSnapshot
+      this.initialSnapshot = undefined
       return snapshot
     } else {
       // calc 'last' using diffStack before popping
@@ -44,7 +34,7 @@ export class DiffBasedStack<T> implements Stack<T> {
       if (this.diffStack.length > 0) {
         this.diffStack.pop()
       } else {
-        this.initialNamedSnapshot = undefined
+        this.initialSnapshot = undefined
       }
 
       return last
@@ -53,7 +43,7 @@ export class DiffBasedStack<T> implements Stack<T> {
 
   clear(): void {
     this.diffStack = []
-    this.initialNamedSnapshot = undefined
+    this.initialSnapshot = undefined
   }
 
   isEmpty(): boolean {
@@ -61,31 +51,35 @@ export class DiffBasedStack<T> implements Stack<T> {
   }
 
   tooltip(): string | undefined {
-    if (this.initialNamedSnapshot === undefined) {
+    if (this.initialSnapshot === undefined) {
       return undefined
     } else if (this.diffStack.length === 0) {
-      return this.initialNamedSnapshot.name
+      return this.initialSnapshot.name
     } else {
       return this.diffStack[this.diffStack.length - 1].name
     }
   }
 
   private get length(): number {
-    if (this.initialNamedSnapshot === undefined) {
+    if (this.initialSnapshot === undefined) {
       return 0
     } else {
       return this.diffStack.length + 1
     }
   }
 
-  private get last(): NamedSnapshot<T> | undefined {
-    if (this.diffStack.length === 0) {
-      return this.initialNamedSnapshot
+  private get last(): Snapshot<S> | undefined {
+    if (this.length === 0) {
+      return undefined
+    } else if (this.length === 1) {
+      return this.initialSnapshot!
     } else {
-      return this.diffStack.reduce(
-        (acc, currentNamedDiff) => jsondiffpatch.patch(acc, currentNamedDiff),
-        this.initialNamedSnapshot,
+      const name = this.diffStack[this.diffStack.length - 1].name
+      const value = this.diffStack.reduce(
+        (acc, {value}) => (value === undefined ? acc : jsondiffpatch.patch(acc, value)),
+        this.initialSnapshot!.value,
       )
+      return {name, value}
     }
   }
 }

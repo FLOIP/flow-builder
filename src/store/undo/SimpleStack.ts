@@ -1,13 +1,13 @@
-import {NamedSnapshot, Stack} from '@/store/undo/Stack'
+import {IStack, Snapshot} from '@/store/undo/IStack'
 
-export class SimpleStack<T> implements Stack<T> {
-  private stack: NamedSnapshot<T>[] = []
+export default class SimpleStack<T> implements IStack<T> {
+  private stack: Snapshot<T>[] = []
 
-  push({snapshot, name}: NamedSnapshot<T>): void {
-    this.stack.push({snapshot, name})
+  push({value, name}: Snapshot<T>): void {
+    this.stack.push({value, name})
   }
 
-  pop(): NamedSnapshot<T> | undefined {
+  pop(): Snapshot<T> | undefined {
     return this.stack.pop()
   }
 

@@ -1,15 +1,15 @@
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IContainer} from '@floip/flow-runner'
-import {SimpleStack} from '@/store/undo/SimpleStack'
-import {Stack} from '@/store/undo/Stack'
+import SimpleStack from '@/store/undo/SimpleStack'
+import {IStack} from '@/store/undo/IStack'
 import {cloneDeep} from 'lodash'
 
 type Snapshot = IContainer
 
 export interface IUndoState {
-  undoStack: Stack<Snapshot>,
-  redoStack: Stack<Snapshot>,
+  undoStack: IStack<Snapshot>,
+  redoStack: IStack<Snapshot>,
 }
 
 export const stateFactory = (): IUndoState => ({
@@ -43,22 +43,22 @@ export const actions: ActionTree<IUndoState, IRootState> = {
     if (!getters.canUndo) {
       return
     }
-    const namedSnapshot = state.undoStack.pop()!
-    state.redoStack.push({snapshot: getters.currentState, name: namedSnapshot.name})
-    dispatch('applyState', namedSnapshot.snapshot)
+    const snapshot = state.undoStack.pop()!
+    state.redoStack.push({value: getters.currentState, name: snapshot.name})
+    dispatch('applyState', snapshot.value)
   },
 
   redo({state, getters, dispatch}): void {
     if (!getters.canRedo) {
       return
     }
-    const namedSnapshot = state.redoStack.pop()!
-    state.undoStack.push(namedSnapshot)
-    dispatch('applyState', namedSnapshot.snapshot)
+    const snapshot = state.redoStack.pop()!
+    state.undoStack.push(snapshot)
+    dispatch('applyState', snapshot.value)
   },
 
   createSnapshot({state, getters, dispatch}, name: string) {
-    state.undoStack.push({snapshot: getters.currentState, name})
+    state.undoStack.push({value: getters.currentState, name})
     state.redoStack.clear()
   },
 }
