@@ -13,14 +13,7 @@ import {escapeQuotes} from '@/components/interaction-designer/block-editors/choi
 import {snakeCaseOnSpaces} from '@/utils/string-utils'
 import * as SetContactPropertyModule from './block/set-contact-property'
 import {IFlowsState} from '.'
-import {
-  removeBlockExitValueByPath,
-  removeBlockValueByPath,
-  updateBlockExitValueByPath,
-  updateBlockValueByPath,
-} from './utils/vuexBlockAndFlowHelpers'
-
-export type ConfigFieldType = object | string | number | boolean | undefined | null
+import {ConfigFieldType, removeBlockExitValueByPath, removeBlockValueByPath, updateBlockExitValueByPath, updateBlockValueByPath} from './utils/vuexBlockAndFlowHelpers'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   ...SetContactPropertyModule.getters,

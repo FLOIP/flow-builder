@@ -70,7 +70,7 @@ import {namespace} from 'vuex-class'
 import Lang from '@/lib/filters/lang'
 import {first, has} from 'lodash'
 import {mixins} from 'vue-class-component'
-import {ConfigFieldType} from '@/store/flow/block'
+import {ConfigFieldType} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
 
 const flowVuexNamespace = namespace('flow')
 

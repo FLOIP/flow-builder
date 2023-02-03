@@ -51,7 +51,7 @@ import {namespace} from 'vuex-class'
 import VueMultiselect from 'vue-multiselect'
 import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
-import {ConfigFieldType} from '@/store/flow/block'
+import {ConfigFieldType} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
 import ValidationMessage from '../../common/ValidationMessage.vue'
 
 const flowVuexNamespace = namespace('flow')

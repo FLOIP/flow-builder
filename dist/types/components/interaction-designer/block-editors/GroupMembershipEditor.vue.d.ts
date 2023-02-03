@@ -1,6 +1,6 @@
 import { IBlock, ISetGroupMembershipBlockConfig, IGroupMembership } from '@floip/flow-runner';
 import Lang from '../../../lib/filters/lang';
-import { ConfigFieldType } from '../../../store/flow/block';
+import { ConfigFieldType } from '../../../store/flow/utils/vuexBlockAndFlowHelpers';
 declare type MembershipAction = {
     id: string;
     label: string;
