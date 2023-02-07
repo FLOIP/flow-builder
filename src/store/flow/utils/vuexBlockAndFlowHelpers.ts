@@ -45,6 +45,18 @@ export function updateBlockExitValueByPath(
   Vue.set(pointer, key, value)
 }
 
+export function removeBlockExitValueByPath(
+  state: unknown,
+  blockId: IBlock['uuid'],
+  exitId: IBlockExit['uuid'],
+  path: string,
+): void {
+  const block = findBlockOnActiveFlowWith(blockId, state as IContext)
+  const base = findBlockExitWith(exitId, block)
+  const [pointer, key] = makePath(base, path)
+  Vue.delete(pointer, key)
+}
+
 export function deleteChoiceValueByPath(
   state: unknown,
   choice: IChoice,

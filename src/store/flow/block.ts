@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext} from '@floip/flow-runner'
+import {findBlockExitWith, findBlockOnActiveFlowWith, IBlock, IBlockExit, IContext, IFlow} from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {cloneDeep, defaults, has, isArray, isNil, last, reject} from 'lodash'
@@ -13,7 +13,13 @@ import {escapeQuotes} from '@/components/interaction-designer/block-editors/choi
 import {snakeCaseOnSpaces} from '@/utils/string-utils'
 import * as SetContactPropertyModule from './block/set-contact-property'
 import {IFlowsState} from '.'
-import {ConfigFieldType, removeBlockValueByPath, updateBlockExitValueByPath, updateBlockValueByPath} from './utils/vuexBlockAndFlowHelpers'
+import {
+  ConfigFieldType,
+  removeBlockExitValueByPath,
+  removeBlockValueByPath,
+  updateBlockExitValueByPath,
+  updateBlockValueByPath,
+} from './utils/vuexBlockAndFlowHelpers'
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   ...SetContactPropertyModule.getters,
@@ -37,23 +43,23 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 export const mutations: MutationTree<IFlowsState> = {
   ...SetContactPropertyModule.mutations,
 
-  block_setName(state, {blockId, value}) {
+  block_setName(state, {blockId, value}: {blockId: string, value: string}) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .name = value
   },
-  block_setLabel(state, {blockId, value}) {
+  block_setLabel(state, {blockId, value}: {blockId: string, value: string | undefined}) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .label = value
   },
-  block_setSemanticLabel(state, {blockId, value}) {
+  block_setSemanticLabel(state, {blockId, value}: {blockId: string, value: string | undefined}) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .semantic_label = value
   },
-  block_setTags(state, {blockId, value}) {
+  block_setTags(state, {blockId, value}: {blockId: string, value: string[] | undefined}) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .tags = value
   },
-  block_addTag(state, {blockId, value}) {
+  block_addTag(state, {blockId, value}: {blockId: string, value: string}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
     if (isArray(block.tags)) {
       block.tags.push(value)
@@ -98,7 +104,12 @@ export const mutations: MutationTree<IFlowsState> = {
   ) {
     updateBlockExitValueByPath(state, blockId, exitId, `vendor_metadata.${path}`, value)
   },
-
+  block_removeExitVendorMetadataByPath(
+    state,
+    {blockId, exitId, path}: {blockId: IBlock['uuid'], exitId: IBlockExit['uuid'], path: string},
+  ) {
+    removeBlockExitValueByPath(state, blockId, exitId, `vendor_metadata.${path}`)
+  },
   block_updateConfig(state, {blockId, newConfig}: { blockId: string, newConfig: object }) {
     findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
       .config = newConfig
@@ -139,7 +150,10 @@ export const mutations: MutationTree<IFlowsState> = {
 
     Vue.set(pointer, chunks[0], value)
   },
-  block_setBlockExitDestinationBlockId(state, {blockId, exitId, destinationBlockId}) {
+  block_setBlockExitDestinationBlockId(
+    state,
+    {blockId, exitId, destinationBlockId}: {blockId: string, exitId: string, destinationBlockId: string | undefined | null},
+  ) {
     if (isNil(destinationBlockId)) {
       destinationBlockId = undefined
     }
@@ -164,7 +178,7 @@ export const mutations: MutationTree<IFlowsState> = {
 export const actions: ActionTree<IFlowsState, IRootState> = {
   ...SetContactPropertyModule.actions,
 
-  block_setLabel({commit, dispatch}, {blockId, value}) {
+  block_setLabel({commit, dispatch}, {blockId, value}: {blockId: string, value: string | undefined}) {
     commit('block_setLabel', {blockId, value})
     dispatch('block_setName', {blockId, value: snakeCaseOnSpaces(value as string)})
   },
@@ -213,7 +227,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     {oldBlock, newBlock}: {oldBlock: IBlock, newBlock: IBlock | null},
   ) {
     return Promise.all(
-      rootGetters['flow/activeFlow']?.blocks.map((blockToNotify: IBlock) =>
+      (rootGetters['flow/activeFlow'] as IFlow | undefined)?.blocks.map((blockToNotify: IBlock) =>
         dispatch(
           `flow/${blockToNotify.type}/maybeHandleAnotherBlockChange`,
           {thisBlock: blockToNotify, oldBlock, newBlock},
@@ -222,7 +236,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     )
   },
 
-  block_resetName({commit, state}, {blockId}) {
+  block_resetName({commit, state}, {blockId}: {blockId: string}) {
     const block = findBlockOnActiveFlowWith(blockId, state as unknown as IContext)
 
     commit('block_setName', {blockId, value: snakeCaseOnSpaces(block.label)})
