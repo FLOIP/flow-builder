@@ -169,20 +169,28 @@ module.exports = {
                   blocks: {
                     [`${blockWithValidationIssue.uuid}`]: [
                       {
+                        dataPath: '/dummy/path/my-field1',
                         message: 'dummy-block-backend-validation-error-#1'
                       },
+                      // providing a dummy backend validation on block name will help us to simulate duplicate validations,
+                      // so we can handle the scenario appropriately
                       {
-                        message: 'dummy-block-backend-validation-error-#2'
+                        dataPath: '/name',
+                        message: 'dummy-block-backend-validation-error-block-name'
                       },
                     ]
                   },
                   resources: resourceWithValidationIssue.length ? {
                     [`${resourceWithValidationIssue[0].uuid}`]: [
                       {
-                        message: 'dummy-resource-backend-validation-error-#1'
+                        dataPath: '/dummy/path/my-resource/field1',
+                        message: 'dummy-block-backend-validation-error-resource-field1'
                       },
+                      // providing a dummy backend validation on 1st resource will help us to simulate duplicate validations,
+                      // so we can handle the scenario appropriately
                       {
-                        message: 'dummy-resource-backend-validation-error-#2'
+                        dataPath: '/values/0/value',
+                        message: 'dummy-block-backend-validation-error-resource-field2'
                       },
                     ]
                   }: []

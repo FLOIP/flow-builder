@@ -168,13 +168,13 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
       rootGetters['flow/activeFlow']?.vendor_metadata?.floip?.ui_metadata?.validation_results,
       `${type}s`,
       {},
-    ) as Record<string, {message: string}[]>
+    ) as Record<string, {message: string, dataPath: string}[]>
 
     const orphanResourceUuids: IBlock['uuid'][] = rootGetters['flow/orphanResourceUuidsOnActiveFlow'] as IBlock['uuid'][]
     Object.keys(backendErrorsList).forEach((currentUuid) => {
       const key = `backend/${type}/${currentUuid}`
       const currentErrors = backendErrorsList[currentUuid]
-      const uniqueErrors = uniqBy(currentErrors, 'message') as { message: string }[]
+      const uniqueErrors = uniqBy(currentErrors, 'dataPath') as { message: string, dataPath: string }[]
 
       Vue.set(state.validationStatuses, key, {
         isValid: uniqueErrors === undefined || uniqueErrors.length === 0,
