@@ -172,19 +172,26 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
 
     const orphanResourceUuids: IBlock['uuid'][] = rootGetters['flow/orphanResourceUuidsOnActiveFlow'] as IBlock['uuid'][]
     Object.keys(backendErrorsList).forEach((currentUuid) => {
-      const key = `backend/${type}/${currentUuid}`
-      const currentErrors = backendErrorsList[currentUuid]
-      const uniqueErrors = uniqBy(currentErrors, 'dataPath') as { message: string, dataPath: string }[]
+      const backendKey = `backend/${type}/${currentUuid}`
+      const frontendKey = `${type}/${currentUuid}`
+      const currentBackendErrors = backendErrorsList[currentUuid]
+      const currentFrontendValidationStatuses = get(state.validationStatuses, frontendKey, {} as IValidationStatus)
+      const frontendDataPathList = map(currentFrontendValidationStatuses?.ajvErrors, 'dataPath')
+      // consider only backend validations which are:
+      // - unique (just in case the backend sends duplicate errors on same `dataPath`)
+      // - not present in existing frontend validation statuses (this prioritizes frontend validations over backend's)
+      const finalErrors = uniqBy(currentBackendErrors, 'dataPath')
+        .filter(({dataPath}) => !frontendDataPathList.includes(dataPath)) as { message: string, dataPath: string }[]
 
-      Vue.set(state.validationStatuses, key, {
-        isValid: uniqueErrors === undefined || uniqueErrors.length === 0,
-        ajvErrors: getLocalizedBackendErrors(key, uniqueErrors),
+      Vue.set(state.validationStatuses, backendKey, {
+        isValid: finalErrors === undefined || finalErrors.length === 0,
+        ajvErrors: getLocalizedBackendErrors(backendKey, finalErrors),
         context: {
           isOrphanResource: orphanResourceUuids.includes(currentUuid),
         },
       })
 
-      debugValidationStatus(state.validationStatuses[key], `${type} validation based on backend action`)
+      debugValidationStatus(state.validationStatuses[backendKey], `${type} validation based on backend action`)
     })
   },
 
