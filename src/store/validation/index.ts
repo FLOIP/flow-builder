@@ -179,7 +179,8 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
       const frontendDataPathList = map(currentFrontendValidationStatuses?.ajvErrors, 'dataPath')
       // consider only backend validations which are:
       // - unique (just in case the backend sends duplicate errors on same `dataPath`)
-      // - not present in existing frontend validation statuses (this prioritizes frontend validations over backend's)
+      // - not present in existing frontend validation statuses. This prioritizes frontend validations over backend's.
+      //   But it also means the backend validation error never gets displayed after the user fixes the frontend validation error
       const finalErrors = uniqBy(currentBackendErrors, 'dataPath')
         .filter(({dataPath}) => !frontendDataPathList.includes(dataPath)) as { message: string, dataPath: string }[]
 
