@@ -76,11 +76,6 @@ export declare class Block extends Block_base {
     get isBlockActivated(): boolean;
     updateTranslatedBlockEditorPosition(): void;
     get shouldShowBlockEditor(): boolean;
-    block_updateShouldShowBlockToolBar: ({ blockId, value }: {
-        blockId: string;
-        value: boolean;
-    }) => void;
-    get shouldShowBlockToolBar(): boolean;
     generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): ConnectionLayout;
     activateBlock: () => void;
     setBlockPositionTo: BlockPositionAction;
@@ -98,7 +93,6 @@ export declare class Block extends Block_base {
     setConnectionCreateTargetBlock: BlockAction;
     setConnectionCreateTargetBlockToNullFrom: BlockAction;
     applyConnectionCreate: () => void;
-    updateShouldShowBlockToolBar(): void;
     setIsMouseOnBlock(value: boolean): void;
     exitMouseEnter(exit: IBlockExit): void;
     exitMouseLeave(exit: IBlockExit): void;
