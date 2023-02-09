@@ -80,7 +80,7 @@ export declare class Block extends Block_base {
     activateBlock: () => void;
     setBlockPositionTo: BlockPositionAction;
     initDraggableForExitsByUuid: () => void;
-    setIsBlockEditorOpen: () => void;
+    setIsBlockEditorOpen: (value: boolean) => void;
     deactivateConnectionFromExitUuid: ({ exitUuid }: {
         exitUuid: IBlockExit['uuid'];
     }) => void;
