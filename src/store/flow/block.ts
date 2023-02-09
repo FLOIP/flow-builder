@@ -412,20 +412,11 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   async block_select({state, dispatch}, {blockId}: { blockId: IBlock['uuid'] }) {
     state.selectedBlocks.push(blockId)
-    dispatch('block_updateShouldShowBlockToolBar', {blockId, value: true})
   },
 
   async block_deselect({state}, {blockId}: { blockId: IBlock['uuid'] }) {
     // remove it
     state.selectedBlocks = state.selectedBlocks.filter((item) => item !== blockId)
-  },
-
-  block_updateShouldShowBlockToolBar({state, commit}, {blockId, value}: { blockId: string, path: string, value: boolean }): void {
-    commit('block_updateVendorMetadataByPath', {
-      blockId,
-      path: 'floip.ui_metadata.should_show_block_tool_bar',
-      value,
-    })
   },
 
   block_updateBlocksAfterLanguagesChange(
