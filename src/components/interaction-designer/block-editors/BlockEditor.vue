@@ -36,9 +36,8 @@ export default BlockEditor
 
 <style lang="scss">
 .block-editor {
-  position: absolute;
-  // TODO: Correct this `top` in https://viamoinc.atlassian.net/browse/VMO-6572 if needed
-  top: 30px;
+  position: fixed;
+  right: 5px;
   background: white;
   z-index: 15;
   max-height: 75vh;
