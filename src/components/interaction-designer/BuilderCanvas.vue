@@ -9,6 +9,8 @@
       :block="block"
       :x="block.ui_metadata.canvas_coordinates.x"
       :y="block.ui_metadata.canvas_coordinates.y" />
+
+    <block-editor v-if="isBlockEditorOpen"/>
   </div>
 </template>
 
@@ -31,7 +33,6 @@ const DEBOUNCE_SCROLL_TIMER_MS = 300
 
 @Component({})
 export class BuilderCanvas extends Vue {
-  @Prop() block!: IBlock
   @Prop({default: 0}) widthAdjustment!: number
 
   // ##### Canvas dynamic size watchers [

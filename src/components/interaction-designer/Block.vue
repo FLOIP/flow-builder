@@ -6,10 +6,6 @@
     @click.stop="selectBlock"
     @mouseenter="setIsMouseOnBlock(true)"
     @mouseleave="setIsMouseOnBlock(false)">
-    <block-editor
-      v-if="shouldShowBlockEditor"
-      class="block-editor"
-      :style="{transform: translatedBlockPosition}" />
 
     <plain-draggable
       v-if="hasLayout"
@@ -20,7 +16,7 @@
         'source-block-having-active-connection': isAssociatedWithActiveConnectionAsSourceBlock,
         'target-block-having-active-connection': isAssociatedWithActiveConnectionAsTargetBlock,
         'target-block-waiting-for-connection': isWaitingForConnection,
-        'has-toolbar': isBlockSelected || shouldShowBlockEditor,
+        'has-toolbar': isBlockSelected || shouldShowBlockEditorForCurrentBlock,
         ['has-exits']: hasExitsShown,
         ['has-multiple-exits']: hasMultipleExitsShown,
         [`has-${numberOfExitsShown}-exits`]: true,
@@ -49,7 +45,7 @@
           :block="block"
           :is-activated-by-connection="isAssociatedWithActiveConnectionAsTargetBlock"
           :is-block-selected="isBlockSelected"
-          :is-editor-visible="shouldShowBlockEditor"
+          :is-editor-visible="shouldShowBlockEditorForCurrentBlock"
           :is-waiting-for-connection="isWaitingForConnection"
           @showHideHasClicked="selectBlock"/>
 
@@ -399,7 +395,7 @@ export class Block extends mixins(Lang) {
     }, SIDEBAR_POSITION_UPDATE_INTERVAL_MS)
   }
 
-  get shouldShowBlockEditor(): boolean {
+  get shouldShowBlockEditorForCurrentBlock(): boolean {
     return this.isBlockEditorOpen && this.activeBlockId === this.block.uuid
   }
 
