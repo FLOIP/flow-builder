@@ -43,7 +43,6 @@ export declare class Block extends Block_base {
     connectionColorAtSourceDragged: string;
     connectionColorForKnowDestination: string;
     isConnectionSource: boolean;
-    translatedBlockPosition: string;
     created(): void;
     updated(): void;
     mounted(): void;
@@ -74,8 +73,7 @@ export declare class Block extends Block_base {
     get isConnectionSourceRelocateActive(): boolean;
     get isConnectionCreateActive(): boolean;
     get isBlockActivated(): boolean;
-    updateTranslatedBlockEditorPosition(): void;
-    get shouldShowBlockEditor(): boolean;
+    get shouldShowBlockEditorForCurrentBlock(): boolean;
     generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): ConnectionLayout;
     activateBlock: () => void;
     setBlockPositionTo: BlockPositionAction;
