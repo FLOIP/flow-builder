@@ -246,7 +246,6 @@ export class Block extends mixins(Lang) {
   connectionColorAtSourceDragged = colorStates.CONNECTING
   connectionColorForKnowDestination = colorStates.DEFAULT
   isConnectionSource = false
-  translatedBlockPosition = ''
 
   created(): void {
     this.initDraggableForExitsByUuid()
@@ -261,7 +260,6 @@ export class Block extends mixins(Lang) {
   mounted(): void {
     this.$nextTick(function onMounted() {
       this.updateLabelContainerMaxWidth()
-      this.updateTranslatedBlockEditorPosition()
     })
 
     window.addEventListener('message', message => {
@@ -280,7 +278,6 @@ export class Block extends mixins(Lang) {
   onBlockExitsLengthChanged(newValue: number, oldValue: number): void {
     this.$nextTick(() => {
       this.updateLabelContainerMaxWidth(newValue, newValue < oldValue)
-      this.updateTranslatedBlockEditorPosition()
     })
   }
 
@@ -367,32 +364,6 @@ export class Block extends mixins(Lang) {
 
     const {data} = operations[OperationKind.CONNECTION_CREATE] as IConnectionCreateOperation
     return data?.targetId === block.uuid
-  }
-
-  updateTranslatedBlockEditorPosition(): void {
-    let count = 0
-
-    const to = setInterval(() => {
-      const xOffset = 10
-
-      const headerRect = document.querySelector('header.interaction-designer-header')?.getBoundingClientRect()
-      const headerOffset = (headerRect?.height ?? 0) + (headerRect?.top ?? 0)
-      const scroll = document.querySelector('html')?.scrollTop ?? 0
-
-      const left = this.x + this.blockWidth + xOffset - this.interactionDesignerBoundingClientRect.left
-      const top = headerOffset + scroll
-
-      const translatedBlockPosition = `translate(${left}px, ${top}px)`
-
-      if (this.translatedBlockPosition !== translatedBlockPosition) {
-        this.translatedBlockPosition = translatedBlockPosition
-      } else {
-        count += 1
-        if (count > SIDEBAR_POSITION_UPDATE_COUNT) {
-          clearInterval(to)
-        }
-      }
-    }, SIDEBAR_POSITION_UPDATE_INTERVAL_MS)
   }
 
   get shouldShowBlockEditorForCurrentBlock(): boolean {
@@ -519,7 +490,6 @@ export class Block extends mixins(Lang) {
     const {block} = this
     this.$nextTick(() => {
       this.setBlockPositionTo({position: {x, y}, block})
-      this.updateTranslatedBlockEditorPosition()
 
       forEach(this.draggableForExitsByUuid, (draggable, key) => {
         try {
@@ -657,10 +627,6 @@ export class Block extends mixins(Lang) {
         }
       },
     )
-
-    this.$nextTick(() => {
-      this.updateTranslatedBlockEditorPosition()
-    })
   }
 
   handleDraggableEndedForBlock(): void {
