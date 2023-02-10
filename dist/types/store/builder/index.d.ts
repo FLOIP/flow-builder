@@ -49,6 +49,8 @@ export interface IBuilderState {
     draggableForExitsByUuid: object;
     isBlockEditorOpen: boolean;
     interactionDesignerBoundingClientRect: DOMRect;
+    interactionDesignerHeaderBoundingClientRect: DOMRect;
+    windowScrollY: number;
     isConnectionCreationInProgress: boolean;
 }
 export declare const stateFactory: () => IBuilderState;

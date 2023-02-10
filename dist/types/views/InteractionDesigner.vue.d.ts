@@ -13,6 +13,7 @@ export declare class InteractionDesigner extends InteractionDesigner_base {
     readonly mainComponent: string;
     readonly appConfig: object;
     readonly builderConfig: object;
+    windowTop: number;
     get blocksOnActiveFlowForWatcher(): IBlock[];
     onActiveFlowChanged(newFlow: IFlow): Promise<void>;
     onBlocksInActiveFlowChanged(newBlocks: IBlock[], oldBlocks: IBlock[]): Promise<void>;
@@ -72,6 +73,8 @@ export declare class InteractionDesigner extends InteractionDesigner_base {
     created(): void;
     /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
     mounted(): Promise<void>;
+    beforeDestroy(): void;
+    onScroll(e: any): void;
     handleRouteUpdate(to: Route): void;
     configure: ({ appConfig, builderConfig }: {
         appConfig: object;
@@ -83,6 +86,8 @@ export declare class InteractionDesigner extends InteractionDesigner_base {
     }) => void;
     setIsBlockEditorOpen: (value: boolean) => void;
     setInteractionDesignerBoundingClientRect: (value: DOMRect) => void;
+    setInteractionDesignerHeaderBoundingClientRect: (value: DOMRect) => void;
+    setWindowScrollY: (value: number) => void;
     setIsEditable: (arg0: boolean) => void;
     setHasFlowChanges: (arg0: boolean) => void;
     flow_setActiveFlowId: ({ flowId }: {
