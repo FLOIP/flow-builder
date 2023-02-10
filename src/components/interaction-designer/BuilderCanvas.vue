@@ -9,8 +9,6 @@
       :block="block"
       :x="block.ui_metadata.canvas_coordinates.x"
       :y="block.ui_metadata.canvas_coordinates.y" />
-
-    <block-editor v-if="isBlockEditorOpen"/>
   </div>
 </template>
 

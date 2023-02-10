@@ -40,7 +40,7 @@ export default BlockEditor
   right: 5px;
   background: white;
   z-index: 15;
-  max-height: 75vh;
+  max-height: 82vh;
   width: 365px;
   overflow-y: scroll;
   padding: 0 1em 1em;

@@ -321,6 +321,7 @@
         v-if="isEditable"
         @updated="handleHeightChangeFromDOM" />
       <error-notifications @updated="handleHeightChangeFromDOM" />
+      <block-editor v-if="isBlockEditorOpen"/>
     </div>
   </div>
 </template>
@@ -658,6 +659,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @builderVuexNamespace.Getter isEditable!: boolean
   @builderVuexNamespace.Getter hasFlowChanges!: boolean
   @builderVuexNamespace.State activeBlockId?: IBlock['uuid']
+  @builderVuexNamespace.State isBlockEditorOpen!: boolean
 
   get viewModeUrl(): string {
     return this.editTreeRoute({
