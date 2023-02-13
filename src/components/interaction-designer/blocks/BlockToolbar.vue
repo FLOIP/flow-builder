@@ -8,13 +8,13 @@
           v-b-tooltip.hover="trans('flow-builder.deselect-block')"
           :icon="['far', 'check-circle']"
           class="cursor-pointer text-info"
-          @click="isEditable && block_deselect({ blockId: block.uuid })" />
+          @click.stop="isEditable && block_deselect({ blockId: block.uuid })" />
         <font-awesome-icon
           v-if="!isBlockSelected"
           v-b-tooltip.hover="trans('flow-builder.select-block')"
           :icon="['far', 'circle']"
           class="cursor-pointer"
-          @click="isEditable && block_select({ blockId: block.uuid })" />
+          @click.stop="isEditable && block_select({ blockId: block.uuid })" />
       </template>
     </div>
     <div class="header-actions-right d-flex">
@@ -25,7 +25,7 @@
         <div v-if="isDeleting">
           <button
             class="btn btn-light btn-xs"
-            @click.prevent="isDeleting = false">
+            @click.stop="isDeleting = false">
             <small>{{ trans('flow-builder.cancel') }}</small>
           </button>
           <button
@@ -34,7 +34,7 @@
               'btn-secondary': isWaitingForConnection || isActivatedByConnection,
             }"
             class="btn btn-xs ml-1"
-            @click.prevent="handleDeleteBlock">
+            @click.stop="handleDeleteBlock">
             <small>{{ trans('flow-builder.delete-block') }}</small>
           </button>
         </div>
@@ -46,7 +46,7 @@
             'text-danger': !isWaitingForConnection && !isActivatedByConnection,
           }"
           class="cursor-pointer"
-          @click.prevent="isDeleting = true" />
+          @click.stop="isDeleting = true" />
       </div>
       <!--Duplicate-->
       <div class="mr-1 ml-2">
@@ -55,7 +55,7 @@
           v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
           :icon="['fac', 'copy']"
           class="cursor-pointer"
-          @click.prevent="handleDuplicateBlock" />
+          @click.stop="handleDuplicateBlock" />
       </div>
       <!--Expand block editor-->
       <div
