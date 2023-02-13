@@ -292,7 +292,6 @@ export class Block extends mixins(Lang) {
 
   @builderNamespace.Getter blocksById!: Record<IBlock['uuid'], IBlock>
   @builderNamespace.Getter isEditable!: boolean
-  @builderNamespace.Getter interactionDesignerBoundingClientRect!: DOMRect
 
   @flowNamespace.Getter activeFlow?: IFlow
 

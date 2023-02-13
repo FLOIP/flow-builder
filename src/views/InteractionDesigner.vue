@@ -208,7 +208,6 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   @builderNamespace.Getter activeBlock?: IBlock
   @builderNamespace.Getter isEditable!: boolean
   @builderNamespace.Getter hasFlowChanges!: boolean
-  @builderNamespace.Getter interactionDesignerBoundingClientRect!: DOMRect
   @builderNamespace.Getter isBuilderCanvasEnabled!: boolean
   @builderNamespace.Getter isResourceViewerCanvasEnabled!: boolean
   @clipboardNamespace.Getter isSimulatorActive!: boolean
@@ -311,15 +310,9 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   onScroll(e) {
     if (this.isBuilderCanvasEnabled) {
       // will be used to set other elements' position in the canvas (eg: for block editor)
-      if (this.$refs['interaction-designer-contents'] !== undefined) {
-        this.setInteractionDesignerBoundingClientRect((this.$refs['interaction-designer-contents'] as Element).getBoundingClientRect());
-      }
-
       if (this.$refs['interaction-designer-header'] !== undefined) {
         this.setInteractionDesignerHeaderBoundingClientRect((this.$refs['interaction-designer-header'] as Element).getBoundingClientRect())
       }
-
-      this.setWindowScrollY(window.scrollY)
     }
   }
 
@@ -336,9 +329,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   @Mutation deselectBlocks!: () => void
   @builderNamespace.Mutation activateBlock!: ({blockId}: {blockId: IBlock['uuid'] | null}) => void
   @builderNamespace.Mutation setIsBlockEditorOpen!: (value: boolean) => void
-  @builderNamespace.Mutation setInteractionDesignerBoundingClientRect!: (value: DOMRect) => void
   @builderNamespace.Mutation setInteractionDesignerHeaderBoundingClientRect!: (value: DOMRect) => void
-  @builderNamespace.Mutation setWindowScrollY!: (value: number) => void
   @builderNamespace.Action setIsEditable!: (arg0: boolean) => void
   @builderNamespace.Action setHasFlowChanges!: (arg0: boolean) => void
   @flowNamespace.Mutation flow_setActiveFlowId!: ({flowId}: {flowId: string | null}) => void

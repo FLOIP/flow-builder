@@ -63,9 +63,7 @@ export interface IBuilderState {
   },
   draggableForExitsByUuid: object,
   isBlockEditorOpen: boolean,
-  interactionDesignerBoundingClientRect: DOMRect,
   interactionDesignerHeaderBoundingClientRect: DOMRect,
-  windowScrollY: number,
   isConnectionCreationInProgress: boolean,
 }
 
@@ -88,9 +86,7 @@ export const stateFactory = (): IBuilderState => ({
   },
   draggableForExitsByUuid: {},
   isBlockEditorOpen: false,
-  interactionDesignerBoundingClientRect: {} as DOMRect,
   interactionDesignerHeaderBoundingClientRect: {} as DOMRect,
-  windowScrollY: 0,
   isConnectionCreationInProgress: false,
 })
 
@@ -112,11 +108,7 @@ export const getters: GetterTree<IBuilderState, IRootState> = {
 
   hasFlowChanges: (state) => state.hasFlowChanges,
 
-  interactionDesignerBoundingClientRect: (state) => state.interactionDesignerBoundingClientRect,
-
   interactionDesignerHeaderBoundingClientRect: (state) => state.interactionDesignerHeaderBoundingClientRect,
-
-  windowScrollY: (state) => state.windowScrollY,
 
   isBuilderCanvasEnabled: (state) => state.activeMainComponent === 'builder',
 
@@ -176,16 +168,8 @@ export const mutations: MutationTree<IBuilderState> = {
     state.isBlockEditorOpen = value
   },
 
-  setInteractionDesignerBoundingClientRect(state, value) {
-    state.interactionDesignerBoundingClientRect = value
-  },
-
   setInteractionDesignerHeaderBoundingClientRect(state, value) {
     state.interactionDesignerHeaderBoundingClientRect = value
-  },
-
-  setWindowScrollY(state, value) {
-    state.windowScrollY = value
   },
 }
 
