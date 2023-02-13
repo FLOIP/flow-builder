@@ -95,8 +95,6 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     },
   }) readonly builderConfig!: object
 
-  windowTop = 0
-
   get blocksOnActiveFlowForWatcher(): IBlock[] {
     // needed to make comparison between new & old values on watcher
     return cloneDeep(this.activeFlow?.blocks)
