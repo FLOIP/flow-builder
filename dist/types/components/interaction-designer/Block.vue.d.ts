@@ -57,7 +57,6 @@ export declare class Block extends Block_base {
     blockClasses: BlockClassNames;
     blocksById: Record<IBlock['uuid'], IBlock>;
     isEditable: boolean;
-    interactionDesignerBoundingClientRect: DOMRect;
     activeFlow?: IFlow;
     isMouseOnBlock: boolean;
     get blockExitsLength(): number;

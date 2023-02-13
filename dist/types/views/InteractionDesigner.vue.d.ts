@@ -57,7 +57,6 @@ export declare class InteractionDesigner extends InteractionDesigner_base {
     activeBlock?: IBlock;
     isEditable: boolean;
     hasFlowChanges: boolean;
-    interactionDesignerBoundingClientRect: DOMRect;
     isBuilderCanvasEnabled: boolean;
     isResourceViewerCanvasEnabled: boolean;
     isSimulatorActive: boolean;
@@ -85,9 +84,7 @@ export declare class InteractionDesigner extends InteractionDesigner_base {
         blockId: IBlock['uuid'] | null;
     }) => void;
     setIsBlockEditorOpen: (value: boolean) => void;
-    setInteractionDesignerBoundingClientRect: (value: DOMRect) => void;
     setInteractionDesignerHeaderBoundingClientRect: (value: DOMRect) => void;
-    setWindowScrollY: (value: number) => void;
     setIsEditable: (arg0: boolean) => void;
     setHasFlowChanges: (arg0: boolean) => void;
     flow_setActiveFlowId: ({ flowId }: {
