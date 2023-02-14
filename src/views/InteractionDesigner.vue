@@ -403,11 +403,6 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
       return
     }
 
-    // Visibility of block toolbar is not a flow change
-    if (type === 'flow/block_updateVendorMetadataByPath' && payload.path === 'floip.ui_metadata.should_show_block_tool_bar') {
-      return
-    }
-
     // Only consider flow mutations
     if (type.startsWith('flow/') === false) {
       return

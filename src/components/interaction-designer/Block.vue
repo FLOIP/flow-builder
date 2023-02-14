@@ -47,7 +47,6 @@
           'activated': isBlockActivated,
         }">
         <block-toolbar
-          v-if="shouldShowBlockToolBar"
           :block="block"
           :is-activated-by-connection="isAssociatedWithActiveConnectionAsTargetBlock"
           :is-block-selected="isBlockSelected"
@@ -404,14 +403,6 @@ export class Block extends mixins(Lang) {
     return this.isBlockEditorOpen && this.activeBlockId === this.block.uuid
   }
 
-  @flowNamespace.Action block_updateShouldShowBlockToolBar!: (
-    {blockId, value}: { blockId: string, value: boolean }
-  ) => void
-
-  get shouldShowBlockToolBar(): boolean {
-    return this.block?.vendor_metadata?.floip?.ui_metadata?.should_show_block_tool_bar ?? false
-  }
-
   // todo: how do we decide whether or not this should be an action or a vanilla domain function?
   generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): ConnectionLayout {
     return generateConnectionLayoutKeyFor(source, target)
@@ -437,31 +428,16 @@ export class Block extends mixins(Lang) {
   @builderNamespace.Action setConnectionCreateTargetBlockToNullFrom!: BlockAction
   @builderNamespace.Action applyConnectionCreate!: () => void
 
-  updateShouldShowBlockToolBar(): void {
-    //do not show the block toolbar when waiting for connection
-    if (this.isWaitingForConnection) {
-      return
-    }
-
-    this.block_updateShouldShowBlockToolBar({
-      blockId: this.block.uuid,
-      value: this.isBlockSelected || this.isMouseOnBlock,
-    });
-  }
-
   setIsMouseOnBlock(value: boolean):void {
     this.isMouseOnBlock = value
-    this.updateShouldShowBlockToolBar()
   }
 
   exitMouseEnter(exit: IBlockExit): void {
     this.$set(this.exitHovers, exit.uuid, true)
-    this.updateShouldShowBlockToolBar()
   }
 
   exitMouseLeave(exit: IBlockExit): void {
     this.$set(this.exitHovers, exit.uuid, false)
-    this.updateShouldShowBlockToolBar()
   }
 
   setLineHovered(exit: IBlockExit, value: boolean): void {

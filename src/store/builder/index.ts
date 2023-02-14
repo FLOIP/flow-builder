@@ -398,9 +398,6 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): 
     source.label,
     target.label,
 
-    // states that would affect block heights
-    source?.vendor_metadata?.floip?.ui_metadata?.should_show_block_tool_bar,
-
     // todo: this needs to be a computed prop // possibly on store as getter by blockId ?
 
     // other exit titles
