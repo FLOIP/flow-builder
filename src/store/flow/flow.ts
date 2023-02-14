@@ -193,7 +193,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       commit('flow_setFlowContainer', createdContainer)
       // commit('flow_setFlowContainer', data)
       commit('flow_updateCreatedState', true)
-      dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
+      await dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
       return getters.activeFlowContainer
     } catch (error) {
       console.error('Server error persisting flow:', error)
@@ -232,7 +232,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       )
       commit('flow_setFlowContainer', container)
       commit('flow_updateCreatedState', true)
-      dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
+      await dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
       return getters.activeFlowContainer
     } catch (error) {
       commit('flow_updateCreatedState', oldCreatedState)
