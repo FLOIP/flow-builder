@@ -3,7 +3,7 @@
     class="block"
     :id="`block/${block.uuid}`"
     :ref="`block/${block.uuid}`"
-    @click="selectBlock"
+    @click.stop="selectBlock"
     @mouseenter="setIsMouseOnBlock(true)"
     @mouseleave="setIsMouseOnBlock(false)">
     <block-editor
@@ -31,7 +31,6 @@
       content-type="block"
       :is-editable="isEditable"
       @dragged="onMoved"
-      @dragStarted="selectBlock"
       @dragEnded="handleDraggableEndedForBlock"
       @destroyed="handleDraggableDestroyedForBlock"
       @mouseenter.native="isConnectionCreateActive && activateBlockAsDropZone($event)"
@@ -51,7 +50,8 @@
           :is-activated-by-connection="isAssociatedWithActiveConnectionAsTargetBlock"
           :is-block-selected="isBlockSelected"
           :is-editor-visible="shouldShowBlockEditor"
-          :is-waiting-for-connection="isWaitingForConnection" />
+          :is-waiting-for-connection="isWaitingForConnection"
+          @showHideHasClicked="selectBlock"/>
 
         <div class="d-flex justify-content-between">
           <p class="block-type">
@@ -411,7 +411,7 @@ export class Block extends mixins(Lang) {
   @builderNamespace.Mutation activateBlock!: () => void
   @builderNamespace.Mutation setBlockPositionTo!: BlockPositionAction
   @builderNamespace.Mutation initDraggableForExitsByUuid!: () => void
-  @builderNamespace.Mutation setIsBlockEditorOpen!: () => void
+  @builderNamespace.Mutation setIsBlockEditorOpen!: (value: boolean) => void
   @builderNamespace.Mutation deactivateConnectionFromExitUuid!: ({exitUuid}: {exitUuid: IBlockExit['uuid']}) => void
 
   @builderNamespace.Action removeConnectionFrom!: BlockExitAction
@@ -629,7 +629,24 @@ export class Block extends mixins(Lang) {
   }
 
   selectBlock(): void {
-    const routerName = this.isBlockEditorOpen ? 'block-selected-details' : 'block-selected'
+    let shouldBlockEditorBeVisible
+    if (this.activeBlockId !== this.block.uuid) {
+      shouldBlockEditorBeVisible = true
+    } else {
+      shouldBlockEditorBeVisible = !this.isBlockEditorOpen
+    }
+
+    this.setIsBlockEditorOpen(shouldBlockEditorBeVisible);
+
+    let routerName
+    if (this.isBlockEditorOpen) {
+      routerName = 'block-selected-details'
+      this.$emit('before-minimize')
+    } else {
+      routerName = 'block-selected'
+      this.$emit('before-expand')
+    }
+
     this.$router.replace(
       {
         name: routerName,

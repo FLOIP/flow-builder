@@ -10,9 +10,7 @@ export declare class BlockToolbar extends BlockToolbar_base {
     isDeleting: boolean;
     handleDeleteBlock(): void;
     handleDuplicateBlock(): void;
-    handleExpandMinimizeBlockEditor(): void;
     isEditable: boolean;
-    setIsBlockEditorOpen: (value: boolean) => void;
     block_select: ({ blockId }: {
         blockId: IBlock['uuid'];
     }) => void;
