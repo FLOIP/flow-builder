@@ -251,6 +251,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       const {data: {data: container}} = await axios.get(fetchRoute)
       commit('flow_setFlowContainer', container)
       commit('flow_updateCreatedState', true)
+      await dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
       return container
     } catch (error) {
       console.info(`Server error fetching flow: "${get(error, 'response.data')}". Status: ${error.response.status}`)
