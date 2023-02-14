@@ -3,7 +3,7 @@
     class="block"
     :id="`block/${block.uuid}`"
     :ref="`block/${block.uuid}`"
-    @click="selectBlock"
+    @click.stop="selectBlock"
     @mouseenter="setIsMouseOnBlock(true)"
     @mouseleave="setIsMouseOnBlock(false)">
     <block-editor
@@ -31,7 +31,6 @@
       content-type="block"
       :is-editable="isEditable"
       @dragged="onMoved"
-      @dragStarted="selectBlock"
       @dragEnded="handleDraggableEndedForBlock"
       @destroyed="handleDraggableDestroyedForBlock"
       @mouseenter.native="isConnectionCreateActive && activateBlockAsDropZone($event)"
@@ -47,12 +46,12 @@
           'activated': isBlockActivated,
         }">
         <block-toolbar
-          v-if="shouldShowBlockToolBar"
           :block="block"
           :is-activated-by-connection="isAssociatedWithActiveConnectionAsTargetBlock"
           :is-block-selected="isBlockSelected"
           :is-editor-visible="shouldShowBlockEditor"
-          :is-waiting-for-connection="isWaitingForConnection" />
+          :is-waiting-for-connection="isWaitingForConnection"
+          @showHideHasClicked="selectBlock"/>
 
         <div class="d-flex justify-content-between">
           <p class="block-type">
@@ -404,14 +403,6 @@ export class Block extends mixins(Lang) {
     return this.isBlockEditorOpen && this.activeBlockId === this.block.uuid
   }
 
-  @flowNamespace.Action block_updateShouldShowBlockToolBar!: (
-    {blockId, value}: { blockId: string, value: boolean }
-  ) => void
-
-  get shouldShowBlockToolBar(): boolean {
-    return this.block?.vendor_metadata?.floip?.ui_metadata?.should_show_block_tool_bar ?? false
-  }
-
   // todo: how do we decide whether or not this should be an action or a vanilla domain function?
   generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): ConnectionLayout {
     return generateConnectionLayoutKeyFor(source, target)
@@ -420,7 +411,7 @@ export class Block extends mixins(Lang) {
   @builderNamespace.Mutation activateBlock!: () => void
   @builderNamespace.Mutation setBlockPositionTo!: BlockPositionAction
   @builderNamespace.Mutation initDraggableForExitsByUuid!: () => void
-  @builderNamespace.Mutation setIsBlockEditorOpen!: () => void
+  @builderNamespace.Mutation setIsBlockEditorOpen!: (value: boolean) => void
   @builderNamespace.Mutation deactivateConnectionFromExitUuid!: ({exitUuid}: {exitUuid: IBlockExit['uuid']}) => void
 
   @builderNamespace.Action removeConnectionFrom!: BlockExitAction
@@ -437,31 +428,16 @@ export class Block extends mixins(Lang) {
   @builderNamespace.Action setConnectionCreateTargetBlockToNullFrom!: BlockAction
   @builderNamespace.Action applyConnectionCreate!: () => void
 
-  updateShouldShowBlockToolBar(): void {
-    //do not show the block toolbar when waiting for connection
-    if (this.isWaitingForConnection) {
-      return
-    }
-
-    this.block_updateShouldShowBlockToolBar({
-      blockId: this.block.uuid,
-      value: this.isBlockSelected || this.isMouseOnBlock,
-    });
-  }
-
   setIsMouseOnBlock(value: boolean):void {
     this.isMouseOnBlock = value
-    this.updateShouldShowBlockToolBar()
   }
 
   exitMouseEnter(exit: IBlockExit): void {
     this.$set(this.exitHovers, exit.uuid, true)
-    this.updateShouldShowBlockToolBar()
   }
 
   exitMouseLeave(exit: IBlockExit): void {
     this.$set(this.exitHovers, exit.uuid, false)
-    this.updateShouldShowBlockToolBar()
   }
 
   setLineHovered(exit: IBlockExit, value: boolean): void {
@@ -653,7 +629,24 @@ export class Block extends mixins(Lang) {
   }
 
   selectBlock(): void {
-    const routerName = this.isBlockEditorOpen ? 'block-selected-details' : 'block-selected'
+    let shouldBlockEditorBeVisible
+    if (this.activeBlockId !== this.block.uuid) {
+      shouldBlockEditorBeVisible = true
+    } else {
+      shouldBlockEditorBeVisible = !this.isBlockEditorOpen
+    }
+
+    this.setIsBlockEditorOpen(shouldBlockEditorBeVisible);
+
+    let routerName
+    if (this.isBlockEditorOpen) {
+      routerName = 'block-selected-details'
+      this.$emit('before-minimize')
+    } else {
+      routerName = 'block-selected'
+      this.$emit('before-expand')
+    }
+
     this.$router.replace(
       {
         name: routerName,

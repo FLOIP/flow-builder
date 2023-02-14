@@ -61,7 +61,7 @@
       <div
         v-b-tooltip.hover="trans('flow-builder.toggle-block-editor-tooltip')"
         class="mr-1 ml-2 cursor-pointer icon-container"
-        @click.prevent="handleExpandMinimizeBlockEditor">
+        @click.stop="$emit('showHideHasClicked')">
         <span class="icon-text">
           {{ isEditorVisible ? trans('flow-builder.hide') : trans('flow-builder.show') }}
         </span>
@@ -110,35 +110,7 @@ export class BlockToolbar extends mixins(Lang) {
     this.$emit('after-duplicate')
   }
 
-  handleExpandMinimizeBlockEditor(): void {
-    this.setIsBlockEditorOpen(!this.isEditorVisible)
-    let routerName
-    if (this.isEditorVisible) {
-      routerName = 'block-selected-details'
-      this.$emit('before-minimize')
-    } else {
-      routerName = 'block-selected'
-      this.$emit('before-expand')
-    }
-
-    this.$router.replace(
-      {
-        name: routerName,
-        params: {blockId: this.block.uuid},
-      },
-      undefined,
-      (err) => {
-        if (err == null) {
-          console.warn('Unknown navigation error has occurred when expanding/minimizing a block editor')
-        } else if (err.name !== 'NavigationDuplicated') {
-          console.warn(err)
-        }
-      },
-    )
-  }
-
   @builderVuexNamespace.Getter isEditable !: boolean
-  @builderVuexNamespace.Mutation setIsBlockEditorOpen!: (value: boolean) => void
 
   @flowVuexNamespace.Action block_select!: ({blockId}: {blockId: IBlock['uuid']}) => void
   @flowVuexNamespace.Action block_deselect!: ({blockId}: {blockId: IBlock['uuid']}) => void
