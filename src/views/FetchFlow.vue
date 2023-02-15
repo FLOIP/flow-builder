@@ -53,7 +53,7 @@ class FetchFlow extends mixins(Routes, Lang) {
   @flowVuexNamespace.Action flow_fetch!: ({fetchRoute}: { fetchRoute: string }) => Promise<IFlow>
   @flowVuexNamespace.Mutation flow_setActiveFlowId!: ({flowId}: { flowId: string }) => void
 
-  @validationVuexNamespace.Action validate_allBlocksFromBackend!: () => void
+  @validationVuexNamespace.Action validate_allBlocksFromBackend!: () => Promise<void>
 
   @Mutation configure!: ({appConfig, builderConfig}: { appConfig: object, builderConfig: object }) => void
   @Getter isConfigured!: boolean
@@ -74,7 +74,7 @@ class FetchFlow extends mixins(Routes, Lang) {
         this.flowLink = this.route('flows.editFlow', {flowId: this.activeFlow.uuid, component: 'builder', mode: 'edit'})
       }
 
-      this.validate_allBlocksFromBackend()
+      await this.validate_allBlocksFromBackend()
     } else {
       this.message = 'flow-builder.flow-not-found'
       this.showNewButton = true

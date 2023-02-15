@@ -170,20 +170,18 @@ export function getLocalizedAjvErrors(keyPrefix: string, ajvErrors?: ErrorObject
   }))
 }
 
-export function getLocalizedBackendErrors(keyPrefix: string, blockErrors: { message: string }[]): ErrorObject[] | null {
+export function getLocalizedBackendErrors(keyPrefix: string, blockErrors: { message: string, dataPath: string }[]): ErrorObject[] | null {
   if (!Array.isArray(blockErrors)) {
     console.debug('getLocalizedBackendErrors', 'returning null as blockErrors is not an array', blockErrors)
     return null
   }
 
-  return blockErrors.map((error: { message: string }) => {
-    // replace all digital indexes to 'x' so we can easily localize them
-    const noIndexMessage = error.message.replaceAll(/\d+/g, 'x')
+  return blockErrors.map(({message, dataPath}) => {
     const errorWithRightSchema: ErrorObject = {
-      message: lang.trans(`flow-builder-validation.${noIndexMessage}`),
+      message: lang.trans(`flow-builder-validation.${message}`),
       keyword: 'backend',
-      dataPath: error.message,
-      schemaPath: error.message,
+      dataPath,
+      schemaPath: dataPath,
       params: {},
     }
     return errorWithRightSchema

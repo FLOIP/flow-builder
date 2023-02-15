@@ -128,6 +128,13 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
     if (status.ajvErrors === null) {
       commit('removeValidationStatusesFor', {key})
     }
+
+    dispatch('cleanBackendAjvErrorsBasedOnFrontend', {
+      type: 'block',
+      id: block.uuid,
+      frontendAjvErrors: status.ajvErrors,
+    })
+
     debugValidationStatus(state.validationStatuses[key], `validation status for ${key}`)
     return state.validationStatuses[key]
   },
@@ -168,24 +175,58 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
       rootGetters['flow/activeFlow']?.vendor_metadata?.floip?.ui_metadata?.validation_results,
       `${type}s`,
       {},
-    ) as Record<string, {message: string}[]>
+    ) as Record<string, {message: string, dataPath: string}[]>
 
     const orphanResourceUuids: IBlock['uuid'][] = rootGetters['flow/orphanResourceUuidsOnActiveFlow'] as IBlock['uuid'][]
     Object.keys(backendErrorsList).forEach((currentUuid) => {
-      const key = `backend/${type}/${currentUuid}`
-      const currentErrors = backendErrorsList[currentUuid]
-      const uniqueErrors = uniqBy(currentErrors, 'message') as { message: string }[]
+      const backendKey = `backend/${type}/${currentUuid}`
+      const frontendKey = `${type}/${currentUuid}`
+      const currentBackendErrors = backendErrorsList[currentUuid]
+      const currentFrontendValidationStatuses = get(state.validationStatuses, frontendKey, {} as IValidationStatus)
+      const frontendDataPathList = map(currentFrontendValidationStatuses?.ajvErrors, 'dataPath')
+      // consider only backend validations which are:
+      // - unique (just in case the backend sends duplicate errors on same `dataPath`)
+      // - not present in existing frontend validation statuses. This prioritizes frontend validations over backend's.
+      //   But it also means the backend validation error never gets displayed after the user fixes the frontend validation error
+      const finalErrors = uniqBy(currentBackendErrors, 'dataPath')
+        .filter(({dataPath}) => !frontendDataPathList.includes(dataPath)) as { message: string, dataPath: string }[]
 
-      Vue.set(state.validationStatuses, key, {
-        isValid: uniqueErrors === undefined || uniqueErrors.length === 0,
-        ajvErrors: getLocalizedBackendErrors(key, uniqueErrors),
+      Vue.set(state.validationStatuses, backendKey, {
+        isValid: finalErrors === undefined || finalErrors.length === 0,
+        ajvErrors: getLocalizedBackendErrors(backendKey, finalErrors),
         context: {
           isOrphanResource: orphanResourceUuids.includes(currentUuid),
         },
       })
 
-      debugValidationStatus(state.validationStatuses[key], `${type} validation based on backend action`)
+      debugValidationStatus(state.validationStatuses[backendKey], `${type} validation based on backend action`)
     })
+  },
+
+  /**
+   * Clean backend validation from frontend validation errors.
+   * This might be useful in case the frontend validation is triggered after the backend validation, eg: when loading a flow from backend
+   */
+  async cleanBackendAjvErrorsBasedOnFrontend(
+    {state, rootGetters, commit},
+    {type, id, frontendAjvErrors}: {type: 'block' | 'resource', id: IBlock['uuid'] | IResource['uuid'], frontendAjvErrors: ErrorObject[]},
+  ): Promise<void> {
+    if (isEmpty(frontendAjvErrors)) {
+      return
+    }
+
+    const backendKey = `backend/${type}/${id}`
+    const backendValidationStatuses = get(state.validationStatuses, backendKey, {} as IValidationStatus)
+    if (isEmpty(backendValidationStatuses) || isEmpty(backendValidationStatuses?.ajvErrors)) {
+      return
+    }
+
+    const frontendDataPathList = map(frontendAjvErrors, 'dataPath')
+    const newBackendValidation = {
+      ...backendValidationStatuses,
+      ajvErrors: backendValidationStatuses.ajvErrors?.filter(({dataPath}) => !frontendDataPathList.includes(dataPath)),
+    }
+    Vue.set(state.validationStatuses, backendKey, newBackendValidation)
   },
 
   /**
@@ -278,6 +319,12 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
         isOrphanResource: orphanResourceUuids.includes(resource.uuid),
       },
       invalidCounterBy: await dispatch('computeInvalidResourcesBy', {errors: validate.errors, resource}),
+    })
+
+    dispatch('cleanBackendAjvErrorsBasedOnFrontend', {
+      type: 'resource',
+      id: resource.uuid,
+      frontendAjvErrors: validate.errors,
     })
 
     debugValidationStatus(state.validationStatuses[key], 'resource validation status')

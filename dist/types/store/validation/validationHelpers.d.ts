@@ -17,6 +17,7 @@ export declare function debugValidationStatus(status: IValidationStatus, customM
 export declare function getLocalizedAjvErrors(keyPrefix: string, ajvErrors?: ErrorObject[] | null): ErrorObject[] | null;
 export declare function getLocalizedBackendErrors(keyPrefix: string, blockErrors: {
     message: string;
+    dataPath: string;
 }[]): ErrorObject[] | null;
 export declare function flatValidationStatuses({ keyPrefix, errors, accumulator, }: {
     keyPrefix: string;
