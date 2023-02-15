@@ -13,7 +13,6 @@ export declare class InteractionDesigner extends InteractionDesigner_base {
     readonly mainComponent: string;
     readonly appConfig: object;
     readonly builderConfig: object;
-    windowTop: number;
     get blocksOnActiveFlowForWatcher(): IBlock[];
     onActiveFlowChanged(newFlow: IFlow): Promise<void>;
     onBlocksInActiveFlowChanged(newBlocks: IBlock[], oldBlocks: IBlock[]): Promise<void>;
