@@ -6,10 +6,6 @@
     @click.stop="selectBlock"
     @mouseenter="setIsMouseOnBlock(true)"
     @mouseleave="setIsMouseOnBlock(false)">
-    <block-editor
-      v-if="shouldShowBlockEditor"
-      class="block-editor"
-      :style="{transform: translatedBlockPosition}" />
 
     <plain-draggable
       v-if="hasLayout"
@@ -20,7 +16,7 @@
         'source-block-having-active-connection': isAssociatedWithActiveConnectionAsSourceBlock,
         'target-block-having-active-connection': isAssociatedWithActiveConnectionAsTargetBlock,
         'target-block-waiting-for-connection': isWaitingForConnection,
-        'has-toolbar': isBlockSelected || shouldShowBlockEditor,
+        'has-toolbar': isBlockSelected || shouldShowBlockEditorForCurrentBlock,
         ['has-exits']: hasExitsShown,
         ['has-multiple-exits']: hasMultipleExitsShown,
         [`has-${numberOfExitsShown}-exits`]: true,
@@ -49,7 +45,7 @@
           :block="block"
           :is-activated-by-connection="isAssociatedWithActiveConnectionAsTargetBlock"
           :is-block-selected="isBlockSelected"
-          :is-editor-visible="shouldShowBlockEditor"
+          :is-editor-visible="shouldShowBlockEditorForCurrentBlock"
           :is-waiting-for-connection="isWaitingForConnection"
           @showHideHasClicked="selectBlock"/>
 
@@ -250,7 +246,6 @@ export class Block extends mixins(Lang) {
   connectionColorAtSourceDragged = colorStates.CONNECTING
   connectionColorForKnowDestination = colorStates.DEFAULT
   isConnectionSource = false
-  translatedBlockPosition = ''
 
   created(): void {
     this.initDraggableForExitsByUuid()
@@ -265,7 +260,6 @@ export class Block extends mixins(Lang) {
   mounted(): void {
     this.$nextTick(function onMounted() {
       this.updateLabelContainerMaxWidth()
-      this.updateTranslatedBlockEditorPosition()
     })
 
     window.addEventListener('message', message => {
@@ -284,7 +278,6 @@ export class Block extends mixins(Lang) {
   onBlockExitsLengthChanged(newValue: number, oldValue: number): void {
     this.$nextTick(() => {
       this.updateLabelContainerMaxWidth(newValue, newValue < oldValue)
-      this.updateTranslatedBlockEditorPosition()
     })
   }
 
@@ -299,7 +292,6 @@ export class Block extends mixins(Lang) {
 
   @builderNamespace.Getter blocksById!: Record<IBlock['uuid'], IBlock>
   @builderNamespace.Getter isEditable!: boolean
-  @builderNamespace.Getter interactionDesignerBoundingClientRect!: DOMRect
 
   @flowNamespace.Getter activeFlow?: IFlow
 
@@ -373,33 +365,7 @@ export class Block extends mixins(Lang) {
     return data?.targetId === block.uuid
   }
 
-  updateTranslatedBlockEditorPosition(): void {
-    let count = 0
-
-    const to = setInterval(() => {
-      const xOffset = 10
-
-      const headerRect = document.querySelector('header.interaction-designer-header')?.getBoundingClientRect()
-      const headerOffset = (headerRect?.height ?? 0) + (headerRect?.top ?? 0)
-      const scroll = document.querySelector('html')?.scrollTop ?? 0
-
-      const left = this.x + this.blockWidth + xOffset - this.interactionDesignerBoundingClientRect.left
-      const top = headerOffset + scroll
-
-      const translatedBlockPosition = `translate(${left}px, ${top}px)`
-
-      if (this.translatedBlockPosition !== translatedBlockPosition) {
-        this.translatedBlockPosition = translatedBlockPosition
-      } else {
-        count += 1
-        if (count > SIDEBAR_POSITION_UPDATE_COUNT) {
-          clearInterval(to)
-        }
-      }
-    }, SIDEBAR_POSITION_UPDATE_INTERVAL_MS)
-  }
-
-  get shouldShowBlockEditor(): boolean {
+  get shouldShowBlockEditorForCurrentBlock(): boolean {
     return this.isBlockEditorOpen && this.activeBlockId === this.block.uuid
   }
 
@@ -523,7 +489,6 @@ export class Block extends mixins(Lang) {
     const {block} = this
     this.$nextTick(() => {
       this.setBlockPositionTo({position: {x, y}, block})
-      this.updateTranslatedBlockEditorPosition()
 
       forEach(this.draggableForExitsByUuid, (draggable, key) => {
         try {
@@ -661,10 +626,6 @@ export class Block extends mixins(Lang) {
         }
       },
     )
-
-    this.$nextTick(() => {
-      this.updateTranslatedBlockEditorPosition()
-    })
   }
 
   handleDraggableEndedForBlock(): void {

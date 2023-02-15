@@ -31,7 +31,6 @@ const DEBOUNCE_SCROLL_TIMER_MS = 300
 
 @Component({})
 export class BuilderCanvas extends Vue {
-  @Prop() block!: IBlock
   @Prop({default: 0}) widthAdjustment!: number
 
   // ##### Canvas dynamic size watchers [

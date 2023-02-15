@@ -1,5 +1,5 @@
 <template>
-  <div class="block-editor">
+  <div class="block-editor" :style="{top: topPosition}">
     <div v-if="activeBlock">
       <div
         class="tree-sidebar-edit-block"
@@ -28,7 +28,16 @@ const flowNamespace = namespace('flow')
 @Component({})
 export class BlockEditor extends mixins(Lang) {
   @builderNamespace.Getter activeBlock?: IBlock
+  @builderNamespace.Getter interactionDesignerHeaderBoundingClientRect!: DOMRect
   @flowNamespace.Getter activeFlow?: IFlow
+
+  get topPosition() {
+    // the interaction designer header may change:
+    // - top: related to how the builder is embedded in the consumer UI, eg: the might be other elements above it
+    // - height: related to which toolbar elements are visible, eg: 'multi-select blocks' toolbar is not always visible, same for the validations
+    const correction = 5
+    return `${this.interactionDesignerHeaderBoundingClientRect.top + this.interactionDesignerHeaderBoundingClientRect.height + correction}px`
+  }
 }
 
 export default BlockEditor
@@ -36,12 +45,11 @@ export default BlockEditor
 
 <style lang="scss">
 .block-editor {
-  position: absolute;
-  // TODO: Correct this `top` in https://viamoinc.atlassian.net/browse/VMO-6572 if needed
-  top: 30px;
+  position: fixed;
+  right: 5px;
   background: white;
   z-index: 15;
-  max-height: 75vh;
+  max-height: 82vh;
   width: 365px;
   overflow-y: scroll;
   padding: 0 1em 1em;
