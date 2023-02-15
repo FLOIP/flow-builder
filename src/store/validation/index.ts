@@ -128,6 +128,13 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
     if (status.ajvErrors === null) {
       commit('removeValidationStatusesFor', {key})
     }
+
+    dispatch('cleanBackendAjvErrorsBasedOnFrontend', {
+      type: 'block',
+      id: block.uuid,
+      frontendAjvErrors: status.ajvErrors,
+    })
+
     debugValidationStatus(state.validationStatuses[key], `validation status for ${key}`)
     return state.validationStatuses[key]
   },
@@ -194,6 +201,32 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
 
       debugValidationStatus(state.validationStatuses[backendKey], `${type} validation based on backend action`)
     })
+  },
+
+  /**
+   * Clean backend validation from frontend validation errors.
+   * This might be useful in case the frontend validation is triggered after the backend validation, eg: when loading a flow from backend
+   */
+  async cleanBackendAjvErrorsBasedOnFrontend(
+    {state, rootGetters, commit},
+    {type, id, frontendAjvErrors}: {type: 'block' | 'resource', id: IBlock['uuid'] | IResource['uuid'], frontendAjvErrors: ErrorObject[]},
+  ): Promise<void> {
+    if (isEmpty(frontendAjvErrors)) {
+      return
+    }
+
+    const backendKey = `backend/${type}/${id}`
+    const backendValidationStatuses = get(state.validationStatuses, backendKey, {} as IValidationStatus)
+    if (isEmpty(backendValidationStatuses) || isEmpty(backendValidationStatuses?.ajvErrors)) {
+      return
+    }
+
+    const frontendDataPathList = map(frontendAjvErrors, 'dataPath')
+    const newBackendValidation = {
+      ...backendValidationStatuses,
+      ajvErrors: backendValidationStatuses.ajvErrors?.filter(({dataPath}) => !frontendDataPathList.includes(dataPath)),
+    }
+    Vue.set(state.validationStatuses, backendKey, newBackendValidation)
   },
 
   /**
@@ -286,6 +319,12 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
         isOrphanResource: orphanResourceUuids.includes(resource.uuid),
       },
       invalidCounterBy: await dispatch('computeInvalidResourcesBy', {errors: validate.errors, resource}),
+    })
+
+    dispatch('cleanBackendAjvErrorsBasedOnFrontend', {
+      type: 'resource',
+      id: resource.uuid,
+      frontendAjvErrors: validate.errors,
     })
 
     debugValidationStatus(state.validationStatuses[key], 'resource validation status')
