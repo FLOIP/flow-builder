@@ -16,7 +16,7 @@
             'radius-on-top': modeIndex === 0,
             'radius-on-bottom': modeIndex === modes.length - 1,
           }"
-          class="resource-panel-heading p-2 d-flex"
+          class="resource-panel-heading p-2 d-flex align-items-center"
           @click="updateIsPanelExpanded(`${block.uuid}-${mode}`)">
           <div class="mr-auto">
             <header class="d-flex channel-name">
