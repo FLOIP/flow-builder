@@ -76,7 +76,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
       // create new exit if it doesn't exist yet
       if (exitsForChoices[i] == null) {
         const uuid = await (new IdGeneratorUuidV4()).generate()
-        const exit = await dispatch('flow/block_createBlockExitWith', {props: {uuid} as IBlockExit}, {root: true})
+        const exit: IBlockExit = await dispatch('flow/block_createBlockExitWith', {props: {uuid} as IBlockExit}, {root: true})
         exitsForChoices.push(exit)
       }
 

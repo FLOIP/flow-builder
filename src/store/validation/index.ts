@@ -381,12 +381,13 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
    * - if we have 02 languages FR, EN, 03 modes SMS, USSD, IVR, the 1st mode has a content on the 1st language
    * - then, we expect {"mode":{"SMS":1,"USSD":2,"IVR":2},"languageId":{"FR":2,"EN":3}}
    *
+   * @param getters
    * @param rootGetters
    * @param errors
    * @param resource
    */
   async computeInvalidResourcesBy(
-    {rootGetters},
+    {getters, rootGetters},
     {errors, resource}: {errors: ErrorObject[] | null, resource: IResource},
   ): Promise<IInvalidResourcesCounterBy> {
     const invalidCounterByMode: {[key: string]: number} = {}
@@ -400,6 +401,7 @@ export const validationActions: ActionTree<IValidationState, IRootState> = {
       ?.map(error => extractResourceVariantIndex(error.dataPath))
       .filter(isNotUndefined)
       .map(invalidVariantIndex => resource.values[invalidVariantIndex])
+      .filter(invalidVariant => invalidVariant.mime_type !== getters.choiceMimeType)
 
       .forEach(invalidVariant => {
         const languageId = invalidVariant.language_id

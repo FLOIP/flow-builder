@@ -61,7 +61,7 @@ import {findOrGenerateStubbedVariantOn} from '@/store/flow/utils/resourceHelpers
 import {Component, Prop} from 'vue-property-decorator'
 import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
-import {IBlock, IChoice, IFlow, IResource, IResourceValue, SupportedContentType, SupportedMode} from '@floip/flow-runner'
+import {IBlock, IFlow, IResource, IResourceValue, SupportedContentType, SupportedMode} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
 import {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_SelectOneResponseBlockStore'
@@ -143,31 +143,29 @@ export class ChoicesBuilder extends mixins(Lang) {
     const hasEmptyValue = isEmpty(value)
 
     if (isLast && hasEmptyValue) {
-      this.deleteChoiceByResourceIdFrom({blockId: this.block.uuid, resourceId})
-      // important to delete the choice before removing the resource, otherwise this will throw an error
-      this.flow_removeResourcesAndRelatedValidationsOnActiveFlow({
-        resourceUuids: [resourceId],
-      })
-      let previousIndex = choiceIndex - 1
-      let previousLastChoice: IChoice = this.block.config.choices[previousIndex]
-      while (previousIndex >= 0 && previousLastChoice.name === '') {
-        console.debug('delete previous empty choice at index', previousIndex)
-        this.deleteChoiceByResourceIdFrom({blockId: this.block.uuid, resourceId: previousLastChoice.prompt})
-        // important to delete the choice before removing the resource, otherwise this will throw an error
-        this.flow_removeResourcesAndRelatedValidationsOnActiveFlow({
-          resourceUuids: [resourceId],
-        })
-        previousIndex -= 1
-        previousLastChoice = this.block.config.choices[previousIndex]
-      }
+      this.deleteLastAndPreviousChoicesIfEmpty(choiceIndex)
       this.focusInputElFor(this.$refs.draftChoice as Vue)
-      this.$emit('choiceChanged', {resourceId})
-      return
+    } else {
+      this.choice_change({blockId: this.block.uuid, resourceId, value})
     }
 
-    this.choice_change({blockId: this.block.uuid, resourceId, value})
-
     this.$emit('choiceChanged', {resourceId})
+  }
+
+  deleteLastAndPreviousChoicesIfEmpty(choiceIndex: number): void {
+    let i = choiceIndex
+    let choice = this.block.config.choices[i]
+
+    do {
+      console.debug('delete previous empty choice at index', i)
+      this.deleteChoiceByResourceIdFrom({blockId: this.block.uuid, resourceId: choice.prompt})
+      // important to delete the choice before removing the resource, otherwise this will throw an error
+      this.flow_removeResourcesAndRelatedValidationsOnActiveFlow({
+        resourceUuids: [choice.prompt],
+      })
+      i -= 1
+      choice = this.block.config.choices[i]
+    } while (i >= 0 && choice.name === '')
   }
 
   handleNewChoiceChange({variant, resourceId, value}: {variant: IResourceValue, resourceId: IResource['uuid'], value: string}): void {
@@ -176,6 +174,7 @@ export class ChoicesBuilder extends mixins(Lang) {
       resourceId,
       value,
     })
+    this.$emit('choiceChanged', {resourceId})
   }
 
   @validationVuexNamespace.Getter choiceMimeType!: string

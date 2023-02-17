@@ -32,6 +32,7 @@ export declare class ChoicesBuilder extends ChoicesBuilder_base {
         resourceId: IResource['uuid'];
         value: IResourceValue['value'];
     }): void;
+    deleteLastAndPreviousChoicesIfEmpty(choiceIndex: number): void;
     handleNewChoiceChange({ variant, resourceId, value }: {
         variant: IResourceValue;
         resourceId: IResource['uuid'];
