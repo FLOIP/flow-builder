@@ -63,7 +63,7 @@ export interface IBuilderState {
   },
   draggableForExitsByUuid: object,
   isBlockEditorOpen: boolean,
-  interactionDesignerBoundingClientRect: DOMRect,
+  interactionDesignerHeaderBoundingClientRect: DOMRect,
   isConnectionCreationInProgress: boolean,
 }
 
@@ -86,7 +86,7 @@ export const stateFactory = (): IBuilderState => ({
   },
   draggableForExitsByUuid: {},
   isBlockEditorOpen: false,
-  interactionDesignerBoundingClientRect: {} as DOMRect,
+  interactionDesignerHeaderBoundingClientRect: {} as DOMRect,
   isConnectionCreationInProgress: false,
 })
 
@@ -108,7 +108,7 @@ export const getters: GetterTree<IBuilderState, IRootState> = {
 
   hasFlowChanges: (state) => state.hasFlowChanges,
 
-  interactionDesignerBoundingClientRect: (state) => state.interactionDesignerBoundingClientRect,
+  interactionDesignerHeaderBoundingClientRect: (state) => state.interactionDesignerHeaderBoundingClientRect,
 
   isBuilderCanvasEnabled: (state) => state.activeMainComponent === 'builder',
 
@@ -168,8 +168,8 @@ export const mutations: MutationTree<IBuilderState> = {
     state.isBlockEditorOpen = value
   },
 
-  setInteractionDesignerBoundingClientRect(state, value) {
-    state.interactionDesignerBoundingClientRect = value
+  setInteractionDesignerHeaderBoundingClientRect(state, value) {
+    state.interactionDesignerHeaderBoundingClientRect = value
   },
 }
 
@@ -397,9 +397,6 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): 
     // block titles
     source.label,
     target.label,
-
-    // states that would affect block heights
-    source?.vendor_metadata?.floip?.ui_metadata?.should_show_block_tool_bar,
 
     // todo: this needs to be a computed prop // possibly on store as getter by blockId ?
 

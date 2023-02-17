@@ -41,7 +41,7 @@
 
     <section
       v-if="numberOfBlocksWithErrors > 0"
-      class="alert alert-danger d-flex py-sm-1 px-2"
+      class="alert alert-danger d-flex py-sm-1 px-2 mb-1"
       role="alert">
       <span class="align-self-center ml-2">
         {{ 'flow-builder.block-error-message' | trans({block_count: numberOfBlocksWithErrors}) }}

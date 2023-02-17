@@ -93,6 +93,7 @@ export declare class TreeBuilderToolbar extends TreeBuilderToolbar_base {
     isEditable: boolean;
     hasFlowChanges: boolean;
     activeBlockId?: IBlock['uuid'];
+    isBlockEditorOpen: boolean;
     get viewModeUrl(): string;
     activeBlock?: IBlock;
     isBuilderCanvasEnabled: boolean;

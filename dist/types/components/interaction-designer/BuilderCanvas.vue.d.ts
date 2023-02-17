@@ -1,8 +1,7 @@
 /// <reference types="lodash" />
 import { Vue } from 'vue-property-decorator';
-import { IBlock, IFlow } from '@floip/flow-runner';
+import { IFlow } from '@floip/flow-runner';
 export declare class BuilderCanvas extends Vue {
-    block: IBlock;
     widthAdjustment: number;
     onCanvasHeightChanged(newValue: number): void;
     onCanvasWidthChanged(newValue: number): void;

@@ -16,7 +16,7 @@ declare class FetchFlow extends FetchFlow_base {
     flow_setActiveFlowId: ({ flowId }: {
         flowId: string;
     }) => void;
-    validate_allBlocksFromBackend: () => void;
+    validate_allBlocksFromBackend: () => Promise<void>;
     configure: ({ appConfig, builderConfig }: {
         appConfig: object;
         builderConfig: object;

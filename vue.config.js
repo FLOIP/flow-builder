@@ -147,7 +147,11 @@ module.exports = {
        *     ui_metadata: {
        *       validation_results: {
        *         blocks: {block-uuid1: [{message: 'issue 1'}, {message: 'issue 2'}], ...},
-       *         resources: {resource-uuid1: [{message: 'issue 1'}, {message: 'issue 2'}], ...}
+       *         resources: {resource-uuid1: [
+       *          {dataPath: '/path/1', message: 'issue-1'},
+       *          {dataPath: '/path/2', message: 'issue-2'}],
+       *          ...
+     *          }
        *       }
        *     }
        *   }
@@ -169,20 +173,28 @@ module.exports = {
                   blocks: {
                     [`${blockWithValidationIssue.uuid}`]: [
                       {
-                        message: 'dummy-block-backend-validation-error-#1'
+                        dataPath: '/dummy/path/non-existing-field',
+                        message: 'dummy-block-backend-validation-error-non-existing-field'
                       },
+                      // providing a dummy backend validation on block name will help us to simulate duplicate validations,
+                      // so we can handle the scenario appropriately
                       {
-                        message: 'dummy-block-backend-validation-error-#2'
+                        dataPath: '/name',
+                        message: 'dummy-block-backend-validation-error-block-name'
                       },
                     ]
                   },
                   resources: resourceWithValidationIssue.length ? {
                     [`${resourceWithValidationIssue[0].uuid}`]: [
                       {
-                        message: 'dummy-resource-backend-validation-error-#1'
+                        dataPath: '/dummy/path/my-resource/non-existing-field',
+                        message: 'dummy-block-backend-validation-error-resource-non-existing-field'
                       },
+                      // providing a dummy backend validation on 1st resource will help us to simulate duplicate validations,
+                      // so we can handle the scenario appropriately
                       {
-                        message: 'dummy-resource-backend-validation-error-#2'
+                        dataPath: '/values/0/value',
+                        message: 'dummy-block-backend-validation-error-resource-first-field'
                       },
                     ]
                   }: []

@@ -3,7 +3,7 @@
     v-if="activeFlow"
     ref="interaction-designer-contents"
     class="interaction-designer interaction-designer-contents">
-    <header class="interaction-designer-header">
+    <header ref="interaction-designer-header" class="interaction-designer-header">
       <slot name="toolbar">
         <tree-builder-toolbar />
       </slot>
@@ -206,7 +206,6 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   @builderNamespace.Getter activeBlock?: IBlock
   @builderNamespace.Getter isEditable!: boolean
   @builderNamespace.Getter hasFlowChanges!: boolean
-  @builderNamespace.Getter interactionDesignerBoundingClientRect!: DOMRect
   @builderNamespace.Getter isBuilderCanvasEnabled!: boolean
   @builderNamespace.Getter isResourceViewerCanvasEnabled!: boolean
   @clipboardNamespace.Getter isSimulatorActive!: boolean
@@ -263,6 +262,8 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
 
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
   async mounted(): Promise<void> {
+    window.addEventListener('scroll', this.onScroll, true)
+
     //Ensure that the blocks are installed before activating the flow
     //Block stores are needed to ensure validations can run immediately
     await this.registerBlockTypes()
@@ -296,13 +297,21 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
           this.setIsBlockEditorOpen(true)
         }
       }, 500)
-
-      // get the interaction-designer-content positions, will be used to set other elements' position in the canvas (eg: for block editor)
-      if (this.activeFlow && this.$refs['interaction-designer-contents'] !== undefined) {
-        this.setInteractionDesignerBoundingClientRect((this.$refs['interaction-designer-contents'] as Element).getBoundingClientRect())
-      }
     }
     console.debug('Vuej tree interaction designer mounted!')
+  }
+
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.onScroll, true)
+  }
+
+  onScroll(e) {
+    if (this.isBuilderCanvasEnabled) {
+      // will be used to set other elements' position in the canvas (eg: for block editor)
+      if (this.$refs['interaction-designer-header'] !== undefined) {
+        this.setInteractionDesignerHeaderBoundingClientRect((this.$refs['interaction-designer-header'] as Element).getBoundingClientRect())
+      }
+    }
   }
 
   @Watch('$route', {deep: true})
@@ -318,7 +327,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   @Mutation deselectBlocks!: () => void
   @builderNamespace.Mutation activateBlock!: ({blockId}: {blockId: IBlock['uuid'] | null}) => void
   @builderNamespace.Mutation setIsBlockEditorOpen!: (value: boolean) => void
-  @builderNamespace.Mutation setInteractionDesignerBoundingClientRect!: (value: DOMRect) => void
+  @builderNamespace.Mutation setInteractionDesignerHeaderBoundingClientRect!: (value: DOMRect) => void
   @builderNamespace.Action setIsEditable!: (arg0: boolean) => void
   @builderNamespace.Action setHasFlowChanges!: (arg0: boolean) => void
   @flowNamespace.Mutation flow_setActiveFlowId!: ({flowId}: {flowId: string | null}) => void
@@ -400,11 +409,6 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     // Consider changing block positoin a flow change
     if (type === 'builder/setBlockPositionTo') {
       this.setHasFlowChanges(true)
-      return
-    }
-
-    // Visibility of block toolbar is not a flow change
-    if (type === 'flow/block_updateVendorMetadataByPath' && payload.path === 'floip.ui_metadata.should_show_block_tool_bar') {
       return
     }
 

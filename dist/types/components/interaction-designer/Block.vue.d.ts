@@ -43,7 +43,6 @@ export declare class Block extends Block_base {
     connectionColorAtSourceDragged: string;
     connectionColorForKnowDestination: string;
     isConnectionSource: boolean;
-    translatedBlockPosition: string;
     created(): void;
     updated(): void;
     mounted(): void;
@@ -58,7 +57,6 @@ export declare class Block extends Block_base {
     blockClasses: BlockClassNames;
     blocksById: Record<IBlock['uuid'], IBlock>;
     isEditable: boolean;
-    interactionDesignerBoundingClientRect: DOMRect;
     activeFlow?: IFlow;
     isMouseOnBlock: boolean;
     get blockExitsLength(): number;
@@ -74,18 +72,12 @@ export declare class Block extends Block_base {
     get isConnectionSourceRelocateActive(): boolean;
     get isConnectionCreateActive(): boolean;
     get isBlockActivated(): boolean;
-    updateTranslatedBlockEditorPosition(): void;
-    get shouldShowBlockEditor(): boolean;
-    block_updateShouldShowBlockToolBar: ({ blockId, value }: {
-        blockId: string;
-        value: boolean;
-    }) => void;
-    get shouldShowBlockToolBar(): boolean;
+    get shouldShowBlockEditorForCurrentBlock(): boolean;
     generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): ConnectionLayout;
     activateBlock: () => void;
     setBlockPositionTo: BlockPositionAction;
     initDraggableForExitsByUuid: () => void;
-    setIsBlockEditorOpen: () => void;
+    setIsBlockEditorOpen: (value: boolean) => void;
     deactivateConnectionFromExitUuid: ({ exitUuid }: {
         exitUuid: IBlockExit['uuid'];
     }) => void;
@@ -98,7 +90,6 @@ export declare class Block extends Block_base {
     setConnectionCreateTargetBlock: BlockAction;
     setConnectionCreateTargetBlockToNullFrom: BlockAction;
     applyConnectionCreate: () => void;
-    updateShouldShowBlockToolBar(): void;
     setIsMouseOnBlock(value: boolean): void;
     exitMouseEnter(exit: IBlockExit): void;
     exitMouseLeave(exit: IBlockExit): void;
