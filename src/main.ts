@@ -22,10 +22,15 @@ Vue.use(Vuex)
 
 Vue.config.productionTip = false
 
-async function main() {
+// todo CORE-155: inline 'store' after migration to Vue3
+const store = new Vuex.Store({})
+
+async function main(): Promise<void> {
   new Vue({
     router,
-    store: new Vuex.Store({}),
+    store,
+    // todo CORE-155: remove 'provide' after migration to Vue3; use the built-in useStore() instead
+    provide: {store},
     render: (h) => h(Vue.extend(App)),
   }).$mount('#app')
 }
