@@ -29,8 +29,8 @@
       @dragged="onMoved"
       @dragEnded="handleDraggableEndedForBlock"
       @destroyed="handleDraggableDestroyedForBlock"
-      @mouseenter.native="isConnectionCreateActive && activateBlockAsDropZone($event)"
-      @mouseleave.native="isConnectionCreateActive && deactivateBlockAsDropZone($event)">
+      @mouseenter.native="isConnectionCreateActive && activateBlockAsDropZone()"
+      @mouseleave.native="isConnectionCreateActive && deactivateBlockAsDropZone()">
       <header
         :id="`block/${block.uuid}/handle`"
         class="block-target draggable-handle"
@@ -84,15 +84,6 @@
             )
           "
           class="block-exit flex-grow-1"
-          :class="{
-            'initial': false,
-            'pending': isConnectionSourceRelocateActive,
-            'fulfilled': false,
-            'rejected': false,
-            'activated': isExitActivatedForRelocate(exit),
-          }"
-          @mouseenter="isConnectionSourceRelocateActive && activateExitAsDropZone($event, exit)"
-          @mouseleave="isConnectionSourceRelocateActive && deactivateExitAsDropZone($event, exit)"
           @mousemove="updateCursorPosition"
           @click="exit.destination_block && handleRemoveConnectionFrom(exit)">
           <div class="visible-exits">
@@ -200,7 +191,7 @@ import {
   ConnectionLayout,
   generateConnectionLayoutKeyFor, IConnectionContext,
   IConnectionCreateOperation,
-  IConnectionSourceRelocateOperation, IPosition,
+  IPosition,
   OperationKind,
   SupportedOperation,
 } from '@/store/builder'
@@ -345,11 +336,6 @@ export class Block extends mixins(Lang) {
   // todo: does this component know too much, what out of the above mapped state can be mapped?
   // todo: We should likely also proxy our resource resolving so that as to mitigate the need to see all resources and generate a context
 
-  get isConnectionSourceRelocateActive(): boolean {
-    const {operations} = this
-    return !!operations[OperationKind.CONNECTION_SOURCE_RELOCATE].data
-  }
-
   get isConnectionCreateActive(): boolean {
     const {operations} = this
     return !!operations[OperationKind.CONNECTION_CREATE].data
@@ -361,7 +347,7 @@ export class Block extends mixins(Lang) {
       return true
     }
 
-    const {data} = operations[OperationKind.CONNECTION_CREATE] as IConnectionCreateOperation
+    const {data} = operations[OperationKind.CONNECTION_CREATE]
     return data?.targetId === block.uuid
   }
 
@@ -381,12 +367,6 @@ export class Block extends mixins(Lang) {
   @builderNamespace.Mutation deactivateConnectionFromExitUuid!: ({exitUuid}: {exitUuid: IBlockExit['uuid']}) => void
 
   @builderNamespace.Action removeConnectionFrom!: BlockExitAction
-
-  // ConnectionSourceRelocate
-  @builderNamespace.Action initializeConnectionSourceRelocateWith!: BlockExitPositionAction
-  @builderNamespace.Action setConnectionSourceRelocateValue!: BlockExitAction
-  @builderNamespace.Action setConnectionSourceRelocateValueToNullFrom!: BlockExitAction
-  @builderNamespace.Action applyConnectionSourceRelocate!: () => void
 
   // ConnectionCreate
   @builderNamespace.Action initializeConnectionCreateWith!: BlockExitPositionAction
@@ -447,38 +427,20 @@ export class Block extends mixins(Lang) {
     this.labelContainerMaxWidth = LABEL_CONTAINER_MAX_WIDTH
   }
 
-  // todo: push NodeExit into it's own vue component
-  isExitActivatedForRelocate(exit: IBlockExit): boolean {
-    const {data} = this.operations[OperationKind.CONNECTION_SOURCE_RELOCATE] as IConnectionSourceRelocateOperation
-    return data?.to?.exitId === exit.uuid
-  }
-
   isExitActivatedForCreate(exit: IBlockExit): boolean {
-    const {data} = this.operations[OperationKind.CONNECTION_CREATE] as IConnectionCreateOperation
+    const {data} = this.operations[OperationKind.CONNECTION_CREATE]
     return data?.source?.exitId === exit.uuid
   }
 
-  activateExitAsDropZone(e: MouseEvent, exit: IBlockExit): void {
-    const {block} = this
-    this.setConnectionSourceRelocateValue({block, exit})
-  }
-
-  deactivateExitAsDropZone(e: MouseEvent, exit: IBlockExit): void {
-    const {block} = this
-    this.setConnectionSourceRelocateValueToNullFrom({block, exit})
-  }
-
-  // eslint-disable-next-line no-unused-vars
   activateBlockAsDropZone(): void {
     const {block} = this
     this.setConnectionCreateTargetBlock({block})
   }
 
-  // eslint-disable-next-line no-unused-vars
   deactivateBlockAsDropZone(): void {
     const {block} = this
 
-    if ((this.operations[OperationKind.CONNECTION_CREATE] as IConnectionCreateOperation).data?.targetId !== null) {
+    if ((this.operations[OperationKind.CONNECTION_CREATE]).data?.targetId !== null) {
       this.setConnectionCreateTargetBlockToNullFrom({block})
     }
   }
@@ -561,37 +523,8 @@ export class Block extends mixins(Lang) {
     this.livePosition = null
   }
 
-  onMoveExitDragStarted({draggable}: {draggable: Draggable}, exit: IBlockExit): void {
-    const {block} = this
-    const {left: x, top: y} = draggable
-
-    this.initializeConnectionSourceRelocateWith({
-      block,
-      exit,
-      position: {x, y},
-    })
-
-    this.adjustDraggablePosition(draggable)
-  }
-
-  onMoveExitDragged({position: {left: x, top: y}}: {position: {left: number, top: number}}): void {
-    this.livePosition = {x, y}
-  }
-
   // todo: store the leaderlines in vuex and manip there --- aka the leaderline itself would simply _produce_ the
   //       domain object which we thenceforth manip in vuex ?
-
-  onMoveExitDragEnded({draggable}: {draggable: Draggable}): void {
-    const {x: left, y: top} = this.operations[OperationKind.CONNECTION_SOURCE_RELOCATE]!.data!.position
-
-    console.debug('Block', 'onMoveExitDragEnded', 'operation.data.position', {left, top})
-    console.debug('Block', 'onMoveExitDragEnded', 'reset', {left: draggable.left, top: draggable.top})
-
-    Object.assign(draggable, {left, top})
-
-    this.applyConnectionSourceRelocate()
-    this.livePosition = null
-  }
 
   selectBlock(): void {
     let shouldBlockEditorBeVisible
