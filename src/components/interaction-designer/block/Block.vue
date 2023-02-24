@@ -458,11 +458,6 @@ export default Block
     .block-label.empty {
       color: #fff;
     }
-
-    .block-exit-name {
-      color: $primary-600 !important;
-      background: #fff !important;
-    }
   }
 
   &.target-block-waiting-for-connection {
@@ -472,19 +467,6 @@ export default Block
 
     .block-label.empty {
       color: #fff;
-    }
-
-    .block-exit-name {
-      color: $success-600 !important;
-      background: #fff !important;
-    }
-  }
-
-  // block exit states
-  &.is-active,
-  &:hover {
-    .block-exit .block-exit-remove {
-      opacity: 1;
     }
   }
 }

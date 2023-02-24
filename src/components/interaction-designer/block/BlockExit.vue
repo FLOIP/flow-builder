@@ -304,4 +304,18 @@ function setIsLineClicked(value: boolean): void {
     border-radius: 0.3em;
   }
 }
+
+.target-block-having-active-connection {
+  .block-exit-name {
+    color: $primary-600 !important;
+    background: #fff !important;
+  }
+}
+
+.target-block-waiting-for-connection {
+  .block-exit-name {
+    color: $success-600 !important;
+    background: #fff !important;
+  }
+}
 </style>
