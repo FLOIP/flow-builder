@@ -23,7 +23,6 @@
       }"
       :start-x="x"
       :start-y="y"
-      content-type="block"
       :is-editable="isEditable"
       @dragged="onMoved"
       @dragEnded="handleDraggableEndedForBlock"

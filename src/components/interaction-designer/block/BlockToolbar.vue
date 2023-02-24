@@ -18,7 +18,7 @@
       </template>
     </div>
     <div class="header-actions-right d-flex">
-      <slot />
+      <slot name="right" />
       <!--Delete-->
       <div
         v-if="isEditable"

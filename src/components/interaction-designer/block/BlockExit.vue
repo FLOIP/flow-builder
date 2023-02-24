@@ -25,7 +25,6 @@
             :drag-handle-id="`exit/${exit.uuid}`"
             class="btn btn-xs btn-flat p-0"
             :is-editable="isEditable"
-            content-type="exit"
             @initialized="handleDraggableInitializedFor($event)"
             @dragStarted="onCreateExitDragStarted($event)"
             @dragged="onCreateExitDragged($event)"
@@ -195,13 +194,15 @@ function adjustDraggablePosition(draggable: Draggable): void {
 }
 
 function onCreateExitDragStarted({draggable}: {draggable: Draggable}): void {
-  const {left: x, top: y} = draggable
+  store.commit('builder/setIsConnectionCreationInProgress', {value: true}, {root: true})
 
   window.postMessage(BLOCK_RESET_CONNECTIONS, '*')
 
   isDragged.value = true
 
   emit('connection-create-start')
+
+  const {left: x, top: y} = draggable
 
   store.dispatch('builder/initializeConnectionCreateWith', {
     block: props.block,
@@ -217,10 +218,13 @@ function onCreateExitDragged({position: {left: x, top: y}}: {position: {left: nu
 }
 
 function onCreateExitDragEnded({draggable}: {draggable: Draggable}): void {
-  const {x: left, y: top} = operations.value[OperationKind.CONNECTION_CREATE]!.data!.position
+  store.commit('builder/setIsConnectionCreationInProgress', {value: false}, {root: true})
 
   isDragged.value = false
+
   emit('connection-create-end')
+
+  const {x: left, y: top} = operations.value[OperationKind.CONNECTION_CREATE]!.data!.position
 
   console.debug('Block', 'onCreateExitDragEnded', 'operation.data.position', {left, top})
   console.debug('Block', 'onCreateExitDragEnded', 'reset', {left: draggable.left, top: draggable.top})
