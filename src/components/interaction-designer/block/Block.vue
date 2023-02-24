@@ -62,6 +62,8 @@
           :class="{'empty': !block.label}">
           {{ block.label || trans('flow-builder.untitled-block') }}
         </h3>
+
+        <slot name="after-label"/>
       </header>
 
       <footer

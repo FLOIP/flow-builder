@@ -9,12 +9,16 @@
       :class="exitNameClass"
       @mouseenter="isHovered = true"
       @mouseleave="isHovered = false">
-      <span
+      <div
         v-if="!(isHovered || isExitActivatedForCreate)"
-        v-b-tooltip.hover.bottom="exit.test"
-        class="block-exit-name-text align-self-center">
-        {{ exit.name || '(untitled)' }}
-      </span>
+        class="d-flex flex-row justify-content-between align-items-center w-100 px-1">
+        <div
+          v-b-tooltip.hover.bottom="exit.test"
+          class="block-exit-name-text">
+          {{ exit.name || '(untitled)' }}
+        </div>
+        <slot name="right" />
+      </div>
 
       <span class="align-self-center">
         <template v-if="exit.destination_block == null">
@@ -277,6 +281,10 @@ function setIsLineClicked(value: boolean): void {
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
+    }
+
+    .block-exit-name-text:only-child {
+      margin: 0 auto;
     }
 
     &.is-connected {
