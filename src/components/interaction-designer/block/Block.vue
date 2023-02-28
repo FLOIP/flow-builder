@@ -47,14 +47,7 @@
           :is-waiting-for-connection="isWaitingForConnection"
           @showHideHasClicked="selectBlock" />
 
-        <div class="d-flex justify-content-between">
-          <p class="block-type">
-            {{ trans(`flow-builder.${block.type}`) }}
-          </p>
-          <i
-            v-if="activeFlow.first_block_id === block.uuid"
-            class="glyphicon glyphicon-arrow-down" />
-        </div>
+        <block-title :block="block"/>
 
         <h3
           class="block-label"
