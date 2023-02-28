@@ -27,6 +27,7 @@ export declare class Block extends Block_base {
     operations: Record<OperationKind, SupportedOperation>;
     activeConnectionsContext: IConnectionContext[];
     isBlockEditorOpen: boolean;
+    draggableForExitsByUuid: object;
     isConnectionCreationInProgress: boolean;
     blockClasses: BlockClassNames;
     isEditable: boolean;
