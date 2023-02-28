@@ -1,5 +1,6 @@
 <template>
   <div
+    :key="componentKey"
     v-b-tooltip.hover.bottom="tooltip"
     class="block-exit flex-grow-1"
     @mousemove="updateCursorPosition"
@@ -121,6 +122,7 @@ const isLineHovered = ref(false)
 const isLinePermanentlyActive = ref(false)
 const livePosition = ref<{x: number, y: number} | null>(null)
 const cursorPosition = ref<{x: number, y: number} | null>(null)
+const componentKey = ref(0)
 
 const isEditable = computed<boolean>(() => store.getters['builder/isEditable'])
 
@@ -160,6 +162,10 @@ const blocksById = computed<Record<IBlock['uuid'], IBlock>>(() =>
 const draggableForExitsByUuid = computed<Record<string, Draggable>>(() =>
   store.state.builder.draggableForExitsByUuid)
 
+function forceRender() {
+  componentKey.value += 1
+}
+
 function updateCursorPosition(e: MouseEvent): void {
   cursorPosition.value = {
     x: e.clientX + window.scrollX,
@@ -172,7 +178,7 @@ function handleRemoveConnection(): void {
   store.commit('builder/deactivateConnectionFromExitUuid', {exitUuid: props.exit.uuid}, {root: true})
   store.dispatch('builder/removeConnectionFrom', {block: props.block, exit: props.exit}, {root: true})
   // force render, useful if the exit label is very short
-  labelContainerMaxWidth += 0
+  this.forceRender()
 }
 
 function handleDraggableInitializedFor({draggable}: {draggable: Draggable}): void {
