@@ -18,10 +18,10 @@
           class="block-exit-name-text">
           {{ exit.name || '(untitled)' }}
         </div>
-        <slot name="right" />
+        <slot name="middle" />
       </div>
 
-      <span class="align-self-center">
+      <span class="align-self-center d-flex">
         <template v-if="exit.destination_block == null">
           <plain-draggable
             v-if="isHovered || isExitActivatedForCreate"
@@ -80,6 +80,8 @@
             @lineMouseClickedOut="setIsLineClicked(false)"
             @lineMouseOut="setIsLineHovered(false)" />
         </template>
+
+        <slot name="right" />
       </span>
     </div>
   </div>
