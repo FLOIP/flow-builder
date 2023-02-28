@@ -3,7 +3,7 @@
     <p class="block-type">
       {{ lang.trans(`flow-builder.${block.type}`) }}
     </p>
-    <div>
+    <div class="d-flex">
       <slot name="right"/>
       <i
         v-if="activeFlow.first_block_id === block.uuid"
