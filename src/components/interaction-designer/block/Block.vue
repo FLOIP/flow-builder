@@ -156,6 +156,7 @@ export class Block extends mixins(Lang) {
   @builderNamespace.State operations!: Record<OperationKind, SupportedOperation>
   @builderNamespace.State activeConnectionsContext!: IConnectionContext[]
   @builderNamespace.State isBlockEditorOpen!: boolean
+  @builderNamespace.State draggableForExitsByUuid!: object
   @builderNamespace.State isConnectionCreationInProgress!: boolean
   @State(({trees: {ui}}) => ui.blockClasses) blockClasses!: BlockClassNames
   @builderNamespace.Getter isEditable!: boolean

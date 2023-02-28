@@ -49,6 +49,7 @@ export interface IBuilderState {
     [OperationKind.CONNECTION_CREATE]: IConnectionCreateOperation,
     [OperationKind.BLOCK_RELOCATE]: null,
   },
+  //this will be populated when we drag an exit
   draggableForExitsByUuid: object,
   isBlockEditorOpen: boolean,
   interactionDesignerHeaderBoundingClientRect: DOMRect,
