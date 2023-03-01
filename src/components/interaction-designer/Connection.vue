@@ -171,14 +171,6 @@ export class Connection extends mixins(Lang) {
     // stop listening to scroll and window resize hooks
     // LeaderLine.positionByWindowResize = false
     // this.line.positionByWindowResize = false
-
-    // TODO: Core-319, clean this if it's unused, awaiting confirmation from dev
-    // window.addEventListener('message', message => {
-    //   console.debug('test rs', message, JSON.stringify(this?.options), JSON.stringify(this.line))
-    //   if (message.data === BLOCK_RESET_CONNECTIONS) {
-    //     this.line.setOptions(this.options)
-    //   }
-    // })
   }
 
   beforeDestroy(): void {
