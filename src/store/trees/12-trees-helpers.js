@@ -3,7 +3,7 @@ import _ from 'lodash'
 
 window.app = window.app || {};
 
-(function ($) {
+(function (jQ) {
   app.ui = app.ui || {}
   app.ui.changes = 0
 
@@ -69,13 +69,13 @@ window.app = window.app || {};
       return false
     }
 
-    const promise = $.post(`/ajax/trees/save/${treeId}`, requestData)
+    const promise = jQ.post(`/ajax/trees/save/${treeId}`, requestData)
       .done((response) => {
         app.audioChoice.setTopUpdatesBar(Lang.trans('trees.tree-saved'), 1)
         // the person has been logged out
         if (typeof (response) !== 'object') {
           // spawn the modal
-          $('#myModal')
+          jQ('#myModal')
             .modal({show: true, backdrop: 'static'})
         }
 
@@ -125,72 +125,72 @@ window.app = window.app || {};
   app.exportOptionsModal.initialize = function () {
     const exportOptionsTemplate = _.template(JST['legacy/templates/export-options-template.html'])
 
-    $('body')
+    jQ('body')
       .append(exportOptionsTemplate())
 
-    $('.tree-export-options-input')
+    jQ('.tree-export-options-input')
       .change((e) => {
         app.exportOptionsModal.handleInput(e)
       })
 
     // Select the URL box text if clicked
-    $('.tree-export-options-download-api-url')
+    jQ('.tree-export-options-download-api-url')
       .focus(function () {
         this.select()
       })
 
     // Add datepickers for the time boxes
-    $('.tree-export-options-input-datepicker')
+    jQ('.tree-export-options-input-datepicker')
       .datetimepicker({
         pickTime: false,
       })
-    $('.tree-export-options-input-datepicker')
+    jQ('.tree-export-options-input-datepicker')
       .on('dp.change', (e) => {
-        $(e.currentTarget)
+        jQ(e.currentTarget)
           .trigger('change')
       })
 
     // Kickoff the process to build the link URL!
-    $('.tree-export-options-input')
+    jQ('.tree-export-options-input')
       .first()
       .trigger('change')
   }
 
   app.exportOptionsModal.open = function () {
-    if ($('#export-options-modal').length == 0) {
+    if (jQ('#export-options-modal').length == 0) {
       app.exportOptionsModal.initialize()
     }
 
     // Show the modal.
-    $('#export-options-modal')
+    jQ('#export-options-modal')
       .modal()
   }
 
   app.exportOptionsModal.handleInput = function (e) {
-    const value = $(e.currentTarget)
+    const value = jQ(e.currentTarget)
       .val()
-    const key = $(e.currentTarget)
+    const key = jQ(e.currentTarget)
       .attr('data-export-options-key')
 
     if (key == 'dateFilter') {
       if (value == '1') {
-        $('.export-options-date-filter-container')
+        jQ('.export-options-date-filter-container')
           .show()
       } else {
-        $('.export-options-date-filter-container')
+        jQ('.export-options-date-filter-container')
           .hide()
 
         // Reset the values so they don't get serialized if hidden
-        $('.tree-export-options-input[data-export-options-key=callsAfter]')
+        jQ('.tree-export-options-input[data-export-options-key=callsAfter]')
           .val('')
-        $('.tree-export-options-input[data-export-options-key=callsBefore]')
+        jQ('.tree-export-options-input[data-export-options-key=callsBefore]')
           .val('')
       }
     }
 
-    $('.tree-export-options-download-link')
+    jQ('.tree-export-options-download-link')
       .attr('href', app.exportOptionsModal.buildUrl())
-    $('.tree-export-options-download-api-url')
+    jQ('.tree-export-options-download-api-url')
       .val(app.exportOptionsModal.buildUrl(1))
   }
 
@@ -201,7 +201,7 @@ window.app = window.app || {};
       url = `${window.location.protocol}//${window.location.host}/api/v1/trees/${app.ui.treeId}/csvexport/direct?`
     }
 
-    url += $('.tree-export-options-input')
+    url += jQ('.tree-export-options-input')
       .serialize()
 
     if (isApiUrl) {
@@ -217,29 +217,29 @@ window.app = window.app || {};
   app.shareableLinkModal.initialize = function () {
     const shareableLinkTemplate = _.template(JST['legacy/templates/shareable-link-template.html'])
 
-    $('body')
+    jQ('body')
       .append(shareableLinkTemplate())
 
     // Select the URL box text if clicked
-    $('.tree-shareable-link-url')
+    jQ('.tree-shareable-link-url')
       .focus(function () {
         this.select()
       })
 
     // Assign button clicks
-    $('.tree-shareable-link-generate-button')
+    jQ('.tree-shareable-link-generate-button')
       .on('click', (e) => {
         app.shareableLinkModal.sendRequest('create')
       })
-    $('.tree-shareable-link-delete-button')
+    jQ('.tree-shareable-link-delete-button')
       .on('click', (e) => {
         app.shareableLinkModal.switchView('delete')
       })
-    $('.tree-shareable-link-delete-confirm-button')
+    jQ('.tree-shareable-link-delete-confirm-button')
       .on('click', (e) => {
         app.shareableLinkModal.sendRequest('delete')
       })
-    $('.tree-shareable-link-delete-cancel-button')
+    jQ('.tree-shareable-link-delete-cancel-button')
       .on('click', (e) => {
         app.shareableLinkModal.switchView('edit')
       })
@@ -254,23 +254,23 @@ window.app = window.app || {};
   }
 
   app.shareableLinkModal.switchView = function (view) {
-    $('.shareable-link-delete')
+    jQ('.shareable-link-delete')
       .hide()
-    $('.shareable-link-edit')
+    jQ('.shareable-link-edit')
       .hide()
-    $('.shareable-link-new')
+    jQ('.shareable-link-new')
       .hide()
-    $(`.shareable-link-${view}`)
+    jQ(`.shareable-link-${view}`)
       .show()
   }
 
   app.shareableLinkModal.open = function (e) {
-    if ($('#shareable-link-modal').length == 0) {
+    if (jQ('#shareable-link-modal').length == 0) {
       app.shareableLinkModal.initialize()
     }
 
     // Show the modal.
-    $('#shareable-link-modal')
+    jQ('#shareable-link-modal')
       .modal()
   }
 
@@ -284,14 +284,14 @@ window.app = window.app || {};
 
   app.shareableLinkModal.setUrl = function () {
     const url = app.shareableLinkModal.buildUrl()
-    $('.tree-shareable-link-url')
+    jQ('.tree-shareable-link-url')
       .val(url)
-    $('.tree-shareable-link-url-link')
+    jQ('.tree-shareable-link-url-link')
       .attr('href', url)
   }
 
   app.shareableLinkModal.sendRequest = function (requestType) {
-    $.post(`/ajax/trees/updateshareablelink/${app.ui.treeId}`, {type: requestType})
+    jQ.post(`/ajax/trees/updateshareablelink/${app.ui.treeId}`, {type: requestType})
       .done((response) => {
         if (response) {
           // New one!
@@ -319,37 +319,37 @@ window.app = window.app || {};
   app.shareableLinkSetsModal.initialize = function () {
     const shareableLinkTemplate = _.template(JST['legacy/templates/shareable-link-sets-template.html'])
 
-    $('body')
+    jQ('body')
       .append(shareableLinkTemplate({
         defaultLocales: builder.$store.state.defaultLocales,
         orgEnabledLanguages: builder.$store.state.orgEnabledLanguages,
       }))
 
     // Assign button clicks
-    $('.tree-shareable-link-sets-generate-button')
+    jQ('.tree-shareable-link-sets-generate-button')
       .on('click', (e) => {
         app.shareableLinkSetsModal.sendRequest('create')
       })
 
-    $('input[name=shouldUseCustomBlockOrdering]')
+    jQ('input[name=shouldUseCustomBlockOrdering]')
       .on('click', function () {
-        if ($(this)
+        if (jQ(this)
           .is(':checked')) {
-          $('.block-ordinal')
+          jQ('.block-ordinal')
             .prop('disabled', false)
         } else {
-          $('.block-ordinal')
+          jQ('.block-ordinal')
             .prop('disabled', true)
         }
       })
 
-    $('select[name=\'lockDateRange\']')
+    jQ('select[name=\'lockDateRange\']')
       .on('change', function () {
         if (this.value === '1') {
-          $('.hide-on-lockDateRange')
+          jQ('.hide-on-lockDateRange')
             .hide()
         } else {
-          $('.hide-on-lockDateRange')
+          jQ('.hide-on-lockDateRange')
             .show()
         }
       })
@@ -360,56 +360,56 @@ window.app = window.app || {};
 
   app.shareableLinkSetsModal.initializeLinksList = function () {
     const shareableLinkListTemplate = _.template(JST['legacy/templates/shareable-link-sets-list-template.html'])
-    $('.shareable-link-sets-list-container')
+    jQ('.shareable-link-sets-list-container')
       .html(shareableLinkListTemplate)
 
-    $('.tree-shareable-link-sets-delete-button')
+    jQ('.tree-shareable-link-sets-delete-button')
       .on('click', (e) => {
         app.shareableLinkSetsModal.switchToDeleteView(e)
       })
-    $('.tree-shareable-link-sets-delete-confirm-button')
+    jQ('.tree-shareable-link-sets-delete-confirm-button')
       .on('click', (e) => {
-        const shareableLinkHash = $(e.currentTarget)
+        const shareableLinkHash = jQ(e.currentTarget)
           .attr('data-link-hash')
         app.shareableLinkSetsModal.sendRequest('delete', shareableLinkHash)
       })
-    $('.tree-shareable-link-sets-delete-cancel-button')
+    jQ('.tree-shareable-link-sets-delete-cancel-button')
       .on('click', (e) => {
         app.shareableLinkSetsModal.switchAwayFromDeleteView(e)
       })
   }
 
   app.shareableLinkSetsModal.switchToDeleteView = function (e) {
-    const shareableLinkId = $(e.currentTarget)
+    const shareableLinkId = jQ(e.currentTarget)
       .attr('data-link-id')
-    const listElement = $(`.shareable-link-item-div[data-link-id=${shareableLinkId}]`)
+    const listElement = jQ(`.shareable-link-item-div[data-link-id=${shareableLinkId}]`)
 
-    if ($(listElement)
+    if (jQ(listElement)
       .hasClass('list-group-item-danger')) {
       app.shareableLinkSetsModal.switchAwayFromDeleteView(e)
     } else {
-      $(listElement)
+      jQ(listElement)
         .addClass('list-group-item-danger')
-      $(listElement)
+      jQ(listElement)
         .children('.shareable-link-item-div-delete')
         .show()
     }
   }
 
   app.shareableLinkSetsModal.switchAwayFromDeleteView = function (e) {
-    const shareableLinkId = $(e.currentTarget)
+    const shareableLinkId = jQ(e.currentTarget)
       .attr('data-link-id')
-    const listElement = $(`.shareable-link-item-div[data-link-id=${shareableLinkId}]`)
+    const listElement = jQ(`.shareable-link-item-div[data-link-id=${shareableLinkId}]`)
 
-    $(listElement)
+    jQ(listElement)
       .removeClass('list-group-item-danger')
-    $(listElement)
+    jQ(listElement)
       .children('.shareable-link-item-div-delete')
       .hide()
   }
 
   app.shareableLinkSetsModal.open = function (e) {
-    if ($('#shareable-link-sets-modal').length == 0) {
+    if (jQ('#shareable-link-sets-modal').length == 0) {
       app.shareableLinkSetsModal.initialize()
     }
 
@@ -417,7 +417,7 @@ window.app = window.app || {};
     app.shareableLinkSetsModal.setLabelValues()
 
     // Show the modal.
-    $('#shareable-link-sets-modal')
+    jQ('#shareable-link-sets-modal')
       .modal()
   }
 
@@ -429,31 +429,31 @@ window.app = window.app || {};
     const blocksLabel = app.labels.blocks
 
     if (app.params.versionFiltersEnabled) {
-      $('.shareable-link-sets-versions-label')
+      jQ('.shareable-link-sets-versions-label')
         .show()
     } else {
-      $('.shareable-link-sets-versions-label')
+      jQ('.shareable-link-sets-versions-label')
         .hide()
     }
 
     if (app.params.noValidDateRange) {
-      $('.shareable-link-sets-date-range-labels')
+      jQ('.shareable-link-sets-date-range-labels')
         .hide()
-      $('.shareable-link-sets-date-range-all-time-label')
+      jQ('.shareable-link-sets-date-range-all-time-label')
         .show()
     } else {
-      $('span.sl-label-start-date')
+      jQ('span.sl-label-start-date')
         .text(startDateLabel)
-      $('span.sl-label-end-date')
+      jQ('span.sl-label-end-date')
         .text(endDateLabel)
     }
 
-    $('span.sl-label-channel')
+    jQ('span.sl-label-channel')
       .text(channelLabel)
-    $('span.sl-label-blocks')
+    jQ('span.sl-label-blocks')
       .text(blocksLabel)
 
-    $('span.sl-label-versions')
+    jQ('span.sl-label-versions')
       .text(`${app.labels.versionsSelected} of ${app.labels.versionsTotal}`)
   }
 
@@ -479,50 +479,50 @@ window.app = window.app || {};
         excludedBlocks: app.params.excludedBlocks,
         blockKeys: app.blockKeys,
         hiddenDirectorySelectionFields: app.params.hiddenDirectorySelectionFields,
-        lockDateRange: _.parseInt($('.shareable-link-sets-input[name=lockDateRange]')
+        lockDateRange: _.parseInt(jQ('.shareable-link-sets-input[name=lockDateRange]')
           .val()),
-        resultsLocale: $('.shareable-link-sets-input[name=resultsLocale]')
+        resultsLocale: jQ('.shareable-link-sets-input[name=resultsLocale]')
           .val(),
-        showKeyMetrics: $('.shareable-link-sets-input[name=showKeyMetrics]')
+        showKeyMetrics: jQ('.shareable-link-sets-input[name=showKeyMetrics]')
           .is(':checked') ? '1' : '0',
-        showBlockType: $('.shareable-link-sets-input[name=showBlockType]')
+        showBlockType: jQ('.shareable-link-sets-input[name=showBlockType]')
           .is(':checked') ? '1' : '0',
-        shouldShowResultsFromIncompleteEngagements: $('.shareable-link-sets-input[name=shouldShowResultsFromIncompleteEngagements]')
+        shouldShowResultsFromIncompleteEngagements: jQ('.shareable-link-sets-input[name=shouldShowResultsFromIncompleteEngagements]')
           .is(':checked') ? '1' : '0',
-        shouldOnlyShowLatestResultPerSession: $('.shareable-link-sets-input[name=shouldOnlyShowLatestResultPerSession]')
+        shouldOnlyShowLatestResultPerSession: jQ('.shareable-link-sets-input[name=shouldOnlyShowLatestResultPerSession]')
           .is(':checked') ? '1' : '0',
-        shouldUseSimpleDatePicker: $('.shareable-link-sets-input[name=shouldUseSimpleDatePicker]')
+        shouldUseSimpleDatePicker: jQ('.shareable-link-sets-input[name=shouldUseSimpleDatePicker]')
           .is(':checked') ? '1' : '0',
-        shouldUseCustomBlockOrdering: $('.shareable-link-sets-input[name=shouldUseCustomBlockOrdering]')
+        shouldUseCustomBlockOrdering: jQ('.shareable-link-sets-input[name=shouldUseCustomBlockOrdering]')
           .is(':checked') ? '1' : '0',
-        enabledTabs: $('input[name=enabledTabs]:checked')
-          .map((i, el) => $(el)
+        enabledTabs: jQ('input[name=enabledTabs]:checked')
+          .map((i, el) => jQ(el)
             .val())
           .get(),
-        tagFilter: $('input[name=tagFilter]:checked')
-          .map((i, el) => $(el)
+        tagFilter: jQ('input[name=tagFilter]:checked')
+          .map((i, el) => jQ(el)
             .val())
           .get(),
-        directorySelectionFieldFilter: $('input[name=directorySelectionFieldFilter]:checked')
-          .map((i, el) => $(el)
+        directorySelectionFieldFilter: jQ('input[name=directorySelectionFieldFilter]:checked')
+          .map((i, el) => jQ(el)
             .val())
           .get(),
-        blockChoiceFilter: $('input[name=blockChoiceFilter]:checked')
-          .map((i, el) => $(el)
+        blockChoiceFilter: jQ('input[name=blockChoiceFilter]:checked')
+          .map((i, el) => jQ(el)
             .val())
           .get(),
-        filterDisplayThreshold: $('input[name=filterDisplayThreshold]')
+        filterDisplayThreshold: jQ('input[name=filterDisplayThreshold]')
           .val(),
       }
 
-      if ($('.shareable-link-sets-input[name=shouldUseCustomBlockOrdering]')
+      if (jQ('.shareable-link-sets-input[name=shouldUseCustomBlockOrdering]')
         .is(':checked')) {
         sendRequest.customBlockOrder = _.reduce(
-          $('.block-ordinal')
+          jQ('.block-ordinal')
             .toArray(),
           (memo, el) => {
-            memo[$(el)
-              .data('js-key')] = $(el)
+            memo[jQ(el)
+              .data('js-key')] = jQ(el)
               .val()
             return memo
           },
@@ -540,7 +540,7 @@ window.app = window.app || {};
       }
     }
 
-    $.post(`/ajax/treeversionsets/updateshareablelink/${app.tree_version_set_id}`, {data: sendRequest})
+    jQ.post(`/ajax/treeversionsets/updateshareablelink/${app.tree_version_set_id}`, {data: sendRequest})
       .done((response) => {
         if (requestType == 'delete') {
           if (response == 1) {
@@ -572,11 +572,11 @@ window.app = window.app || {};
   app.csvExportsModal.initialize = function () {
     const csvExportTemplate = _.template(JST['legacy/templates/combined-csv-export-template.html'])
 
-    $('body')
+    jQ('body')
       .append(csvExportTemplate())
 
     // Assign button clicks
-    $('.tree-csv-exports-generate-button')
+    jQ('.tree-csv-exports-generate-button')
       .on('click', (e) => {
         app.csvExportsModal.sendCreateRequest()
       })
@@ -591,89 +591,89 @@ window.app = window.app || {};
 
     // get selected options for export from users
     function getUserOptionsRecipe() {
-      const fhd = ($('.csv-exports-option-format-headings')
-        .val()) ? $('.csv-exports-option-format-headings')
+      const fhd = (jQ('.csv-exports-option-format-headings')
+        .val()) ? jQ('.csv-exports-option-format-headings')
         .val() : '0'
-      const fcc = ($('.csv-exports-option-format-cells')
-        .val()) ? $('.csv-exports-option-format-cells')
+      const fcc = (jQ('.csv-exports-option-format-cells')
+        .val()) ? jQ('.csv-exports-option-format-cells')
         .val() : '0'
-      const vcq = ($('.csv-exports-option-values-mcq')
-        .val()) ? $('.csv-exports-option-values-mcq')
+      const vcq = (jQ('.csv-exports-option-values-mcq')
+        .val()) ? jQ('.csv-exports-option-values-mcq')
         .val() : '0'
-      const vms = ($('.csv-exports-option-values-messages')
-        .val()) ? $('.csv-exports-option-values-messages')
+      const vms = (jQ('.csv-exports-option-values-messages')
+        .val()) ? jQ('.csv-exports-option-values-messages')
         .val() : '0'
 
       return fhd + fcc + vcq + vms
     }
 
     // remove active class from all
-    $('[class*=csv-exports-btn-format-]')
+    jQ('[class*=csv-exports-btn-format-]')
       .click(() => {
-        $('[class*=csv-exports-btn-format-]')
+        jQ('[class*=csv-exports-btn-format-]')
           .removeClass('btn-primary active')
           .addClass('btn-secondary')
       })
 
     // when human-readable is selected
-    $('.csv-exports-btn-format-human')
+    jQ('.csv-exports-btn-format-human')
       .click(function () {
         setToDefault = false
-        $(this)
+        jQ(this)
           .addClass('btn-primary active')
           .removeClass('btn-secondary')
-        $('.csv-exports-option-format-headings option')
+        jQ('.csv-exports-option-format-headings option')
           .eq('0')
           .prop('selected', 'selected')
-        $('.csv-exports-option-format-cells option')
+        jQ('.csv-exports-option-format-cells option')
           .eq('0')
           .prop('selected', 'selected')
-        $('.csv-exports-option-values-mcq option')
+        jQ('.csv-exports-option-values-mcq option')
           .eq('0')
           .prop('selected', 'selected')
-        $('.csv-exports-option-values-messages option')
+        jQ('.csv-exports-option-values-messages option')
           .eq('0')
           .prop('selected', 'selected')
       })
 
     // when machine-readable is selected
-    $('.csv-exports-btn-format-machine')
+    jQ('.csv-exports-btn-format-machine')
       .click(function () {
         setToDefault = false
-        $(this)
+        jQ(this)
           .addClass('btn-primary active')
           .removeClass('btn-secondary')
-        $('.csv-exports-option-format-headings option')
+        jQ('.csv-exports-option-format-headings option')
           .eq('1')
           .prop('selected', 'selected')
-        $('.csv-exports-option-format-cells option')
+        jQ('.csv-exports-option-format-cells option')
           .eq('1')
           .prop('selected', 'selected')
-        $('.csv-exports-option-values-mcq option')
+        jQ('.csv-exports-option-values-mcq option')
           .eq('1')
           .prop('selected', 'selected')
-        $('.csv-exports-option-values-messages option')
+        jQ('.csv-exports-option-values-messages option')
           .eq('2')
           .prop('selected', 'selected')
       })
 
     // when custom is selected
-    $('.csv-exports-btn-format-custom')
+    jQ('.csv-exports-btn-format-custom')
       .click(function () {
         setToDefault = false
-        $(this)
+        jQ(this)
           .addClass('btn-primary active')
           .removeClass('btn-secondary')
       })
 
     // when we are to use default – use human-readable
     if (setToDefault) {
-      $('.csv-exports-btn-format-human')
+      jQ('.csv-exports-btn-format-human')
         .trigger('click')
     }
 
     // on change check what options have been selected
-    $('[class*=csv-exports-option-]')
+    jQ('[class*=csv-exports-option-]')
       .change(() => {
         setToDefault = false
         recipeUserCustomised = getUserOptionsRecipe()
@@ -681,17 +681,17 @@ window.app = window.app || {};
         // if customRecipe is neither machine-readable NOR human-readable then it is custom
         if (recipeUserCustomised) {
           if (recipeUserCustomised == recipeHumanReadable) {
-            $('.csv-exports-btn-format-human')
+            jQ('.csv-exports-btn-format-human')
               .trigger('click')
           } else if (recipeUserCustomised == recipeMachineReadable) {
-            $('.csv-exports-btn-format-machine')
+            jQ('.csv-exports-btn-format-machine')
               .trigger('click')
           } else {
             setToDefault = false
-            $('[class*=csv-exports-btn-format-]')
+            jQ('[class*=csv-exports-btn-format-]')
               .removeClass('btn-primary active')
               .addClass('btn-secondary')
-            $('.csv-exports-btn-format-custom')
+            jQ('.csv-exports-btn-format-custom')
               .addClass('btn-primary active')
               .removeClass('btn-secondary')
           }
@@ -706,18 +706,18 @@ window.app = window.app || {};
     if (typeof app.csvExportsModal.shareableLinkListTemplate === 'undefined') {
       app.csvExportsModal.shareableLinkListTemplate = _.template(JST['legacy/templates/combined-csv-export-list-template.html'])
     }
-    $('.csv-exports-list-container')
+    jQ('.csv-exports-list-container')
       .html(app.csvExportsModal.shareableLinkListTemplate())
     app.csvExportsModal.queueInProgress()
   }
 
   app.csvExportsModal.open = function (e) {
-    if ($('#combined-csv-export-modal').length == 0) {
+    if (jQ('#combined-csv-export-modal').length == 0) {
       app.csvExportsModal.initialize()
     }
 
     app.csvExportsModal.setLabelValues()
-    $('#combined-csv-export-modal')
+    jQ('#combined-csv-export-modal')
       .modal()
   }
 
@@ -729,36 +729,36 @@ window.app = window.app || {};
     const blocksLabel = app.labels.blocks
 
     if (app.params.versionFiltersEnabled) {
-      $('.export-version-sets-versions-label')
+      jQ('.export-version-sets-versions-label')
         .show()
     } else {
-      $('.export-version-sets-versions-label')
+      jQ('.export-version-sets-versions-label')
         .hide()
     }
 
     if (app.params.noValidDateRange) {
-      $('.csv-exports-date-range-labels')
+      jQ('.csv-exports-date-range-labels')
         .hide()
-      $('.csv-exports-date-range-all-time-label')
+      jQ('.csv-exports-date-range-all-time-label')
         .show()
     } else {
-      $('span.sl-label-start-date')
+      jQ('span.sl-label-start-date')
         .text(startDateLabel)
-      $('span.sl-label-end-date')
+      jQ('span.sl-label-end-date')
         .text(endDateLabel)
     }
 
-    $('span.sl-label-channel')
+    jQ('span.sl-label-channel')
       .text(channelLabel)
-    $('span.sl-label-blocks')
+    jQ('span.sl-label-blocks')
       .text(blocksLabel)
 
-    $('span.sl-label-versions')
+    jQ('span.sl-label-versions')
       .text(`${app.labels.versionsSelected} of ${app.labels.versionsTotal}`)
   }
 
   app.csvExportsModal.sendStatusRequest = function () {
-    $.ajax({
+    jQ.ajax({
       url: `/ajax/treeversionsets/csvexportstatus/${app.tree_version_set_id}`,
       type: 'GET',
       dataType: 'json',
@@ -775,22 +775,22 @@ window.app = window.app || {};
       includedBlocks: app.params.includedBlocks,
       excludedBlocks: app.params.excludedBlocks,
       blockKeys: app.blockKeys,
-      order: $('.csv-exports-input[name=order]')
+      order: jQ('.csv-exports-input[name=order]')
         .val(),
-      formatHeadings: $('.csv-exports-input[name=formatHeadings]')
+      formatHeadings: jQ('.csv-exports-input[name=formatHeadings]')
         .val(),
-      cellContents: $('.csv-exports-input[name=cellContents]')
+      cellContents: jQ('.csv-exports-input[name=cellContents]')
         .val(),
-      messageBlockPercent: $('.csv-exports-input[name=messageBlockPercent]')
+      messageBlockPercent: jQ('.csv-exports-input[name=messageBlockPercent]')
         .val(),
-      formatMCQResponses: $('.csv-exports-input[name=formatMCQResponses]')
+      formatMCQResponses: jQ('.csv-exports-input[name=formatMCQResponses]')
         .val(),
       treeVersionIds: app.params.versions,
-      mergeOption: $('.csv-exports-input[name=mergeOption]')
+      mergeOption: jQ('.csv-exports-input[name=mergeOption]')
         .val(),
-      useLocalTimezone: $('.csv-exports-input[name=useLocalTimezone]')
+      useLocalTimezone: jQ('.csv-exports-input[name=useLocalTimezone]')
         .val(),
-      useExcelFormat: $('.csv-exports-input[name=useExcelFormat]')
+      useExcelFormat: jQ('.csv-exports-input[name=useExcelFormat]')
         .val(),
     }
 
@@ -807,9 +807,9 @@ window.app = window.app || {};
     // Re-enable time will be after 5s
     const thenAfter5s = then.clone()
       .add(5, 'seconds')
-    $('.tree-csv-exports-generate-button')
+    jQ('.tree-csv-exports-generate-button')
       .prop('disabled', true)
-    $.post(`/ajax/treeversionsets/csvexportstart/${treeVersionSetId}`, {data: sendRequest})
+    jQ.post(`/ajax/treeversionsets/csvexportstart/${treeVersionSetId}`, {data: sendRequest})
       .done((response) => {
         app.csvExports = response
         app.csvExportsModal.initializeLinksList()
@@ -825,7 +825,7 @@ window.app = window.app || {};
         const delay = moment.duration(thenAfter5s.diff(moment()))
         const delayInMilliseconds = delay > 0 ? delay.asMilliseconds() : 0
         _.delay(() => {
-          $('.tree-csv-exports-generate-button')
+          jQ('.tree-csv-exports-generate-button')
             .prop('disabled', false)
         }, delayInMilliseconds)
       })
@@ -846,35 +846,35 @@ window.app = window.app || {};
 
   app.blockResultsLoader = {}
   app.blockResultsLoader.load = function () {
-    const nextBlockKeyToLoad = $('.tree-results-block-container[data-is-loaded=0]')
+    const nextBlockKeyToLoad = jQ('.tree-results-block-container[data-is-loaded=0]')
       .first()
       .attr('id')
 
-    $('.tree-results-loading-indicators')
+    jQ('.tree-results-loading-indicators')
       .show()
 
     if (nextBlockKeyToLoad) {
       app.blockResultsLoader.loadBlock(nextBlockKeyToLoad, 1)
     } else {
-      $('.tree-results-loading-indicators')
+      jQ('.tree-results-loading-indicators')
         .hide()
     }
   }
 
   app.blockResultsLoader.assignButtons = function (parentElement) {
-    $(parentElement)
+    jQ(parentElement)
       .find('.result-view-control-tab')
       .on('click', (e) => {
-        const targetType = $(e.currentTarget)
+        const targetType = jQ(e.currentTarget)
           .attr('data-tab-option')
-        $(parentElement)
+        jQ(parentElement)
           .find('.tree-results-item-tabs')
           .hide()
-        $(parentElement)
+        jQ(parentElement)
           .find(`.tree-results-item-${targetType}`)
           .show()
       })
-    $(parentElement)
+    jQ(parentElement)
       .find('.result-view-control-tab')
       .first()
       .trigger('click')
@@ -895,7 +895,7 @@ window.app = window.app || {};
       url = `/ajax/trees/set/${app.tree_version_set_id}/results/${blockKey}${window.location.search}`
     }
 
-    $.ajax({
+    jQ.ajax({
       url,
       type: 'GET',
       dataType: 'json',
@@ -904,12 +904,12 @@ window.app = window.app || {};
           // Place the HTML output into the container DIV
           // TODO - this should actually use client-side templates, once the item results template is converted back.
           _.each(data.htmlOutput, (value, key) => {
-            $(`#${key}`)
+            jQ(`#${key}`)
               .attr('data-is-loaded', 1)
               .html(value)
 
             // Assign buttons for tab switching:
-            app.blockResultsLoader.assignButtons($(`#${key}`))
+            app.blockResultsLoader.assignButtons(jQ(`#${key}`))
           })
 
           // Generate Chart.js-based charts:
@@ -937,7 +937,7 @@ window.app = window.app || {};
       url = `/ajax/trees/set/${app.tree_version_set_id}/results/keymetrics${window.location.search}`
     }
 
-    $.post(url, {filterSet: _.get(viamo, '$store.state.publicApp.filterSet', [])})
+    jQ.post(url, {filterSet: _.get(viamo, '$store.state.publicApp.filterSet', [])})
       .done((keymetrics) => {
         if (keymetrics) {
           app.blockResultsLoaderV2.loadDonutChart(
@@ -945,7 +945,7 @@ window.app = window.app || {};
             keymetrics.finishedDeliveryLogCount,
             keymetrics.deliveryLogCount,
           )
-          $('#print-connected-values')
+          jQ('#print-connected-values')
             .html(`${keymetrics.finishedDeliveryLogCount} Connected of ${keymetrics.deliveryLogCount} Calls`)
 
           app.blockResultsLoaderV2.loadDonutChart(
@@ -953,7 +953,7 @@ window.app = window.app || {};
             keymetrics.completedDeliveryLogCount,
             keymetrics.deliveryLogCount,
           )
-          $('#print-completed-values')
+          jQ('#print-completed-values')
             .html(`${keymetrics.completedDeliveryLogCount} Completed of ${keymetrics.deliveryLogCount} Calls`)
 
           app.blockResultsLoaderV2.loadDonutChart(
@@ -961,7 +961,7 @@ window.app = window.app || {};
             keymetrics.uniqueSubscriberCount,
             keymetrics.deliveryLogCount,
           )
-          $('#print-unique-value')
+          jQ('#print-unique-value')
             .html(`${keymetrics.uniqueSubscriberCount} Unique Subscribers`)
 
           app.blockResultsLoaderV2.loadDonutChart(
@@ -969,21 +969,21 @@ window.app = window.app || {};
             keymetrics.firstTimeSubscriberCount,
             keymetrics.uniqueSubscriberCount,
           )
-          $('#print-firsttime-value')
+          jQ('#print-firsttime-value')
             .html(`${keymetrics.firstTimeSubscriberCount} First Time Subscribers`)
 
           app.blockResultsLoaderV2.loadDonutChart('answered', keymetrics.completedQuestionCount, 0)
-          $('#print-answered-value')
+          jQ('#print-answered-value')
             .html(`${keymetrics.completedQuestionCount} Question Responses`)
 
-          if ($('#tree-results-keymetrics-durations').length > 0) {
+          if (jQ('#tree-results-keymetrics-durations').length > 0) {
             app.blockResultsLoaderV2.loadAvgCallDurations(keymetrics)
           }
         }
       })
       .fail((response) => {
         console.error(response)
-        $('.doughnut-charts-row')
+        jQ('.doughnut-charts-row')
           .html(`<h4 class="text-danger text-center">${JSON.parse(response.responseText)}</h4>`)
       })
   }
@@ -1018,14 +1018,14 @@ window.app = window.app || {};
       ],
     }
 
-    $(`#tree-results-loading-indicator-doughnut-${keymetricName}`)
+    jQ(`#tree-results-loading-indicator-doughnut-${keymetricName}`)
       .hide()
 
     app.chartJsHelper.updateTreeDoughnutChart(`v-chart-tree-doughnut-${keymetricName}`, chartDataSets)
 
     // Set Chart's dynamic label as visible and set its span html with the value
     if (chartTotal >= 0) {
-      $(`#tree-doughnut-total-${keymetricName}`)
+      jQ(`#tree-doughnut-total-${keymetricName}`)
         .html(formatLargeNumber(chartTotal))
         .parent()
         .removeClass('hidden')
@@ -1035,17 +1035,17 @@ window.app = window.app || {};
   app.blockResultsLoaderV2.loadAvgCallDurations = function (durations) {
     if (durations) {
       // TODO what iv durationAvg or completedDurationAvg = 0 or don't exist?
-      $('#tree-results-duration-all')
+      jQ('#tree-results-duration-all')
         .html(`${(durations.durationAvg / 60).toPrecision(2)} minutes`)
-      $('#tree-results-duration-completed')
+      jQ('#tree-results-duration-completed')
         .html(`${(durations.completedDurationAvg / 60).toPrecision(2)} minutes`)
-      $('#tree-results-keymetrics-duration')
+      jQ('#tree-results-keymetrics-duration')
         .show()
     }
 
-    $('#tree-results-loading-indicator-durations')
+    jQ('#tree-results-loading-indicator-durations')
       .hide()
-    $('.tree-results-duration-item')
+    jQ('.tree-results-duration-item')
       .css('visibility', 'visible')
   }
 
@@ -1136,14 +1136,14 @@ window.app = window.app || {};
       ],
     })
 
-    app.blockResultsLoaderV2.assignButtons($('#tree-summary-container'))
+    app.blockResultsLoaderV2.assignButtons(jQ('#tree-summary-container'))
   }
 
   app.blockResultsLoaderV2.assignButtons = function (parentElement) {
-    $(parentElement)
+    jQ(parentElement)
       .find('.tree-interactions-barcharts-toggle-button')
       .on('click', (e) => {
-        const $buttonClicked = $(e.currentTarget)
+        const $buttonClicked = jQ(e.currentTarget)
         const barchartTarget = $buttonClicked.attr('data-section-option')
 
         if ($buttonClicked.hasClass('active')) {
@@ -1155,24 +1155,24 @@ window.app = window.app || {};
         $buttonClicked.addClass('active')
 
         // Hide and show the relevant Bar Chart
-        $('canvas[id^=\'v-chart-tree-blocks-\']')
+        jQ('canvas[id^=\'v-chart-tree-blocks-\']')
           .hide()
-        $(`#v-chart-tree-blocks-${barchartTarget}`)
+        jQ(`#v-chart-tree-blocks-${barchartTarget}`)
           .show()
 
-        $('#order-by-active-label-print')
+        jQ('#order-by-active-label-print')
           .html(`Order By: ${$buttonClicked.attr('aria-label')}`)
 
         // Render any charts that haven't been rendered yet. Checks if data-generated==0 attribute.
         app.chartJsHelper.createCharts()
-        $('#v-chart-tree-blocks-listing')
+        jQ('#v-chart-tree-blocks-listing')
           .removeClass('hidden')
       })
 
-    $(parentElement)
+    jQ(parentElement)
       .find('input[name="barchart-dataset-toggle"]')
       .on('click', (e) => {
-        const barchartDatasetTarget = $(e.currentTarget)
+        const barchartDatasetTarget = jQ(e.currentTarget)
           .attr('value')
 
         // Note that the barchart-dataset-toggle Buttons are not specific to one Chart
@@ -1185,10 +1185,10 @@ window.app = window.app || {};
         const isCompletedSelected = barchartDatasetTarget == 'completed'
 
         if (isCompletedSelected) {
-          $('#tree-summary-barchart-title')
+          jQ('#tree-summary-barchart-title')
             .html('Completed Interactions per Block')
         } else {
-          $('#tree-summary-barchart-title')
+          jQ('#tree-summary-barchart-title')
             .html('Entered Interactions per Block')
         }
 
@@ -1200,37 +1200,37 @@ window.app = window.app || {};
         listingChart.update()
         popularityChart.update()
       })
-    $(parentElement)
+    jQ(parentElement)
       .find('.result-view-section-button')
       .on('click', (e) => {
-        const tabTarget = $(e.currentTarget)
+        const tabTarget = jQ(e.currentTarget)
           .attr('data-section-option')
-        const tabLabel = $(e.currentTarget)
+        const tabLabel = jQ(e.currentTarget)
           .text()
 
-        $(e.currentTarget)
+        jQ(e.currentTarget)
           .closest('.result-view-section-control-container')
           .find('.sub-report-type-title')
           .html(tabLabel == '╳'
             ? 'Timeline: Total Interactions'
             : `Timeline: ${tabLabel}`)
 
-        if ($(e.currentTarget)
+        if (jQ(e.currentTarget)
           .hasClass('active')) {
           console.log(`Already on the ${tabLabel} section`)
           return
         }
-        $(e.currentTarget)
+        jQ(e.currentTarget)
           .siblings()
           .removeClass('active')
-        $(e.currentTarget)
+        jQ(e.currentTarget)
           .addClass('active')
 
         // Hide and show the relevant section
-        $(parentElement)
+        jQ(parentElement)
           .find('.tree-results-item-tab-section')
           .hide()
-        $(parentElement)
+        jQ(parentElement)
           .find(`.tree-results-item-tab-section[data-section-id=${tabTarget}]`)
           .show()
 
@@ -1238,25 +1238,25 @@ window.app = window.app || {};
         app.chartJsHelper.createCharts()
       })
 
-    $(parentElement)
+    jQ(parentElement)
       .find('.result-normalize-cb')
       .on('click', (e) => {
-        const chartTarget = $(e.currentTarget)
+        const chartTarget = jQ(e.currentTarget)
           .attr('data-chart-type')
         let doNormalize = 0
         let targetElement
 
-        if ($(e.currentTarget)
+        if (jQ(e.currentTarget)
           .is(':checked')) {
           doNormalize = 1
         }
 
         // Hide and show the relevant section
-        targetElement = $(parentElement)
+        targetElement = jQ(parentElement)
           .find(`canvas[data-chart-type=${chartTarget}]`)
 
         // Set normalize to the new value, and set is-generated to 0, to queue up a re-rendering of the chart:
-        $(targetElement)
+        jQ(targetElement)
           .attr('data-normalize', doNormalize)
           .attr('data-generated', 0)
 
@@ -1267,88 +1267,88 @@ window.app = window.app || {};
 
   app.combinedVersions = {}
   app.combinedVersions.assignButtons = function () {
-    $('.tree-results-versions-select-button')
+    jQ('.tree-results-versions-select-button')
       .on('click', (e) => {
         // Make sure the element lines up underneath the "Versions" button
         // This is a bit awkward, since we're right aligned and not in
         // a position:absolute setting, so we'll actually add in the
         // width of the (variable) daterangepicker to a fixed value:
-        const rightPosition = _.parseInt($('#reportrange')
-          .width() + $('.tree-results-gear-menu')
-          .width() - $('.tree-results-versions-select-button')
+        const rightPosition = _.parseInt(jQ('#reportrange')
+          .width() + jQ('.tree-results-gear-menu')
+          .width() - jQ('.tree-results-versions-select-button')
           .width() / 2) - 4
-        $('.tree-results-versions-selector')
+        jQ('.tree-results-versions-selector')
           .css({right: rightPosition})
 
-        $('.tree-results-versions-selector')
+        jQ('.tree-results-versions-selector')
           .toggle()
 
         // Prevent clicks on the body element that would re-hide it.
         e.stopPropagation()
       })
 
-    $('.tree-results-versions-selector')
+    jQ('.tree-results-versions-selector')
       .on('click', (e) => {
         // Prevent clicks on the body element that would re-hide it.
         // This also protects clicks on the other elements within the dropdown.
         e.stopPropagation()
       })
 
-    $('.tree-results-versions-select-all-link')
+    jQ('.tree-results-versions-select-all-link')
       .on('click', (e) => {
-        // $('.tree-results-versions-selector').toggle();
-        $('.tree-results-versions-selector input[type=checkbox]')
+        // jQ('.tree-results-versions-selector').toggle();
+        jQ('.tree-results-versions-selector input[type=checkbox]')
           .prop('checked', true)
           .trigger('change')
       })
-    $('.tree-results-versions-select-none-link')
+    jQ('.tree-results-versions-select-none-link')
       .on('click', (e) => {
-        // $('.tree-results-versions-selector').toggle();
-        $('.tree-results-versions-selector input[type=checkbox]')
+        // jQ('.tree-results-versions-selector').toggle();
+        jQ('.tree-results-versions-selector input[type=checkbox]')
           .prop('checked', false)
           .trigger('change')
       })
 
-    $('.tree-results-versions-selector input[type=checkbox]')
+    jQ('.tree-results-versions-selector input[type=checkbox]')
       .on('change', (e) => {
-        $('.tree-results-versions-apply-button')
+        jQ('.tree-results-versions-apply-button')
           .prop('disabled', false)
       })
 
-    $('.tree-results-versions-apply-button')
+    jQ('.tree-results-versions-apply-button')
       .on('click', (e) => {
         // Delete any existing version entries in the filter form, before adding the selected ones:
-        $('#filter-form input[name^=versions]')
+        jQ('#filter-form input[name^=versions]')
           .remove()
 
         // With thanks to
         // http://stackoverflow.com/questions/2530635/jquery-add-additional-parameters-on-submit-not-ajax#comment22923873_2531379
-        $('.tree-results-versions-selector input[type=checkbox]:checked')
+        jQ('.tree-results-versions-selector input[type=checkbox]:checked')
           .each(function () {
-            // return $(this).val()
-            const input = $('<input>', {
+            // return jQ(this).val()
+            const input = jQ('<input>', {
               type: 'hidden',
               name: 'versions[]',
-              value: $(this)
+              value: jQ(this)
                 .val(),
             })
-            $('#filter-form')
-              .append($(input))
+            jQ('#filter-form')
+              .append(jQ(input))
           })
 
-        $('#filter-form')
+        jQ('#filter-form')
           .submit()
       })
 
     // If the selector is open, hide it by clicking on the open space,
     // just like for dropdown menus.
-    $('body')
+    jQ('body')
       .on('click', (e) => {
-        $('.tree-results-versions-selector')
+        jQ('.tree-results-versions-selector')
           .hide()
       })
 
-    $('.tree-results-versions-selector')
+    jQ('.tree-results-versions-selector')
       .hide()
   }
 
