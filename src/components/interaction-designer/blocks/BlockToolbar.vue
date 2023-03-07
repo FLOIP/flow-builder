@@ -82,6 +82,7 @@ import {namespace} from 'vuex-class'
 const builderVuexNamespace = namespace('builder')
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
+const undoRedoVuexNamespace = namespace('undoRedo')
 
 @Component({})
 export class BlockToolbar extends mixins(Lang) {
@@ -97,6 +98,8 @@ export class BlockToolbar extends mixins(Lang) {
     this.block_deselect({blockId: this.block.uuid})
     this.flow_removeBlock({blockId: this.block.uuid})
     this.isDeleting = false
+    const snapshot = JSON.parse(JSON.stringify(this.$store.state))
+    this.takeSnapshot(snapshot)
     this.$emit('after-delete')
   }
 
@@ -106,6 +109,10 @@ export class BlockToolbar extends mixins(Lang) {
         name: 'block-selected-details',
         params: {blockId: duplicatedBlock.uuid},
       })
+
+      // snapshot when promise is successful
+      const snapshot = JSON.parse(JSON.stringify(this.$store.state))
+      this.takeSnapshot(snapshot)
     })
     this.$emit('after-duplicate')
   }
@@ -116,6 +123,11 @@ export class BlockToolbar extends mixins(Lang) {
   @flowVuexNamespace.Action block_deselect!: ({blockId}: {blockId: IBlock['uuid']}) => void
   @flowVuexNamespace.Action flow_removeBlock!: ({blockId}: {blockId: IBlock['uuid']}) => void
   @flowVuexNamespace.Action flow_duplicateBlock!: ({blockId}: {blockId: IBlock['uuid']}) => Promise<IBlock>
+
+  // Undo/Redo feature
+  @undoRedoVuexNamespace.Mutation takeSnapshot!: (payload) => void
+  @undoRedoVuexNamespace.Action undoAndUpdateState!: () => void
+  @undoRedoVuexNamespace.Action redoAndUpdateState!: () => void
 }
 export default BlockToolbar
 </script>
