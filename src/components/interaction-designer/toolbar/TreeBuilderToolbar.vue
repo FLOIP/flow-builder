@@ -364,11 +364,6 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   isExportVisible = false
   height = 102
 
-  created() {
-    const initialState = JSON.parse(JSON.stringify(this.$store.state));
-    this.reset(initialState)
-  }
-
   async mounted(): Promise<void> {
     const routeMeta = this.$route.meta ? this.$route.meta : {}
     this.onMetaChanged(routeMeta)
@@ -394,6 +389,10 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     } else {
       console.debug('Builder Toolbar', 'Unable to find the edit flow modal on mount - deep linking may not work')
     }
+
+    // snapshot initial state for Undo/redo feature
+    const snapshot = JSON.parse(JSON.stringify(this.$store.state))
+    this.resetSnapshot(snapshot)
   }
 
   @Watch('$route.meta', {immediate: true, deep: true})
@@ -516,9 +515,8 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       name: 'block-selected-details',
       params: {blockId},
     })
-
     const snapshot = JSON.parse(JSON.stringify(this.$store.state))
-    this.add(snapshot)
+    this.takeSnapshot(snapshot)
   }
 
   async handlePersistFlow(route: RawLocation): Promise<void> {
@@ -633,16 +631,11 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   }
 
   handleUndo() {
-    console.debug('test rs', 'before calling UNDO', JSON.stringify(this.$store.state))
-    // this.undo()
     this.undoAndUpdateState()
-    console.debug('test rs', 'after calling UNDO', JSON.stringify(this.$store.state))
   }
 
   handleRedo() {
-    console.debug('test rs', 'before calling REDO', JSON.stringify(this.$store.state))
     this.redoAndUpdateState()
-    console.debug('test rs', 'after calling REDO', JSON.stringify(this.$store.state))
   }
 
   // ########### VUEX ###############
@@ -704,16 +697,11 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
 
   @validationVuexNamespace.Action remove_block_validation!: ({blockId}: { blockId?: IBlock['uuid']}) => void
 
-  @undoRedoVuexNamespace.Mutation reset!: (payload) => void
-  @undoRedoVuexNamespace.Mutation undo!: () => void
-  @undoRedoVuexNamespace.Mutation redo!: () => void
-  @undoRedoVuexNamespace.Mutation add!: (payload) => void
+  // Undo/Redo feature
+  @undoRedoVuexNamespace.Mutation resetSnapshot!: (payload) => void
+  @undoRedoVuexNamespace.Mutation takeSnapshot!: (payload) => void
   @undoRedoVuexNamespace.Action undoAndUpdateState!: () => void
   @undoRedoVuexNamespace.Action redoAndUpdateState!: () => void
-  // @Mutation reset!: (payload) => void
-  // @Mutation undo!: () => void
-  // @Mutation redo!: () => void
-  // @Mutation add!: (payload) => void
 }
 
 export default TreeBuilderToolbar
