@@ -314,6 +314,10 @@
             </li>
           </ul>
         </div>
+        <div class="undo_redo">
+          <button @click.stop="handleUndo">Undo</button>
+          <button @click.stop="handleRedo">Redo</button>
+        </div>
       </div>
     </div>
     <div v-if="isBuilderCanvasEnabled" class="tree-builder-toolbar-alerts w-100">
@@ -349,6 +353,7 @@ const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 const clipboardVuexNamespace = namespace('clipboard')
 const validationVuexNamespace = namespace('validation')
+const undoRedoVuexNamespace = namespace('undoRedo')
 
 @Component({
   components: {
@@ -358,6 +363,11 @@ const validationVuexNamespace = namespace('validation')
 export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   isExportVisible = false
   height = 102
+
+  created() {
+    const initialState = JSON.parse(JSON.stringify(this.$store.state));
+    this.reset(initialState)
+  }
 
   async mounted(): Promise<void> {
     const routeMeta = this.$route.meta ? this.$route.meta : {}
@@ -506,6 +516,9 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       name: 'block-selected-details',
       params: {blockId},
     })
+
+    const snapshot = JSON.parse(JSON.stringify(this.$store.state))
+    this.add(snapshot)
   }
 
   async handlePersistFlow(route: RawLocation): Promise<void> {
@@ -619,6 +632,19 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     window.scrollTo(0, 0)
   }
 
+  handleUndo() {
+    console.debug('test rs', 'before calling UNDO', JSON.stringify(this.$store.state))
+    // this.undo()
+    this.undoAndUpdateState()
+    console.debug('test rs', 'after calling UNDO', JSON.stringify(this.$store.state))
+  }
+
+  handleRedo() {
+    console.debug('test rs', 'before calling REDO', JSON.stringify(this.$store.state))
+    this.redoAndUpdateState()
+    console.debug('test rs', 'after calling REDO', JSON.stringify(this.$store.state))
+  }
+
   // ########### VUEX ###############
   @State(({trees: {tree}}) => tree) tree!: any
   @State(({trees: {ui}}) => ui) ui!: any
@@ -677,6 +703,17 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @clipboardVuexNamespace.Action setSimulatorActive!: (value: boolean) => void
 
   @validationVuexNamespace.Action remove_block_validation!: ({blockId}: { blockId?: IBlock['uuid']}) => void
+
+  @undoRedoVuexNamespace.Mutation reset!: (payload) => void
+  @undoRedoVuexNamespace.Mutation undo!: () => void
+  @undoRedoVuexNamespace.Mutation redo!: () => void
+  @undoRedoVuexNamespace.Mutation add!: (payload) => void
+  @undoRedoVuexNamespace.Action undoAndUpdateState!: () => void
+  @undoRedoVuexNamespace.Action redoAndUpdateState!: () => void
+  // @Mutation reset!: (payload) => void
+  // @Mutation undo!: () => void
+  // @Mutation redo!: () => void
+  // @Mutation add!: (payload) => void
 }
 
 export default TreeBuilderToolbar
