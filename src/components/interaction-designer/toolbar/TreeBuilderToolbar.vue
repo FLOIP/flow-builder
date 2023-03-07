@@ -315,8 +315,8 @@
           </ul>
         </div>
         <div class="undo_redo">
-          <button @click.stop="handleUndo">Undo</button>
-          <button @click.stop="handleRedo">Redo</button>
+          <button class="btn btn-sm btn-outline-primary mr-2 mt-1" @click.stop="handleUndo">Undo</button>
+          <button class="btn btn-sm  btn-outline-primary mt-1" @click.stop="handleRedo">Redo</button>
         </div>
       </div>
     </div>
