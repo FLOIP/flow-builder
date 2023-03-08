@@ -8,9 +8,9 @@
       <dt :key="`${i}-dt`">
         {{ definition.title }}
       </dt>
-      <dd
-        :key="`${i}-dd`"
-        v-html="definition.description" />
+      <dd :key="`${i}-dd`">
+        <markdown-view :markdown="definition.description" />
+      </dd>
     </template>
   </dl>
 </template>
@@ -19,10 +19,13 @@
 import {defineComponent} from 'vue'
 import {lang} from '@/lib/filters/lang'
 import {IBlockClass, IExplanatoryText} from '@/lib/types'
-import {markdownToHtml} from '@/lib/markdown'
+import MarkdownView from '@/components/common/MarkdownView.vue'
 
 export const BlockOutputBranchingExplanations = defineComponent({
   name: 'BlockOutputBranchingExplanations',
+  components: {
+    MarkdownView,
+  },
   props: {
     blockType: {
       type: String,
@@ -56,7 +59,7 @@ export const BlockOutputBranchingExplanations = defineComponent({
         ) {
           definitions.push({
             title: lang.trans(text.title),
-            description: markdownToHtml(lang.trans(text.description) as string),
+            description: lang.trans(text.description),
           })
         }
       }
