@@ -13,12 +13,15 @@ import 'scss/main.scss'
 
 import registerCustomComponents from '@/common-imports'
 
+import Toast from 'vue-toastification'
 import router from './router'
 import App from './App.vue'
+import 'vue-toastification/dist/index.css'
 
 registerCustomComponents()
 
 Vue.use(Vuex)
+Vue.use(Toast)
 
 Vue.config.productionTip = false
 
