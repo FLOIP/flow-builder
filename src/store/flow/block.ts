@@ -339,38 +339,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     commit('block_setExitSemanticLabel', {blockId, exitId, value: semantic_label})
   },
 
-  async block_swapBlockExitDestinationBlockIds(
-    {commit, state},
-    {first, second}: { first: IDeepBlockExitIdWithinFlow, second: IDeepBlockExitIdWithinFlow },
-  ) {
-    if (isNil(first) || isNil(second)) {
-      console.warn(`Unable to swap destinationBlockId on null: ${JSON.stringify({first, second})}`)
-      return
-    }
-
-    const firstBlock = findBlockOnActiveFlowWith(first.blockId, state as unknown as IContext)
-    const secondBlock = findBlockOnActiveFlowWith(second.blockId, state as unknown as IContext)
-
-    const {destination_block: firstDestinationBlockId} = findBlockExitWith(first.exitId, firstBlock)
-    const {destination_block: secondDestinationBlockId} = findBlockExitWith(second.exitId, secondBlock)
-
-    // todo: this works only when the exit we're targetting is empty
-    // todo: blah --- a repaint from HMR redraws it correctly -- why?!
-    // todo: blah --- a repaint from HMR also draws an additional exit :( Is there a cache break on connection key we need to leverage here?
-
-    commit('block_setBlockExitDestinationBlockId', {
-      blockId: second.blockId,
-      exitId: second.exitId,
-      destinationBlockId: firstDestinationBlockId,
-    })
-
-    commit('block_setBlockExitDestinationBlockId', {
-      blockId: first.blockId,
-      exitId: first.exitId,
-      destinationBlockId: secondDestinationBlockId,
-    })
-  },
-
   /**
    * Update exits after the block creation.
    * Standard exit where the end user can make an error. We have 02 exits:
