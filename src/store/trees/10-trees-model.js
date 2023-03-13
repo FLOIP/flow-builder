@@ -825,7 +825,7 @@ window.app = window.app || {};
           if ((new Set(_.values(choiceKeyPresses))).size !== (_.values(choiceKeyPresses).length)){
             var uniqN = [];
             var duplicates = [];
-            $.each(choiceKeyPresses, function(i, el){
+            jQ.each(choiceKeyPresses, function(i, el){
               if (uniqN.lastIndexOf(el) === -1) {
                 uniqN.push(el);
               }else{
@@ -889,11 +889,11 @@ window.app = window.app || {};
 
     updateFloipAlert() {
       if (app.tree.floipSyncedAt) {
-        $('.push-flow-package-alert-message')
+        jQ('.push-flow-package-alert-message')
           .html(`<div class="alert alert-success">${Lang.trans('trees.floip-sync-success')}</div>`)
-      } else if ($('.floip-push-url-input')
+      } else if (jQ('.floip-push-url-input')
         .val()) {
-        $('.push-flow-package-alert-message')
+        jQ('.push-flow-package-alert-message')
           .html(`<div class="alert alert-warning">${Lang.trans('trees.floip-sync-warning')}</div>`)
       }
     },
