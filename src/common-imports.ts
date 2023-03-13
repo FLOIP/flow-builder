@@ -8,7 +8,7 @@ import * as blockTypesComponents from '@/components/interaction-designer/block-t
 import * as flowEditorsComponents from '@/components/interaction-designer/flow-editors'
 import * as flowImportComponents from '@/components/interaction-designer/flow-editors/import'
 import * as toolbarComponents from '@/components/interaction-designer/toolbar'
-import * as blocksComponents from '@/components/interaction-designer/blocks'
+import * as blockComponents from '@/components/interaction-designer/block'
 import * as blockResourceEditorsComponents from '@/components/interaction-designer/resource-editors'
 import * as resourceViewerComponents from '@/components/interaction-designer/resource-viewer'
 
@@ -25,7 +25,7 @@ export default function registerCustomComponents(extra = {}): Record<string, any
     ...flowEditorsComponents,
     ...flowImportComponents,
     ...toolbarComponents,
-    ...blocksComponents,
+    ...blockComponents,
     ...blockResourceEditorsComponents,
     ...resourceViewerComponents,
     ...extra,

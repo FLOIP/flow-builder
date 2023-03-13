@@ -25,13 +25,14 @@ export function bootstrapLegacyGlobalDependencies(appConfig = {}, builderConfig 
   moment.locale(Lang.getLocale())
 
   const jQuery = ImportedJquery
-  const $ = ImportedJquery
+  const jQ = ImportedJquery
 
   // export as globals (overwrites pre-existing)
   const exported = {
     Lang,
     moment,
-    $,
+    // aliasing $ to jQ to avoid jQuery conflict in consumer side
+    jQ,
     jQuery,
 
     __APP__,
@@ -44,7 +45,7 @@ export function bootstrapLegacyGlobalDependencies(appConfig = {}, builderConfig 
   Object.assign(global, exported)
 
   require('bootstrap-datetimepicker/src/js/bootstrap-datetimepicker')
-  $.fn.datetimepicker.defaults.locale = Lang.getLocale()
+  jQ.fn.datetimepicker.defaults.locale = Lang.getLocale()
 
   return exported
 }

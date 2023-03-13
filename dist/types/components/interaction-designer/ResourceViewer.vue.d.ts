@@ -12,12 +12,12 @@ declare const _default: {
     };
     computed: {
         id(): any;
-        activeFlow: import("vuex").Computed;
+        activeFlow: import("vuex/types/helpers").Computed;
     };
     mounted(): void;
     methods: {
         debounce_persistFlow: (() => any) & import("lodash").Cancelable;
-        persistFlowAndHandleUiState: import("vuex").ActionMethod;
+        persistFlowAndHandleUiState: import("vuex/types/helpers").ActionMethod;
     };
 };
 export default _default;

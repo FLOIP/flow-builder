@@ -6,16 +6,12 @@ export declare class PlainDraggable extends PlainDraggable_base {
     startY?: number;
     isEditable: boolean;
     dragHandleId?: string;
-    contentType: string;
     draggable: any;
     onToggleEditable(value: boolean): void;
     mounted(): void;
     destroyed(): void;
     handleInitialized(): void;
     handleDragged(position: IPositionLeftTop): void;
-    setIsConnectionCreationInProgress: ({ value }: {
-        value: boolean;
-    }) => void;
     handleDragStarted(position: IPositionLeftTop): void;
     handleDragEnded(position: IPositionLeftTop): void;
 }

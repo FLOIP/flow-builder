@@ -3561,6 +3561,7 @@ __metadata:
     vue-property-decorator: ^9.1.2
     vue-router: ^3.5.4
     vue-template-compiler: ^2.7.8
+    vue-toastification: ^1.7.14
     vue-tsc: ^0.40.13
     vuex: ^3.6.2
     vuex-class: ^0.3.2
@@ -28362,6 +28363,15 @@ jgexml@latest:
   version: 1.9.1
   resolution: "vue-template-es2015-compiler@npm:1.9.1"
   checksum: ad1e85662783be3ee262c323b05d12e6a5036fca24f16dc0f7ab92736b675919cb4fa4b79b28753eac73119b709d1b36789bf60e8ae423f50c4db35de9370e8b
+  languageName: node
+  linkType: hard
+
+"vue-toastification@npm:^1.7.14":
+  version: 1.7.14
+  resolution: "vue-toastification@npm:1.7.14"
+  peerDependencies:
+    vue: ^2.0.0
+  checksum: 1a95ba3d1bb4a387ab938e2f61568950f9a3bb5a8e4009d856bd65d1da33827b5dc2bb0c181bc269391ca6389d69cc1541d809eca1d28613a0b0b440c6d1082b
   languageName: node
   linkType: hard
 

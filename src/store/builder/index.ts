@@ -2,7 +2,7 @@ import {filter, flatMap, isEqual, keyBy, map, mapValues, union, reject} from 'lo
 import Vue from 'vue'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
-import {IBlock, IBlockExit, IBlockUIMetadataCanvasCoordinates, IContext, IFloipUIMetadata, ValidationException} from '@floip/flow-runner'
+import {IBlock, IBlockExit, IBlockUIMetadataCanvasCoordinates, IContext, ValidationException} from '@floip/flow-runner'
 import {IDeepBlockExitIdWithinFlow} from '@/store/flow/block'
 import {routeFrom} from '@/lib/mixins/Routes'
 
@@ -11,20 +11,9 @@ export const SAVING_ANIMATION_DURATION = 1000
 
 // todo migrate these to flight-monitor
 export enum OperationKind {
-  CONNECTION_SOURCE_RELOCATE = 'CONNECTION_SOURCE_RELOCATE',
   CONNECTION_CREATE = 'CONNECTION_CREATE',
   // todo: we can now skip updating vuex on-the-fly and rather await a drop
   BLOCK_RELOCATE = 'BLOCK_RELOCATE',
-}
-
-export interface IConnectionSourceRelocateOperation {
-  kind: OperationKind.CONNECTION_SOURCE_RELOCATE,
-  data: null | {
-    from: IDeepBlockExitIdWithinFlow,
-    // todo: rename to startingPosition
-    position: IPosition,
-    to: IDeepBlockExitIdWithinFlow | null,
-  },
 }
 
 export interface IConnectionCreateOperation {
@@ -43,7 +32,7 @@ export interface IConnectionContext {
   exitId: IBlockExit['uuid'],
 }
 
-export type SupportedOperation = IConnectionSourceRelocateOperation | IConnectionCreateOperation
+export type SupportedOperation = IConnectionCreateOperation
 
 export interface IPosition {
   x: number,
@@ -57,10 +46,10 @@ export interface IBuilderState {
   hasFlowChanges: boolean,
   activeConnectionsContext: IConnectionContext[],
   operations: {
-    [OperationKind.CONNECTION_SOURCE_RELOCATE]: IConnectionSourceRelocateOperation,
     [OperationKind.CONNECTION_CREATE]: IConnectionCreateOperation,
     [OperationKind.BLOCK_RELOCATE]: null,
   },
+  //this will be populated when we drag an exit
   draggableForExitsByUuid: object,
   isBlockEditorOpen: boolean,
   interactionDesignerHeaderBoundingClientRect: DOMRect,
@@ -74,10 +63,6 @@ export const stateFactory = (): IBuilderState => ({
   hasFlowChanges: false,
   activeConnectionsContext: [],
   operations: {
-    [OperationKind.CONNECTION_SOURCE_RELOCATE]: {
-      kind: OperationKind.CONNECTION_SOURCE_RELOCATE,
-      data: null,
-    },
     [OperationKind.CONNECTION_CREATE]: {
       kind: OperationKind.CONNECTION_CREATE,
       data: null,
@@ -188,72 +173,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
   // @note: multiple connections can lead to same node, so it doesn't make sense to do a swap here; we'll be "appending"
   // when moving connection target: setExitDestination(exitId, destinationId)
 
-  /// /////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // [OperationKind.CONNECTION_SOURCE_RELOCATE] //////////////////////////////////////////////////////////////
-  /// /////////////////////////////////////////////////////////////////////////////////////////////////////////
   // todo: do operations warrant their own store? Maybe a generic store that handles a common behaviour
-
-  initializeConnectionSourceRelocateWith({commit}, {
-    block: {uuid: blockId},
-    exit: {uuid: exitId},
-    position,
-  }) {
-    // this would be a flight-monitor create(key)
-    const operation: IConnectionSourceRelocateOperation = {
-      kind: OperationKind.CONNECTION_SOURCE_RELOCATE,
-      data: {from: {blockId, exitId}, position, to: {blockId, exitId}},
-    }
-    commit('setOperation', {operation})
-  },
-
-  setConnectionSourceRelocateValue({commit, state}, {block: {uuid: blockId}, exit: {uuid: exitId}}) {
-    const {data} = state.operations[OperationKind.CONNECTION_SOURCE_RELOCATE]
-    if (!data) {
-      throw new ValidationException(`Unable to modify uninitialized operation: ${JSON.stringify(data)}`)
-    }
-
-    const {from, position} = data
-    const operation: IConnectionSourceRelocateOperation = {
-      kind: OperationKind.CONNECTION_SOURCE_RELOCATE,
-      data: {from, position, to: {blockId, exitId}},
-    }
-    commit('setOperation', {operation})
-  },
-
-  setConnectionSourceRelocateValueToNullFrom({commit, state}, {block: {uuid: blockId}, exit: {uuid: exitId}}) {
-    const {data} = state.operations[OperationKind.CONNECTION_SOURCE_RELOCATE]
-    if (!data) {
-      throw new ValidationException(`Unable to modify uninitialized operation: ${JSON.stringify(data)}`)
-    }
-
-    const {from, to, position} = data
-    if (!isEqual(to, {blockId, exitId})) {
-      throw new ValidationException('Unable to nullify exit relocation from different exit.')
-    }
-
-    const operation: IConnectionSourceRelocateOperation = {
-      kind: OperationKind.CONNECTION_SOURCE_RELOCATE,
-      data: {from, position, to: null},
-    }
-    commit('setOperation', {operation})
-  },
-
-  applyConnectionSourceRelocate({dispatch, commit, state: {operations}}) {
-    const {data} = operations[OperationKind.CONNECTION_SOURCE_RELOCATE]
-    if (!data) {
-      throw new ValidationException(`Unable to complete uninitialized operation: ${JSON.stringify(data)}`)
-    }
-
-    const {from: first, to: second} = data
-    dispatch('flow/block_swapBlockExitDestinationBlockIds', {first, second}, {root: true})
-
-    const operation: IConnectionSourceRelocateOperation = {
-      kind: OperationKind.CONNECTION_SOURCE_RELOCATE,
-      data: null,
-    }
-    commit('setOperation', {operation})
-  },
-
   /// ////////////////////////////////////////////////////////////////////////////////////////////////
   // [OperationKind.CONNECTION_CREATE] //////////////////////////////////////////////////////////////
   /// ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -427,7 +347,7 @@ export function computeBlockCanvasCoordinates(block?: IBlock | null): IBlockUIMe
   }
 }
 
-export function getViewportCenter() {
+export function getViewportCenter(): IPosition {
   const builderCanvasElement = document.getElementsByClassName('builder-canvas')[0]
   const sideBarElement = document.getElementsByClassName('tree-sidebar-container')[0]
   const rect = builderCanvasElement.getBoundingClientRect()

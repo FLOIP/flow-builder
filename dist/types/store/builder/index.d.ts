@@ -5,17 +5,8 @@ import { IBlock, IBlockExit, IBlockUIMetadataCanvasCoordinates } from '@floip/fl
 import { IDeepBlockExitIdWithinFlow } from '../../store/flow/block';
 export declare const SAVING_ANIMATION_DURATION = 1000;
 export declare enum OperationKind {
-    CONNECTION_SOURCE_RELOCATE = "CONNECTION_SOURCE_RELOCATE",
     CONNECTION_CREATE = "CONNECTION_CREATE",
     BLOCK_RELOCATE = "BLOCK_RELOCATE"
-}
-export interface IConnectionSourceRelocateOperation {
-    kind: OperationKind.CONNECTION_SOURCE_RELOCATE;
-    data: null | {
-        from: IDeepBlockExitIdWithinFlow;
-        position: IPosition;
-        to: IDeepBlockExitIdWithinFlow | null;
-    };
 }
 export interface IConnectionCreateOperation {
     kind: OperationKind.CONNECTION_CREATE;
@@ -30,7 +21,7 @@ export interface IConnectionContext {
     targetId: IBlock['uuid'];
     exitId: IBlockExit['uuid'];
 }
-export declare type SupportedOperation = IConnectionSourceRelocateOperation | IConnectionCreateOperation;
+export declare type SupportedOperation = IConnectionCreateOperation;
 export interface IPosition {
     x: number;
     y: number;
@@ -42,7 +33,6 @@ export interface IBuilderState {
     hasFlowChanges: boolean;
     activeConnectionsContext: IConnectionContext[];
     operations: {
-        [OperationKind.CONNECTION_SOURCE_RELOCATE]: IConnectionSourceRelocateOperation;
         [OperationKind.CONNECTION_CREATE]: IConnectionCreateOperation;
         [OperationKind.BLOCK_RELOCATE]: null;
     };
@@ -61,7 +51,4 @@ export default store;
 export declare function createDefaultBlockTypeInstallerFor(blockType: IBlock['type'], storeForBlockType: Module<any, IRootState>): (builder: Vue) => true | void;
 export declare function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): ConnectionLayout;
 export declare function computeBlockCanvasCoordinates(block?: IBlock | null): IBlockUIMetadataCanvasCoordinates;
-export declare function getViewportCenter(): {
-    x: number;
-    y: number;
-};
+export declare function getViewportCenter(): IPosition;
