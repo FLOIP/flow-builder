@@ -103,7 +103,6 @@ export const mutations: MutationTree<IFlowsState> = {
     state.flows = persistedState.flows
   },
   flow_resetFlowState(state, flowState) {
-    console.debug('test rs', 'flow_resetFlowState')
     Object.assign(state, flowState)
   },
   //used to track whether we should put or post when persisting

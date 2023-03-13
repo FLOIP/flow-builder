@@ -78,9 +78,6 @@ export const stateFactory = (): IBuilderState => ({
 export type ConnectionLayout = any[]
 
 export const getters: GetterTree<IBuilderState, IRootState> = {
-  flow_resetBuilderState(state, builderState) {
-    Object.assign(state, builderState)
-  },
   activeBlock: ({activeBlockId}, {blocksById}) => (activeBlockId ? blocksById[activeBlockId] : null),
 
   blocksById: (_state, _getters, _rootState, rootGetters) => {
@@ -104,6 +101,9 @@ export const getters: GetterTree<IBuilderState, IRootState> = {
 }
 
 export const mutations: MutationTree<IBuilderState> = {
+  resetBuilderState(state, builderState) {
+    Object.assign(state, builderState)
+  },
   activateBlock(state, {blockId}: { blockId: IBlock['uuid'] | null }) {
     state.activeBlockId = blockId
 
