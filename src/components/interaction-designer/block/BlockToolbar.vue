@@ -99,7 +99,10 @@ export class BlockToolbar extends mixins(Lang) {
     this.block_deselect({blockId: this.block.uuid})
     this.flow_removeBlock({blockId: this.block.uuid})
     this.isDeleting = false
-    const snapshot = JSON.parse(JSON.stringify(this.$store.state))
+    const snapshot = JSON.parse(JSON.stringify({
+      flow: this.$store.state.flow,
+      build: this.$store.state.builder,
+    }))
     this.takeSnapshot(snapshot)
     this.$emit('after-delete')
   }
@@ -112,7 +115,10 @@ export class BlockToolbar extends mixins(Lang) {
       })
 
       // snapshot when promise is successful
-      const snapshot = JSON.parse(JSON.stringify(this.$store.state))
+      const snapshot = JSON.parse(JSON.stringify({
+        flow: this.$store.state.flow,
+        build: this.$store.state.builder,
+      }))
       this.takeSnapshot(snapshot)
     })
     this.$emit('after-duplicate')
