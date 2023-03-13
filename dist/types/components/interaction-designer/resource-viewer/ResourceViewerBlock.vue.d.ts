@@ -9,8 +9,8 @@ declare const _default: {
     computed: {
         blockLabel(): any;
         hasContent(): boolean;
-        isEditable: import("vuex").Computed;
-        block_classesConfig: import("vuex").Computed;
+        isEditable: import("vuex/types/helpers").Computed;
+        block_classesConfig: import("vuex/types/helpers").Computed;
     };
 };
 export default _default;

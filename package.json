@@ -81,6 +81,7 @@
     "vue-multiselect": "^2.1.6",
     "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.5.4",
+    "vue-toastification": "^1.7.14",
     "vuex": "^3.6.2",
     "vuex-class": "^0.3.2"
   },
