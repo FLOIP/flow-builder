@@ -391,7 +391,10 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     }
 
     // snapshot initial state for Undo/redo feature
-    const snapshot = JSON.parse(JSON.stringify(this.$store.state))
+    const snapshot = JSON.parse(JSON.stringify({
+      flow: this.$store.state.flow,
+      build: this.$store.state.builder,
+    }))
     this.resetSnapshot(snapshot)
   }
 
