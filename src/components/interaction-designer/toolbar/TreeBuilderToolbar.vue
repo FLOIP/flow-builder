@@ -146,7 +146,6 @@
 
               <button
                 v-if="isBuilderCanvasEnabled && isEditable && isFeatureTreeSaveEnabled"
-                v-b-tooltip.hover="trans('flow-builder.save-changes-to-the-flow')"
                 type="button"
                 class="btn btn-sm ml-4 save-button"
                 :class="{
