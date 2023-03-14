@@ -13,19 +13,42 @@ import 'scss/main.scss'
 
 import registerCustomComponents from '@/common-imports'
 
+import Toast from 'vue-toastification'
+import {ToastOptions} from 'vue-toastification/dist/types/src/types'
+import {POSITION} from 'vue-toastification/src/ts/constants'
 import router from './router'
 import App from './App.vue'
+import 'vue-toastification/dist/index.css'
 
 registerCustomComponents()
 
 Vue.use(Vuex)
 
+/**
+ * For more details about:
+ * - available options, see https://vue-toastification.maronato.dev/
+ * - Dismiss toasts programmatically OR update toasts' content, see https://www.npmjs.com/package/vue-toastification
+ */
+const VUE_TOAST_GENERAL_OPTIONS: ToastOptions = {
+  position: POSITION.TOP_RIGHT,
+  draggable: true,
+  draggablePercent: 0.6,
+  closeOnClick: false,
+  timeout: false,
+}
+Vue.use(Toast, VUE_TOAST_GENERAL_OPTIONS)
+
 Vue.config.productionTip = false
 
-async function main() {
+// todo CORE-155: inline 'store' after migration to Vue3
+const store = new Vuex.Store({})
+
+async function main(): Promise<void> {
   new Vue({
     router,
-    store: new Vuex.Store({}),
+    store,
+    // todo CORE-155: remove 'provide' after migration to Vue3; use the built-in useStore() instead
+    provide: {store},
     render: (h) => h(Vue.extend(App)),
   }).$mount('#app')
 }
