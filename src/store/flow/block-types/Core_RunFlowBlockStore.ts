@@ -26,7 +26,7 @@ const actions: ActionTree<IEmptyState, IRootState> = {
   async createWith({getters, dispatch}, {props}: { props: { uuid: string } & Partial<IBlock> }) {
     props.type = BLOCK_TYPE
     props.config = {
-      flow_id: undefined,
+      flow_id: '',
     }
     return baseActions.createWith({getters, dispatch} as ActionContext<IEmptyState, IRootState>, {props})
   },
