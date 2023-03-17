@@ -669,7 +669,7 @@ export declare const defaultLocalisations: {
         "error-while-attempting-to-publish-specified-tree": string;
         "error-while-downloading-template": string;
         "error-while-saving-transcriptions": string;
-        "error-while-saving-tree": string;
+        "error-while-saving-flow": string;
         "establish-connection": string;
         "example-tree": string;
         examples: string;
@@ -1247,7 +1247,7 @@ export declare const defaultLocalisations: {
         saving: string;
         "saving-and-checking-for-errors": string;
         "saving-transcriptions": string;
-        "saving-tree": string;
+        "saving-flow": string;
         "schedule-and-send-an-outgoing-call": string;
         "schedule-type": string;
         "search-audio-library": string;
@@ -1523,7 +1523,7 @@ export declare const defaultLocalisations: {
         "tree-restored": string;
         "tree-result-import-heading-validation-error": string;
         "tree-result-import-in-progress": string;
-        "tree-saved": string;
+        "flow-saved": string;
         "tree-update-conflict": string;
         "tree-used-elsewhere-by-x-at-x": string;
         "tree-versions": string;
@@ -2353,7 +2353,7 @@ export declare const defaultLocalisations: {
         "error-while-attempting-to-publish-specified-tree": string;
         "error-while-downloading-template": string;
         "error-while-saving-transcriptions": string;
-        "error-while-saving-tree": string;
+        "error-while-saving-flow": string;
         "establish-connection": string;
         "example-tree": string;
         examples: string;
@@ -2931,7 +2931,7 @@ export declare const defaultLocalisations: {
         saving: string;
         "saving-and-checking-for-errors": string;
         "saving-transcriptions": string;
-        "saving-tree": string;
+        "saving-flow": string;
         "schedule-and-send-an-outgoing-call": string;
         "schedule-type": string;
         "search-audio-library": string;
@@ -3207,7 +3207,7 @@ export declare const defaultLocalisations: {
         "tree-restored": string;
         "tree-result-import-heading-validation-error": string;
         "tree-result-import-in-progress": string;
-        "tree-saved": string;
+        "flow-saved": string;
         "tree-update-conflict": string;
         "tree-used-elsewhere-by-x-at-x": string;
         "tree-versions": string;
