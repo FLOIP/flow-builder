@@ -44,8 +44,7 @@
           :is-activated-by-connection="isAssociatedWithActiveConnectionAsTargetBlock"
           :is-block-selected="isBlockSelected"
           :is-editor-visible="shouldShowBlockEditorForCurrentBlock"
-          :is-waiting-for-connection="isWaitingForConnection"
-          @showHideHasClicked="selectBlock" />
+          :is-waiting-for-connection="isWaitingForConnection" />
 
         <block-title :block="block"/>
 
