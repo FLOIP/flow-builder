@@ -442,6 +442,7 @@ export default Block
 
   &.is-active {
     box-shadow: 0 3px 6px #CACACA;
+    border: 2px solid $danger-700;
   }
 
   &.target-block-having-active-connection {
