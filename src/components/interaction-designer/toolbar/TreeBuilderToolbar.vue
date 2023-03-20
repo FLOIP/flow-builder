@@ -144,19 +144,17 @@
                 {{ trans('flow-builder.export') }}
               </button>
 
-              <!--TODO - do disable if no changes logic-->
               <button
                 v-if="isBuilderCanvasEnabled && isEditable && isFeatureTreeSaveEnabled"
-                v-b-tooltip.hover="trans('flow-builder.save-changes-to-the-flow')"
                 type="button"
-                class="btn btn-outline-primary btn-sm ml-4 save-button"
+                class="btn btn-sm ml-4 save-button"
+                :class="{
+                  'btn-outline-primary': !hasFlowChanges,
+                  'btn-primary': hasFlowChanges
+                }"
                 :disabled="isSavingDisabled"
                 @click="handlePersistFlow()">
                 {{ saveButtonText }}
-                <font-awesome-icon
-                  v-if="isTreeSaving"
-                  :icon="['fas', 'spinner']"
-                  class="fa-btn fa-spin" />
               </button>
             </div>
           </div>
@@ -452,8 +450,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   }
 
   get isSavingDisabled(): boolean {
-    // TODO: Also disable when there are no changes; once hasFlowChanges is implemented properly
-    return this.isTreeSaving === true
+    return this.isTreeSaving === true || !this.hasFlowChanges
   }
 
   get blockClassesForContentCategory(): any {

@@ -5,6 +5,8 @@ import {IRootState} from '@/store'
 import {IBlock, IBlockExit, IBlockUIMetadataCanvasCoordinates, IContext, ValidationException} from '@floip/flow-runner'
 import {IDeepBlockExitIdWithinFlow} from '@/store/flow/block'
 import {routeFrom} from '@/lib/mixins/Routes'
+import InProgressAction from '@/components/notification/InProgressAction.vue'
+import Lang from '@/lib/filters/lang'
 
 // The "Saving" text flashes too quickly w/o actual backend interaction
 export const SAVING_ANIMATION_DURATION = 1000
@@ -254,6 +256,9 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     commit('setHasFlowChanges', Boolean(value))
   },
 
+  /**
+   * Persist flow and notify user with notifications, update needed UIs if needed
+   */
   async persistFlowAndHandleUiState({dispatch, commit, state, rootGetters, rootState}): Promise<IContext | undefined> {
     // Do not save if features not enabled or edit is not allowed
     if (rootGetters.isFeatureTreeSaveEnabled === false || state.isEditable === false) {
@@ -262,6 +267,14 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     }
 
     commit('setTreeSaving', true, {root: true})
+    const inProgress = Vue.$toast.info({
+      component: InProgressAction,
+      props: {
+        textContent: Lang.trans('flow-builder.saving-flow'),
+      },
+    }, {
+      closeButton: false,
+    })
 
     const persistFlowAndReturnNewContainer: IContext | null = await dispatch('flow/flow_persist', {
       persistRoute: routeFrom('flows.persistFlow', {}, rootState.trees.ui.routes),
@@ -275,7 +288,18 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
       keepAnimatingIfPersistWasTooFast,
     ])
 
+    if (newFlowContainer === null || newFlowContainer === undefined) {
+      // A console error was logged in the flow/flow_persist, but we need to notify users here
+      Vue.$toast.error(`${Lang.trans('flow-builder.error-while-saving-flow')}`)
+    } else {
+      Vue.$toast.success(`${Lang.trans('flow-builder.flow-saved')}`, {
+        timeout: 3000,
+        hideProgressBar: true,
+      })
+    }
+
     commit('setTreeSaving', false, {root: true})
+    Vue.$toast.dismiss(inProgress)
 
     return newFlowContainer ?? undefined
   },
