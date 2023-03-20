@@ -3471,7 +3471,7 @@ __metadata:
     "@avcs/autosuggest": ^1.7.5
     "@floip/expression-evaluator": ^2.1.0
     "@floip/expression-parser": ^1.11.3
-    "@floip/flow-runner": ^1.0.12-rc4
+    "@floip/flow-runner": "https://github.com/FLOIP/flow-runner.git#feature/CORE-84/block-content-accept-non-english-characters--solution2"
     "@flowjs/flow.js": "link:./src/lib/flow"
     "@fortawesome/fontawesome-svg-core": ^1.2.35
     "@fortawesome/free-regular-svg-icons": ^5.15.3
@@ -3569,9 +3569,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@floip/flow-runner@npm:^1.0.12-rc4":
+"@floip/flow-runner@https://github.com/FLOIP/flow-runner.git#feature/CORE-84/block-content-accept-non-english-characters--solution2":
   version: 1.0.12-rc4.17
-  resolution: "@floip/flow-runner@npm:1.0.12-rc4.17"
+  resolution: "@floip/flow-runner@https://github.com/FLOIP/flow-runner.git#commit=75b92718fce920858d440714d6be6118a5cc254e"
   dependencies:
     "@floip/expression-evaluator": ^2.1.3
     ajv: ^7.2.1
@@ -3584,7 +3584,7 @@ __metadata:
     tslib: ^2.0.1
     uuid: ^3.3.2
     yaml-import: ^2.0.0
-  checksum: d14bf600057997d070894b65da11e0e5859d84471a9fbbd04799ee3cda043c795baad08d2badceb59f096300e6ac950fd39e729b2720cf35cd19521176a44c8c
+  checksum: d23ae8ddf5cef63d01b69b6faa451de52e5292b17460e3ec2e96e0ac0be1777097c2a8c1da1b2664652b4be8d9db2c5d8e04a6e2b1a059f1ad3c66e04e0aa1c7
   languageName: node
   linkType: hard
 
