@@ -3404,7 +3404,8 @@
     "importer-currently-supports-single-flow-only": "JSON must contain exactly one flow",
     "non-supported-spec-version": "Non supported spec version",
     "unsupported-blocks-detected": "Unsupported block types detected",
-    "block-config-set_contact_property-x-property_key-type": "Contact property should not be empty"
+    "block-config-set_contact_property-x-property_key-type": "Contact property should not be empty",
+    "resource-values-x-value-minLength": "Resource should not have empty content"
   },
   "fr.flow-builder-validation": {
     "floip-format": "L'expression FlOIP devrait être valide",
@@ -3441,7 +3442,8 @@
     "importer-currently-supports-single-flow-only": "JSON doit contenir exactement un flux",
     "non-supported-spec-version": "Version des spécifications non prises en charge",
     "unsupported-blocks-detected": "Types de bloc non pris en charge détectés",
-    "block-config-set_contact_property-x-property_key-type": "La propriété de contact ne doit pas être vide"
+    "block-config-set_contact_property-x-property_key-type": "La propriété de contact ne doit pas être vide",
+    "resource-values-x-value-minLength": "La ressource ne doit pas avoir de contenu vide"
   }
 }
 
