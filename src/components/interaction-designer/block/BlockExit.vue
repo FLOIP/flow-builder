@@ -102,7 +102,9 @@ import {lang} from '@/lib/filters/lang'
 
 const store = useStore()
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Draggable = any
+
 const connectionColorAtSourceDragged = colorStates.CONNECTING
 const connectionColorForKnowDestination = colorStates.DEFAULT
 const ICON_SIZE = 10
@@ -164,7 +166,7 @@ const blocksById = computed<Record<IBlock['uuid'], IBlock>>(() =>
 const draggableForExitsByUuid = computed<Record<string, Draggable>>(() =>
   store.state.builder.draggableForExitsByUuid)
 
-function forceRender() {
+function forceRender(): void {
   componentKey.value += 1
 }
 

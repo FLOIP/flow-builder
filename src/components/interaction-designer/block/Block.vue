@@ -99,6 +99,9 @@ const builderNamespace = namespace('builder')
 type BlockAction = ({block}: { block: IBlock }) => void
 type BlockPositionAction = ({block, position}: { block: IBlock, position: IPosition }) => void
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Draggable = any
+
 const LABEL_CONTAINER_MAX_WIDTH = 650
 export const BLOCK_RESET_CONNECTIONS = 'BLOCK_RESET_CONNECTIONS'
 
@@ -148,7 +151,7 @@ export class Block extends mixins(Lang) {
   @builderNamespace.State operations!: Record<OperationKind, SupportedOperation>
   @builderNamespace.State activeConnectionsContext!: IConnectionContext[]
   @builderNamespace.State isBlockEditorOpen!: boolean
-  @builderNamespace.State draggableForExitsByUuid!: object
+  @builderNamespace.State draggableForExitsByUuid: Record<string, Draggable>
   @builderNamespace.State isConnectionCreationInProgress!: boolean
   @State(({trees: {ui}}) => ui.blockClasses) blockClasses!: BlockClassNames
   @builderNamespace.Getter isEditable!: boolean
