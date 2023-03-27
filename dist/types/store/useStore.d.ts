@@ -1,2 +1,3 @@
 import { Store } from 'vuex';
-export declare function useStore(): Store<unknown>;
+import { IRootState } from '../store/index';
+export declare function useStore(): Store<IRootState>;
