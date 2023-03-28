@@ -44,8 +44,7 @@
           :is-activated-by-connection="isAssociatedWithActiveConnectionAsTargetBlock"
           :is-block-selected="isBlockSelected"
           :is-editor-visible="shouldShowBlockEditorForCurrentBlock"
-          :is-waiting-for-connection="isWaitingForConnection"
-          @showHideHasClicked="selectBlock" />
+          :is-waiting-for-connection="isWaitingForConnection" />
 
         <block-title :block="block"/>
 
@@ -443,6 +442,7 @@ export default Block
 
   &.is-active {
     box-shadow: 0 3px 6px #CACACA;
+    border: 2px solid $danger-700;
   }
 
   &.target-block-having-active-connection {

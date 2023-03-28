@@ -655,7 +655,7 @@
     "error-while-attempting-to-publish-specified-tree": "Error while attempting to publish specified tree.",
     "error-while-downloading-template": "An error has occured while downloading the template file.",
     "error-while-saving-transcriptions": "Error while saving transcriptions.",
-    "error-while-saving-tree": "Error while saving tree...",
+    "error-while-saving-flow": "Error while saving flow...",
     "establish-connection": "Establish Connection",
     "example-tree": "Example Tree",
     "examples": "Examples",
@@ -1233,7 +1233,7 @@
     "saving": "Saving",
     "saving-and-checking-for-errors": "Saving and checking for Errors",
     "saving-transcriptions": "Saving transcriptions...",
-    "saving-tree": "Saving Tree...",
+    "saving-flow": "Saving flow...",
     "schedule-and-send-an-outgoing-call": "Schedule and send an outgoing call",
     "schedule-type": "Schedule type",
     "search-audio-library": "Search audio library…",
@@ -1509,7 +1509,7 @@
     "tree-restored": "Tree Restored!",
     "tree-result-import-heading-validation-error": "The column headings in your import are invalid. Please refer to the import template for the correct headings",
     "tree-result-import-in-progress": "Tree result import in progress",
-    "tree-saved": "Tree Saved!",
+    "flow-saved": "Flow Saved!",
     "tree-update-conflict": "Tree update conflict detected",
     "tree-used-elsewhere-by-x-at-x": "This tree has been saved elsewhere by :name at :time",
     "tree-versions": "Tree Versions",
@@ -2339,7 +2339,7 @@
     "error-while-attempting-to-publish-specified-tree": "Erreur lors de la tentative de publier l'arbre spécifié.",
     "error-while-downloading-template": "Une erreur s'est produite lors du téléchargement du fichier de modèle.",
     "error-while-saving-transcriptions": "Erreur lors de la sauvegarde des transcriptions.",
-    "error-while-saving-tree": "Erreur lors de la sauvegarde arbre ...",
+    "error-while-saving-flow": "Erreur lors de la sauvegarde du flux ...",
     "establish-connection": "établir une connexion",
     "example-tree": "exemple d'arbre",
     "examples": "Exemples",
@@ -2917,7 +2917,7 @@
     "saving": "Sauvegarde en cours",
     "saving-and-checking-for-errors": "Enregistrement et vérification des erreurs",
     "saving-transcriptions": "Transcriptions Sauvegarde en cours ...",
-    "saving-tree": "Saving arbre ...",
+    "saving-flow": "Saving flow ...",
     "schedule-and-send-an-outgoing-call": "Planifier et envoyer un appel sortant",
     "schedule-type": "Type de planification",
     "search-audio-library": "Recherche bibliothèque audio ...",
@@ -3193,7 +3193,7 @@
     "tree-restored": "Arbre Restauré!",
     "tree-result-import-heading-validation-error": "Les têtes de colonne dans votre importation ne sont pas valides. S'il vous plaît se référer au modèle d'importation pour les rubriques correctes",
     "tree-result-import-in-progress": "Arbre résultat importation en cours",
-    "tree-saved": "Arbre sauvé!",
+    "flow-saved": "Flux sauvé!",
     "tree-update-conflict": "conflit de mise à jour arbre détecté",
     "tree-used-elsewhere-by-x-at-x": "Cet arbre a été enregistré ailleurs par :name à :time",
     "tree-versions": "Versions de l'arbre",
@@ -3404,7 +3404,8 @@
     "importer-currently-supports-single-flow-only": "JSON must contain exactly one flow",
     "non-supported-spec-version": "Non supported spec version",
     "unsupported-blocks-detected": "Unsupported block types detected",
-    "block-config-set_contact_property-x-property_key-type": "Contact property should not be empty"
+    "block-config-set_contact_property-x-property_key-type": "Contact property should not be empty",
+    "resource-values-x-value-minLength": "Resource should not have empty content"
   },
   "fr.flow-builder-validation": {
     "floip-format": "L'expression FlOIP devrait être valide",
@@ -3441,7 +3442,8 @@
     "importer-currently-supports-single-flow-only": "JSON doit contenir exactement un flux",
     "non-supported-spec-version": "Version des spécifications non prises en charge",
     "unsupported-blocks-detected": "Types de bloc non pris en charge détectés",
-    "block-config-set_contact_property-x-property_key-type": "La propriété de contact ne doit pas être vide"
+    "block-config-set_contact_property-x-property_key-type": "La propriété de contact ne doit pas être vide",
+    "resource-values-x-value-minLength": "La ressource ne doit pas avoir de contenu vide"
   }
 }
 

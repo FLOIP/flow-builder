@@ -58,16 +58,6 @@
           class="cursor-pointer"
           @click.stop="handleDuplicateBlock" />
       </div>
-      <!--Expand block editor-->
-      <div
-        v-b-tooltip.hover="trans('flow-builder.toggle-block-editor-tooltip')"
-        class="mr-1 ml-2 cursor-pointer icon-container"
-        @click.stop="$emit('showHideHasClicked')">
-        <span class="icon-text">
-          {{ isEditorVisible ? trans('flow-builder.hide') : trans('flow-builder.show') }}
-        </span>
-        <font-awesome-icon :icon="isEditorVisible ? ['fac', 'minimize'] : ['fac', 'expand']" />
-      </div>
     </div>
   </div>
 </template>
