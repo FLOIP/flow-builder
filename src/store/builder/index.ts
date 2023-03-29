@@ -41,6 +41,9 @@ export interface IPosition {
   y: number,
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Draggable = any
+
 export interface IBuilderState {
   activeBlockId: IBlock['uuid'] | null,
   isEditable: boolean,
@@ -52,7 +55,7 @@ export interface IBuilderState {
     [OperationKind.BLOCK_RELOCATE]: null,
   },
   //this will be populated when we drag an exit
-  draggableForExitsByUuid: object,
+  draggableForExitsByUuid: Record<string, Draggable>,
   isBlockEditorOpen: boolean,
   interactionDesignerHeaderBoundingClientRect: DOMRect,
   isConnectionCreationInProgress: boolean,
@@ -130,7 +133,7 @@ export const mutations: MutationTree<IBuilderState> = {
     state.isConnectionCreationInProgress = value
   },
 
-  setOperation({operations}: { operations: any }, {operation}: { operation: SupportedOperation }) {
+  setOperation({operations}, {operation}: { operation: SupportedOperation }) {
     operations[operation.kind] = operation
   },
 

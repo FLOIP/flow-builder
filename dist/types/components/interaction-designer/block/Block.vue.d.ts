@@ -9,6 +9,7 @@ declare type BlockPositionAction = ({ block, position }: {
     block: IBlock;
     position: IPosition;
 }) => void;
+declare type Draggable = any;
 export declare const BLOCK_RESET_CONNECTIONS = "BLOCK_RESET_CONNECTIONS";
 declare const Block_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class Block extends Block_base {
@@ -27,7 +28,7 @@ export declare class Block extends Block_base {
     operations: Record<OperationKind, SupportedOperation>;
     activeConnectionsContext: IConnectionContext[];
     isBlockEditorOpen: boolean;
-    draggableForExitsByUuid: object;
+    draggableForExitsByUuid: Record<string, Draggable>;
     isConnectionCreationInProgress: boolean;
     blockClasses: BlockClassNames;
     isEditable: boolean;
