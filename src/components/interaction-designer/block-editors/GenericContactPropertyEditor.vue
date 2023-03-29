@@ -99,7 +99,7 @@
         <validation-message
           v-if="shouldUseOpenExpression"
           #input-control="{ isValid }"
-          :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
+          :message-key="`block/${block.uuid}/config/set_contact_property/0/property_value`">
           <expression-input
             class="mb-1"
             :label="''"
