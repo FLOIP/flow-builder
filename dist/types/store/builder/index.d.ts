@@ -26,6 +26,7 @@ export interface IPosition {
     x: number;
     y: number;
 }
+declare type Draggable = any;
 export interface IBuilderState {
     activeBlockId: IBlock['uuid'] | null;
     isEditable: boolean;
@@ -36,7 +37,7 @@ export interface IBuilderState {
         [OperationKind.CONNECTION_CREATE]: IConnectionCreateOperation;
         [OperationKind.BLOCK_RELOCATE]: null;
     };
-    draggableForExitsByUuid: object;
+    draggableForExitsByUuid: Record<string, Draggable>;
     isBlockEditorOpen: boolean;
     interactionDesignerHeaderBoundingClientRect: DOMRect;
     isConnectionCreationInProgress: boolean;

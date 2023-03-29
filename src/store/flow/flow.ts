@@ -5,8 +5,10 @@ import {
   findFlowWith,
   getActiveFlowFrom,
   IBlock,
+  IChoice,
   IContext,
-  IFlow, ILanguage,
+  IFlow,
+  ILanguage,
   IResource,
   IResourceValue,
   SupportedMode,
@@ -510,13 +512,16 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     )
 
     if (has(duplicatedBlock.config, 'prompt')) {
-      const sourceResourceUuid = duplicatedBlock.config.prompt
-      const targetResourceUuid = await (new IdGeneratorUuidV4()).generate()
-      const duplicatedResource: IResource = cloneDeep(getters.resourcesByUuidOnActiveFlow[sourceResourceUuid])
+      duplicatedBlock.config.prompt = await dispatch('flow_duplicateResource', {resourceUuid: duplicatedBlock.config.prompt})
+    }
 
-      duplicatedResource.uuid = targetResourceUuid
-      dispatch('resource_add', {resource: duplicatedResource})
-      Vue.set(duplicatedBlock.config, 'prompt', targetResourceUuid)
+    if (has(duplicatedBlock.config, 'choices')) {
+      await Promise.all(
+        (duplicatedBlock.config.choices as IChoice[])
+          .map(async choice => {
+            choice.prompt = await dispatch('flow_duplicateResource', {resourceUuid: choice.prompt})
+          }),
+      )
     }
 
     // Set UI positions
@@ -527,6 +532,19 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     commit('flow_addBlock', {block: duplicatedBlock})
 
     return duplicatedBlock
+  },
+
+  async flow_duplicateResource({getters, dispatch}, {resourceUuid}: {resourceUuid: IResource['uuid']}): Promise<IResource['uuid']> {
+    const oldResource: IResource | undefined = getters.resourcesByUuidOnActiveFlow[resourceUuid]
+    if (oldResource === undefined) {
+      throw new Error(`Resource with uuid is not found: ${resourceUuid}`)
+    }
+
+    const newResource: IResource = cloneDeep(oldResource)
+    newResource.uuid = await (new IdGeneratorUuidV4()).generate()
+    await dispatch('resource_add', {resource: newResource})
+
+    return newResource.uuid
   },
 
   async flow_clearMultiSelection({state, dispatch}) {
