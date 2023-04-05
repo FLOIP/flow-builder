@@ -1674,6 +1674,8 @@ export declare const defaultLocalisations: {
         "with-subscriber-phone-number": string;
         words: string;
         "working-loading": string;
+        "x-characters": string;
+        "x-characters-y-pages": string;
         "x-of-y": string;
         "x-text-responses": string;
         year: string;
@@ -3358,6 +3360,8 @@ export declare const defaultLocalisations: {
         "with-subscriber-phone-number": string;
         words: string;
         "working-loading": string;
+        "x-characters": string;
+        "x-characters-y-pages": string;
         "x-of-y": string;
         "x-text-responses": string;
         year: string;

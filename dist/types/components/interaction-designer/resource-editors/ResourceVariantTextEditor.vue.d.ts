@@ -12,8 +12,12 @@ export declare class ResourceVariantTextEditor extends ResourceVariantTextEditor
     readonly mode: SupportedMode;
     readonly rows: number;
     readonly disabledAutoComplete: boolean;
+    get pPlaceholder(): string;
     get content(): string;
+    get contentLengthInfo(): string;
     commitExpressionChange(value: string): void;
+    get isSms(): boolean;
+    get isUssd(): boolean;
     resource_setOrCreateValueModeSpecific: ({ resourceId, filter, value }: {
         resourceId: IResource['uuid'];
         filter: {};
