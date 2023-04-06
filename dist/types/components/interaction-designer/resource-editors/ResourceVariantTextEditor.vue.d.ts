@@ -1,6 +1,17 @@
 import Lang from '../../../lib/filters/lang';
 import { IResource, IResourceValue } from '@floip/flow-runner';
 import { SupportedMode } from '@floip/flow-runner/src/flow-spec/SupportedMode';
+declare type SplitSmsResult = {
+    characterSet: 'GSM' | 'Unicode';
+    parts: {
+        content: undefined | string;
+        length: number;
+        bytes: number;
+    }[];
+    bytes: number;
+    length: number;
+    remainingInPart: number;
+};
 declare const ResourceVariantTextEditor_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
 export declare class ResourceVariantTextEditor extends ResourceVariantTextEditor_base {
     readonly index: number;
@@ -18,7 +29,7 @@ export declare class ResourceVariantTextEditor extends ResourceVariantTextEditor
     commitExpressionChange(value: string): void;
     get isSms(): boolean;
     get isUssd(): boolean;
-    get smsCharInfo(): unknown;
+    get smsCharInfo(): SplitSmsResult;
     resource_setOrCreateValueModeSpecific: ({ resourceId, filter, value }: {
         resourceId: IResource['uuid'];
         filter: {};
