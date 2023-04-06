@@ -1675,7 +1675,8 @@ export declare const defaultLocalisations: {
         words: string;
         "working-loading": string;
         "x-characters": string;
-        "x-characters-y-pages": string;
+        "x-pages": string;
+        "x-unicode-pages": string;
         "x-of-y": string;
         "x-text-responses": string;
         year: string;
@@ -3361,7 +3362,8 @@ export declare const defaultLocalisations: {
         words: string;
         "working-loading": string;
         "x-characters": string;
-        "x-characters-y-pages": string;
+        "x-pages": string;
+        "x-unicode-pages": string;
         "x-of-y": string;
         "x-text-responses": string;
         year: string;
