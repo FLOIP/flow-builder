@@ -15,7 +15,8 @@
           @commitExpressionChange="commitExpressionChange" />
         <div
           v-if="isSms || isUssd"
-          class="content-length-info">
+          class="content-length-info"
+          :class="{'font-weight-bold': isSms && smsCharInfo.bytes > 0}">
           {{ contentLengthInfo }}
         </div>
       </template>
