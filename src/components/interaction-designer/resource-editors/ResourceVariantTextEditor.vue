@@ -36,6 +36,18 @@ import {SupportedMode} from '@floip/flow-runner/src/flow-spec/SupportedMode'
 
 const flowVuexNamespace = namespace('flow')
 
+type SplitSmsResult = {
+  characterSet: 'GSM' | 'Unicode',
+  parts: {
+    content: undefined | string,
+    length: number,
+    bytes: number,
+  }[],
+  bytes: number,
+  length: number,
+  remainingInPart: number,
+}
+
 @Component({
   components: {ExpressionInput},
 })
@@ -106,7 +118,7 @@ export class ResourceVariantTextEditor extends mixins(Lang) {
     return this.mode === SupportedMode.USSD
   }
 
-  get smsCharInfo(): unknown {
+  get smsCharInfo(): SplitSmsResult {
     return SplitSms.split(this.content)
   }
 
