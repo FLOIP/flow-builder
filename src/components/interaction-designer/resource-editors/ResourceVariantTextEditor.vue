@@ -6,7 +6,7 @@
           ref="input"
           :label="label"
           :prepend-text="prependText"
-          :placeholder="pPlaceholder"
+          :placeholder="placeholder || defaultPlaceholder"
           :current-expression="content"
           :rows="rows"
           :valid-state="isValid"
@@ -50,8 +50,8 @@ export class ResourceVariantTextEditor extends mixins(Lang) {
   @Prop({default: 2}) readonly rows!: number
   @Prop({type: Boolean, default: false}) readonly disabledAutoComplete!: boolean
 
-  get pPlaceholder(): string {
-    return this.placeholder || this.trans(`flow-builder.enter-${this.mode.toLowerCase()}-content`)
+  get defaultPlaceholder(): string {
+    return this.trans(`flow-builder.enter-${this.mode.toLowerCase()}-content`)
   }
 
   get content(): string {
