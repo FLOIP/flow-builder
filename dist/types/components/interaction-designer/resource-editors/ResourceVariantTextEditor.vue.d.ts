@@ -12,7 +12,7 @@ export declare class ResourceVariantTextEditor extends ResourceVariantTextEditor
     readonly mode: SupportedMode;
     readonly rows: number;
     readonly disabledAutoComplete: boolean;
-    get pPlaceholder(): string;
+    get defaultPlaceholder(): string;
     get content(): string;
     get contentLengthInfo(): string;
     commitExpressionChange(value: string): void;
