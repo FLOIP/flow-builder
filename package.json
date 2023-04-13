@@ -75,6 +75,7 @@
     "popper.js": "^1.16.1",
     "sass-loader": "^8.0.2",
     "skeleton-loader": "^2.0.0",
+    "split-sms": "^0.1.7",
     "vue": "^2.7.8",
     "vue-class-component": "^7.2.6",
     "vue-focus": "^2.1.0",
