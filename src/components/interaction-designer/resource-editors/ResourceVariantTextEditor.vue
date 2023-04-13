@@ -15,7 +15,8 @@
           @commitExpressionChange="commitExpressionChange" />
         <div
           v-if="isSms || isUssd"
-          class="content-length-info">
+          class="content-length-info"
+          :class="{'font-weight-bold': isSms && smsCharInfo.bytes > 0}">
           {{ contentLengthInfo }}
         </div>
       </template>
@@ -29,10 +30,24 @@ import {mixins} from 'vue-class-component'
 import Lang from '@/lib/filters/lang'
 import {IResource, IResourceValue} from '@floip/flow-runner'
 import {namespace} from 'vuex-class'
+// noinspection TypeScriptCheckImport
+import SplitSms from 'split-sms'
 import ExpressionInput from '@/components/common/ExpressionInput.vue'
 import {SupportedMode} from '@floip/flow-runner/src/flow-spec/SupportedMode'
 
 const flowVuexNamespace = namespace('flow')
+
+type SplitSmsResult = {
+  characterSet: 'GSM' | 'Unicode',
+  parts: {
+    content: undefined | string,
+    length: number,
+    bytes: number,
+  }[],
+  bytes: number,
+  length: number,
+  remainingInPart: number,
+}
 
 @Component({
   components: {ExpressionInput},
@@ -57,13 +72,19 @@ export class ResourceVariantTextEditor extends mixins(Lang) {
   }
 
   get contentLengthInfo(): string {
-    const charCount = this.content.length
-    const smsPagesCount = Math.ceil(this.content.length / 160)
+    const charCount = this.smsCharInfo.bytes
+    const isUnicode = this.smsCharInfo.characterSet === 'Unicode'
+    const smsPagesCount = this.smsCharInfo.parts.length
 
-    if (smsPagesCount > 1 && this.isSms) {
-      return this.trans('flow-builder.x-characters-y-pages', {charCount, smsPagesCount})
+    const charInfo = this.trans('flow-builder.x-characters', {charCount})
+    const pagesInfo = isUnicode
+      ? this.trans('flow-builder.x-unicode-pages', {smsPagesCount})
+      : this.trans('flow-builder.x-pages', {smsPagesCount})
+
+    if (this.isSms && smsPagesCount > 1) {
+      return `${charInfo} (${pagesInfo})`
     } else {
-      return this.trans('flow-builder.x-characters', {charCount})
+      return charInfo
     }
   }
 
@@ -96,6 +117,10 @@ export class ResourceVariantTextEditor extends mixins(Lang) {
 
   get isUssd(): boolean {
     return this.mode === SupportedMode.USSD
+  }
+
+  get smsCharInfo(): SplitSmsResult {
+    return SplitSms.split(this.content)
   }
 
   @flowVuexNamespace.Action resource_setOrCreateValueModeSpecific!:
