@@ -193,7 +193,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
 
   // for radio buttons ######################
   initPropertyValueAction(): void {
-    if (this.disableExpressionInput || this.propertyValue === BLOCK_RESPONSE_EXPRESSION) {
+    if (this.isBlockInteractive(this.block) && (this.disableExpressionInput || this.propertyValue === BLOCK_RESPONSE_EXPRESSION)) {
       this.propertyValueAction = this.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE
     } else {
       this.propertyValueAction = this.PROPERTY_VALUE_ACTION.OPEN_EXPRESSION
