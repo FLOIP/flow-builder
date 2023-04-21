@@ -81,6 +81,11 @@ If we made a change on the community flow-builder branch and our `packages.json`
 - hit enter to choose the 1st option
 - then serve the app
 
+### How to consume changes from flow-runner's feature branch?
+Just imitate the above section "How to work on the flow-builder repo, and consume from an other app (consumer app)?", by:
+- changing the dependency repo to @floip/flow-runner
+- changing the consumer repo to floip/flow-builder
+
 ### Changes on JS dependencies: /src/lib/mixins/FlowUploader.js
 This is related to `Flow.js` library which is providing multiple simultaneous, stable and resumable uploads via the HTML5 File API.
 - On standalone UI, we import the Flow like `import Flow from '@flowjs/flow.js';` and use it inside the file like `new Flow(...)`
