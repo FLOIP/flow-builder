@@ -39,8 +39,9 @@ Check the `packages.json`'s `scripts` to see more available commands.
 | builder.config.json             | a list of **all needed routes**, used by the `src\lib\mixins\Routes.ts` helper                                       |
 | src\lib\mixins\Routes.ts        | A route helper for all vue component to allow us calling something like <br/>`this.route('routeKey.something', ...)` |
 | vue.config.js                   | Mocked endpoints to simulate backend response (webpack-dev-server stub routes), eg: `/audiofiles/upload`             |
-| docs\routes\openapi\routes.yaml | OpenAPI endpoints definition to explain complex endpoints                                                            |
 | src\router\*                    | Vue router, to map routes & views                                                                                    |
+| docs\routes\openapi\routes.yaml | OpenAPI endpoints definition to explain complex endpoints                                                            |
+| docs\routes\markdown\routes.md  | Generated doc from the `routes.yaml` after calling `yarn md-docs`                                                    |
 
 For UI **standalone** usage, the stub routes under `/vue.config.js` are providing needed responses.
 
