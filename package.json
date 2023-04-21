@@ -21,7 +21,9 @@
     "md-docs": "./node_modules/widdershins/widdershins.js docs/routes/openapi/routes.yaml docs/routes/markdown/routes.md --language_tabs 'javascript:Javascript' --omitHeader",
     "clean": "rm -rf dist/",
     "emit-dts": "vue-tsc -p vue-tsc.tsconfig.json; tsc-alias -p vue-tsc.tsconfig.json --verbose",
-    "deploy": "yarn clean && yarn build-bundle && git add dist/ && git commit -m \"Build + package for release.\" && yarn version --patch && git push origin --tags HEAD"
+    "deploy": "yarn clean && yarn build-bundle && git add dist/ && git commit -m \"Build + package for release.\" && yarn version --patch && git push origin --tags HEAD",
+    "update-flow-runner": "yarn up -i @floip/flow-runner",
+    "deep-update-flow-packages": "yarn remove @floip/flow-runner; yarn add @floip/flow-runner@^1.0.12-rc4"
   },
   "engines": {
     "node": "^14"
