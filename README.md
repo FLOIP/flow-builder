@@ -51,6 +51,36 @@ Therefore, if we want to integrate the `flow-builder` repo into **other projects
 To integrate with/embed it in a Host App (consumer apps), find here a configuration Guide:
 [See here](https://github.com/FLOIP/flow-builder/blob/master/docs/BUILDER_INTEGRATION.md)
 
+### How to work on the flow-builder repo, and consume from an other app (consumer app)?
+#### Steps on the community flow-builder repo:
+- create the feature branch
+- commit changes
+- run `yarn build-bundle` to build the app for the consumer app
+- commit changed files
+- push
+
+#### Steps on the consumer app
+Let's assume we already have added the `"@floip/flow-builder"` as part of our dependencies. That means, we have something like this in our packages.json
+```
+"dependencies": {
+    ...
+    "@floip/flow-builder": "https://github.com/FLOIP/flow-builder.git#master",
+    ...
+}
+```
+We just need to:
+- create
+- go to the packages.json
+- create a feature branch (recommended to use the same name as in the flow-builder community), eg: 'feature/my-branch'
+- update the `@floip/flow-builder` by changing this `"@floip/flow-builder": "https://github.com/FLOIP/flow-builder.git#master"` into `"@floip/flow-builder": "https://github.com/FLOIP/flow-builder.git#feature/my-branch"`
+- run `yarn install`. Note that this will update the `yarn.lock`
+- then serve the app as defined in the packages.json (eg: `yarn watch`)
+
+If we made a change on the community flow-builder branch and our `packages.json` is already referring to that branch, then we just need to update it:
+- run `yarn up -i @floip/flow-builder`
+- hit enter to choose the 1st option
+- then serve the app
+
 ### Changes on JS dependencies: /src/lib/mixins/FlowUploader.js
 This is related to `Flow.js` library which is providing multiple simultaneous, stable and resumable uploads via the HTML5 File API.
 - On standalone UI, we import the Flow like `import Flow from '@flowjs/flow.js';` and use it inside the file like `new Flow(...)`
