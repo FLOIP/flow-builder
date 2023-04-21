@@ -1,24 +1,19 @@
 The flow-builder has been designed for drop in use as an embedded app in other projects. With this in mind we expose several methods for customisation to integrate with your existing systems.
 
 # General set up as an embedded app
-
 ## Install
-
 The flow-builder can be installed as a package from npm:
 
 ```
 yarn add @floip/flow-builder
-
 or
-
 npm install --save @floip/flow-builder
 ```
 
 ## Route Config
-
 Unlike the standalone app, the built version of the flow-builder in `/dist` is intended to integrate with an existing Vue Router setup instead of using the exact routing config in https://github.com/FLOIP/flow-builder/blob/master/src/router/trees.js.
 
-First we need some config to let the components know what routes are available. For example we could have:
+First we need some config to let the components know what routes are available. For example, we could have:
 
 ```
 const routes = {
@@ -105,7 +100,6 @@ const routes = {
         }
     }
 }
-
 ```
 
 And override the builder.config.json defaults from the community builder like so:
@@ -122,7 +116,6 @@ platformBuilderConfig.ui.routes = routes
 Then we can configure Vue Router for this. Note passing in of `platformBuilderConfig` to make components aware of the configured routes:
 
 ```
-
 const flowBuilderRoutes [
   {
     path: '/flows/:id/:mode',
@@ -275,7 +268,7 @@ You then have several options:
     return validateBlockWithJsonSchema({block, schemaVersion, customBlockJsonSchema: require(`path/to/CustomBlockJsonSchema.json`)})
   },
   ```
-  We can have a very flexible option by redefining `validateBlockWithCustomJsonSchema()` completely. This can be overriden with validations specific to your custom block. See here for an example:
+  We can have a very flexible option by redefining `validateBlockWithCustomJsonSchema()` completely. This can be overridden with validations specific to your custom block. See here for an example:
 
   ```
   async validateBlockWithCustomJsonSchema({block, schemaVersion}: {block: IBlock, schemaVersion: string}): IValidationStatus {
@@ -306,7 +299,7 @@ You then have several options:
   ```
   Your block will need a component, store, BLOCK_TYPE and store installer.
 
-  The installer can be generated with a an exported helper:
+  The installer can be generated with an exported helper:
 
   ```
   import {
@@ -342,9 +335,9 @@ make a particular text visible; all types are accepted by default
 
 ## Overriding and customising non block components
 
-At the top level - views - this is simple enough to do by extending or wrapping those components but we want to make such customisation as atomic as possible to allow keeping in sync with this community version of the builder and to allow changing the smallest amount possible.
+At the top level - views - this is simple enough to do by extending or wrapping those components, but we want to make such customisation as atomic as possible to allow keeping in sync with this community version of the builder and to allow changing the smallest amount possible.
 
-- By exporting all components in `src/lib.ts` and registering them globally (rather than only where needed) we provide a simple hook for overiding any component. This means for example, that if you would like all of your `src/components/common/TextEditor.vue` components to work differently from the existing component you can simply override this when you set up the app with:
+- By exporting all components in `src/lib.ts` and registering them globally (rather than only where needed) we provide a simple hook for overriding any component. This means for example, that if you would like all of your `src/components/common/TextEditor.vue` components to work differently from the existing component you can simply override this when you set up the app with:
 
 ```
 //importing your new text editor.
@@ -365,8 +358,8 @@ import {
 ## Overriding default views.
 
 - If your project requires custom versions of what's in the `src/views/` directory, we encourage you to override the components you need to change in the manner described [here](#overriding-and-customising-non-block-components) rather than extending the existing views as syncing changes in the templates between flow-builder versions is onerous.
-    - For example, to customise the toolbar you can override the global toolbar component with a component that wraps this and uses it's slots to add custom buttons.
-- We hope to standardise slots in these views so that they can instead be wrapped by a custom version and select parts overriden in future.
+    - For example, to customise the toolbar you can override the global toolbar component with a component that wraps this and uses its slots to add custom buttons.
+- We hope to standardise slots in these views so that they can instead be wrapped by a custom version and select parts overridden in the future.
 - If you do want to override the whole component you can use this custom version by simply switching to it in your Vue Router config as discussed [here](#general-set-up-as-an-embedded-app):
 
 ```

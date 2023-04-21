@@ -22,14 +22,14 @@ Note, `yarn serve` will also hot reload for development.
 
 ## Development
 ### Frequently used yarn commands
-| Command                        | Description                                                    |
-|--------------------------------|----------------------------------------------------------------|
-| yarn install                   | Install dependencies                                           |
-| yarn serve                     | Serve the app, and provide hot reload for development          |
-| yarn build-bundle              | Compiles and minifies for production & for other consumer apps |
-| yarn update-flow-runner        | Interactive update for flow-runner |
-| yarn deep-update-flow-packages | Making sure the flow project depencides are updated correctly |
-| yarn lint                      | Lints and fixes files |
+| Command                        | Description                                                     |
+|--------------------------------|-----------------------------------------------------------------|
+| yarn install                   | Install dependencies                                            |
+| yarn serve                     | Serve the app, and provide hot reload for development           |
+| yarn build-bundle              | Compiles and minifies for production & for other consumer apps  |
+| yarn update-flow-runner        | Interactive update for flow-runner                              |
+| yarn deep-update-flow-packages | Making sure the flow project dependencies are updated correctly |
+| yarn lint                      | Lints and fixes files                                           |
 
 Check the `packages.json`'s `scripts` to see more available commands.
 
@@ -66,7 +66,7 @@ This is related to `Flow.js` library which is providing multiple simultaneous, s
 
 ## Usage (simple demos)
 ### Create new flow
-To begin, you can create a new flow by visiting [https://floip.github.io/flow-builder/#/](https://floip.github.io/flow-builder/#/). Click on **New Flow** , from there, you can enter in the pertinent flow information before opening the Flow Builder.
+To begin, you can create a new flow by visiting [https://floip.github.io/flow-builder/#/](https://floip.github.io/flow-builder/#/). Click on **New Flow** , from there, you can enter the pertinent flow information before opening the Flow Builder.
 
 You may also go directly to the following link: [https://https://floip.github.io/flow-builder/#/flows/new](https://floip.github.io/flow-builder/#/flows/new)
 ![Flow 1](https://user-images.githubusercontent.com/88047281/127682517-9d2141f9-8d04-45f2-8121-1d80a71fe089.gif)
