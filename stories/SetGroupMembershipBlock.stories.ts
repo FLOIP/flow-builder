@@ -4,13 +4,16 @@ import Vuex from 'vuex'
 import SetGroupMembershipBlock from '@/components/interaction-designer/block-types/Core_SetGroupMembershipBlock.vue'
 
 import {IRootState, store} from '@/store'
-import SetGroupMembershipStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_SetGroupMembershipStore'
+import SetGroupMembershipStore, {BLOCK_TYPE, IGroupOption} from '@/store/flow/block-types/Core_SetGroupMembershipStore'
 import {Component} from 'vue-property-decorator'
-import {Mutation} from 'vuex-class'
+import {Mutation, namespace} from 'vuex-class'
 import {BaseMountedVueClass} from './story-utils/storeSetup'
 import FlowBuilderSidebarEditorContainer from './story-utils/FlowBuilderSidebarEditorContainer.vue'
+import {ConfigFieldType} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
 
 Vue.use(Vuex)
+
+const flowVuexNamespace = namespace('flow')
 
 export default {
   title: 'Core/Set Group Membership',
@@ -53,22 +56,44 @@ class ExistingDataBlockClass extends BaseMountedVueClass {
   async mounted() {
     const {block: {uuid: blockId}} = await this.baseMounted(BLOCK_TYPE, SetGroupMembershipStore)
 
-    // Add sample data
+    this.setDescription(blockId)
+
+    // Add group options from ui config
+    const group1: IGroupOption = {
+      id: '987',
+      name: 'Group 1',
+    }
+
+    const group2: IGroupOption = {
+      id: '988',
+      name: 'Group 2',
+    }
+
     this.addContactGroup({
-      group: {
-        id: 987,
-        name: 'Group 1',
-      },
+      group: group1,
     })
     this.addContactGroup({
-      group: {
-        id: 988,
-        name: 'Group 2',
-      },
+      group: group2,
+    })
+
+    // select "group 1" as the default group
+    this.block_updateConfigByPath({
+      blockId,
+      path: 'groups[0].group_key',
+      value: group1.id
+    })
+    this.block_updateConfigByPath({
+      blockId,
+      path: 'groups[0].group_name',
+      value: group1.name
     })
 
     this.setTags(blockId)
   }
+
+  @flowVuexNamespace.Mutation block_updateConfigByPath!: (
+    {blockId, path, value}: {blockId: string, path: string, value: ConfigFieldType},
+  ) => void
 }
 
 export const ExistingDataBlock = () => (ExistingDataBlockClass)

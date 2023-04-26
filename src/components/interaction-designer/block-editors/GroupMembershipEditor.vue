@@ -88,8 +88,6 @@ export class GroupMembershipEditor extends mixins(Lang) {
    * list is unknown yet, e.g., while an asynchronous request
    * to fetch the list after the group-search event
    * has not been resolved.
-   *
-   * TODO: VMO-6299 Document the use of these properties in stories
    */
   @Prop() readonly availableGroups?: IGroupMembership[]
   @Prop({type: Boolean, default: false}) readonly hasGroupsLoading!: boolean
