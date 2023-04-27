@@ -102,7 +102,7 @@ export function getLastItemFromContainerFlowStack(flow_stack: string[]): string 
 }
 export function createContainerFlowStackAndReturnLastItem(json_data: any): string {
     const flow_stack: string[] = [];
-    if (!isEmpty(json_data)) { return ''; }
+    if (isEmpty(json_data)) { return ''; }
     createContainerFlowStack(json_data, flow_stack);
     return getLastItemFromContainerFlowStack(flow_stack);
 }
