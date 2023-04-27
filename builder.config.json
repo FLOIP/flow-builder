@@ -1,25 +1,7 @@
 {
   "ui": {
     "routes": {
-      "languages": {
-        "persistLanguage": {
-          "name": "persistLanguage",
-          "path": "\/backend\/languages",
-          "methods": ["POST"]
-        }
-      },
       "flows": {
-        "persistFlow": {
-          "name": "persistFlow",
-          "path": "\/backend\/flows",
-          "methods": ["POST", "PUT"]
-        },
-        "fetchFlowServer": {
-          "name": "fetchFlowServer",
-          "path": "\/backend\/flows\/{flowId}",
-          "params": ["flowId"],
-          "methods": ["GET"]
-        },
         "newFlow": {
           "name": "newFlow",
           "path": "\/flows\/new",
