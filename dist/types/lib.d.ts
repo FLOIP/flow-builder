@@ -1524,6 +1524,7 @@ export declare const defaultLocalisations: {
         "tree-result-import-heading-validation-error": string;
         "tree-result-import-in-progress": string;
         "flow-saved": string;
+        "multiple-flows-saved": string;
         "tree-update-conflict": string;
         "tree-used-elsewhere-by-x-at-x": string;
         "tree-versions": string;
@@ -3211,6 +3212,7 @@ export declare const defaultLocalisations: {
         "tree-result-import-heading-validation-error": string;
         "tree-result-import-in-progress": string;
         "flow-saved": string;
+        "multiple-flows-saved": string;
         "tree-update-conflict": string;
         "tree-used-elsewhere-by-x-at-x": string;
         "tree-versions": string;
