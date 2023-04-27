@@ -156,7 +156,7 @@ export class BaseMountedVueClassWithResourceAndMode extends BaseMountedVueClass 
 
 
     if (shouldSetChoices) {
-      // TODO: find a way to set choices
+      // TODO CORE-495: find a way to set choices
     }
   }
 }
