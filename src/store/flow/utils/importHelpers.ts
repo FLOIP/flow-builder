@@ -1,6 +1,6 @@
 import {IBlock, IContext, IResource} from '@floip/flow-runner'
 
-import {cloneDeep, filter, findIndex, get, isEqual} from 'lodash'
+import {cloneDeep, filter, findIndex, get, isEmpty, isEqual} from 'lodash'
 
 export function updateResourcesForLanguageMatch(
   resources: IResource[], oldId: string, newId: string,
@@ -100,9 +100,9 @@ export function createContainerFlowStack(json_data: any, flow_stack: string[]): 
 export function getLastItemFromContainerFlowStack(flow_stack: string[]): string {
   return flow_stack[flow_stack.length - 1];
 }
-export function createContainerFlowStackAndReturnLastItem(json_data: string): string {
+export function createContainerFlowStackAndReturnLastItem(json_data: any): string {
     const flow_stack: string[] = [];
-    if (!json_data) { return ''; }
+    if (!isEmpty(json_data)) { return ''; }
     createContainerFlowStack(json_data, flow_stack);
     return getLastItemFromContainerFlowStack(flow_stack);
 }
