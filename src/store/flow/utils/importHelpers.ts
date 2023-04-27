@@ -49,6 +49,64 @@ export function mergeFlowContainer(
   return existingFlowContainerStore
 }
 
+interface CreateFlowStackBlock {
+  uuid: string;
+  type: string;
+  config: {
+    flow_id: string;
+  };
+}
+
+interface CreateFlowStackFlow {
+  uuid: string;
+  blocks: CreateFlowStackBlock[];
+}
+
+interface CreateFlowStackData {
+  flows: CreateFlowStackFlow[];
+}
+
+export function createContainerFlowStack(json_data: any, flow_stack: string[]): void {
+  const flows = json_data.flows;
+  const visitedFlows: string[] = [];
+
+  function process_flow(flow: CreateFlowStackFlow): void {
+    visitedFlows.push(flow.uuid);
+    // eslint-disable-next-line no-restricted-syntax
+    for (const block of flow.blocks) {
+      if (block.type === 'Core.RunFlow') {
+        const flow_id: string = block.config.flow_id;
+        const child_flow: CreateFlowStackFlow | undefined = flows.find((f: { uuid: string }) => f.uuid === flow_id);
+        if (child_flow && !visitedFlows.includes(child_flow.uuid)) {
+          process_flow(child_flow);
+        }
+      }
+    }
+    if (!flow_stack.includes(flow.uuid)) {
+      flow_stack.push(flow.uuid);
+    }
+  }
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const flow of flows) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    if (!visitedFlows.includes(flow.uuid)) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      process_flow(flow);
+    }
+  }
+}
+
+export function getLastItemFromContainerFlowStack(flow_stack: string[]): string {
+  return flow_stack[flow_stack.length - 1];
+}
+export function createContainerFlowStackAndReturnLastItem(json_data: string): string {
+    const flow_stack: string[] = [];
+    if (!json_data) { return ''; }
+    createContainerFlowStack(json_data, flow_stack);
+    return getLastItemFromContainerFlowStack(flow_stack);
+}
+
 export function checkSingleFlowOnly(flowContainer: IContext): boolean {
   return get(flowContainer, 'flows', []).length === 1
 }
