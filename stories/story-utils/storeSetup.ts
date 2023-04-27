@@ -151,14 +151,12 @@ export class BaseMountedVueClassWithResourceAndMode extends BaseMountedVueClass 
     // we're assuming this pseudo-variants exist
     this.resource_setValue({resourceId, filter: variantSms, value: 'text for SMS'})
     this.resource_setValue({resourceId, filter: variantUssd, value: 'text for USSD'})
-    this.resource_setValue({resourceId, filter: variantIvr, value: 'path/to/ivr audio.mp3'})
+    // the value https://your-domain/path/to/5cae2f49b605a6.45924131.mp3 comes from the audio library
+    this.resource_setValue({resourceId, filter: variantIvr, value: 'https://your-domain/path/to/5cae2f49b605a6.45924131.mp3'})
+
 
     if (shouldSetChoices) {
-      // TODO: uncomment these if needed, when we found a solution for the above todo. This is not working for now.
-      // const choiceResourceId = get(this.activeBlock, `config.choices.1`, '')
-      // this.resource_setValue({resourceId: choiceResourceId, filter: variantSms, value: "text for SMS"})
-      // this.resource_setValue({resourceId: choiceResourceId, filter: variantUssd, value: "text for USSD"})
-      // this.resource_setValue({resourceId: choiceResourceId, filter: variantIvr, value: "path/to/ivr audio.mp3"})
+      // TODO: find a way to set choices
     }
   }
 }
