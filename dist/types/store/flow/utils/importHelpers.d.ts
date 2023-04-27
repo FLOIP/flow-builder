@@ -3,7 +3,7 @@ export declare function updateResourcesForLanguageMatch(resources: IResource[], 
 export declare function mergeFlowContainer(existingFlowContainer: IContext, newFlowContainer: IContext): IContext;
 export declare function createContainerFlowStack(json_data: any, flow_stack: string[]): void;
 export declare function getLastItemFromContainerFlowStack(flow_stack: string[]): string;
-export declare function createContainerFlowStackAndReturnLastItem(json_data: string): string;
+export declare function createContainerFlowStackAndReturnLastItem(json_data: any): string;
 export declare function checkSingleFlowOnly(flowContainer: IContext): boolean;
 export declare function detectedLanguageChanges({ flowContainer, oldFlowContainer }: {
     flowContainer: IContext;

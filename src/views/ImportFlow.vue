@@ -179,7 +179,6 @@ class ImportFlow extends mixins(Lang, Routes) {
 
   @importVuexNamespace.Getter isSafeToImport!: boolean
 
-  // eslint-disable-next-line consistent-return
   get flowUUID() {
     return createContainerFlowStackAndReturnLastItem(this.flowContainer)
   }
