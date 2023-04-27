@@ -218,9 +218,23 @@ class ImportFlow extends mixins(Lang, Routes) {
       persistRoute: this.route('flows.persistFlowImport', {}),
       flowContainer: this.flowContainer,
     })
+    const numberOfFlows = get(flowContainer, 'flows.length', 0);
 
     if (flowContainer != null) {
       this.reset()
+      if (numberOfFlows > 1) {
+          this.$toast.success(`${Lang.trans('flow-builder.multiple-flows-saved', {
+          number: numberOfFlows,
+          })}`, {
+            timeout: 3000,
+            hideProgressBar: true,
+          })
+      } else {
+        this.$toast.success(`${Lang.trans('flow-builder.flow-saved')}`, {
+            timeout: 3000,
+            hideProgressBar: true,
+          })
+      }
       this.$router.push(route)
     } else {
       console.warn('There was something wrong when trying to import flow', 'Check console log for more details')
