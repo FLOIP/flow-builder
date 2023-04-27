@@ -1,5 +1,5 @@
 diff --git a/builder.config.json b/builder.config.json
-index 5830d4e3..b0b17801 100644
+index b4b68aa7..79008a77 100644
 --- a/builder.config.json
 +++ b/builder.config.json
 @@ -1,25 +1,7 @@

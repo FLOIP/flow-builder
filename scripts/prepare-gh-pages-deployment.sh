@@ -18,7 +18,8 @@ abort()
 ***     $ git diff builder.config.json > patches/remove-backend-routes-from-config.patch
 ***     $ git diff builder.config.json > patches/disable-save-button.patch
 *** - commit changes on the *patch file to fix this script
-*** - but rollback changes on the affected files (eg: src/router/index.ts, vue.config.js, builder.config.json)
+*** - re-run this script `./scripts/prepare-gh-pages-deployment.sh` to make sure every works. Redo above steps in case of error.
+*** - rollback changes on the affected non patch files (eg: src/router/index.ts, vue.config.js, builder.config.json)
 *****************************************************************************************
 '
     echo "An error occurred. Exiting..." >&2
