@@ -11,7 +11,7 @@ export const routes: Array<RouteConfig> = [
 ]
 
 export const router = new VueRouter({
-  mode: 'history',
+  //mode: 'history',
   base: process.env.BASE_URL,
   scrollBehavior,
   routes,
