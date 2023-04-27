@@ -185,7 +185,7 @@ class ImportFlow extends mixins(Lang, Routes) {
   }
 
   chooseFile() {
-    const fileInput: any = this.$refs.file48
+    const fileInput: any = this.$refs.file
     fileInput.click()
   }
 
