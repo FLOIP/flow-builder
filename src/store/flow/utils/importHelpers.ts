@@ -1,4 +1,4 @@
-import {IBlock, IContext, IResource} from '@floip/flow-runner'
+import {IBlock, IContainer, IContext, IFlow, IResource} from '@floip/flow-runner'
 
 import {cloneDeep, filter, findIndex, get, isEmpty, isEqual} from 'lodash'
 
@@ -47,62 +47,41 @@ export function mergeFlowContainer(
   return clonedExistingFlowContainer
 }
 
-interface CreateFlowStackBlock {
-  uuid: string;
-  type: string;
-  config: {
-    flow_id: string;
-  };
-}
+export function createContainerFlowStack(jsonData: IContext): IFlow['uuid'][] {
+  const flows: IFlow[] = jsonData.flows
+  const visitedFlows: IFlow['uuid'][] = []
+  const flowStack: IFlow['uuid'][] = []
 
-interface CreateFlowStackFlow {
-  uuid: string;
-  blocks: CreateFlowStackBlock[];
-}
-
-interface CreateFlowStackData {
-  flows: CreateFlowStackFlow[];
-}
-
-export function createContainerFlowStack(json_data: any, flow_stack: string[]): void {
-  const flows = json_data.flows;
-  const visitedFlows: string[] = [];
-
-  function process_flow(flow: CreateFlowStackFlow): void {
-    visitedFlows.push(flow.uuid);
-    // eslint-disable-next-line no-restricted-syntax
-    for (const block of flow.blocks) {
+  function processFlowForCreatingFlowStack(flow: IFlow): void {
+    visitedFlows.push(flow.uuid)
+    flow.blocks.forEach((block) => {
       if (block.type === 'Core.RunFlow') {
-        const flow_id: string = block.config.flow_id;
-        const child_flow: CreateFlowStackFlow | undefined = flows.find((f: { uuid: string }) => f.uuid === flow_id);
-        if (child_flow && !visitedFlows.includes(child_flow.uuid)) {
-          process_flow(child_flow);
+        const flow_id: string = block.config.flow_id
+        const childFlow: IFlow | undefined = flows.find((f: { uuid: string }) => f.uuid === flow_id)
+        if (childFlow && !visitedFlows.includes(childFlow.uuid)) {
+          processFlowForCreatingFlowStack(childFlow)
         }
       }
-    }
-    if (!flow_stack.includes(flow.uuid)) {
-      flow_stack.push(flow.uuid);
+    })
+    if (!flowStack.includes(flow.uuid)) {
+      flowStack.push(flow.uuid)
     }
   }
 
-  // eslint-disable-next-line no-restricted-syntax
-  for (const flow of flows) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  flows.forEach((flow) => {
     if (!visitedFlows.includes(flow.uuid)) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      process_flow(flow);
+      processFlowForCreatingFlowStack(flow)
     }
+  })
+  return flowStack
+}
+export function createContainerFlowStackAndReturnLastItem(jsonData: IContext): IFlow['uuid'] {
+  if (isEmpty(jsonData)) {
+      return ''
   }
-}
-
-export function getLastItemFromContainerFlowStack(flow_stack: string[]): string {
-  return flow_stack[flow_stack.length - 1];
-}
-export function createContainerFlowStackAndReturnLastItem(json_data: any): string {
-    const flow_stack: string[] = [];
-    if (isEmpty(json_data)) { return ''; }
-    createContainerFlowStack(json_data, flow_stack);
-    return getLastItemFromContainerFlowStack(flow_stack);
+  const flowStack = createContainerFlowStack(jsonData)
+  const lastItem = flowStack.pop()
+  return lastItem ?? ''
 }
 
 export function checkSingleFlowOnly(flowContainer: IContext): boolean {
