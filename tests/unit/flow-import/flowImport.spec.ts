@@ -3,7 +3,7 @@ import {IContext} from '@floip/flow-runner'
 
 describe('create_flow_stack', () => {
   test('should create a flow stack with correct order', () => {
-    const json_data = `
+    const jsonData = `
       {
         "flows": [
           {
@@ -41,11 +41,15 @@ describe('create_flow_stack', () => {
           {
             "uuid": "flow4",
             "blocks": []
+          },
+          {
+            "uuid": "flow5",
+            "blocks": []
           }
         ]
       }
-    `;
-    const jsonDataParsed = JSON.parse(json_data)
+    `
+    const jsonDataParsed = JSON.parse(jsonData)
 
     const contextObject = {
     name: 'TODO',
@@ -54,6 +58,6 @@ describe('create_flow_stack', () => {
     flows: jsonDataParsed.flows,
   } as unknown as IContext
     const flowStack = createContainerFlowStack(contextObject)
-    expect(flowStack).toEqual(['flow3', 'flow2', 'flow4', 'flow1'])
+    expect(flowStack).toEqual(['flow3', 'flow2', 'flow4', 'flow1', 'flow5'])
   })
 })
