@@ -960,6 +960,7 @@ export declare const defaultLocalisations: {
         "msmcq-description-p3": string;
         "multiple-choice-question": string;
         "multiple-select-multiple-choice-question": string;
+        "n-flows-saved": string;
         name: string;
         never: string;
         "new-contact-created": string;
@@ -1524,7 +1525,6 @@ export declare const defaultLocalisations: {
         "tree-result-import-heading-validation-error": string;
         "tree-result-import-in-progress": string;
         "flow-saved": string;
-        "multiple-flows-saved": string;
         "tree-update-conflict": string;
         "tree-used-elsewhere-by-x-at-x": string;
         "tree-versions": string;
@@ -2648,6 +2648,7 @@ export declare const defaultLocalisations: {
         "msmcq-description-p3": string;
         "multiple-choice-question": string;
         "multiple-select-multiple-choice-question": string;
+        "n-flows-saved": string;
         name: string;
         never: string;
         "new-contact-created": string;
@@ -3212,7 +3213,6 @@ export declare const defaultLocalisations: {
         "tree-result-import-heading-validation-error": string;
         "tree-result-import-in-progress": string;
         "flow-saved": string;
-        "multiple-flows-saved": string;
         "tree-update-conflict": string;
         "tree-used-elsewhere-by-x-at-x": string;
         "tree-versions": string;
