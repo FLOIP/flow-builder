@@ -27,26 +27,24 @@ export function updateResourcesForLanguageMatch(
 export function mergeFlowContainer(
   existingFlowContainer: IContext, newFlowContainer: IContext,
 ): IContext {
-  const existingFlowContainerStore = cloneDeep(existingFlowContainer);
+  const clonedExistingFlowContainer = cloneDeep(existingFlowContainer)
 
-  const newFlows = get(newFlowContainer, 'flows', []);
+  const newFlows = newFlowContainer.flows
 
   newFlows.forEach((newFlow) => {
-    const newFlowUUID = get(newFlow, 'uuid');
     const existingFlowIndex = findIndex(
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      existingFlowContainerStore.flows,
-      (flow) => flow.uuid === newFlowUUID,
-    );
+      clonedExistingFlowContainer.flows,
+      (flow) => flow.uuid === newFlow.uuid,
+    )
 
     if (existingFlowIndex < 0) {
-      existingFlowContainerStore.flows.push(newFlow);
+      clonedExistingFlowContainer.flows.push(newFlow)
     } else {
-      existingFlowContainerStore.flows[existingFlowIndex] = newFlow;
+      clonedExistingFlowContainer.flows[existingFlowIndex] = newFlow
     }
-  });
+  })
 
-  return existingFlowContainerStore
+  return clonedExistingFlowContainer
 }
 
 export function checkSingleFlowOnly(flowContainer: IContext): boolean {
