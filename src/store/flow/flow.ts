@@ -178,7 +178,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
    * Persistence for IMPORT action
    */
   async flow_persistImport({getters, commit, dispatch}, {persistRoute, flowContainer}): Promise<IContext | null> {
-    flowContainer = mergeFlowContainer(cloneDeep(getters.activeFlowContainer), flowContainer)
+    flowContainer = mergeFlowContainer(getters.activeFlowContainer, flowContainer)
     const restVerb = flowContainer.isCreated ? 'put' : 'post'
     const oldCreatedState = flowContainer.isCreated
     if (!persistRoute) {
