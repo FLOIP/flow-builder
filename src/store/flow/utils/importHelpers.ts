@@ -65,8 +65,8 @@ export function createContainerFlowStack(jsonData: IContext): IFlow['uuid'][] {
     visitedFlows.push(flow.uuid)
     flow.blocks.forEach((block) => {
       if (block.type === RUN_FLOW_BLOCK_TYPE) {
-        const flow_id: string = block.config.flow_id
-        const childFlow: IFlow | undefined = flows.find((f: { uuid: string }) => f.uuid === flow_id)
+        const flowId: string = block.config.flow_id
+        const childFlow: IFlow | undefined = flows.find((f: { uuid: string }) => f.uuid === flowId)
         if (childFlow && !visitedFlows.includes(childFlow.uuid)) {
           processFlowForCreatingFlowStack(childFlow)
         }
