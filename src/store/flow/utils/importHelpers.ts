@@ -1,6 +1,7 @@
 import {IBlock, IContainer, IContext, IFlow, IResource} from '@floip/flow-runner'
 
 import {cloneDeep, filter, findIndex, get, isEmpty, isEqual} from 'lodash'
+import {BLOCK_TYPE as RUN_FLOW_BLOCK_TYPE } from '@/store/flow/block-types/Core_RunFlowBlockStore'
 
 export function updateResourcesForLanguageMatch(
   resources: IResource[], oldId: string, newId: string,
@@ -52,10 +53,18 @@ export function createContainerFlowStack(jsonData: IContext): IFlow['uuid'][] {
   const visitedFlows: IFlow['uuid'][] = []
   const flowStack: IFlow['uuid'][] = []
 
+  /*
+  * The recursive function processFlowForCreatingFlowStack takes a flow object as an argument and starts iterating over its blocks. If a block has a type of "Core.RunFlow,"
+  * it means that this block is calling another flow,
+  * so the function recursively calls itself with the child flow as an argument.
+  * This ensures that all the nested flows are processed before moving back to the parent flow.
+  *
+  * Once all the nested flows are processed, the parent flow is added to the flowStack array.
+  * */
   function processFlowForCreatingFlowStack(flow: IFlow): void {
     visitedFlows.push(flow.uuid)
     flow.blocks.forEach((block) => {
-      if (block.type === 'Core.RunFlow') {
+      if (block.type === RUN_FLOW_BLOCK_TYPE) {
         const flow_id: string = block.config.flow_id
         const childFlow: IFlow | undefined = flows.find((f: { uuid: string }) => f.uuid === flow_id)
         if (childFlow && !visitedFlows.includes(childFlow.uuid)) {
