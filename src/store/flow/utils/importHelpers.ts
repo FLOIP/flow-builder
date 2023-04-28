@@ -1,7 +1,7 @@
-import {IBlock, IContainer, IContext, IFlow, IResource} from '@floip/flow-runner'
+import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
 
 import {cloneDeep, filter, findIndex, get, isEmpty, isEqual} from 'lodash'
-import {BLOCK_TYPE as RUN_FLOW_BLOCK_TYPE } from '@/store/flow/block-types/Core_RunFlowBlockStore'
+import {BLOCK_TYPE as RUN_FLOW_BLOCK_TYPE} from '@/store/flow/block-types/Core_RunFlowBlockStore'
 
 export function updateResourcesForLanguageMatch(
   resources: IResource[], oldId: string, newId: string,
