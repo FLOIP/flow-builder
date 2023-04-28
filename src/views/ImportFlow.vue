@@ -224,8 +224,8 @@ class ImportFlow extends mixins(Lang, Routes) {
       this.reset()
       let notificationMessage = ''
       if (numberOfFlows > 1) {
-        notificationMessage = Lang.trans('flow-builder.multiple-flows-saved', {
-          n: numberOfFlows,
+        notificationMessage = Lang.trans('flow-builder.n-flows-saved', {
+          number: numberOfFlows,
         })
       } else {
         notificationMessage = Lang.trans('flow-builder.flow-saved')
