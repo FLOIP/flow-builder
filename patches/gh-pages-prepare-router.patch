@@ -1,13 +1,13 @@
 diff --git a/src/router/index.ts b/src/router/index.ts
-index 6e44979..6020a99 100644
+index cb033699..b9e7ee1f 100644
 --- a/src/router/index.ts
 +++ b/src/router/index.ts
 @@ -11,7 +11,7 @@ export const routes: Array<RouteConfig> = [
  ]
  
  export const router = new VueRouter({
--  mode: 'history',
-+  //mode: 'history',
+-  //mode: 'history',
++  mode: 'history',
    base: process.env.BASE_URL,
    scrollBehavior,
    routes,

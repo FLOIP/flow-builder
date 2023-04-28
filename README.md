@@ -22,15 +22,17 @@ Note, `yarn serve` will also hot reload for development.
 
 ## Development
 ### Frequently used yarn commands
-| Command                         | Description                                                     |
-|---------------------------------|-----------------------------------------------------------------|
-| yarn install                    | Install dependencies                                            |
-| yarn serve                      | Serve the app, and provide hot reload for development           |
-| yarn build-bundle               | Compiles and minifies for production & for other consumer apps  |
-| yarn resolve-conflicting-builds | Resolves dist/ conflicts and rebuilds the application           |
-| yarn update-flow-runner         | Interactive update for flow-runner                              |
-| yarn deep-update-flow-packages  | Making sure the flow project dependencies are updated correctly |
-| yarn lint                       | Lints and fixes files                                           |
+| Command                         | Description                                                                                              |
+|---------------------------------|----------------------------------------------------------------------------------------------------------|
+| yarn install                    | Install dependencies                                                                                     |
+| yarn serve                      | Serve the app, and provide hot reload for development                                                    |
+| yarn build-bundle               | Compiles and minifies for production & for other consumer apps                                           |
+| yarn resolve-conflicting-builds | Resolves dist/ conflicts and rebuilds the application                                                    |
+| yarn update-flow-runner         | Interactive update for flow-runner                                                                       |
+| yarn deep-update-flow-packages  | Making sure the flow project dependencies are updated correctly                                          |
+| yarn lint                       | Lints and fixes files                                                                                    |
+| yarn test:unit                  | Run your unit tests                                                                                      |
+| yarn test:regenerate-storyshots | Run your unit tests and make sure to update storyshots (snapshot tests)<br/> if storyshots is configured |
 
 Check the `packages.json`'s `scripts` to see more available commands.
 
