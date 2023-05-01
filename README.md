@@ -22,14 +22,15 @@ Note, `yarn serve` will also hot reload for development.
 
 ## Development
 ### Frequently used yarn commands
-| Command                        | Description                                                     |
-|--------------------------------|-----------------------------------------------------------------|
-| yarn install                   | Install dependencies                                            |
-| yarn serve                     | Serve the app, and provide hot reload for development           |
-| yarn build-bundle              | Compiles and minifies for production & for other consumer apps  |
-| yarn update-flow-runner        | Interactive update for flow-runner                              |
-| yarn deep-update-flow-packages | Making sure the flow project dependencies are updated correctly |
-| yarn lint                      | Lints and fixes files                                           |
+| Command                         | Description                                                     |
+|---------------------------------|-----------------------------------------------------------------|
+| yarn install                    | Install dependencies                                            |
+| yarn serve                      | Serve the app, and provide hot reload for development           |
+| yarn build-bundle               | Compiles and minifies for production & for other consumer apps  |
+| yarn resolve-conflicting-builds | Resolves dist/ conflicts and rebuilds the application           |
+| yarn update-flow-runner         | Interactive update for flow-runner                              |
+| yarn deep-update-flow-packages  | Making sure the flow project dependencies are updated correctly |
+| yarn lint                       | Lints and fixes files                                           |
 
 Check the `packages.json`'s `scripts` to see more available commands.
 
@@ -95,6 +96,8 @@ This is related to `Flow.js` library which is providing multiple simultaneous, s
 1. You only need to serve it with `yarn storybook:serve`
 2. Then follow the provided url, by default it should be `http://localhost:6006/` (but in case the port `6006` is non-available, it may use different one)
 
+(TODO: fix the storyshots testing)
+
 ### An explanation of app.config.json vs builder.config.json
 `app.config.json` is intended to support the configuration needed when integrating this flow building ui into a larger platform or application while `builder.config.json` is intended to configure those features which are core to the flow builder - the blocks enabled, languages or content types supported etc.
 
@@ -148,3 +151,4 @@ To export, simply copy the json in this panel to a file.
 - A way to add to the supportable languages
 - Guidance for integration into a permissions system for flow editing/viewing
 - Add regression testing pipeline for storyshots
+- Use permissions feature in the repo, and concrete example of app.config.json usage, once we
