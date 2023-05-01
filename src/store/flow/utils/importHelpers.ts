@@ -27,21 +27,24 @@ export function updateResourcesForLanguageMatch(
 export function mergeFlowContainer(
   existingFlowContainer: IContext, newFlowContainer: IContext,
 ): IContext {
-  const newExistingFlowContainer = cloneDeep(existingFlowContainer)
-  // There should only be a single flow imported at a time currently.
-  // We block any more than this in the importer
-  const newFlow = get(newFlowContainer, 'flows[0]')
-  const newFlowUUID = get(newFlowContainer, 'flows[0].uuid')
-  const existingFlowIndex = findIndex(
-    newExistingFlowContainer.flows,
-    (flow) => flow.uuid === newFlowUUID,
-  )
-  if (existingFlowIndex < 0) {
-    newExistingFlowContainer.flows.push(newFlow)
-  } else {
-    newExistingFlowContainer.flows[existingFlowIndex] = newFlow
-  }
-  return newExistingFlowContainer
+  const clonedExistingFlowContainer = cloneDeep(existingFlowContainer)
+
+  const newFlows = newFlowContainer.flows
+
+  newFlows.forEach((newFlow) => {
+    const existingFlowIndex = findIndex(
+      clonedExistingFlowContainer.flows,
+      (flow) => flow.uuid === newFlow.uuid,
+    )
+
+    if (existingFlowIndex < 0) {
+      clonedExistingFlowContainer.flows.push(newFlow)
+    } else {
+      clonedExistingFlowContainer.flows[existingFlowIndex] = newFlow
+    }
+  })
+
+  return clonedExistingFlowContainer
 }
 
 export function checkSingleFlowOnly(flowContainer: IContext): boolean {
