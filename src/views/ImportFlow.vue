@@ -105,6 +105,7 @@ import {mixins} from 'vue-class-component'
 import {store} from '@/store'
 import {IContext} from '@floip/flow-runner'
 import ErrorHandlerV2 from '@/components/interaction-designer/flow-editors/import/ErrorHandlerV2.vue'
+import {createContainerFlowStackAndReturnLastItem} from '@/store/flow/utils/importHelpers'
 
 import ImportStore from '@/store/flow/views/import'
 import {ErrorObject} from 'ajv'
@@ -179,7 +180,7 @@ class ImportFlow extends mixins(Lang, Routes) {
   @importVuexNamespace.Getter isSafeToImport!: boolean
 
   get flowUUID() {
-    return get(this.flowContainer, 'flows[0].uuid')
+    return createContainerFlowStackAndReturnLastItem(this.flowContainer)
   }
 
   chooseFile() {
