@@ -4,25 +4,27 @@
       v-if="label"
       :class="labelClass">{{ label }}</label>
 
-    <div class="input-group">
+    <div class="input-group d-flex flex-column">
       <div
         v-if="prependText"
-        class="input-group-prepend">
+        class="input-group-prepend flex-row">
         <span class="input-group-text">{{ prependText }}</span>
       </div>
 
-      <textarea
-        ref="input"
-        v-model="expression"
-        :class="['form-control', {'is-invalid': isInvalid}]"
-        :disabled="disabled"
-        :rows="rows"
-        :placeholder="placeholder"
-        @click="handleClick()"
-        @input="$emit('input', $event.target.value)" />
+      <div class="flex-row">
+        <textarea
+          ref="input"
+          v-model="expression"
+          :class="['form-control', {'is-invalid': isInvalid}]"
+          :disabled="disabled"
+          :rows="rows"
+          :placeholder="placeholder"
+          @click="handleClick()"
+          @input="$emit('input', $event.target.value)" />
+      </div>
       <div
         ref="suggest"
-        class="cloned-auto-suggest-content" />
+        class="cloned-auto-suggest-content flex-row" />
     </div>
     <slot />
   </div>
@@ -108,8 +110,9 @@ export class ExpressionInput extends mixins(Lang) {
    */
   portAutoSuggestContent(): void {
     // override position which came from AutoSuggest original code
+    this.autoSuggestDropdown.style.position = 'relative'
     this.autoSuggestDropdown.style.left = '0px'
-    this.autoSuggestDropdown.style.top = `${this.refInputElement.clientHeight}px`
+    this.autoSuggestDropdown.style.top = `0px`
 
     // move the created autoSuggestDropdown inside the desired dom
     this.refAutoSuggestElement?.appendChild(this.autoSuggestDropdown)
