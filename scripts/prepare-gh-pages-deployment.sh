@@ -11,13 +11,15 @@ abort()
     echo >&2 '
 ******************************************************************************************
 *** Patching aborted, there could be a conflict, you may need to re-generate patches manually
-*** - Edit manually desired files, then
-*** - Regenerate patches:
+*** - Edit manually affected files (get inspiration from the affected *.patch files), then
+*** - Regenerate patches, eg per patch type:
 ***     $ git diff src/router/index.ts > patches/gh-pages-prepare-router.patch
 ***     $ git diff vue.config.js > patches/gh-pages-prepare-vue-config.patch
 ***     $ git diff builder.config.json > patches/remove-backend-routes-from-config.patch
 ***     $ git diff builder.config.json > patches/disable-save-button.patch
-*** - commit changes for future usage
+*** - commit changes on the *patch file to fix this script
+*** - re-run this script `./scripts/prepare-gh-pages-deployment.sh` to make sure every works. Redo above steps in case of error.
+*** - rollback changes on the affected non patch files (eg: src/router/index.ts, vue.config.js, builder.config.json)
 *****************************************************************************************
 '
     echo "An error occurred. Exiting..." >&2
