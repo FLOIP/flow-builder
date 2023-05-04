@@ -113,6 +113,7 @@
           break
         case OutputBranchingType.ADVANCED:
           // todo: restore from cache
+          this.$emit('branchingTypeChangedToAdvanced')
           break
         default:
           console.warn('block-editors/BlockOutputBranchingConfig',
