@@ -435,8 +435,6 @@ export default InteractionDesigner
   $sidebar-width: 365px;
 
   .interaction-designer-contents {
-    min-height: 100vh;
-    display:inline-block;
     margin: 0;
     padding: 0;
   }
@@ -503,6 +501,10 @@ export default InteractionDesigner
 
   .interaction-designer-main {
     flex: 1;
+
+    overflow: scroll;
+    width: 100%;
+    height: 100%;
   }
 
 </style>
