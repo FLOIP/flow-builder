@@ -437,6 +437,9 @@ export default InteractionDesigner
   .interaction-designer-contents {
     margin: 0;
     padding: 0;
+
+    display: flex;
+    flex-direction: column;
   }
 
   .tree-sidebar-container {
