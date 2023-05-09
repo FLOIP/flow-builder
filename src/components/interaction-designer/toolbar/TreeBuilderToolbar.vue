@@ -694,6 +694,7 @@ export default TreeBuilderToolbar
 }
 
 .tree-builder-toolbar-alerts {
+  position: relative;
   background: $neutral-40;
 }
 
