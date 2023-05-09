@@ -39,9 +39,13 @@ export class PlainDraggable extends mixins(Lang) {
       ? document.getElementById(this.dragHandleId)
       : this.$el.querySelectorAll('.draggable-handle')[0]
 
+    const canvas = document.querySelector('.builder-canvas')
+
     this.draggable = new PlainDraggableLib(this.$el, {
-      containment: document.querySelector('.builder-canvas'),
+      containment: canvas,
+
       autoScroll: true,
+      target: canvas,
 
       // prevent css translate() animations for move
       // they don't seem to be throttled enough for leaderline to follow tightly
