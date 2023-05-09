@@ -439,16 +439,6 @@ export default InteractionDesigner
     padding: 0;
   }
 
-  .interaction-designer-header {
-    width: 100vw;
-    position: sticky;
-    top: 0;
-    left: 0;
-    display:inline-block;
-    z-index: 4*10;
-    margin-right: -100%;
-  }
-
   .tree-sidebar-container {
     position: fixed;
     right: 0;
