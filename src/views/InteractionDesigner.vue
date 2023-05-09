@@ -3,7 +3,7 @@
     v-if="activeFlow"
     ref="interaction-designer-contents"
     class="interaction-designer interaction-designer-contents">
-    <header ref="interaction-designer-header" class="interaction-designer-header">
+    <header class="interaction-designer-header">
       <slot name="toolbar">
         <tree-builder-toolbar />
       </slot>
@@ -33,15 +33,19 @@
       </div>
     </aside>
 
-    <main class="interaction-designer-main">
+    <main
+      ref="interaction-designer-main"
+      class="interaction-designer-main">
       <builder-canvas
         v-if="mainComponent === 'builder'"
         :width-adjustment="builderWidthAdjustment"
         @click.native="handleCanvasSelected" />
       <resource-viewer
-        v-else-if="mainComponent === 'resource-viewer'"/>
+        v-else-if="mainComponent === 'resource-viewer'" />
       <div v-else>
-        <div class="alert alert-danger">ERROR: component '{{ mainComponent }}' is not supported</div>
+        <div class="alert alert-danger">
+          ERROR: component '{{ mainComponent }}' is not supported
+        </div>
       </div>
     </main>
   </div>
@@ -131,7 +135,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   @validationVuexNamespace.Action validate_allBlocksWithinFlow!: () => Promise<void>
   debounceBlockValidation = debounce(function (this: any) {
     if (this.activeFlow !== undefined) {
-      console.debug('watch/activeFlow.blocks:', 'blocks inside active flow have changed', `from ${this.mainComponent}.`, 'Validating ...');
+      console.debug('watch/activeFlow.blocks:', 'blocks inside active flow have changed', `from ${this.mainComponent}.`, 'Validating ...')
       this.validate_allBlocksWithinFlow()
     } else {
       console.warn('watch/activeFlow.blocks:', 'activeFlow is undefined')
@@ -308,8 +312,8 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   onScroll(e) {
     if (this.isBuilderCanvasEnabled) {
       // will be used to set other elements' position in the canvas (eg: for block editor)
-      if (this.$refs['interaction-designer-header'] !== undefined) {
-        this.setInteractionDesignerHeaderBoundingClientRect((this.$refs['interaction-designer-header'] as Element).getBoundingClientRect())
+      if (this.$refs['interaction-designer-main'] !== undefined) {
+        this.setInteractionDesignerMainBoundingClientRect((this.$refs['interaction-designer-main'] as Element).getBoundingClientRect())
       }
     }
   }
@@ -327,7 +331,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   @Mutation deselectBlocks!: () => void
   @builderNamespace.Mutation activateBlock!: ({blockId}: {blockId: IBlock['uuid'] | null}) => void
   @builderNamespace.Mutation setIsBlockEditorOpen!: (value: boolean) => void
-  @builderNamespace.Mutation setInteractionDesignerHeaderBoundingClientRect!: (value: DOMRect) => void
+  @builderNamespace.Mutation setInteractionDesignerMainBoundingClientRect!: (value: DOMRect) => void
   @builderNamespace.Action setIsEditable!: (arg0: boolean) => void
   @builderNamespace.Action setHasFlowChanges!: (arg0: boolean) => void
   @flowNamespace.Mutation flow_setActiveFlowId!: ({flowId}: {flowId: string | null}) => void
@@ -435,24 +439,12 @@ export default InteractionDesigner
   $sidebar-width: 365px;
 
   .interaction-designer-contents {
-    min-height: 100vh;
-    display:inline-block;
     margin: 0;
     padding: 0;
-  }
 
-  .interaction-designer-header {
-    width: 100vw;
-    position: sticky;
-    top: 0;
-    left: 0;
-    display:inline-block;
-    z-index: 4*10;
-    margin-right: -100%;
-  }
-
-  .viamo-app-container .interaction-designer-header {
-    margin-left: -100px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
   }
 
   .tree-sidebar-container {
@@ -503,6 +495,14 @@ export default InteractionDesigner
 
   .interaction-designer-main {
     flex: 1;
+
+    overflow: scroll;
+    width: 100%;
+    height: 100%;
   }
 
+  .interaction-designer-header {
+    // Should be above LeaderLine instances
+    z-index: 20;
+  }
 </style>

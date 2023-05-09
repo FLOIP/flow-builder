@@ -184,5 +184,6 @@ export default BuilderCanvas
   min-width: 1024px;
   min-height: 768px;
   background: $neutral-40;
+  position: relative;
 }
 </style>

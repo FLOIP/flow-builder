@@ -171,6 +171,11 @@ export class Connection extends mixins(Lang) {
     // stop listening to scroll and window resize hooks
     // LeaderLine.positionByWindowResize = false
     // this.line.positionByWindowResize = false
+
+    document.querySelector('.interaction-designer-main')
+      ?.addEventListener('scroll', () => {
+        this.reposition()
+      })
   }
 
   beforeDestroy(): void {

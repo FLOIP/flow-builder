@@ -57,7 +57,7 @@ export interface IBuilderState {
   //this will be populated when we drag an exit
   draggableForExitsByUuid: Record<string, Draggable>,
   isBlockEditorOpen: boolean,
-  interactionDesignerHeaderBoundingClientRect: DOMRect,
+  interactionDesignerMainBoundingClientRect: DOMRect,
   isConnectionCreationInProgress: boolean,
 }
 
@@ -76,7 +76,7 @@ export const stateFactory = (): IBuilderState => ({
   },
   draggableForExitsByUuid: {},
   isBlockEditorOpen: false,
-  interactionDesignerHeaderBoundingClientRect: {} as DOMRect,
+  interactionDesignerMainBoundingClientRect: {} as DOMRect,
   isConnectionCreationInProgress: false,
 })
 
@@ -98,7 +98,7 @@ export const getters: GetterTree<IBuilderState, IRootState> = {
 
   hasFlowChanges: (state) => state.hasFlowChanges,
 
-  interactionDesignerHeaderBoundingClientRect: (state) => state.interactionDesignerHeaderBoundingClientRect,
+  interactionDesignerMainBoundingClientRect: (state) => state.interactionDesignerMainBoundingClientRect,
 
   isBuilderCanvasEnabled: (state) => state.activeMainComponent === 'builder',
 
@@ -158,8 +158,8 @@ export const mutations: MutationTree<IBuilderState> = {
     state.isBlockEditorOpen = value
   },
 
-  setInteractionDesignerHeaderBoundingClientRect(state, value) {
-    state.interactionDesignerHeaderBoundingClientRect = value
+  setInteractionDesignerMainBoundingClientRect(state, value) {
+    state.interactionDesignerMainBoundingClientRect = value
   },
 }
 

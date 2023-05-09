@@ -39,7 +39,7 @@ export interface IBuilderState {
     };
     draggableForExitsByUuid: Record<string, Draggable>;
     isBlockEditorOpen: boolean;
-    interactionDesignerHeaderBoundingClientRect: DOMRect;
+    interactionDesignerMainBoundingClientRect: DOMRect;
     isConnectionCreationInProgress: boolean;
 }
 export declare const stateFactory: () => IBuilderState;
