@@ -83,7 +83,7 @@ export declare class InteractionDesigner extends InteractionDesigner_base {
         blockId: IBlock['uuid'] | null;
     }) => void;
     setIsBlockEditorOpen: (value: boolean) => void;
-    setInteractionDesignerHeaderBoundingClientRect: (value: DOMRect) => void;
+    setInteractionDesignerMainBoundingClientRect: (value: DOMRect) => void;
     setIsEditable: (arg0: boolean) => void;
     setHasFlowChanges: (arg0: boolean) => void;
     flow_setActiveFlowId: ({ flowId }: {
