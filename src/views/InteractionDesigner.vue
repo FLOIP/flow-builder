@@ -501,4 +501,8 @@ export default InteractionDesigner
     height: 100%;
   }
 
+  .interaction-designer-header {
+    // Should be above LeaderLine instances
+    z-index: 20;
+  }
 </style>
