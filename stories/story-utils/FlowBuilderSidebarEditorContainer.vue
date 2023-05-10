@@ -5,7 +5,7 @@
         <nav class="bs-docs-sidebar">
           <div
             id="tree-sidebar"
-            class="tree-sidebar-menu">
+            class="block-editor tree-sidebar-menu">
             <div
               v-if="block"
               class="tree-sidebar-edit-block"

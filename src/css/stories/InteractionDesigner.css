@@ -354,7 +354,6 @@ textarea.form-control {
     background-color: #eee;
     border-left: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
-    padding-top: 54px;
     width: 365px;
     height: 100%;
 }
@@ -362,13 +361,9 @@ textarea.form-control {
 .tree-sidebar-menu-container > .affix {
     -webkit-transition: opacity 0.25s ease-in-out;
     transition: opacity 0.25s ease-in-out;
-    position: fixed;
-    top: 62px;
     right: 1em;
     z-index: 29;
-    height: 88%;
     width: 380px;
-    padding-bottom: 150px;
     background: #efefef;
     opacity: 0.9;
     border-left: none;

@@ -1,12 +1,12 @@
 diff --git a/vue.config.js b/vue.config.js
-index b862636..8c29f20 100644
+index 9706bf11..5f46bbec 100644
 --- a/vue.config.js
 +++ b/vue.config.js
-@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
+@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
  const cookieParser = require('cookie-parser')
  
  module.exports = {
 +  publicPath: '/flow-builder/',
    lintOnSave: false,
    runtimeCompiler: true,
-   css: {
+   parallel: false,

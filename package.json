@@ -14,7 +14,7 @@
     "build-bundle-and-commit": "yarn clean && yarn build-bundle && git add dist/ && git commit -m \"build-bundle\"",
     "resolve-conflicting-builds": "git checkout --theirs dist/ && yarn build-bundle",
     "test:unit": "vue-cli-service test:unit",
-    "test:regenerate-storyshots": "vue-cli-service test:unit --no-cache",
+    "test:regenerate-storyshots": "vue-cli-service test:unit --no-cache -u",
     "lint": "vue-cli-service lint",
     "storybook:build": "vue-cli-service storybook:build -c config/storybook",
     "storybook:serve": "vue-cli-service storybook:serve -p 6006 -c config/storybook",
