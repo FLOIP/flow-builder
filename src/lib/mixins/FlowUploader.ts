@@ -41,7 +41,9 @@ const dispatch = (el: HTMLElement, name: string, data: {}): void => {
         extend(el.style, {overflow: 'hidden'})
         uploader.assignBrowse([el])
 
+        // eslint-disable-next-line lodash/chaining
         chain(el.children)
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           .find({
             tagName: 'INPUT',
             type: 'file',

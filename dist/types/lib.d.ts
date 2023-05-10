@@ -960,6 +960,7 @@ export declare const defaultLocalisations: {
         "msmcq-description-p3": string;
         "multiple-choice-question": string;
         "multiple-select-multiple-choice-question": string;
+        "n-flows-saved": string;
         name: string;
         never: string;
         "new-contact-created": string;
@@ -2647,6 +2648,7 @@ export declare const defaultLocalisations: {
         "msmcq-description-p3": string;
         "multiple-choice-question": string;
         "multiple-select-multiple-choice-question": string;
+        "n-flows-saved": string;
         name: string;
         never: string;
         "new-contact-created": string;

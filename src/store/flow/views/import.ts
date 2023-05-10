@@ -249,18 +249,6 @@ export const actions: ActionTree<IImportState, IRootState> = {
         isValid = false
       }
 
-      if (flowContainer.flows?.length > 1) {
-        commit('validation/pushAjvErrorToValidationStatuses', {
-          key,
-          ajvError: {
-            dataPath,
-            keyword,
-            message: Lang.trans('flow-builder-validation.importer-currently-supports-single-flow-only'),
-          } as ErrorObject,
-        }, {root: true})
-        isValid = false
-      }
-
       const supportedSpecVersions = rootGetters?.supportedFlowSpecVersionsForImport
       if (supportedSpecVersions === undefined
         || !Array.isArray(supportedSpecVersions)
