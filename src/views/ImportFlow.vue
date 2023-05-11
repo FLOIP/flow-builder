@@ -105,6 +105,7 @@ import {mixins} from 'vue-class-component'
 import {store} from '@/store'
 import {IContext} from '@floip/flow-runner'
 import ErrorHandlerV2 from '@/components/interaction-designer/flow-editors/import/ErrorHandlerV2.vue'
+import {createContainerFlowStackAndReturnLastItem} from '@/store/flow/utils/importHelpers'
 
 import ImportStore from '@/store/flow/views/import'
 import {ErrorObject} from 'ajv'
@@ -179,7 +180,7 @@ class ImportFlow extends mixins(Lang, Routes) {
   @importVuexNamespace.Getter isSafeToImport!: boolean
 
   get flowUUID() {
-    return get(this.flowContainer, 'flows[0].uuid')
+    return createContainerFlowStackAndReturnLastItem(this.flowContainer)
   }
 
   chooseFile() {
@@ -214,16 +215,29 @@ class ImportFlow extends mixins(Lang, Routes) {
 
   async handleImportFlow(route: string) {
     const flowContainer = await this.flow_persistImport({
-      // @ts-ignore - Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
+      // Would need to switch mixins to class components to fix this - https://class-component.vuejs.org/guide/extend-and-mixins.html#mixins
       persistRoute: this.route('flows.persistFlowImport', {}),
       flowContainer: this.flowContainer,
     })
+    const numberOfFlows = flowContainer.flows.length ?? 0
 
-    if (flowContainer != null) {
+    try {
       this.reset()
+      let notificationMessage = ''
+      if (numberOfFlows > 1) {
+        notificationMessage = Lang.trans('flow-builder.n-flows-saved', {
+          number: numberOfFlows,
+        })
+      } else {
+        notificationMessage = Lang.trans('flow-builder.flow-saved')
+      }
+      this.$toast.success(notificationMessage, {
+            timeout: 3000,
+            hideProgressBar: true,
+      })
       this.$router.push(route)
-    } else {
-      console.warn('There was something wrong when trying to import flow', 'Check console log for more details')
+    } catch (e) {
+      console.warn('There was something wrong when trying to import flow', 'Check console log for more details', e)
     }
   }
 
