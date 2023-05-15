@@ -22,7 +22,7 @@ declare class ImportFlow extends ImportFlow_base {
     debounceHandleFlowJsonTextChange: ((value: string) => Promise<void>) & import("lodash").Cancelable;
     handleFlowJsonTextChange(value: string): Promise<void>;
     isSafeToImport: boolean;
-    get flowUUID(): any;
+    get flowUUID(): string;
     chooseFile(): void;
     handleFileUpload(event: any): Promise<void>;
     pushAjvErrorToValidationStatuses: ({ key, ajvError }: {

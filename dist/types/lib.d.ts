@@ -669,7 +669,7 @@ export declare const defaultLocalisations: {
         "error-while-attempting-to-publish-specified-tree": string;
         "error-while-downloading-template": string;
         "error-while-saving-transcriptions": string;
-        "error-while-saving-tree": string;
+        "error-while-saving-flow": string;
         "establish-connection": string;
         "example-tree": string;
         examples: string;
@@ -960,6 +960,7 @@ export declare const defaultLocalisations: {
         "msmcq-description-p3": string;
         "multiple-choice-question": string;
         "multiple-select-multiple-choice-question": string;
+        "n-flows-saved": string;
         name: string;
         never: string;
         "new-contact-created": string;
@@ -1247,7 +1248,7 @@ export declare const defaultLocalisations: {
         saving: string;
         "saving-and-checking-for-errors": string;
         "saving-transcriptions": string;
-        "saving-tree": string;
+        "saving-flow": string;
         "schedule-and-send-an-outgoing-call": string;
         "schedule-type": string;
         "search-audio-library": string;
@@ -1523,7 +1524,7 @@ export declare const defaultLocalisations: {
         "tree-restored": string;
         "tree-result-import-heading-validation-error": string;
         "tree-result-import-in-progress": string;
-        "tree-saved": string;
+        "flow-saved": string;
         "tree-update-conflict": string;
         "tree-used-elsewhere-by-x-at-x": string;
         "tree-versions": string;
@@ -1674,6 +1675,9 @@ export declare const defaultLocalisations: {
         "with-subscriber-phone-number": string;
         words: string;
         "working-loading": string;
+        "x-characters": string;
+        "x-pages": string;
+        "x-unicode-pages": string;
         "x-of-y": string;
         "x-text-responses": string;
         year: string;
@@ -2353,7 +2357,7 @@ export declare const defaultLocalisations: {
         "error-while-attempting-to-publish-specified-tree": string;
         "error-while-downloading-template": string;
         "error-while-saving-transcriptions": string;
-        "error-while-saving-tree": string;
+        "error-while-saving-flow": string;
         "establish-connection": string;
         "example-tree": string;
         examples: string;
@@ -2644,6 +2648,7 @@ export declare const defaultLocalisations: {
         "msmcq-description-p3": string;
         "multiple-choice-question": string;
         "multiple-select-multiple-choice-question": string;
+        "n-flows-saved": string;
         name: string;
         never: string;
         "new-contact-created": string;
@@ -2931,7 +2936,7 @@ export declare const defaultLocalisations: {
         saving: string;
         "saving-and-checking-for-errors": string;
         "saving-transcriptions": string;
-        "saving-tree": string;
+        "saving-flow": string;
         "schedule-and-send-an-outgoing-call": string;
         "schedule-type": string;
         "search-audio-library": string;
@@ -3207,7 +3212,7 @@ export declare const defaultLocalisations: {
         "tree-restored": string;
         "tree-result-import-heading-validation-error": string;
         "tree-result-import-in-progress": string;
-        "tree-saved": string;
+        "flow-saved": string;
         "tree-update-conflict": string;
         "tree-used-elsewhere-by-x-at-x": string;
         "tree-versions": string;
@@ -3358,6 +3363,9 @@ export declare const defaultLocalisations: {
         "with-subscriber-phone-number": string;
         words: string;
         "working-loading": string;
+        "x-characters": string;
+        "x-pages": string;
+        "x-unicode-pages": string;
         "x-of-y": string;
         "x-text-responses": string;
         year: string;
@@ -3419,6 +3427,7 @@ export declare const defaultLocalisations: {
         "non-supported-spec-version": string;
         "unsupported-blocks-detected": string;
         "block-config-set_contact_property-x-property_key-type": string;
+        "resource-values-x-value-minLength": string;
     };
     "fr.flow-builder-validation": {
         "floip-format": string;
@@ -3456,6 +3465,7 @@ export declare const defaultLocalisations: {
         "non-supported-spec-version": string;
         "unsupported-blocks-detected": string;
         "block-config-set_contact_property-x-property_key-type": string;
+        "resource-values-x-value-minLength": string;
     };
 };
 export declare const BaseBlock: typeof BaseBlockComponent;

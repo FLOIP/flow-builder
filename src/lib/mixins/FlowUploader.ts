@@ -2,7 +2,7 @@ import Vue from 'vue'
 import {chain, extend} from 'lodash'
 import Component from 'vue-class-component'
 
-// For now we're using flowjs 2.0.0 to match with existing backend server of Viamo
+// For now, we're using flowjs 2.0.0 to match with existing backend server of Viamo
 // see readme to see an example of resumeableAudioUpload() controller implementation to handle GET & POST requests from flowjs
 import Flow from '@flowjs/flow.js'
 
@@ -41,7 +41,9 @@ const dispatch = (el: HTMLElement, name: string, data: {}): void => {
         extend(el.style, {overflow: 'hidden'})
         uploader.assignBrowse([el])
 
+        // eslint-disable-next-line lodash/chaining
         chain(el.children)
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           .find({
             tagName: 'INPUT',
             type: 'file',
@@ -78,8 +80,8 @@ const dispatch = (el: HTMLElement, name: string, data: {}): void => {
         }))
       },
 
-      unbind(el, binding) {
-      },
+      // unbind(el, binding) {
+      // },
     },
   },
 })

@@ -96,21 +96,22 @@
           </div>
         </div>
 
-        <validation-message
-          v-if="shouldUseOpenExpression"
-          #input-control="{ isValid }"
-          :message-key="`block/${block.uuid}/config/set_contact_property/property_value`">
-          <expression-input
-            class="mb-1"
-            :label="''"
-            :placeholder="'flow-builder.enter-expression' | trans"
-            :current-expression="propertyValue"
-            :valid-state="isValid"
-            @commitExpressionChange="updateFirstContactPropertyValue" />
+        <template v-if="shouldUseOpenExpression">
+          <validation-message :message-key="`block/${block.uuid}/config/set_contact_property/0/property_value`">
+            <template #input-control="{ isValid }">
+              <expression-input
+                class="mb-1"
+                :label="''"
+                :placeholder="'flow-builder.enter-expression' | trans"
+                :current-expression="propertyValue"
+                :valid-state="isValid"
+                @commitExpressionChange="updateFirstContactPropertyValue" />
+            </template>
+          </validation-message>
           <div class="small">
             {{ trans('flow-builder.hint-to-set-contact-prop-by-expression') }}
           </div>
-        </validation-message>
+        </template>
       </template>
     </div>
   </div>
@@ -192,7 +193,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
 
   // for radio buttons ######################
   initPropertyValueAction(): void {
-    if (this.disableExpressionInput || this.propertyValue === BLOCK_RESPONSE_EXPRESSION) {
+    if (this.isBlockInteractive(this.block) && (this.disableExpressionInput || this.propertyValue === BLOCK_RESPONSE_EXPRESSION)) {
       this.propertyValueAction = this.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE
     } else {
       this.propertyValueAction = this.PROPERTY_VALUE_ACTION.OPEN_EXPRESSION

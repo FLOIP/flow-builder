@@ -1,6 +1,8 @@
-import { IBlock, IContext, IResource } from '@floip/flow-runner';
+import { IBlock, IContext, IFlow, IResource } from '@floip/flow-runner';
 export declare function updateResourcesForLanguageMatch(resources: IResource[], oldId: string, newId: string): IResource[];
 export declare function mergeFlowContainer(existingFlowContainer: IContext, newFlowContainer: IContext): IContext;
+export declare function createContainerFlowStack(jsonData: IContext): IFlow['uuid'][];
+export declare function createContainerFlowStackAndReturnLastItem(jsonData: IContext): IFlow['uuid'];
 export declare function checkSingleFlowOnly(flowContainer: IContext): boolean;
 export declare function detectedLanguageChanges({ flowContainer, oldFlowContainer }: {
     flowContainer: IContext;

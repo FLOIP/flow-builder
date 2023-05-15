@@ -3547,6 +3547,7 @@ __metadata:
     popper.js: ^1.16.1
     sass-loader: ^8.0.2
     skeleton-loader: ^2.0.0
+    split-sms: ^0.1.7
     storybook-vue-router: ^1.0.7
     ts-jest: ^27.0.3
     ts-vue-plugin: ^0.1.3
@@ -3570,8 +3571,8 @@ __metadata:
   linkType: soft
 
 "@floip/flow-runner@npm:^1.0.12-rc4":
-  version: 1.0.12-rc4.17
-  resolution: "@floip/flow-runner@npm:1.0.12-rc4.17"
+  version: 1.0.12-rc4.18
+  resolution: "@floip/flow-runner@npm:1.0.12-rc4.18"
   dependencies:
     "@floip/expression-evaluator": ^2.1.3
     ajv: ^7.2.1
@@ -3584,7 +3585,7 @@ __metadata:
     tslib: ^2.0.1
     uuid: ^3.3.2
     yaml-import: ^2.0.0
-  checksum: d14bf600057997d070894b65da11e0e5859d84471a9fbbd04799ee3cda043c795baad08d2badceb59f096300e6ac950fd39e729b2720cf35cd19521176a44c8c
+  checksum: d73d5557513f121b2bdc1b12ee3b0350085bb8959064b5540b9825a50cad0ecf08c15c71eaf85fa457863b6d80df5aea522ac26dfc33a1dd0d4dd3400859bbd3
   languageName: node
   linkType: hard
 
@@ -25851,6 +25852,13 @@ jgexml@latest:
     select-hose: ^2.0.0
     spdy-transport: ^3.0.0
   checksum: 2c739d0ff6f56ad36d2d754d0261d5ec358457bea7cbf77b1b05b0c6464f2ce65b85f196305f50b7bd9120723eb94bae9933466f28e67e5cd8cde4e27f1d75f8
+  languageName: node
+  linkType: hard
+
+"split-sms@npm:^0.1.7":
+  version: 0.1.7
+  resolution: "split-sms@npm:0.1.7"
+  checksum: ecf3dfe2f66c478f3dbd0cf65e35c93c0d9510712d42d4500a7202b8fabb33f300e9a92f2521f3da1a9de397862f93cf8f41b720a6b9279028d89adbf8e57108
   languageName: node
   linkType: hard
 

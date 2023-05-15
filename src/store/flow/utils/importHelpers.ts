@@ -1,6 +1,7 @@
-import {IBlock, IContext, IResource} from '@floip/flow-runner'
+import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
 
-import {cloneDeep, filter, findIndex, get, isEqual} from 'lodash'
+import {cloneDeep, filter, findIndex, get, isEmpty, isEqual} from 'lodash'
+import {BLOCK_TYPE as RUN_FLOW_BLOCK_TYPE} from '@/store/flow/block-types/Core_RunFlowBlockStore'
 
 export function updateResourcesForLanguageMatch(
   resources: IResource[], oldId: string, newId: string,
@@ -27,21 +28,69 @@ export function updateResourcesForLanguageMatch(
 export function mergeFlowContainer(
   existingFlowContainer: IContext, newFlowContainer: IContext,
 ): IContext {
-  const newExistingFlowContainer = cloneDeep(existingFlowContainer)
-  // There should only be a single flow imported at a time currently.
-  // We block any more than this in the importer
-  const newFlow = get(newFlowContainer, 'flows[0]')
-  const newFlowUUID = get(newFlowContainer, 'flows[0].uuid')
-  const existingFlowIndex = findIndex(
-    newExistingFlowContainer.flows,
-    (flow) => flow.uuid === newFlowUUID,
-  )
-  if (existingFlowIndex < 0) {
-    newExistingFlowContainer.flows.push(newFlow)
-  } else {
-    newExistingFlowContainer.flows[existingFlowIndex] = newFlow
+  const clonedExistingFlowContainer = cloneDeep(existingFlowContainer)
+
+  const newFlows = newFlowContainer.flows
+
+  newFlows.forEach((newFlow) => {
+    const existingFlowIndex = findIndex(
+      clonedExistingFlowContainer.flows,
+      (flow) => flow.uuid === newFlow.uuid,
+    )
+
+    if (existingFlowIndex < 0) {
+      clonedExistingFlowContainer.flows.push(newFlow)
+    } else {
+      clonedExistingFlowContainer.flows[existingFlowIndex] = newFlow
+    }
+  })
+
+  return clonedExistingFlowContainer
+}
+
+export function createContainerFlowStack(jsonData: IContext): IFlow['uuid'][] {
+  const flows: IFlow[] = jsonData.flows
+  const visitedFlows: IFlow['uuid'][] = []
+  const flowStack: IFlow['uuid'][] = []
+
+  /*
+  * The recursive function processFlowForCreatingFlowStack takes a flow object as an argument and starts iterating over its blocks. If a block has a type of "Core.RunFlow,"
+  * it means that this block is calling another flow,
+  * so the function recursively calls itself with the child flow as an argument.
+  * This ensures that all the nested flows are processed before moving back to the parent flow.
+  *
+  * Once all the nested flows are processed, the parent flow is added to the flowStack array.
+  * */
+  function processFlowForCreatingFlowStack(flow: IFlow): void {
+    visitedFlows.push(flow.uuid)
+    flow.blocks.forEach((block) => {
+      if (block.type === RUN_FLOW_BLOCK_TYPE) {
+        const flowId: string = block.config.flow_id
+        const childFlow: IFlow | undefined = flows.find((f: { uuid: string }) => f.uuid === flowId)
+        if (childFlow && !visitedFlows.includes(childFlow.uuid)) {
+          processFlowForCreatingFlowStack(childFlow)
+        }
+      }
+    })
+    if (!flowStack.includes(flow.uuid)) {
+      flowStack.push(flow.uuid)
+    }
   }
-  return newExistingFlowContainer
+
+  flows.forEach((flow) => {
+    if (!visitedFlows.includes(flow.uuid)) {
+      processFlowForCreatingFlowStack(flow)
+    }
+  })
+  return flowStack
+}
+export function createContainerFlowStackAndReturnLastItem(jsonData: IContext): IFlow['uuid'] {
+  if (isEmpty(jsonData)) {
+      return ''
+  }
+  const flowStack = createContainerFlowStack(jsonData)
+  const lastItem = flowStack.pop()
+  return lastItem ?? ''
 }
 
 export function checkSingleFlowOnly(flowContainer: IContext): boolean {
