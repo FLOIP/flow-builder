@@ -11,6 +11,7 @@ declare class ImportFlow extends ImportFlow_base {
     fileName: string;
     beforeCreate(): Promise<void>;
     created(): Promise<void>;
+    mounted(): Promise<void>;
     resetValidationStatuses: ({ key }: {
         key: string;
     }) => void;
@@ -34,6 +35,7 @@ declare class ImportFlow extends ImportFlow_base {
         persistRoute: string;
         flowContainer: IContext;
     }) => Promise<IContext>;
+    flow_resetStates: () => void;
     handleImportFlow(route: string): Promise<void>;
     configure: ({ appConfig, builderConfig }: {
         appConfig: object;

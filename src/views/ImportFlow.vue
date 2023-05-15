@@ -143,6 +143,11 @@ class ImportFlow extends mixins(Lang, Routes) {
     }
   }
 
+  async mounted(): Promise<void> {
+    // reset states to make sure existing states don't interfere with the import logic
+    this.flow_resetStates()
+  }
+
   @validationVuexNamespace.Action resetValidationStatuses!: ({key}: {key: string}) => void
 
   get uploadOrPaste() {
@@ -212,6 +217,7 @@ class ImportFlow extends mixins(Lang, Routes) {
     persistRoute,
     flowContainer,
   }: { persistRoute: string, flowContainer: IContext }) => Promise<IContext>
+  @flowVuexNamespace.Mutation flow_resetStates!: () => void
 
   async handleImportFlow(route: string) {
     const flowContainer = await this.flow_persistImport({

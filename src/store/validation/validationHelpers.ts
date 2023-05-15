@@ -229,13 +229,10 @@ export function getOrCreateFlowValidator(schemaVersion: string): ValidateFunctio
  * Validator for the container and its content (flows, blocks, etc)
  */
 export function getOrCreateContainerImportValidator(schemaVersion: string): ValidateFunction {
-  const validationType = 'container_import'
-  if (isEmpty(validators) || !validators.has(validationType)) {
-    const flowJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`)
-
-    validators.set(validationType, createDefaultJsonSchemaValidatorFactoryFor(flowJsonSchema, '#/definitions/IContainer'))
-  }
-  return validators.get(validationType)!
+  // for a reason we don't know so far, we should not use the cached validator `validators` when importing a container
+  // in fact, the 1st import would work, but the 2nd one (without refreshing the page) would keep having wrong validation errors
+  const flowJsonSchema = require(`@floip/flow-runner/dist/resources/validationSchema/${schemaVersion}/flowSpecJsonSchema.json`)
+  return createDefaultJsonSchemaValidatorFactoryFor(flowJsonSchema, '#/definitions/IContainer')
 }
 
 export function getOrCreateLanguageValidator(schemaVersion: string): ValidateFunction {
