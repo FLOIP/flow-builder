@@ -3,7 +3,7 @@ import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 // todo: create factory with generics so that IRootState is DI'd
 import {IRootState} from '..'
 import {actions as blockActions, getters as blockGetters, mutations as blockMutations} from './block'
-import {actions as flowActions, getters as flowGetters, mutations as flowMutations} from './flow'
+import {actions as flowActions, getters as flowGetters, mutations as flowMutations, stateFactory} from './flow'
 import {actions as resourceActions, getters as resourceGetters, mutations as resourceMutations} from './resource'
 
 export interface IFlowsState {
@@ -18,21 +18,6 @@ export interface IFlowsState {
   nested_flow_block_interaction_id_stack: string[],
   selectedBlocks: IBlock['uuid'][],
 }
-
-export const stateFactory = (): IFlowsState => ({
-  isCreated: false,
-  //TODO - think about how to make this dynamic
-  specification_version: '1.0.0-rc4',
-  //For now we'll hard code this as it doesn't yet have a function
-  //Even import shouldn't override it I think even though a container is required
-  container_uuid: '3666a05d-3792-482b-8f7f-9e2472e4f027',
-  flows: [],
-
-  first_flow_id: null,
-  // todo: not quite right -- pulled from IContext
-  nested_flow_block_interaction_id_stack: [],
-  selectedBlocks: [],
-})
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   ...flowGetters,

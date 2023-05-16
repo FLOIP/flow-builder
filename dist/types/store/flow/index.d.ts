@@ -10,7 +10,6 @@ export interface IFlowsState {
     nested_flow_block_interaction_id_stack: string[];
     selectedBlocks: IBlock['uuid'][];
 }
-export declare const stateFactory: () => IFlowsState;
 export declare const getters: GetterTree<IFlowsState, IRootState>;
 export declare const mutations: MutationTree<IFlowsState>;
 export declare const actions: ActionTree<IFlowsState, IRootState>;

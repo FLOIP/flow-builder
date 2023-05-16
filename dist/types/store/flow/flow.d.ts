@@ -1,7 +1,8 @@
 import { ILanguage, SupportedMode } from '@floip/flow-runner';
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
 import { IRootState } from '../../store';
-import { IFlowsState } from '.';
+import { IFlowsState } from '../../store/flow/index';
+export declare const stateFactory: () => IFlowsState;
 export declare const getters: GetterTree<IFlowsState, IRootState>;
 export declare const mutations: MutationTree<IFlowsState>;
 export declare const actions: ActionTree<IFlowsState, IRootState>;

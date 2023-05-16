@@ -38,8 +38,23 @@ import {cleanupFlowResources, discoverContentTypesFor} from '@/store/flow/utils/
 import {computeBlockCanvasCoordinates} from '@/store/builder'
 import {ErrorObject} from 'ajv'
 import {ConfigFieldType, removeFlowValueByPath, updateFlowValueByPath} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
-import {IFlowsState} from '.'
 import {mergeFlowContainer} from './utils/importHelpers'
+import {IFlowsState} from '@/store/flow/index'
+
+export const stateFactory = (): IFlowsState => ({
+  isCreated: false,
+  //TODO - think about how to make this dynamic
+  specification_version: '1.0.0-rc4',
+  //For now we'll hard code this as it doesn't yet have a function
+  //Even import shouldn't override it I think even though a container is required
+  container_uuid: '3666a05d-3792-482b-8f7f-9e2472e4f027',
+  flows: [],
+
+  first_flow_id: null,
+  // todo: not quite right -- pulled from IContext
+  nested_flow_block_interaction_id_stack: [],
+  selectedBlocks: [],
+})
 
 export const getters: GetterTree<IFlowsState, IRootState> = {
   //We allow for an attempt to get a flow which doesn't yet exist in the state - e.g. the first_flow_id doesn't correspond to a flow
@@ -96,6 +111,9 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 }
 
 export const mutations: MutationTree<IFlowsState> = {
+  flow_resetStates(state: IFlowsState) {
+    Object.assign(state, stateFactory() as IFlowsState)
+  },
   //TODO - consider if this is correct? This only gets what the current flow needs and removes from the store any other flows
   //That means the flow list page (which we will build the production version of later) will get cleared of all flows if we continue with the current model - see the temporary page /src/views/Home.vue - unless we fetch the list again
   //That doesn't make sense if we run the builder standalone - without a fetch of the flows list
