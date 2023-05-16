@@ -18,6 +18,22 @@ export const stateFactory = (): IUndoRedoState => ({
   position: -1,
 })
 
+export const getters: GetterTree<IUndoRedoState, IRootState> = {
+  currentSnapshot(state) {
+    return state.snapshots[state.position]
+  },
+  canUndo(state): boolean {
+    const hasMoreThanInitialSnapshot = state.snapshots.length > 1
+    const isNotFirstPosition = state.position > 0
+    return hasMoreThanInitialSnapshot && isNotFirstPosition
+  },
+  canRedo(state): boolean {
+    const hasMoreThanInitialSnapshot = state.snapshots.length > 1
+    const isNotLastPosition = state.position < state.snapshots.length - 1
+    return hasMoreThanInitialSnapshot && isNotLastPosition
+  },
+}
+
 export const mutations: MutationTree<IUndoRedoState> = {
   /**
    * Not every vuex mutations or actions will be considered, we will leave to the devs to consider which particular ones should be added
@@ -49,12 +65,6 @@ export const mutations: MutationTree<IUndoRedoState> = {
   resetSnapshot(state, snapshot) {
     state.snapshots = [snapshot]
     state.position = 0
-  },
-}
-
-export const getters: GetterTree<IUndoRedoState, IRootState> = {
-  currentSnapshot(state) {
-    return state.snapshots[state.position]
   },
 }
 
