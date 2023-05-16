@@ -120,6 +120,9 @@
                 </router-link>
               </div>
 
+              <div class="vertical-divider" />
+              <UndoRedoButtonGroup />
+
               <slot name="extra-buttons" />
             </div>
 
@@ -234,12 +237,15 @@
               </div>
             </li>
             <template v-if="!isEmpty(blockClassesForBranchingCategory)">
-              <li class="nav-item" v-if="Object.keys(blockClassesForBranchingCategory).length === 1">
-                <a v-for="(classDetails, className) in blockClassesForBranchingCategory"
-                   :key="className + 'item'"
-                   class="nav-link single-menu"
-                   href="#"
-                   @click.prevent="handleAddBlockByTypeSelected(classDetails)">
+              <li
+                v-if="Object.keys(blockClassesForBranchingCategory).length === 1"
+                class="nav-item">
+                <a
+                  v-for="(classDetails, className) in blockClassesForBranchingCategory"
+                  :key="className + 'item'"
+                  class="nav-link single-menu"
+                  href="#"
+                  @click.prevent="handleAddBlockByTypeSelected(classDetails)">
                   {{ 'flow-builder.branching' | trans }}
                 </a>
               </li>
@@ -312,18 +318,16 @@
             </li>
           </ul>
         </div>
-        <div class="undo_redo">
-          <button class="btn btn-sm btn-outline-primary mr-2 mt-1" @click.stop="handleUndo">Undo</button>
-          <button class="btn btn-sm  btn-outline-primary mt-1" @click.stop="handleRedo">Redo</button>
-        </div>
       </div>
     </div>
-    <div v-if="isBuilderCanvasEnabled" class="tree-builder-toolbar-alerts w-100">
+    <div
+      v-if="isBuilderCanvasEnabled"
+      class="tree-builder-toolbar-alerts w-100">
       <selection-banner
         v-if="isEditable"
         @updated="handleHeightChangeFromDOM" />
       <error-notifications @updated="handleHeightChangeFromDOM" />
-      <block-editor v-if="isBlockEditorOpen"/>
+      <block-editor v-if="isBlockEditorOpen" />
     </div>
   </div>
 </template>
@@ -343,6 +347,7 @@ import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
 import {RawLocation} from 'vue-router'
 import {Dictionary} from 'vue-router/types/router'
 import {Watch} from 'vue-property-decorator'
+import UndoRedoButtonGroup from './UndoRedoButtonGroup'
 
 Vue.use(BootstrapVue)
 Vue.component('BTooltip', BTooltip)
@@ -356,6 +361,7 @@ const undoRedoVuexNamespace = namespace('undoRedo')
 @Component({
   components: {
     BModal,
+    UndoRedoButtonGroup,
   },
 })
 export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
@@ -633,14 +639,6 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     window.scrollTo(0, 0)
   }
 
-  handleUndo() {
-    this.undoAndUpdateState()
-  }
-
-  handleRedo() {
-    this.redoAndUpdateState()
-  }
-
   // ########### VUEX ###############
   @State(({trees: {tree}}) => tree) tree!: any
   @State(({trees: {ui}}) => ui) ui!: any
@@ -703,8 +701,6 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   // Undo/Redo feature
   @undoRedoVuexNamespace.Mutation resetSnapshot!: (payload) => void
   @undoRedoVuexNamespace.Mutation takeSnapshot!: (payload) => void
-  @undoRedoVuexNamespace.Action undoAndUpdateState!: () => void
-  @undoRedoVuexNamespace.Action redoAndUpdateState!: () => void
 }
 
 export default TreeBuilderToolbar
