@@ -19,9 +19,6 @@ export const stateFactory = (): IUndoRedoState => ({
 })
 
 export const getters: GetterTree<IUndoRedoState, IRootState> = {
-  currentSnapshot(state) {
-    return state.snapshots[state.position]
-  },
   canUndo(state): boolean {
     const hasMoreThanInitialSnapshot = state.snapshots.length > 1
     const isNotFirstPosition = state.position > 0
@@ -35,51 +32,103 @@ export const getters: GetterTree<IUndoRedoState, IRootState> = {
 }
 
 export const mutations: MutationTree<IUndoRedoState> = {
-  /**
-   * Not every vuex mutations or actions will be considered, we will leave to the devs to consider which particular ones should be added
-   * Usage: just call this in a Vue component to consider user actions,
-   * eg:
-   *  ```
-   *  // to avoid `TypeError: Converting circular structure to JSON`,
-   *  // we need to send JSON.parse(JSON.stringify()) value of the desired snapshot
-   *  const snapshot = JSON.parse(JSON.stringify(this.$store.state))
-   *  this.takeShapshot(snapshot)
-   *  ```
-   * @param state
-   * @param stateToSnapshot, a result of JSON.parse(JSON.stringify())
-   */
-  takeSnapshot(state, stateToSnapshot: Snapshot) {
-    state.snapshots.splice(state.position + 1, state.snapshots.length - state.position - 1, stateToSnapshot)
-    state.position = state.snapshots.length - 1
+  clearRedos(state) {
+    // clear everything after current position
+    state.snapshots.splice(state.position + 1)
+  },
+  addSnapshot(state, stateSnapshot: Snapshot) {
+    state.snapshots.push(stateSnapshot)
+    state.position += 1
   },
   undo(state) {
     if (state.position > 0) {
       state.position -= 1
+    } else {
+      console.warn('Cannot undo, we have already reached the beginning of the history')
     }
   },
   redo(state) {
     if (state.position < state.snapshots.length - 1) {
       state.position += 1
+    } else {
+      console.warn('Cannot redo, we have already reached the end of the history')
     }
   },
-  resetSnapshot(state, snapshot) {
+  resetSnapshots(state, snapshot) {
     state.snapshots = [snapshot]
     state.position = 0
   },
 }
 
 export const actions: ActionTree<IUndoRedoState, IRootState> = {
-  undoAndUpdateState({commit, getters}) {
-    commit('undo')
-
-    // Consider needed modules here
-    commit('flow/flow_resetFlowState', getters.currentSnapshot.flow, {root: true})
+  /**
+   * Save a copy of state after user's command
+   */
+  async takeSnapshot({commit, dispatch}) {
+    commit('clearRedos')
+    const snapshot = await dispatch('cloneState')
+    commit('addSnapshot', snapshot)
   },
-  redoAndUpdateState({commit, getters}) {
-    commit('redo')
 
-    // Consider needed modules here
-    commit('flow/flow_resetFlowState', getters.currentSnapshot.flow, {root: true})
+  /**
+   * Undo user's command
+   */
+  async undoAndUpdateState({commit, getters, dispatch}): Promise<void> {
+    // eslint-disable-next-line
+    if (!getters.canUndo) {
+      console.warn('Cannot undo, the action history is empty or we have already reached the beginning of it')
+      return
+    }
+    commit('undo')
+    const currentSnapshot: Snapshot = await dispatch('cloneCurrentSnapshot')
+    commit('flow/flow_resetFlowState', currentSnapshot.flow, {root: true})
+    commit('builder/resetBuilderState', currentSnapshot.builder, {root: true})
+  },
+
+  /**
+   * Redo user's command
+   */
+  async redoAndUpdateState({commit, getters, dispatch}): Promise<void> {
+    // eslint-disable-next-line
+    if (!getters.canRedo) {
+      console.warn('Cannot redo, the action history is empty or we have already reached the end of it')
+      return
+    }
+    commit('redo')
+    const currentSnapshot: Snapshot = await dispatch('cloneCurrentSnapshot')
+    commit('flow/flow_resetFlowState', currentSnapshot.flow, {root: true})
+    commit('builder/resetBuilderState', currentSnapshot.builder, {root: true})
+  },
+
+  /**
+   * Get a deep clone of current state.
+   * If we don't clone the state before saving it as a snapshot and then the user mutates the state,
+   * it will also mutate our saved snapshot which we don't want.
+   * Private / utility action, don't use outside the store.
+   */
+  cloneState({rootState}) {
+    return JSON.parse(JSON.stringify({
+      flow: rootState.flow,
+      builder: rootState.builder,
+    }))
+  },
+
+  /**
+   * Get a deep clone of current snapshot.
+   * If we don't clone the snapshot before applying it to the state and then the user mutates the state,
+   * it will also mutate the original snapshot which we don't want.
+   * Private / utility action, don't use outside the store.
+   */
+  cloneCurrentSnapshot({state}): Snapshot {
+    return JSON.parse(JSON.stringify(state.snapshots[state.position]))
+  },
+
+  /**
+   * Clear undos and redos, keep current state
+   */
+  async clearAllHistory({commit, dispatch}) {
+    const snapshot = await dispatch('cloneState')
+    commit('resetSnapshots', snapshot)
   },
 }
 
