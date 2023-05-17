@@ -1282,7 +1282,7 @@
     "selected": "selected",
     "selected-groups": "Selected Groups",
     "selected-subscribers": "Selected contacts",
-    "selected-x-blocks": "You have seletected :x block(s)",
+    "selected-x-blocks": "You have selected :x block(s)",
     "selection-confirmation": "Selection Confirmation",
     "selection-confirmation-instructions": "For Voice content, the audio file specified in the CSV file will be played back to the contact after they make a selection. For all other content types, select the peices of information that should be sent back to the contact or deselect all fields to send nothing back.",
     "selection-response-instructions": "For Voice content, the audio file specified in the CSV file will be played back to the contact after they make a selection. For all other content types, select the peices of information that should be sent back to the contact or deselect all fields to send nothing back.",
