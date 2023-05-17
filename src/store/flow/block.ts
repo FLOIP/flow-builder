@@ -178,9 +178,9 @@ export const mutations: MutationTree<IFlowsState> = {
 export const actions: ActionTree<IFlowsState, IRootState> = {
   ...SetContactPropertyModule.actions,
 
-  block_setLabel({commit, dispatch}, {blockId, value}: {blockId: string, value: string | undefined}) {
+  async block_setLabel({commit, dispatch}, {blockId, value}: {blockId: string, value: string | undefined}): Promise<void> {
     commit('block_setLabel', {blockId, value})
-    dispatch('block_setName', {blockId, value: snakeCaseOnSpaces(value as string)})
+    await dispatch('block_setName', {blockId, value: snakeCaseOnSpaces(value as string)})
   },
 
   /**
@@ -192,7 +192,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
    * @param value
    * @param lockAutoUpdate, true if user overrides auto-generated name
    */
-  block_setName(
+  async block_setName(
     {commit, dispatch, state},
     {blockId, value, lockAutoUpdate = false}: {blockId: IBlock['uuid'], value: string, lockAutoUpdate: boolean},
   ) {
@@ -202,7 +202,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       const oldBlock = cloneDeep(block)
       commit('block_setName', {blockId, value})
       const newBlock = cloneDeep(block)
-      dispatch('block_notifyOtherBlocksAboutBlockChange', {oldBlock, newBlock})
+      await dispatch('block_notifyOtherBlocksAboutBlockChange', {oldBlock, newBlock})
     }
 
     if (lockAutoUpdate) {
@@ -222,10 +222,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
    * @param oldBlock, deep clone of the modified block before the change
    * @param newBlock, deep clone of the modified block after the change, null if the block was deleted
    */
-  block_notifyOtherBlocksAboutBlockChange(
+  async block_notifyOtherBlocksAboutBlockChange(
     {dispatch, rootGetters},
     {oldBlock, newBlock}: {oldBlock: IBlock, newBlock: IBlock | null},
-  ) {
+  ): Promise<unknown[]> {
     return Promise.all(
       (rootGetters['flow/activeFlow'] as IFlow | undefined)?.blocks.map((blockToNotify: IBlock) =>
         dispatch(
