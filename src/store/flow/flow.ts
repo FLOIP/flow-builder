@@ -38,8 +38,8 @@ import {cleanupFlowResources, discoverContentTypesFor} from '@/store/flow/utils/
 import {computeBlockCanvasCoordinates} from '@/store/builder'
 import {ErrorObject} from 'ajv'
 import {ConfigFieldType, removeFlowValueByPath, updateFlowValueByPath} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
-import {mergeFlowContainer} from './utils/importHelpers'
 import {IFlowsState} from '@/store/flow/index'
+import {mergeFlowContainer} from './utils/importHelpers'
 
 export const stateFactory = (): IFlowsState => ({
   isCreated: false,
@@ -575,20 +575,21 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   async flow_removeAllSelectedBlocks({state, dispatch}) {
-    forEach(state.selectedBlocks, (blockId: IBlock['uuid']) => {
-      dispatch('flow_removeBlock', {blockId})
-    })
+    const removeBlock_actions = state.selectedBlocks.map((blockId: IBlock['uuid']) =>
+      dispatch('flow_removeBlock', {blockId}))
+
+    await Promise.all(removeBlock_actions)
 
     state.selectedBlocks = []
   },
 
   async flow_duplicateAllSelectedBlocks({state, dispatch}) {
-    const newBlocksUuid: string[] = []
-    forEach(state.selectedBlocks, async (blockId: IBlock['uuid']) => {
-      const duplicatedBlock: IBlock = await dispatch('flow_duplicateBlock', {blockId})
-      newBlocksUuid.push(duplicatedBlock.uuid)
-    })
-    state.selectedBlocks = newBlocksUuid
+    const duplicateBlock_actions = state.selectedBlocks.map((blockId: IBlock['uuid']) =>
+      dispatch('flow_duplicateBlock', {blockId}))
+
+    const duplicatedBlocks: IBlock[] = await Promise.all(duplicateBlock_actions)
+
+    state.selectedBlocks = duplicatedBlocks.map(block => block.uuid)
   },
 
   async flow_updateModes({state, getters, commit, dispatch}, {flowId, newModes}: {flowId: string, newModes: SupportedMode[]}) {

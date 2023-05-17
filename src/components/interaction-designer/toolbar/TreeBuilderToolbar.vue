@@ -394,12 +394,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       console.debug('Builder Toolbar', 'Unable to find the edit flow modal on mount - deep linking may not work')
     }
 
-    // snapshot initial state for Undo/redo feature
-    const snapshot = JSON.parse(JSON.stringify({
-      flow: this.$store.state.flow,
-      build: this.$store.state.builder,
-    }))
-    this.resetSnapshot(snapshot)
+    await this.clearAllHistory()
   }
 
   @Watch('$route.meta', {immediate: true, deep: true})
@@ -521,11 +516,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       name: 'block-selected-details',
       params: {blockId},
     })
-    const snapshot = JSON.parse(JSON.stringify({
-      flow: this.$store.state.flow,
-      build: this.$store.state.builder,
-    }))
-    this.takeSnapshot(snapshot)
+    await this.takeSnapshot()
   }
 
   async handlePersistFlow(route: RawLocation): Promise<void> {
@@ -699,8 +690,8 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @validationVuexNamespace.Action remove_block_validation!: ({blockId}: { blockId?: IBlock['uuid']}) => void
 
   // Undo/Redo feature
-  @undoRedoVuexNamespace.Mutation resetSnapshot!: (payload) => void
-  @undoRedoVuexNamespace.Mutation takeSnapshot!: (payload) => void
+  @undoRedoVuexNamespace.Action clearAllHistory!: () => Promise<void>
+  @undoRedoVuexNamespace.Action takeSnapshot!: () => Promise<void>
 }
 
 export default TreeBuilderToolbar

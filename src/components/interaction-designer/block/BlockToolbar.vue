@@ -85,57 +85,32 @@ export class BlockToolbar extends mixins(Lang) {
 
   isDeleting = false
 
-  handleDeleteBlock(): void {
-    this.block_deselect({blockId: this.block.uuid})
-    this.flow_removeBlock({blockId: this.block.uuid})
+  async handleDeleteBlock(): Promise<void> {
+    await this.block_deselect({blockId: this.block.uuid})
+    await this.flow_removeBlock({blockId: this.block.uuid})
     this.isDeleting = false
-    const snapshot = JSON.parse(JSON.stringify({
-      flow: this.$store.state.flow,
-      build: this.$store.state.builder,
-    }))
-    this.takeSnapshot(snapshot)
+    await this.takeSnapshot()
     this.$emit('after-delete')
   }
 
-  handleDuplicateBlock(): void {
-    this.flow_duplicateBlock({blockId: this.block.uuid}).then((duplicatedBlock) => {
-      this.$router.replace({
-        name: 'block-selected-details',
-        params: {blockId: duplicatedBlock.uuid},
-      })
-
-      // snapshot when promise is successful
-      const snapshot = JSON.parse(JSON.stringify({
-        flow: this.$store.state.flow,
-        build: this.$store.state.builder,
-      }))
-      this.takeSnapshot(snapshot)
+  async handleDuplicateBlock(): Promise<void> {
+    const duplicatedBlock = await this.flow_duplicateBlock({blockId: this.block.uuid})
+    await this.$router.replace({
+      name: 'block-selected-details',
+      params: {blockId: duplicatedBlock.uuid},
     })
+    await this.takeSnapshot()
     this.$emit('after-duplicate')
   }
 
   @builderVuexNamespace.Getter isEditable !: boolean
 
-  @flowVuexNamespace.Action block_select!: ({blockId}: {blockId: IBlock['uuid']}) => void
-  @flowVuexNamespace.Action block_deselect!: ({blockId}: {blockId: IBlock['uuid']}) => void
-  @flowVuexNamespace.Action flow_removeBlock!: ({blockId}: {blockId: IBlock['uuid']}) => void
+  @flowVuexNamespace.Action block_select!: ({blockId}: {blockId: IBlock['uuid']}) => Promise<void>
+  @flowVuexNamespace.Action block_deselect!: ({blockId}: {blockId: IBlock['uuid']}) => Promise<void>
+  @flowVuexNamespace.Action flow_removeBlock!: ({blockId}: {blockId: IBlock['uuid']}) => Promise<void>
   @flowVuexNamespace.Action flow_duplicateBlock!: ({blockId}: {blockId: IBlock['uuid']}) => Promise<IBlock>
 
-  // Undo/Redo feature
-  @undoRedoVuexNamespace.Mutation takeSnapshot!: (payload) => void
-  @undoRedoVuexNamespace.Action undoAndUpdateState!: () => void
-  @undoRedoVuexNamespace.Action redoAndUpdateState!: () => void
+  @undoRedoVuexNamespace.Action takeSnapshot!: () => Promise<void>
 }
 export default BlockToolbar
 </script>
-
-<style scoped>
-.icon-container {
-  display: flex;
-  align-items: center;
-}
-.icon-text {
-  font-size: 0.8rem;
-  margin-right: 0.15rem;
-}
-</style>
