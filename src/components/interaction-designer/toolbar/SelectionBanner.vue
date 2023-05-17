@@ -60,6 +60,7 @@ import {IBlock} from '@floip/flow-runner'
 import {size} from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
+const undoRedoVuexNamespace = namespace('undoRedo')
 
 @Component({})
 export class SelectionBanner extends mixins(Lang) {
@@ -76,17 +77,20 @@ export class SelectionBanner extends mixins(Lang) {
   async confirmMultipleDeletion(): Promise<void> {
     await this.flow_removeAllSelectedBlocks()
     this.deleting = false
+    await this.takeSnapshot()
   }
 
-  async handleMultipleDuplicate() {
+  async handleMultipleDuplicate(): Promise<void> {
     await this.flow_duplicateAllSelectedBlocks()
     await this.flow_clearMultiSelection()
+    await this.takeSnapshot()
   }
 
   @flowVuexNamespace.State selectedBlocks!: IBlock['uuid'][]
   @flowVuexNamespace.Action flow_clearMultiSelection!: () => Promise<void>
   @flowVuexNamespace.Action flow_removeAllSelectedBlocks!: () => Promise<void>
   @flowVuexNamespace.Action flow_duplicateAllSelectedBlocks!: () => Promise<void>
+  @undoRedoVuexNamespace.Action takeSnapshot!: () => Promise<void>
 }
 export default SelectionBanner
 </script>
