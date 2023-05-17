@@ -14,6 +14,7 @@ import 'scss/main.scss'
 import registerCustomComponents from '@/common-imports'
 
 import Toast from 'vue-toastification'
+import PortalVue from 'portal-vue'
 import {ToastOptions} from 'vue-toastification/dist/types/src/types'
 import {POSITION} from 'vue-toastification/src/ts/constants'
 import router from './router'
@@ -23,6 +24,7 @@ import 'vue-toastification/dist/index.css'
 registerCustomComponents()
 
 Vue.use(Vuex)
+Vue.use(PortalVue)
 
 /**
  * For more details about:

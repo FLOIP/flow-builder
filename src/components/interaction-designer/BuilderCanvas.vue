@@ -9,6 +9,12 @@
       :block="block"
       :x="block.ui_metadata.canvas_coordinates.x"
       :y="block.ui_metadata.canvas_coordinates.y" />
+    <portal-target
+      name="block-connections"
+      class="block-connections"
+      :multiple="true">
+      <!-- Rendering connections from BlockExit -->
+    </portal-target>
   </div>
 </template>
 
@@ -168,7 +174,7 @@ export class BuilderCanvas extends Vue {
 export default BuilderCanvas
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import "../../scss/custom_variables";
 .no-select * {
   -webkit-touch-callout: none; /* iOS Safari */
@@ -185,5 +191,13 @@ export default BuilderCanvas
   min-height: 768px;
   background: $neutral-40;
   position: relative;
+}
+
+.block-connections {
+  position: relative;
+
+  & > * {
+    position: absolute;
+  }
 }
 </style>

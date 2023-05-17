@@ -3545,6 +3545,7 @@ __metadata:
     plain-draggable: ^2.5.12
     pointer-event: ^1.0.0
     popper.js: ^1.16.1
+    portal-vue: ^2.1.7
     sass-loader: ^8.0.2
     skeleton-loader: ^2.0.0
     split-sms: ^0.1.7
