@@ -7,7 +7,7 @@
           class="btn btn-sm w-100"
           :class="{'btn-outline-primary': !isStartBlock, 'btn-primary': isStartBlock}"
           :disabled="isStartBlock"
-          @click="setStartBlock($event)">
+          @click="setStartBlock">
           <font-awesome-icon
             :icon="['fac', 'enter']"
             class="fa-btn" />
@@ -31,27 +31,29 @@ import {namespace} from 'vuex-class'
 import {mixins} from 'vue-class-component'
 
 const flowVuexNamespace = namespace('flow')
+const undoRedoVuexNamespace = namespace('undoRedo')
 
 @Component({})
 export class FirstBlockEditorButton extends mixins(Lang) {
   @Prop({default: true}) readonly isEditable!: boolean
-
   @Prop() readonly blockId!: IBlock['uuid']
 
   @flowVuexNamespace.Getter activeFlow!: IFlow
 
-  // @ts-ignore
-  setStartBlock(event: any): void {
+  async setStartBlock(): Promise<void> {
     this.flow_setFirstBlockId({
       flowId: this.activeFlow.uuid,
       blockId: this.blockId,
     })
+    await this.takeSnapshot()
   }
 
   get isStartBlock(): boolean {
     return this.blockId === this.activeFlow.first_block_id
   }
+
   @flowVuexNamespace.Mutation flow_setFirstBlockId!: ({flowId, blockId}: { flowId: IFlow['uuid'], blockId: IBlock['uuid'] }) => void
+  @undoRedoVuexNamespace.Action takeSnapshot!: () => Promise<void>
 }
 
 export default FirstBlockEditorButton
