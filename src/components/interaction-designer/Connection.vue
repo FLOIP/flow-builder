@@ -1,7 +1,21 @@
 <template>
-  <span
-    class="connection"
-    :reposition-hook="repositionHook" />
+  <!-- eslint-disable-next-line @viamo/vue-root-class-name -->
+  <portal to="block-connections">
+    <span
+      class="connection"
+      :reposition-hook="repositionHook" />
+    <svg
+      version="1.1"
+      width="999"
+      height="999"
+      xmlns="http://www.w3.org/2000/svg">
+      <polyline
+        :points="points"
+        :stroke="color"
+        stroke-width="4"
+        fill="none" />
+    </svg>
+  </portal>
 </template>
 
 <script lang="ts">
@@ -14,7 +28,7 @@ import {set} from 'lodash'
 import {IBlock, IBlockExit} from '@floip/flow-runner'
 import Lang from '@/lib/filters/lang'
 import {IConnectionContext} from '@/store/builder'
-import {BLOCK_RESET_CONNECTIONS} from './block/Block.vue'
+import {defineComponent} from 'vue'
 
 export const colorStates = {
   ON_HOVER: '#A31E65',
@@ -40,8 +54,104 @@ interface ILeaderLineOptions {
   startSocket: string,
 }
 
+function findCenterOfBoundingClientRect(
+  clientRect: DOMRect,
+  side: 'top' | 'bottom',
+  offset: { top: number, left: number },
+): { x: number, y: number } {
+  return {
+    x: clientRect.left + clientRect.width / 2 - offset.left,
+    y: clientRect[side] - offset.top,
+  }
+}
+
+export const Connection = defineComponent({
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: 'Connection',
+  props: {
+    exit: {
+      type: Object,
+      required: true,
+    },
+    source: {
+      type: Object,
+      required: true,
+    },
+    target: {
+      type: Object,
+      required: true,
+    },
+    color: {
+      type: String,
+      required: true,
+    },
+  },
+  computed: {
+    sourceElementId(): string {
+      return `exit/${this.exit.uuid}`
+    },
+    targetElementId(): string {
+      const {exit} = this
+      return exit.destination_block
+        ? `block/${exit.destination_block}/handle`
+        : `exit/${exit.uuid}/pseudo-block-handle`
+    },
+    points(): string {
+      const sourceBoundingClientRect = document.getElementById(this.sourceElementId)?.getBoundingClientRect()
+      const targetBoundingClientRect = document.getElementById(this.targetElementId)?.getBoundingClientRect()
+      const blockBoundingClientRect = document.getElementById(`block/${this.source.uuid}`)?.getBoundingClientRect()
+
+      if (!sourceBoundingClientRect || !targetBoundingClientRect || !blockBoundingClientRect) {
+        return ''
+      }
+
+      const offset = {
+        top: blockBoundingClientRect.top,
+        left: blockBoundingClientRect.left,
+      }
+
+      const source = findCenterOfBoundingClientRect(sourceBoundingClientRect, 'bottom', offset)
+      const target = findCenterOfBoundingClientRect(targetBoundingClientRect, 'top', offset)
+
+      const newLocal = source.y + (target.y - source.y) / 2
+      const newLocal2 = source.x + (target.x - source.x) / 2
+
+      // Hack to make points() update on block move
+      const blockPositionKeys = JSON.stringify({
+        source: this.source.ui_metadata.canvas_coordinates,
+        target: this.target.ui_metadata.canvas_coordinates,
+      })
+
+      const points = [
+        {x: source.x, y: source.y},
+      ]
+
+      if (source.y < target.y) {
+        points.push({x: source.x, y: newLocal})
+        points.push({x: target.x, y: newLocal})
+      } else {
+        points.push({x: source.x, y: source.y + 30})
+        points.push({x: newLocal2, y: source.y + 30})
+        points.push({x: newLocal2, y: target.y - 30})
+        points.push({x: target.x, y: target.y - 30})
+      }
+
+      points.push({x: target.x, y: target.y})
+
+      return points
+        .reduce((acc, point) => `${acc} ${point.x},${point.y}`, '') ?? blockPositionKeys
+    },
+  },
+  methods: {
+    reposition() {
+      // Create line if does not exist
+      // Update this.color and geometry
+    },
+  },
+})
+
 @Component({})
-export class Connection extends mixins(Lang) {
+export class LegacyConnection extends mixins(Lang) {
   @Prop({type: Object, required: true}) readonly exit!: IBlockExit
   @Prop({type: Function, required: true}) readonly repaintCacheKeyGenerator!: Function
   @Prop({type: Object}) readonly source!: IBlock
