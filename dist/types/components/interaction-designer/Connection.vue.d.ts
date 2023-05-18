@@ -20,8 +20,49 @@ interface ILeaderLineOptions {
     startPlugColor?: string;
     startSocket: string;
 }
-declare const Connection_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
-export declare class Connection extends Connection_base {
+export declare const Connection: import("vue").DefineComponent<{
+    exit: {
+        type: ObjectConstructor;
+        required: true;
+    };
+    source: {
+        type: ObjectConstructor;
+        required: true;
+    };
+    target: {
+        type: ObjectConstructor;
+        required: true;
+    };
+    color: {
+        type: StringConstructor;
+        required: true;
+    };
+}, {}, {}, {
+    sourceElementId(): string;
+    targetElementId(): string;
+    points(): string;
+}, {
+    reposition(): void;
+}, import("vue/types/v3-component-options").ComponentOptionsMixin, import("vue/types/v3-component-options").ComponentOptionsMixin, {}, string, Readonly<import("vue").ExtractPropTypes<{
+    exit: {
+        type: ObjectConstructor;
+        required: true;
+    };
+    source: {
+        type: ObjectConstructor;
+        required: true;
+    };
+    target: {
+        type: ObjectConstructor;
+        required: true;
+    };
+    color: {
+        type: StringConstructor;
+        required: true;
+    };
+}>>, {}>;
+declare const LegacyConnection_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
+export declare class LegacyConnection extends LegacyConnection_base {
     readonly exit: IBlockExit;
     readonly repaintCacheKeyGenerator: Function;
     readonly source: IBlock;
