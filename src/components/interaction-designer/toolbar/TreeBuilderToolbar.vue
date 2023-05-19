@@ -394,7 +394,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       console.debug('Builder Toolbar', 'Unable to find the edit flow modal on mount - deep linking may not work')
     }
 
-    await this.clearAllHistory()
+    await this.resetHistory()
   }
 
   @Watch('$route.meta', {immediate: true, deep: true})
@@ -516,7 +516,6 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       name: 'block-selected-details',
       params: {blockId},
     })
-    await this.takeSnapshot()
   }
 
   async handlePersistFlow(route: RawLocation): Promise<void> {
@@ -690,8 +689,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @validationVuexNamespace.Action remove_block_validation!: ({blockId}: { blockId?: IBlock['uuid']}) => void
 
   // Undo/Redo feature
-  @undoRedoVuexNamespace.Action clearAllHistory!: () => Promise<void>
-  @undoRedoVuexNamespace.Action takeSnapshot!: () => Promise<void>
+  @undoRedoVuexNamespace.Action resetHistory!: () => Promise<void>
 }
 
 export default TreeBuilderToolbar

@@ -16,6 +16,7 @@ import registerCustomComponents from '@/common-imports'
 import Toast from 'vue-toastification'
 import {ToastOptions} from 'vue-toastification/dist/types/src/types'
 import {POSITION} from 'vue-toastification/src/ts/constants'
+import {VuexUndoRedoPlugin} from '@/lib/plugins/vuex-undo-redo-plugin'
 import router from './router'
 import App from './App.vue'
 import 'vue-toastification/dist/index.css'
@@ -41,7 +42,9 @@ Vue.use(Toast, VUE_TOAST_GENERAL_OPTIONS)
 Vue.config.productionTip = false
 
 // todo CORE-155: inline 'store' after migration to Vue3
-const store = new Vuex.Store({})
+const store = new Vuex.Store({
+  plugins: [VuexUndoRedoPlugin],
+})
 
 async function main(): Promise<void> {
   new Vue({

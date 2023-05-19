@@ -1,22 +1,44 @@
-import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {IRootState} from '@/store'
 import {IFlowsState} from '@/store/flow'
-import {IBuilderState} from '@/store/builder'
+import structuredClone from '@ungap/structured-clone'
+import {difference} from 'lodash'
+import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 
 export interface IUndoRedoState {
-  snapshots: Snapshot[],
+  snapshots: IFlowsState[],
   position: number,
-}
 
-export interface Snapshot {
-  flow: IFlowsState,
-  builder: IBuilderState,
+  previouslyChangedKeys: string[],
 }
 
 export const stateFactory = (): IUndoRedoState => ({
   snapshots: [],
   position: -1,
+
+  previouslyChangedKeys: [],
 })
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getChangedKeys(a: any, b: any): string[] {
+  const changedKeys: string[] = []
+  const ensureA = a ?? {}
+  const ensureB = b ?? {}
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  new Set([...Object.keys(ensureA), ...Object.keys(ensureB)])
+    .forEach(key => {
+      const aVal = ensureA[key]
+      const bVal = ensureB[key]
+
+      if (typeof aVal === 'object' && typeof bVal === 'object') {
+        changedKeys.push(...getChangedKeys(aVal, bVal).map((k) => `${key}.${k}`))
+      } else if (aVal !== bVal) {
+        changedKeys.push(key)
+      }
+    })
+
+  return changedKeys
+}
 
 export const getters: GetterTree<IUndoRedoState, IRootState> = {
   canUndo(state): boolean {
@@ -29,16 +51,30 @@ export const getters: GetterTree<IUndoRedoState, IRootState> = {
     const isNotLastPosition = state.position < state.snapshots.length - 1
     return hasMoreThanInitialSnapshot && isNotLastPosition
   },
+  currentSnapshot(state): IFlowsState {
+    return state.snapshots[state.position]
+  },
 }
 
 export const mutations: MutationTree<IUndoRedoState> = {
-  clearRedos(state) {
-    // clear everything after current position
+  addSnapshot(state, stateSnapshot: IFlowsState) {
+    // Clear forward history before adding a new snapshot
     state.snapshots.splice(state.position + 1)
-  },
-  addSnapshot(state, stateSnapshot: Snapshot) {
+
+    // Append the new snapshot
     state.snapshots.push(stateSnapshot)
     state.position += 1
+  },
+  patchSnapshot(state, stateSnapshot: IFlowsState) {
+    state.snapshots[state.position] = stateSnapshot
+  },
+  updatePreviouslyChangedKeys(state, changedKeys: string[]) {
+    state.previouslyChangedKeys = changedKeys
+  },
+  resetSnapshots(state, snapshot) {
+    state.snapshots = [snapshot]
+    state.previouslyChangedKeys = []
+    state.position = 0
   },
   undo(state) {
     if (state.position > 0) {
@@ -54,81 +90,61 @@ export const mutations: MutationTree<IUndoRedoState> = {
       console.warn('Cannot redo, we have already reached the end of the history')
     }
   },
-  resetSnapshots(state, snapshot) {
-    state.snapshots = [snapshot]
-    state.position = 0
-  },
 }
 
 export const actions: ActionTree<IUndoRedoState, IRootState> = {
-  /**
-   * Save a copy of state after user's command
-   */
-  async takeSnapshot({commit, dispatch}) {
-    commit('clearRedos')
-    const snapshot = await dispatch('cloneState')
-    commit('addSnapshot', snapshot)
+  async handleStateChange({commit, state, getters, rootState}) {
+    // Take a snapshot of the current state to avoid mutating it
+    const flowState = structuredClone(rootState.flow)
+
+    // We group changes by comparing sets of changed keys, and either
+    // add a new snapshot or patch the current ones
+    const changedKeys = getChangedKeys(getters.currentSnapshot, flowState)
+    const hasDifferentKeys = difference(changedKeys, state.previouslyChangedKeys).length > 0
+
+    if (hasDifferentKeys) {
+      commit('addSnapshot', flowState)
+      commit('updatePreviouslyChangedKeys', changedKeys)
+    } else {
+      commit('patchSnapshot', flowState)
+    }
   },
 
   /**
    * Undo user's command
    */
-  async undoAndUpdateState({commit, getters, dispatch}): Promise<void> {
+  async undoAndUpdateState({commit, getters}): Promise<void> {
     // eslint-disable-next-line
     if (!getters.canUndo) {
       console.warn('Cannot undo, the action history is empty or we have already reached the beginning of it')
       return
     }
+
     commit('undo')
-    const currentSnapshot: Snapshot = await dispatch('cloneCurrentSnapshot')
-    commit('flow/flow_resetFlowState', currentSnapshot.flow, {root: true})
-    commit('builder/resetBuilderState', currentSnapshot.builder, {root: true})
+    commit('flow/flow_resetFlowState', getters.currentSnapshot, {root: true})
   },
 
   /**
    * Redo user's command
    */
-  async redoAndUpdateState({commit, getters, dispatch}): Promise<void> {
+  async redoAndUpdateState({commit, getters}): Promise<void> {
     // eslint-disable-next-line
     if (!getters.canRedo) {
       console.warn('Cannot redo, the action history is empty or we have already reached the end of it')
       return
     }
+
     commit('redo')
-    const currentSnapshot: Snapshot = await dispatch('cloneCurrentSnapshot')
-    commit('flow/flow_resetFlowState', currentSnapshot.flow, {root: true})
-    commit('builder/resetBuilderState', currentSnapshot.builder, {root: true})
+    commit('flow/flow_resetFlowState', getters.currentSnapshot, {root: true})
   },
 
   /**
-   * Get a deep clone of current state.
-   * If we don't clone the state before saving it as a snapshot and then the user mutates the state,
-   * it will also mutate our saved snapshot which we don't want.
-   * Private / utility action, don't use outside the store.
+   * Reset the history of changes to the current state
    */
-  cloneState({rootState}) {
-    return JSON.parse(JSON.stringify({
-      flow: rootState.flow,
-      builder: rootState.builder,
-    }))
-  },
-
-  /**
-   * Get a deep clone of current snapshot.
-   * If we don't clone the snapshot before applying it to the state and then the user mutates the state,
-   * it will also mutate the original snapshot which we don't want.
-   * Private / utility action, don't use outside the store.
-   */
-  cloneCurrentSnapshot({state}): Snapshot {
-    return JSON.parse(JSON.stringify(state.snapshots[state.position]))
-  },
-
-  /**
-   * Clear undos and redos, keep current state
-   */
-  async clearAllHistory({commit, dispatch}) {
-    const snapshot = await dispatch('cloneState')
-    commit('resetSnapshots', snapshot)
+  async resetHistory({commit, rootState}) {
+    setImmediate(() => {
+      commit('resetSnapshots', structuredClone(rootState.flow))
+    })
   },
 }
 
