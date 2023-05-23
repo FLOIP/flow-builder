@@ -1,5 +1,5 @@
 <template>
-  <div class="mobile-primitive-numeric-response-block">
+  <div class="mobile-primitives-numeric-response-block">
     <base-block
       :block="block"
       :show-semantic-label="false"
@@ -48,7 +48,7 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
-import {IBlock, IBlockExit, IFlow, IResource} from '@floip/flow-runner'
+import {IBlock} from '@floip/flow-runner'
 import {INumericResponseBlock} from '@floip/flow-runner/src/model/block/INumericResponseBlock'
 
 import NumericStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_NumericResponseBlockStore'
@@ -59,6 +59,7 @@ import {mixins} from 'vue-class-component'
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
+const undoRedoVuexNamespace = namespace('undoRedo')
 
 @Component({})
 export class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
@@ -66,20 +67,22 @@ export class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
   @Prop({default: true}) readonly usesDefaultContactPropsEditor!: boolean
 
-  updateValidationMin(value: number | string): void {
-    this.setValidationMinimum({blockId: this.block.uuid, value})
+  async updateValidationMin(value: number | string): Promise<void> {
+    await this.setValidationMinimum({blockId: this.block.uuid, value})
+    await this.takeSnapshot()
   }
 
-  updateValidationMax(value: number | string): void {
-    this.setValidationMaximum({blockId: this.block.uuid, value})
+  async updateValidationMax(value: number | string): Promise<void> {
+    await this.setValidationMaximum({blockId: this.block.uuid, value})
+    await this.takeSnapshot()
   }
 
-  updateMaxDigits(value: number | string): void {
-    this.setMaxDigits({blockId: this.block.uuid, value})
+  async updateMaxDigits(value: number | string): Promise<void> {
+    await this.setMaxDigits({blockId: this.block.uuid, value})
+    await this.takeSnapshot()
   }
 
   @flowVuexNamespace.Getter hasVoiceMode!: boolean
-
   @blockVuexNamespace.Action setValidationMinimum!: ({
     blockId,
     value,
@@ -91,10 +94,9 @@ export class MobilePrimitives_NumericResponseBlock extends mixins(Lang) {
   }: { blockId: IBlock['uuid'], value: number | string }) => Promise<string>
 
   @blockVuexNamespace.Action setMaxDigits!: ({blockId, value}: { blockId: IBlock['uuid'], value: number | string }) => Promise<string>
-
   @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
-
   @builderVuexNamespace.Getter isEditable !: boolean
+  @undoRedoVuexNamespace.Action takeSnapshot: () => Promise<void>
 }
 
 export default MobilePrimitives_NumericResponseBlock
