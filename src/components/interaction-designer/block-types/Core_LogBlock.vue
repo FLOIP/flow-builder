@@ -15,15 +15,15 @@
       <slot
         slot="extras"
         name="extras">
-        <validation-message
-          #input-control="{ isValid }"
-          :message-key="`block/${block.uuid}/config/message`">
-          <expression-input
-            :label="'flow-builder.log-message' | trans"
-            :placeholder="'flow-builder.enter-message' | trans"
-            :current-expression="value"
-            :valid-state="isValid"
-            @commitExpressionChange="commitMessageChange" />
+        <validation-message :message-key="`block/${block.uuid}/config/message`">
+          <template #input-control="{ isValid }">
+            <expression-input
+              :label="'flow-builder.log-message' | trans"
+              :placeholder="'flow-builder.enter-message' | trans"
+              :current-expression="value"
+              :valid-state="isValid"
+              @commitExpressionChange="commitMessageChange" />
+          </template>
         </validation-message>
       </slot>
       <slot
@@ -46,7 +46,7 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
-import {IFlow, IBlock} from '@floip/flow-runner'
+import {IBlock} from '@floip/flow-runner'
 import {ILogBlock} from '@floip/flow-runner/src/model/block/ILogBlock'
 
 import LogStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_LogBlockStore'
@@ -56,6 +56,7 @@ import {mixins} from 'vue-class-component'
 
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
+const undoRedoVuexNamespace = namespace('undoRedo')
 
 @Component({})
 export class Core_LogBlock extends mixins(Lang) {
@@ -67,13 +68,15 @@ export class Core_LogBlock extends mixins(Lang) {
     return this.block.config.message || ''
   }
 
-  commitMessageChange(value: string): Promise<string> {
-    return this.editMessage({blockId: this.block.uuid, message: value})
+  async commitMessageChange(value: string): Promise<void> {
+    await this.editMessage({blockId: this.block.uuid, message: value})
+    await this.takeSnapshot()
   }
 
   @blockVuexNamespace.Action editMessage!: (params: { blockId: IBlock['uuid'], message: string }) => Promise<string>
   @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
   @builderVuexNamespace.Getter isEditable !: boolean
+  @undoRedoVuexNamespace.Action takeSnapshot: () => Promise<void>
 }
 
 export default Core_LogBlock
