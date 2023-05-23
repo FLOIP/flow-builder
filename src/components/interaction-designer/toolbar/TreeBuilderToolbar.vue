@@ -120,6 +120,9 @@
                 </router-link>
               </div>
 
+              <div class="vertical-divider" />
+              <UndoRedoButtonGroup />
+
               <slot name="extra-buttons" />
             </div>
 
@@ -234,12 +237,15 @@
               </div>
             </li>
             <template v-if="!isEmpty(blockClassesForBranchingCategory)">
-              <li class="nav-item" v-if="Object.keys(blockClassesForBranchingCategory).length === 1">
-                <a v-for="(classDetails, className) in blockClassesForBranchingCategory"
-                   :key="className + 'item'"
-                   class="nav-link single-menu"
-                   href="#"
-                   @click.prevent="handleAddBlockByTypeSelected(classDetails)">
+              <li
+                v-if="Object.keys(blockClassesForBranchingCategory).length === 1"
+                class="nav-item">
+                <a
+                  v-for="(classDetails, className) in blockClassesForBranchingCategory"
+                  :key="className + 'item'"
+                  class="nav-link single-menu"
+                  href="#"
+                  @click.prevent="handleAddBlockByTypeSelected(classDetails)">
                   {{ 'flow-builder.branching' | trans }}
                 </a>
               </li>
@@ -314,12 +320,14 @@
         </div>
       </div>
     </div>
-    <div v-if="isBuilderCanvasEnabled" class="tree-builder-toolbar-alerts w-100">
+    <div
+      v-if="isBuilderCanvasEnabled"
+      class="tree-builder-toolbar-alerts w-100">
       <selection-banner
         v-if="isEditable"
         @updated="handleHeightChangeFromDOM" />
       <error-notifications @updated="handleHeightChangeFromDOM" />
-      <block-editor v-if="isBlockEditorOpen"/>
+      <block-editor v-if="isBlockEditorOpen" />
     </div>
   </div>
 </template>
@@ -339,6 +347,7 @@ import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
 import {RawLocation} from 'vue-router'
 import {Dictionary} from 'vue-router/types/router'
 import {Watch} from 'vue-property-decorator'
+import UndoRedoButtonGroup from './UndoRedoButtonGroup'
 
 Vue.use(BootstrapVue)
 Vue.component('BTooltip', BTooltip)
@@ -347,10 +356,12 @@ const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 const clipboardVuexNamespace = namespace('clipboard')
 const validationVuexNamespace = namespace('validation')
+const undoRedoVuexNamespace = namespace('undoRedo')
 
 @Component({
   components: {
     BModal,
+    UndoRedoButtonGroup,
   },
 })
 export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
@@ -382,6 +393,8 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     } else {
       console.debug('Builder Toolbar', 'Unable to find the edit flow modal on mount - deep linking may not work')
     }
+
+    await this.clearAllHistory()
   }
 
   @Watch('$route.meta', {immediate: true, deep: true})
@@ -503,6 +516,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       name: 'block-selected-details',
       params: {blockId},
     })
+    await this.takeSnapshot()
   }
 
   async handlePersistFlow(route: RawLocation): Promise<void> {
@@ -674,6 +688,10 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @clipboardVuexNamespace.Action setSimulatorActive!: (value: boolean) => void
 
   @validationVuexNamespace.Action remove_block_validation!: ({blockId}: { blockId?: IBlock['uuid']}) => void
+
+  // Undo/Redo feature
+  @undoRedoVuexNamespace.Action clearAllHistory!: () => Promise<void>
+  @undoRedoVuexNamespace.Action takeSnapshot!: () => Promise<void>
 }
 
 export default TreeBuilderToolbar

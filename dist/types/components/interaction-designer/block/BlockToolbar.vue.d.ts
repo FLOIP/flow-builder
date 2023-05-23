@@ -23,5 +23,8 @@ export declare class BlockToolbar extends BlockToolbar_base {
     flow_duplicateBlock: ({ blockId }: {
         blockId: IBlock['uuid'];
     }) => Promise<IBlock>;
+    takeSnapshot: (payload: any) => void;
+    undoAndUpdateState: () => void;
+    redoAndUpdateState: () => void;
 }
 export default BlockToolbar;

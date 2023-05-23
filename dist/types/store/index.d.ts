@@ -10,6 +10,7 @@ export interface IRootState {
     trees: any;
     audio: any;
     clipboard: IClipboardState;
+    undoRedo: any;
 }
 export declare const store: StoreOptions<IRootState>;
 export default store;

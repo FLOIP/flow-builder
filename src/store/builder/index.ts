@@ -106,6 +106,9 @@ export const getters: GetterTree<IBuilderState, IRootState> = {
 }
 
 export const mutations: MutationTree<IBuilderState> = {
+  resetBuilderState(state, builderState) {
+    Object.assign(state, builderState)
+  },
   activateBlock(state, {blockId}: { blockId: IBlock['uuid'] | null }) {
     state.activeBlockId = blockId
 

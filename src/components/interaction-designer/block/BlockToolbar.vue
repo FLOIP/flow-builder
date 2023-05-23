@@ -73,6 +73,7 @@ import {namespace} from 'vuex-class'
 const builderVuexNamespace = namespace('builder')
 const flowVuexNamespace = namespace('flow')
 const validationVuexNamespace = namespace('validation')
+const undoRedoVuexNamespace = namespace('undoRedo')
 
 @Component({})
 export class BlockToolbar extends mixins(Lang) {
@@ -84,40 +85,36 @@ export class BlockToolbar extends mixins(Lang) {
 
   isDeleting = false
 
-  handleDeleteBlock(): void {
-    this.block_deselect({blockId: this.block.uuid})
-    this.flow_removeBlock({blockId: this.block.uuid})
+  async handleDeleteBlock(): Promise<void> {
+    await this.block_deselect({blockId: this.block.uuid})
+    await this.flow_removeBlock({blockId: this.block.uuid})
     this.isDeleting = false
+    await this.takeSnapshot()
     this.$emit('after-delete')
   }
 
-  handleDuplicateBlock(): void {
-    this.flow_duplicateBlock({blockId: this.block.uuid}).then((duplicatedBlock) => {
-      this.$router.replace({
+  async handleDuplicateBlock(): Promise<void> {
+    try {
+      const duplicatedBlock = await this.flow_duplicateBlock({blockId: this.block.uuid})
+      await this.$router.replace({
         name: 'block-selected-details',
         params: {blockId: duplicatedBlock.uuid},
       })
-    })
-    this.$emit('after-duplicate')
+      await this.takeSnapshot()
+      this.$emit('after-duplicate')
+    } catch (e) {
+      console.error('Failed to duplicate a block:', e)
+    }
   }
 
   @builderVuexNamespace.Getter isEditable !: boolean
 
-  @flowVuexNamespace.Action block_select!: ({blockId}: {blockId: IBlock['uuid']}) => void
-  @flowVuexNamespace.Action block_deselect!: ({blockId}: {blockId: IBlock['uuid']}) => void
-  @flowVuexNamespace.Action flow_removeBlock!: ({blockId}: {blockId: IBlock['uuid']}) => void
+  @flowVuexNamespace.Action block_select!: ({blockId}: {blockId: IBlock['uuid']}) => Promise<void>
+  @flowVuexNamespace.Action block_deselect!: ({blockId}: {blockId: IBlock['uuid']}) => Promise<void>
+  @flowVuexNamespace.Action flow_removeBlock!: ({blockId}: {blockId: IBlock['uuid']}) => Promise<void>
   @flowVuexNamespace.Action flow_duplicateBlock!: ({blockId}: {blockId: IBlock['uuid']}) => Promise<IBlock>
+
+  @undoRedoVuexNamespace.Action takeSnapshot!: () => Promise<void>
 }
 export default BlockToolbar
 </script>
-
-<style scoped>
-.icon-container {
-  display: flex;
-  align-items: center;
-}
-.icon-text {
-  font-size: 0.8rem;
-  margin-right: 0.15rem;
-}
-</style>

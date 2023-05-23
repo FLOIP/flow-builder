@@ -2,6 +2,7 @@ import {StoreOptions} from 'vuex'
 import trees from '@/store/trees/trees'
 import audio from '@/store/trees/audio'
 import {IClipboardState, store as clipboard} from '@/store/clipboard'
+import {IUndoRedoState, store as undoRedo} from './undoRedo'
 import {IFlowsState, store as flow} from './flow'
 import {IBuilderState, store as builder} from './builder'
 import {IValidationState, validationStore as validation} from './validation'
@@ -13,6 +14,7 @@ export interface IRootState {
   trees: any,
   audio: any,
   clipboard: IClipboardState,
+  undoRedo: IUndoRedoState,
 }
 
 export const store: StoreOptions<IRootState> = {
@@ -24,6 +26,7 @@ export const store: StoreOptions<IRootState> = {
     trees,
     audio,
     clipboard,
+    undoRedo,
   },
 }
 
