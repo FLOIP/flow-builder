@@ -11,11 +11,12 @@
           class="custom-control custom-radio">
           <input
             :id="action.id"
-            v-model="membershipAction"
             type="radio"
             name="groupMembershipAction"
+            class="custom-control-input"
             :value="action.value"
-            class="custom-control-input">
+            :checked="membershipAction === action.value"
+            @change="setMembershipAction($event.target.value)">
           <label
             class="custom-control-label font-weight-normal"
             :for="action.id">
@@ -28,7 +29,6 @@
         <template #input-control="{isValid}">
           <vue-multiselect
             v-if="isGroupListVisible"
-            v-model="selectedGroups"
             :class="{invalid: isValid === false}"
             :is-loading="hasGroupsLoading"
             :options="groupOptions"
@@ -36,6 +36,8 @@
             :multiple="true"
             track-by="group_key"
             label="group_name"
+            :value="selectedGroups"
+            @input="setSelectedGroups"
             @seach-change="onSearchChange"
             @tag="onGroupAdd" />
         </template>
@@ -52,9 +54,9 @@ import VueMultiselect from 'vue-multiselect'
 import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
 import {ConfigFieldType} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
-import ValidationMessage from '../../common/ValidationMessage.vue'
 
 const flowVuexNamespace = namespace('flow')
+const undoRedoVuexNamespace = namespace('undoRedo')
 
 type MembershipAction = {
   id: string,
@@ -131,17 +133,19 @@ export class GroupMembershipEditor extends mixins(Lang) {
       : MEMBERSHIP_ACTION.REMOVE
   }
 
-  set membershipAction(value: MEMBERSHIP_ACTION) {
+  async setMembershipAction(value: MEMBERSHIP_ACTION): Promise<void> {
     if (value === MEMBERSHIP_ACTION.CLEAR) {
       this.updateBlockConfig({
         clear: true,
         is_member: undefined,
       })
+      await this.takeSnapshot()
     } else if (value === MEMBERSHIP_ACTION.ADD || value === MEMBERSHIP_ACTION.REMOVE) {
       this.updateBlockConfig({
         clear: false,
         is_member: value === MEMBERSHIP_ACTION.ADD,
       })
+      await this.takeSnapshot()
     } else {
       throw new Error(`Unknown membership action ${value}`)
     }
@@ -155,10 +159,11 @@ export class GroupMembershipEditor extends mixins(Lang) {
     return this.block.config?.groups ?? []
   }
 
-  set selectedGroups(groups: IGroupMembership[]) {
+  async setSelectedGroups(groups: IGroupMembership[]): Promise<void> {
     this.updateBlockConfig({
       groups,
     })
+    await this.takeSnapshot()
   }
 
   updateBlockConfig(config: Partial<ISetGroupMembershipBlockConfig>): void {
@@ -175,19 +180,20 @@ export class GroupMembershipEditor extends mixins(Lang) {
     this.$emit('group-search', e)
   }
 
-  onGroupAdd(name: string): void {
+  async onGroupAdd(name: string): Promise<void> {
     const newGroup: IGroupMembership = {
       group_key: name,
       group_name: name,
     }
 
     this.userAddedGroups.push(newGroup)
-    this.selectedGroups = [...this.selectedGroups, newGroup]
+    await this.setSelectedGroups([...this.selectedGroups, newGroup])
   }
 
   @flowVuexNamespace.Mutation block_updateConfigByPath!: (
     {blockId, path, value}: { blockId: string, path: string, value: ConfigFieldType }
   ) => void
+  @undoRedoVuexNamespace.Action takeSnapshot: () => Promise<void>
 }
 
 export default GroupMembershipEditor
