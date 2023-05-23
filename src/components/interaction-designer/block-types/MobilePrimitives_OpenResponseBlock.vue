@@ -1,5 +1,5 @@
 <template>
-  <div class="mobile-primitive-open-response-block">
+  <div class="mobile-primitives-open-response-block">
     <base-block
       :block="block"
       :show-semantic-label="false"
@@ -20,11 +20,11 @@
         <max-duration-seconds-editor
           :block="block"
           :has-ivr="hasVoiceMode"
-          @commitMaxDurationChange="setMaxDurationSeconds" />
+          @commitMaxDurationChange="updateMaxDurationSeconds" />
         <end-recording-digits-editor
           :block="block"
           :has-ivr="hasVoiceMode"
-          @commitEndRecordingDigitsChange="setEndRecordingDigits" />
+          @commitEndRecordingDigitsChange="updateEndRecordingDigits" />
       </slot>
       <slot
         slot="vendor-extras"
@@ -46,7 +46,7 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
-import {IBlock, IFlow, IResource} from '@floip/flow-runner'
+import {IBlock} from '@floip/flow-runner'
 import {IOpenResponseBlock} from '@floip/flow-runner/src/model/block/IOpenResponseBlock'
 import OpenResponseStore, {BLOCK_TYPE} from '@/store/flow/block-types/MobilePrimitives_OpenResponseBlockStore'
 import Lang from '@/lib/filters/lang'
@@ -56,6 +56,7 @@ import {mixins} from 'vue-class-component'
 const flowVuexNamespace = namespace('flow')
 const blockVuexNamespace = namespace(`flow/${BLOCK_TYPE}`)
 const builderVuexNamespace = namespace('builder')
+const undoRedoVuexNamespace = namespace('undoRedo')
 
 @Component({})
 class MobilePrimitives_OpenResponseBlock extends mixins(Lang) {
@@ -63,14 +64,23 @@ class MobilePrimitives_OpenResponseBlock extends mixins(Lang) {
   @Prop({default: true}) readonly usesDefaultBranchingEditor!: boolean
   @Prop({default: true}) readonly usesDefaultContactPropsEditor!: boolean
 
+  async updateMaxDurationSeconds(newDuration: number): Promise<void> {
+    await this.setMaxDurationSeconds(newDuration)
+    await this.takeSnapshot()
+  }
+
+  async updateEndRecordingDigits(value: number): Promise<void> {
+    await this.setEndRecordingDigits(value)
+    await this.takeSnapshot()
+  }
+
   @flowVuexNamespace.Getter hasTextMode!: boolean
   @flowVuexNamespace.Getter hasVoiceMode!: boolean
-
   @blockVuexNamespace.Action setMaxDurationSeconds!: (newDuration: number) => Promise<void>
   @blockVuexNamespace.Action setEndRecordingDigits!: (endRecordingDigits: string) => Promise<void>
-  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => void
-
+  @blockVuexNamespace.Action handleBranchingTypeChangedToUnified!: ({block}: {block: IBlock}) => Promise<void>
   @builderVuexNamespace.Getter isEditable !: boolean
+  @undoRedoVuexNamespace.Action takeSnapshot: () => Promise<void>
 }
 
 export default MobilePrimitives_OpenResponseBlock
