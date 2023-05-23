@@ -1,22 +1,45 @@
 import {IRootState} from '@/store'
 import {IFlowsState} from '@/store/flow'
 import structuredClone from '@ungap/structured-clone'
-import {difference} from 'lodash'
+import {difference, isEmpty} from 'lodash'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {getChangedKeys} from './getChangedKeys'
 
-export interface IUndoRedoState {
-  snapshots: IFlowsState[],
-  position: number,
+export interface ISnapshotModules {
+  flows: IFlowsState,
+}
 
-  previouslyChangedKeys: string[],
+export interface ISnapshot {
+  modules: ISnapshotModules,
+  timestamp: number,
+}
+
+export interface IUndoRedoState {
+  snapshots: ISnapshot[],
+  position: number,
+}
+
+function pack(modules: ISnapshotModules): ISnapshot {
+  return {
+    modules: structuredClone(modules),
+    timestamp: +Date.now(),
+  }
+}
+
+function unpack(snapshot: ISnapshot): ISnapshotModules {
+  return structuredClone(snapshot?.modules ?? {})
+}
+
+function getChangedModulesKeys(snapshotA: ISnapshot, snapshotB: ISnapshot): string[] {
+  const modulesA = unpack(snapshotA)
+  const modulesB = unpack(snapshotB)
+
+  return getChangedKeys(modulesA, modulesB)
 }
 
 export const stateFactory = (): IUndoRedoState => ({
   snapshots: [],
   position: -1,
-
-  previouslyChangedKeys: [],
 })
 
 export const getters: GetterTree<IUndoRedoState, IRootState> = {
@@ -30,29 +53,37 @@ export const getters: GetterTree<IUndoRedoState, IRootState> = {
     const isNotLastPosition = state.position < state.snapshots.length - 1
     return hasMoreThanInitialSnapshot && isNotLastPosition
   },
-  currentSnapshot(state): IFlowsState {
+  currentSnapshot(state): ISnapshot {
     return state.snapshots[state.position]
+  },
+  previousSnapshot(state): ISnapshot | null {
+    return state.snapshots[state.position - 1] ?? null
+  },
+  futureSnapshot(state): ISnapshot | null {
+    return state.snapshots[state.position + 1] ?? null
+  },
+  previouslyChangedKeys(_state, getters): string[] {
+    return getChangedModulesKeys(
+      getters.currentSnapshot as ISnapshot,
+      getters.previousSnapshot as ISnapshot,
+    )
   },
 }
 
 export const mutations: MutationTree<IUndoRedoState> = {
-  addSnapshot(state, stateSnapshot: IFlowsState) {
-    // Clear forward history before adding a new snapshot
-    state.snapshots.splice(state.position + 1)
+  addSnapshot(state, snapshot: ISnapshot) {
+    state.snapshots = [
+      ...state.snapshots.slice(0, state.position + 1),
+      snapshot,
+    ]
 
-    // Append the new snapshot
-    state.snapshots.push(stateSnapshot)
     state.position += 1
   },
-  patchSnapshot(state, stateSnapshot: IFlowsState) {
-    state.snapshots[state.position] = stateSnapshot
+  patchSnapshot(state, snapshot: ISnapshot) {
+    state.snapshots[state.position] = snapshot
   },
-  updatePreviouslyChangedKeys(state, changedKeys: string[]) {
-    state.previouslyChangedKeys = changedKeys
-  },
-  resetSnapshots(state, snapshot) {
+  resetSnapshots(state, snapshot: ISnapshot) {
     state.snapshots = [snapshot]
-    state.previouslyChangedKeys = []
     state.position = 0
   },
   undo(state) {
@@ -72,21 +103,25 @@ export const mutations: MutationTree<IUndoRedoState> = {
 }
 
 export const actions: ActionTree<IUndoRedoState, IRootState> = {
-  async handleStateChange({commit, state, getters, rootState}) {
-    // Take a snapshot of the current state to avoid mutating it
-    const flowState = structuredClone(rootState.flow)
+  async handleStateChange({commit, getters, rootState}) {
+    // Take a snapshot of the current state to avoid mutating> it
+    const nextSnapshot = pack({
+      flows: rootState.flow,
+    })
 
     // We group changes by comparing sets of changed keys, and either
     // add a new snapshot or patch the current ones
-    const changedKeys = getChangedKeys(getters.currentSnapshot, flowState)
-    const hasDifferentKeys = difference(changedKeys, state.previouslyChangedKeys).length > 0
+    const changedKeys = getChangedModulesKeys(getters.currentSnapshot as ISnapshot, nextSnapshot)
 
-    if (hasDifferentKeys) {
-      commit('addSnapshot', flowState)
-      commit('updatePreviouslyChangedKeys', changedKeys)
-    } else {
-      commit('patchSnapshot', flowState)
-    }
+    const hasDifferentKeys = !isEmpty(difference(changedKeys, getters.previouslyChangedKeys as string[]))
+    const hasFutureSnapshot = Boolean(getters.futureSnapshot)
+
+    commit(
+      hasDifferentKeys || hasFutureSnapshot
+        ? 'addSnapshot'
+        : 'patchSnapshot',
+      nextSnapshot,
+    )
   },
 
   /**
@@ -100,7 +135,9 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
     }
 
     commit('undo')
-    commit('flow/flow_resetFlowState', getters.currentSnapshot, {root: true})
+    const modules = unpack(getters.currentSnapshot as ISnapshot)
+
+    commit('flow/flow_resetFlowState', modules.flows, {root: true})
   },
 
   /**
@@ -114,7 +151,9 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
     }
 
     commit('redo')
-    commit('flow/flow_resetFlowState', getters.currentSnapshot, {root: true})
+    const modules = unpack(getters.currentSnapshot as ISnapshot)
+
+    commit('flow/flow_resetFlowState', modules.flows, {root: true})
   },
 
   /**
@@ -122,7 +161,9 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
    */
   async resetHistory({commit, rootState}) {
     setImmediate(() => {
-      commit('resetSnapshots', structuredClone(rootState.flow))
+      commit('resetSnapshots', pack({
+        flows: rootState.flow,
+      }))
     })
   },
 }

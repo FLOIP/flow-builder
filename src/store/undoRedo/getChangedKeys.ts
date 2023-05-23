@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export, @typescript-eslint/no-explicit-any */
-export function getChangedKeys(a: any, b: any): string[] {
+export function getChangedKeys(a: any = {}, b: any = {}): string[] {
   const changedKeys: string[] = []
 
   Object.keys({...a as object, ...b as object})
