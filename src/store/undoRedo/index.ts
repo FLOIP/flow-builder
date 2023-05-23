@@ -3,6 +3,7 @@ import {IFlowsState} from '@/store/flow'
 import structuredClone from '@ungap/structured-clone'
 import {difference} from 'lodash'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
+import {getChangedKeys} from './getChangedKeys'
 
 export interface IUndoRedoState {
   snapshots: IFlowsState[],
@@ -17,28 +18,6 @@ export const stateFactory = (): IUndoRedoState => ({
 
   previouslyChangedKeys: [],
 })
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function getChangedKeys(a: any, b: any): string[] {
-  const changedKeys: string[] = []
-  const ensureA = a ?? {}
-  const ensureB = b ?? {}
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  new Set([...Object.keys(ensureA), ...Object.keys(ensureB)])
-    .forEach(key => {
-      const aVal = ensureA[key]
-      const bVal = ensureB[key]
-
-      if (typeof aVal === 'object' && typeof bVal === 'object') {
-        changedKeys.push(...getChangedKeys(aVal, bVal).map((k) => `${key}.${k}`))
-      } else if (aVal !== bVal) {
-        changedKeys.push(key)
-      }
-    })
-
-  return changedKeys
-}
 
 export const getters: GetterTree<IUndoRedoState, IRootState> = {
   canUndo(state): boolean {
