@@ -347,8 +347,9 @@ import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
 import {RawLocation} from 'vue-router'
 import {Dictionary} from 'vue-router/types/router'
 import {Watch} from 'vue-property-decorator'
-import UndoRedoButtonGroup from './UndoRedoButtonGroup'
 import {VuexUndoRedoPlugin} from '@/lib/plugins/vuex-undo-redo-plugin'
+import undoRedoModule from '@/store/undoRedo'
+import UndoRedoButtonGroup from './UndoRedoButtonGroup'
 
 Vue.use(BootstrapVue)
 Vue.component('BTooltip', BTooltip)
@@ -369,7 +370,14 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   isExportVisible = false
   height = 102
 
-  created() {
+  created(): void {
+    const $store = this.$store
+    const moduleName = 'undoRedo'
+
+    if (!$store.hasModule(moduleName)) {
+      $store.registerModule(moduleName, undoRedoModule)
+    }
+
     VuexUndoRedoPlugin(this.$store)
   }
 
