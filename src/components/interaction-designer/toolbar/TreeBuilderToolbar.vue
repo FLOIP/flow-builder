@@ -348,6 +348,7 @@ import {RawLocation} from 'vue-router'
 import {Dictionary} from 'vue-router/types/router'
 import {Watch} from 'vue-property-decorator'
 import UndoRedoButtonGroup from './UndoRedoButtonGroup'
+import {VuexUndoRedoPlugin} from '@/lib/plugins/vuex-undo-redo-plugin'
 
 Vue.use(BootstrapVue)
 Vue.component('BTooltip', BTooltip)
@@ -367,6 +368,10 @@ const undoRedoVuexNamespace = namespace('undoRedo')
 export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   isExportVisible = false
   height = 102
+
+  created() {
+    VuexUndoRedoPlugin(this.$store)
+  }
 
   async mounted(): Promise<void> {
     const routeMeta = this.$route.meta ? this.$route.meta : {}
