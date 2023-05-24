@@ -8,6 +8,7 @@ declare const TreeBuilderToolbar_base: import("vue-class-component/lib/declarati
 export declare class TreeBuilderToolbar extends TreeBuilderToolbar_base {
     isExportVisible: boolean;
     height: number;
+    created(): void;
     mounted(): Promise<void>;
     onMetaChanged(meta: {
         [key: string]: string;
@@ -55,8 +56,6 @@ export declare class TreeBuilderToolbar extends TreeBuilderToolbar_base {
     handleHeightChangeFromDOM(): void;
     handleFlowViewMenu(): void;
     handleResourceViewMenu(): void;
-    handleUndo(): void;
-    handleRedo(): void;
     tree: any;
     ui: any;
     hasToolbarFlowTitle: boolean;
@@ -108,9 +107,6 @@ export declare class TreeBuilderToolbar extends TreeBuilderToolbar_base {
     remove_block_validation: ({ blockId }: {
         blockId?: IBlock['uuid'];
     }) => void;
-    resetSnapshot: (payload: any) => void;
-    takeSnapshot: (payload: any) => void;
-    undoAndUpdateState: () => void;
-    redoAndUpdateState: () => void;
+    resetHistory: () => Promise<void>;
 }
 export default TreeBuilderToolbar;
