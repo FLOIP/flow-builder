@@ -93,12 +93,16 @@ export class BlockToolbar extends mixins(Lang) {
   }
 
   async handleDuplicateBlock(): Promise<void> {
-    const duplicatedBlock = await this.flow_duplicateBlock({blockId: this.block.uuid})
-    await this.$router.replace({
-      name: 'block-selected-details',
-      params: {blockId: duplicatedBlock.uuid},
-    })
-    this.$emit('after-duplicate')
+    try {
+      const duplicatedBlock = await this.flow_duplicateBlock({blockId: this.block.uuid})
+      await this.$router.replace({
+        name: 'block-selected-details',
+        params: {blockId: duplicatedBlock.uuid},
+      })
+      this.$emit('after-duplicate')
+    } catch (e) {
+      console.error('Failed to duplicate a block:', e)
+    }
   }
 
   @builderVuexNamespace.Getter isEditable !: boolean
