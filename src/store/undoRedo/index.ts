@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import {IRootState} from '@/store'
 import {IFlowsState} from '@/store/flow'
 import structuredClone from '@ungap/structured-clone'
@@ -22,7 +23,7 @@ export interface IUndoRedoState {
 function pack(modules: ISnapshotModules): ISnapshot {
   return {
     modules: structuredClone(modules),
-    timestamp: +Date.now(),
+    timestamp: new Date().getTime(),
   }
 }
 
@@ -80,7 +81,7 @@ export const mutations: MutationTree<IUndoRedoState> = {
     state.position += 1
   },
   patchSnapshot(state, snapshot: ISnapshot) {
-    state.snapshots[state.position] = snapshot
+    Vue.set(state.snapshots, state.position, snapshot)
   },
   resetSnapshots(state, snapshot: ISnapshot) {
     state.snapshots = [snapshot]
