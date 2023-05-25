@@ -1186,6 +1186,7 @@ export declare const defaultLocalisations: {
         "recommended-export-format-settings": string;
         "record-group-message": string;
         "record-group-message-title": string;
+        redo: string;
         reject: string;
         "relative-to-numeric-input": string;
         "relative-to-the-call-date": string;
@@ -2874,6 +2875,7 @@ export declare const defaultLocalisations: {
         "recommended-export-format-settings": string;
         "record-group-message": string;
         "record-group-message-title": string;
+        redo: string;
         reject: string;
         "relative-to-numeric-input": string;
         "relative-to-the-call-date": string;

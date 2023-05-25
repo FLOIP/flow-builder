@@ -3488,10 +3488,12 @@ __metadata:
     "@types/json-schema": ^7.0.7
     "@types/lodash": ^4.14.157
     "@types/marked": ^4.0.7
+    "@types/ungap__structured-clone": ^0.3.0
     "@types/uuid": ^8.0.0
     "@typescript-eslint/eslint-plugin": 5.18.0
     "@typescript-eslint/parser": ^5.18.0
     "@typescript-eslint/typescript-estree": ^5.18.0
+    "@ungap/structured-clone": ^1.2.0
     "@viamo/eslint-plugin": "link:./config/eslint"
     "@vue/cli-plugin-babel": ^4.5.17
     "@vue/cli-plugin-eslint": ^5.0.8
@@ -6039,6 +6041,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/ungap__structured-clone@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@types/ungap__structured-clone@npm:0.3.0"
+  checksum: 1502276e64645c2157e7a6d0dc6b572787b99f5a4e64d11711fcc05edb9c5be5d0a7827939d269746a29f24ae96c9581b16f12d00604dacfbfdc6b62ba6025c5
+  languageName: node
+  linkType: hard
+
 "@types/unist@npm:*":
   version: 2.0.3
   resolution: "@types/unist@npm:2.0.3"
@@ -6460,6 +6469,13 @@ __metadata:
     "@typescript-eslint/types": 5.37.0
     eslint-visitor-keys: ^3.3.0
   checksum: d6193550f77413aead0cb267e058df80b80a488c8fb4e39beb5f0a70b971c41682a6391903fbc5f3dd859a872016288c434d631b8efc3ac5a04edbdb7b63b5f6
+  languageName: node
+  linkType: hard
+
+"@ungap/structured-clone@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@ungap/structured-clone@npm:1.2.0"
+  checksum: 4f656b7b4672f2ce6e272f2427d8b0824ed11546a601d8d5412b9d7704e83db38a8d9f402ecdf2b9063fc164af842ad0ec4a55819f621ed7e7ea4d1efcc74524
   languageName: node
   linkType: hard
 

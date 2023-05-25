@@ -89,7 +89,6 @@ export class BlockToolbar extends mixins(Lang) {
     await this.block_deselect({blockId: this.block.uuid})
     await this.flow_removeBlock({blockId: this.block.uuid})
     this.isDeleting = false
-    await this.takeSnapshot()
     this.$emit('after-delete')
   }
 
@@ -100,7 +99,6 @@ export class BlockToolbar extends mixins(Lang) {
         name: 'block-selected-details',
         params: {blockId: duplicatedBlock.uuid},
       })
-      await this.takeSnapshot()
       this.$emit('after-duplicate')
     } catch (e) {
       console.error('Failed to duplicate a block:', e)
@@ -114,7 +112,6 @@ export class BlockToolbar extends mixins(Lang) {
   @flowVuexNamespace.Action flow_removeBlock!: ({blockId}: {blockId: IBlock['uuid']}) => Promise<void>
   @flowVuexNamespace.Action flow_duplicateBlock!: ({blockId}: {blockId: IBlock['uuid']}) => Promise<IBlock>
 
-  @undoRedoVuexNamespace.Action takeSnapshot!: () => Promise<void>
 }
 export default BlockToolbar
 </script>

@@ -347,6 +347,8 @@ import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
 import {RawLocation} from 'vue-router'
 import {Dictionary} from 'vue-router/types/router'
 import {Watch} from 'vue-property-decorator'
+import {VuexUndoRedoPlugin} from '@/lib/plugins/vuex-undo-redo-plugin'
+import undoRedoModule from '@/store/undoRedo'
 import UndoRedoButtonGroup from './UndoRedoButtonGroup'
 
 Vue.use(BootstrapVue)
@@ -367,6 +369,17 @@ const undoRedoVuexNamespace = namespace('undoRedo')
 export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   isExportVisible = false
   height = 102
+
+  created(): void {
+    const $store = this.$store
+    const moduleName = 'undoRedo'
+
+    if (!$store.hasModule(moduleName)) {
+      $store.registerModule(moduleName, undoRedoModule)
+    }
+
+    VuexUndoRedoPlugin(this.$store)
+  }
 
   async mounted(): Promise<void> {
     const routeMeta = this.$route.meta ? this.$route.meta : {}
@@ -394,7 +407,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       console.debug('Builder Toolbar', 'Unable to find the edit flow modal on mount - deep linking may not work')
     }
 
-    await this.clearAllHistory()
+    await this.resetHistory()
   }
 
   @Watch('$route.meta', {immediate: true, deep: true})
@@ -516,7 +529,6 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
       name: 'block-selected-details',
       params: {blockId},
     })
-    await this.takeSnapshot()
   }
 
   async handlePersistFlow(route: RawLocation): Promise<void> {
@@ -534,6 +546,8 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
         //TODO - hook into showing validation errors design when we have it
         //This won't show normal validation errors as the frontend should have caught them. We'll use this to show server errors.
       }
+
+      await this.resetHistory()
     }
     if (route) {
       await this.$router.push(route)
@@ -690,8 +704,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @validationVuexNamespace.Action remove_block_validation!: ({blockId}: { blockId?: IBlock['uuid']}) => void
 
   // Undo/Redo feature
-  @undoRedoVuexNamespace.Action clearAllHistory!: () => Promise<void>
-  @undoRedoVuexNamespace.Action takeSnapshot!: () => Promise<void>
+  @undoRedoVuexNamespace.Action resetHistory!: () => Promise<void>
 }
 
 export default TreeBuilderToolbar
