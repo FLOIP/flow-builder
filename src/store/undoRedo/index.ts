@@ -44,6 +44,12 @@ export const stateFactory = (): IUndoRedoState => ({
 })
 
 export const getters: GetterTree<IUndoRedoState, IRootState> = {
+  canUndo(_state, getters): boolean {
+    return getters.previousSnapshot !== null
+  },
+  canRedo(_state, getters): boolean {
+    return getters.futureSnapshot !== null
+  },
   currentSnapshot(state): ISnapshot {
     return state.snapshots[state.position]
   },
@@ -120,7 +126,7 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
    */
   async undoAndUpdateState({commit, getters}): Promise<void> {
     // eslint-disable-next-line
-    if (getters.previousSnapshot === null) {
+    if (!getters.canUndo) {
       console.warn('Cannot undo, the action history is empty or we have already reached the beginning of it')
       return
     }
@@ -136,7 +142,7 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
    */
   async redoAndUpdateState({commit, getters}): Promise<void> {
     // eslint-disable-next-line
-    if (getters.futureSnapshot === null) {
+    if (!getters.canRedo) {
       console.warn('Cannot redo, the action history is empty or we have already reached the end of it')
       return
     }
