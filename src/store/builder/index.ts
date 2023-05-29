@@ -302,6 +302,8 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
         timeout: 3000,
         hideProgressBar: true,
       })
+
+      dispatch('undoRedo/resetHistory', null, {root: true})
     }
 
     commit('setTreeSaving', false, {root: true})

@@ -546,8 +546,6 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
         //TODO - hook into showing validation errors design when we have it
         //This won't show normal validation errors as the frontend should have caught them. We'll use this to show server errors.
       }
-
-      await this.resetHistory()
     }
     if (route) {
       await this.$router.push(route)
