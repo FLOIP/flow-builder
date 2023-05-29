@@ -202,6 +202,21 @@ export const mutations: MutationTree<IFlowsState> = {
   flow_removeVendorMetadataByPath(state, {flowId, path}: { flowId: string, path: string }) {
     removeFlowValueByPath(state, flowId, `vendor_metadata.${path}`)
   },
+
+  flow_updateBlockCoordinates(
+      state, {flowId, blockId, coordinates}: { flowId: string, blockId: string, coordinates: {x: number, y: number} },
+  ) {
+    const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
+    const block: IBlock = findBlockWith(blockId, flow)
+
+    if (!block.ui_metadata) {
+      Vue.set(block, 'ui_metadata', {
+        canvas_coordinates: coordinates,
+      })
+    } else {
+      Vue.set(block.ui_metadata, 'canvas_coordinates', coordinates)
+    }
+  },
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
