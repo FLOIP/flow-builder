@@ -36,10 +36,12 @@ const redoTooltip = computed<string>(() => (
 ))
 
 function handleUndo(): void {
+  store.commit('builder/deactivateAllConnections', null, {root: true})
   store.dispatch('undoRedo/undoAndUpdateState', null, {root: true})
 }
 
 function handleRedo(): void {
+  store.commit('builder/deactivateAllConnections', null, {root: true})
   store.dispatch('undoRedo/redoAndUpdateState', null, {root: true})
 }
 </script>
