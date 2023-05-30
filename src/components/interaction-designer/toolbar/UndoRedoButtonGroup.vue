@@ -21,6 +21,7 @@
 import {computed} from 'vue'
 import {useStore} from '@/store/useStore'
 import {lang} from '@/lib/filters/lang'
+import {BLOCK_RESET_CONNECTIONS} from '../block/Block.vue'
 
 const store = useStore()
 
@@ -36,12 +37,12 @@ const redoTooltip = computed<string>(() => (
 ))
 
 function handleUndo(): void {
-  store.commit('builder/deactivateAllConnections', null, {root: true})
+  window.postMessage(BLOCK_RESET_CONNECTIONS, '*')
   store.dispatch('undoRedo/undoAndUpdateState', null, {root: true})
 }
 
 function handleRedo(): void {
-  store.commit('builder/deactivateAllConnections', null, {root: true})
+  window.postMessage(BLOCK_RESET_CONNECTIONS, '*')
   store.dispatch('undoRedo/redoAndUpdateState', null, {root: true})
 }
 </script>

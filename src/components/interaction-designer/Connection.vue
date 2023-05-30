@@ -171,6 +171,12 @@ export class Connection extends mixins(Lang) {
     // stop listening to scroll and window resize hooks
     // LeaderLine.positionByWindowResize = false
     // this.line.positionByWindowResize = false
+
+    window.addEventListener('message', message => {
+      if (message.data === BLOCK_RESET_CONNECTIONS) {
+        this.resetActiveConnection()
+      }
+    })
   }
 
   beforeDestroy(): void {
@@ -245,13 +251,16 @@ export class Connection extends mixins(Lang) {
     const isClickInside = connectionElement.contains(event.target as Element)
 
     if (!isClickInside) {
-      this.isPermanentlyActive = false
-      this.line.setOptions(this.options)
-      this.deactivateConnection({connectionContext: this.connectionContext})
-      this.$emit('lineMouseClickedOut')
-      // document.removeEventListener('click', this.clickAwayHandler.bind(this, connectionElement), false)
+      this.resetActiveConnection()
     }
     this.$emit('lineMouseOut')
+  }
+
+  resetActiveConnection(): void {
+    this.isPermanentlyActive = false
+    this.line.setOptions(this.options)
+    this.deactivateConnection({connectionContext: this.connectionContext})
+    this.$emit('lineMouseClickedOut')
   }
 }
 

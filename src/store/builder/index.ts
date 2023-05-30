@@ -132,10 +132,6 @@ export const mutations: MutationTree<IBuilderState> = {
     state.activeConnectionsContext = reject(state.activeConnectionsContext, (context) => context.exitId === exitUuid)
   },
 
-  deactivateAllConnections(state) {
-    state.activeConnectionsContext = []
-  },
-
   setIsConnectionCreationInProgress(state, {value}: {value: boolean}) {
     state.isConnectionCreationInProgress = value
   },
