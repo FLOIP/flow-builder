@@ -227,7 +227,6 @@ export class Block extends mixins(Lang) {
   }
 
   @builderNamespace.Mutation activateBlock!: () => void
-  @builderNamespace.Mutation setBlockPositionTo!: BlockPositionAction
   @builderNamespace.Mutation initDraggableForExitsByUuid!: () => void
   @builderNamespace.Mutation setIsBlockEditorOpen!: (value: boolean) => void
   @builderNamespace.Mutation deactivateConnectionFromExitUuid!: ({exitUuid}: {exitUuid: IBlockExit['uuid']}) => void
@@ -235,6 +234,7 @@ export class Block extends mixins(Lang) {
   // ConnectionCreate
   @builderNamespace.Action setConnectionCreateTargetBlock!: BlockAction
   @builderNamespace.Action setConnectionCreateTargetBlockToNullFrom!: BlockAction
+  @builderNamespace.Action setBlockPositionTo!: BlockPositionAction
 
   setIsMouseOnBlock(value: boolean): void {
     this.isMouseOnBlock = value
