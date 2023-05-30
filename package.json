@@ -12,7 +12,7 @@
     "serve": "vue-cli-service serve",
     "build-bundle": "vue-cli-service build --target lib --name flow-builder src/lib.ts && yarn emit-dts",
     "build-bundle-and-commit": "yarn clean && yarn build-bundle && git add dist/ && git commit -m \"build-bundle\"",
-    "resolve-conflicting-builds": "git checkout --theirs dist/ && yarn build-bundle",
+    "resolve-conflicting-builds": "git checkout --theirs dist/ && yarn build-bundle && git add dist/",
     "test:unit": "vue-cli-service test:unit",
     "test:regenerate-storyshots": "vue-cli-service test:unit --no-cache -u",
     "lint": "vue-cli-service lint",
