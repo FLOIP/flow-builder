@@ -6,6 +6,8 @@ import {difference, isEmpty} from 'lodash'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {getChangedKeys} from './getChangedKeys'
 
+const MAX_HISTORY_LENGTH = 100
+
 export interface ISnapshotModules {
   flows: IFlowsState,
 }
@@ -79,8 +81,9 @@ export const mutations: MutationTree<IUndoRedoState> = {
       ...state.snapshots.slice(0, state.position + 1),
       snapshot,
     ]
+      .slice(-MAX_HISTORY_LENGTH)
 
-    state.position += 1
+    state.position = state.snapshots.length - 1
   },
   patchSnapshot(state, snapshot: ISnapshot) {
     Vue.set(state.snapshots, state.position, snapshot)
