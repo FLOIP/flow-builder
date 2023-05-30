@@ -258,7 +258,16 @@ export class Connection extends mixins(Lang) {
 
   resetActiveConnection(): void {
     this.isPermanentlyActive = false
-    this.line.setOptions(this.options)
+
+    try {
+      this.line.setOptions(this.options)
+    } catch (e) {
+      /**
+       * TODO: There is a runtime error with vue-multiselect in stacktrace, which should not
+       * be involved at all. Suppressing, as it does not affect the functionality.
+       */
+    }
+
     this.deactivateConnection({connectionContext: this.connectionContext})
     this.$emit('lineMouseClickedOut')
   }
