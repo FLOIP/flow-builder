@@ -140,11 +140,6 @@ export const mutations: MutationTree<IBuilderState> = {
     operations[operation.kind] = operation
   },
 
-  setBlockPositionTo(state, {position: {x, y}, block}) {
-    block.ui_metadata.canvas_coordinates.x = x
-    block.ui_metadata.canvas_coordinates.y = y
-  },
-
   setIsEditable(state, value) {
     state.isEditable = value
   },
@@ -310,6 +305,14 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     Vue.$toast.dismiss(inProgress)
 
     return newFlowContainer ?? undefined
+  },
+
+  setBlockPositionTo({commit, rootGetters}, {position: {x, y}, block}) {
+    commit('flow/flow_updateBlockCoordinates', {
+      flowId: rootGetters['flow/activeFlow'].uuid,
+      blockId: block.uuid,
+      coordinates: {x, y},
+    }, {root: true})
   },
 }
 

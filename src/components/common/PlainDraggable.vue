@@ -35,11 +35,29 @@ export class PlainDraggable extends mixins(Lang) {
     console.debug('PlainDraggable.vue', 'mounted')
 
     // this.$nextTick(() => {
+
+    this.draggable = new PlainDraggableLib(this.$el, this.plainDraggableLibOptions)
+    // draggable.rect.{left,top,x,y,...}
+
+    // todo: why this doesn't work?
+
+    // this.draggable.snap = {x: 50, y: 50, width: 50, height: 50}
+    // this.draggable.snap = {step: 21}
+
+    this.handleInitialized()
+    // })
+  }
+
+  updated(): void {
+    this.draggable.setOptions(this.plainDraggableLibOptions)
+  }
+
+  get plainDraggableLibOptions(): Record<string, unknown> {
     const handle = this.dragHandleId !== undefined
       ? document.getElementById(this.dragHandleId)
       : this.$el.querySelectorAll('.draggable-handle')[0]
 
-    this.draggable = new PlainDraggableLib(this.$el, {
+    return {
       containment: document.querySelector('.builder-canvas'),
       autoScroll: true,
 
@@ -52,21 +70,11 @@ export class PlainDraggable extends mixins(Lang) {
       onDragStart: this.handleDragStarted.bind(this),
       onDragEnd: this.handleDragEnded.bind(this),
       // onMove: this.handleMoved.bind(this),
-
       left: this.startX,
       top: this.startY,
 
       handle,
-    })
-    // draggable.rect.{left,top,x,y,...}
-
-    // todo: why this doesn't work?
-
-    // this.draggable.snap = {x: 50, y: 50, width: 50, height: 50}
-    // this.draggable.snap = {step: 21}
-
-    this.handleInitialized()
-    // })
+    }
   }
 
   destroyed(): void {

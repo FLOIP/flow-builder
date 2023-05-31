@@ -59,5 +59,6 @@ export declare class Connection extends Connection_base {
     mouseOutHandler(): void;
     clickHandler(): void;
     clickAwayHandler(connectionElement: Element, event: Event): void;
+    resetActiveConnection(): void;
 }
 export default Connection;

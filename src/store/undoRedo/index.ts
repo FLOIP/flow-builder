@@ -40,6 +40,12 @@ function getChangedModulesKeys(snapshotA: ISnapshot, snapshotB: ISnapshot): stri
   return getChangedKeys(modulesA, modulesB)
 }
 
+function shouldAlwaysTriggerSnapshot(changedKeys: string[]): boolean {
+  return changedKeys.some((key) => (
+    /^flows.flows.\d+.blocks.\d+.exits.\d+.destination_block$/.test(key)
+  ))
+}
+
 export const stateFactory = (): IUndoRedoState => ({
   snapshots: [],
   position: -1,
@@ -114,12 +120,13 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
     const changedKeys = getChangedModulesKeys(getters.currentSnapshot as ISnapshot, nextSnapshot)
 
     const hasDifferentKeys = !isEmpty(difference(changedKeys, getters.previouslyChangedKeys as string[]))
+    const hasSpecialKeys = shouldAlwaysTriggerSnapshot(changedKeys)
     const hasFutureSnapshot = Boolean(getters.futureSnapshot)
 
+    const shouldAddSnapshot = hasDifferentKeys || hasFutureSnapshot || hasSpecialKeys
+
     commit(
-      hasDifferentKeys || hasFutureSnapshot
-        ? 'addSnapshot'
-        : 'patchSnapshot',
+      shouldAddSnapshot ? 'addSnapshot' : 'patchSnapshot',
       nextSnapshot,
     )
   },
