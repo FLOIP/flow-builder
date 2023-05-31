@@ -1,4 +1,4 @@
-import { defineConfig } from "cypress";
+import {defineConfig} from 'cypress'
 
 export default defineConfig({
   e2e: {
@@ -7,4 +7,4 @@ export default defineConfig({
     },
     specPattern: 'cypress/e2e/**/*.cy.js',
   },
-});
+})
