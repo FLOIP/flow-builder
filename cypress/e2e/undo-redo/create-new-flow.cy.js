@@ -1,7 +1,3 @@
-// Import store to allow us testing it with cypress
-import store from '../../../src/store/index.ts'
-// import flowStore from '../../../src/store/flow/index.ts'
-
 describe('create flows', () => {
   beforeEach(() => {
     cy.visit('http://localhost:8081/')
@@ -10,8 +6,10 @@ describe('create flows', () => {
   it('creates a valid new empty flow', () => {
     // ######## app is loaded ########
     cy.get('#app').should('exist')
-    // cy.window().its('store.state.flow.flows').should('have.length.above', 0)
-
+    const getStore = () => cy.window().its('store')
+    const flowModuleState = () => getStore().its('state.flow')
+    const flowsListState = () => flowModuleState().its('flows')
+    flowsListState().should('have.length', 0)
     cy.get('.cy--create-flow--btn').click()
 
     // ############ Create flow page ############
@@ -29,6 +27,12 @@ describe('create flows', () => {
 
     cy.get('.cy--languages--selector').click()
     cy.contains('.multiselect__option', 'English').click();
+
+    flowModuleState().its('isCreated').should('equal', false)
+    flowsListState().its('[0].label').should('equal', flowName)
+
+    cy.get('.cy--create--btn').click()
+    flowModuleState().its('isCreated').should('equal', true)
   })
 
 })

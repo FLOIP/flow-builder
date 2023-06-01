@@ -1,6 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+// allow us to assign new properties to window, eg: window.store = store
+// useful cypress setup
+declare global {
+  interface Window {
+    Cypress: any
+    app: any
+    store: any
+  }
+}
+
 /**
  * This import modifies the jquery that should already be on the page globally at global.$
  * e.g. adding $().modal() and other jquery plugins
@@ -51,6 +61,14 @@ async function main(): Promise<void> {
     provide: {store},
     render: (h) => h(Vue.extend(App)),
   }).$mount('#app')
+
+  if (window?.Cypress !== undefined) {
+    console.debug('Cypress detected, exposing app on window')
+    // This will allow us to test vuex store in Cypress
+    window.store = store
+  } else {
+    console.debug('Cypress not detected, app not exposed on window')
+  }
 }
 
 main()
