@@ -55,7 +55,7 @@
       <template v-if="flowSelectedContactPropertyField !== null">
         <label>{{ 'flow-builder.value' | trans }}</label>
         <div
-          v-if="isBlockInteractive(block)"
+          v-if="isBlockInteractive"
           class="form-group">
           <div
             v-if="!disableExpressionInput"
@@ -273,6 +273,11 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
 
       return {...field, $isDisabled: !shouldDisable}
     })
+  }
+
+  toggleSetContactProperty(): void {
+    this.shouldSetContactProperty = !this.shouldSetContactProperty
+    this.$emit('toggleSetContactProperty', this.shouldSetContactProperty)
   }
 
   @flowVuexNamespace.Mutation block_updateConfigByPath!: (
