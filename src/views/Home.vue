@@ -15,7 +15,8 @@
                           <router-link
                             :to="route('flows.newFlow')"
                             :title="trans('flow-builder.create-flow')"
-                            class="btn btn-primary mr-2 cy--create-flow--btn">
+                            class="btn btn-primary mr-2"
+                            data-cy="create-flow--btn">
                             {{ 'flow-builder.create-flow' | trans }}
                           </router-link>
                           <div class="mt-4">

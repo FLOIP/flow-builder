@@ -19,7 +19,7 @@
           <flow-label-editor
             :flow="flow"
             :valid-state="isValid"
-            class="cy--flow-label--editor"/>
+            data-cy="flow-label--editor"/>
         </validation-message>
 
         <validation-message
@@ -31,7 +31,7 @@
           <interaction-timeout-editor
             :flow="flow"
             :valid-state="isValid"
-            class="cy--interaction-timeout--editor"/>
+            data-cy="interaction-timeout--editor"/>
         </validation-message>
       </div>
       <div class="row">
@@ -40,7 +40,7 @@
           :class="otherRowsClass"
           :message-key="`flow/${flow.uuid}/languages`"
           :should-hide-validation="!didUserSubmit">
-          <languages-editor :flow="flow" class="cy--languages--selector"/>
+          <languages-editor :flow="flow" data-cy="languages--selector"/>
         </validation-message>
 
         <validation-message
@@ -48,7 +48,7 @@
           :class="otherRowsClass"
           :message-key="`flow/${flow.uuid}/supported_modes`"
           :should-hide-validation="!didUserSubmit">
-          <modes-editor :flow="flow" class="cy--modes--selector"/>
+          <modes-editor :flow="flow" data-cy="modes--selector"/>
         </validation-message>
       </div>
 
