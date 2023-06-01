@@ -143,7 +143,6 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop({default: false}) readonly disableExpressionInput!: boolean
 
-  shouldSetContactProperty = false
   PROPERTY_VALUE_ACTION = {
     OPEN_EXPRESSION: 'openExpression',
     FROM_CURRENT_BLOCK_RESPONSE: 'fromCurrentBlockResponse',
@@ -154,7 +153,6 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
   propertyValue?: string = ''
 
   created(): void {
-    this.shouldSetContactProperty = has(this.block.config, 'set_contact_property')
     this.propertyKey = this.firstContactPropertyKey
     this.propertyValue = this.firstContactPropertyValue
     if (this.propertyValue === undefined) {
@@ -174,20 +172,20 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
     return isBlockInteractive(block)
   }
 
-  // for checkbox ######################
-  toggleSetContactProperty(): void {
-    this.$emit('toggleSetContactProperty', !this.shouldSetContactProperty)
+  get shouldSetContactProperty(): boolean {
+    return has(this.block.config, 'set_contact_property')
+  }
 
-    this.shouldSetContactProperty = !this.shouldSetContactProperty
-    if (!this.shouldSetContactProperty) {
-      this.block_removeConfigByKey({blockId: this.block.uuid, key: 'set_contact_property'})
-    } else {
+  set shouldSetContactProperty(value: boolean) {
+    if (value) {
       this.block_setContactPropertyOnIndex({
         blockId: this.block.uuid,
         index: 0,
         propertyKey: this.propertyKey,
         propertyValue: this.shouldUseOpenExpression ? EMPTY_STRING_EXPRESSION : this.propertyValue,
       })
+    } else {
+      this.block_removeConfigByKey({blockId: this.block.uuid, key: 'set_contact_property'})
     }
   }
 
