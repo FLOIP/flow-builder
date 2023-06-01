@@ -155,7 +155,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
     this.propertyValue = this.firstContactPropertyValue
     if (this.propertyValue === undefined) {
       // default setting
-      if (this.isBlockInteractive(this.block)) {
+      if (this.isBlockInteractive) {
         // interactive blocks will have `Entry from this block` option by default
         this.propertyValue = BLOCK_RESPONSE_EXPRESSION
       } else {
@@ -166,8 +166,8 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
     this.initPropertyValueAction()
   }
 
-  isBlockInteractive(block: IBlock): boolean {
-    return isBlockInteractive(block)
+  get isBlockInteractive(): boolean {
+    return isBlockInteractive(this.block)
   }
 
   get shouldSetContactProperty(): boolean {
@@ -188,7 +188,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
   }
 
   get propertyValueAction(): string {
-    const isInteractive = this.isBlockInteractive(this.block)
+    const isInteractive = this.isBlockInteractive
     const hasNoExpressionInput = this.disableExpressionInput || this.propertyValue === BLOCK_RESPONSE_EXPRESSION
 
     if (isInteractive && (hasNoExpressionInput)) {
