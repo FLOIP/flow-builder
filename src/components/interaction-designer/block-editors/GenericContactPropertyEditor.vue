@@ -64,10 +64,9 @@
               id="setProp"
               type="radio"
               name="contactPropAction"
-              :checked="propertyValueAction === PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
+              v-model="propertyValueAction"
               :value="PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
-              class="custom-control-input"
-              @change="updatePropertyValueAction">
+              class="custom-control-input">
             <label
               class="custom-control-label font-weight-normal"
               for="setProp">
@@ -84,10 +83,9 @@
               id="clearProp"
               type="radio"
               name="contactPropAction"
-              :checked="propertyValueAction === PROPERTY_VALUE_ACTION.OPEN_EXPRESSION"
+              v-model="propertyValueAction"
               :value="PROPERTY_VALUE_ACTION.OPEN_EXPRESSION"
-              class="custom-control-input"
-              @change="updatePropertyValueAction">
+              class="custom-control-input">
             <label
               class="custom-control-label font-weight-normal"
               for="clearProp">
@@ -147,7 +145,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
     OPEN_EXPRESSION: 'openExpression',
     FROM_CURRENT_BLOCK_RESPONSE: 'fromCurrentBlockResponse',
   }
-  propertyValueAction = ''
+
   // null will help us to enforce validation error on empty value
   propertyKey?: string = null
   propertyValue?: string = ''
@@ -189,17 +187,18 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
     }
   }
 
-  // for radio buttons ######################
-  initPropertyValueAction(): void {
-    if (this.isBlockInteractive(this.block) && (this.disableExpressionInput || this.propertyValue === BLOCK_RESPONSE_EXPRESSION)) {
-      this.propertyValueAction = this.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE
+  get propertyValueAction(): string {
+    const isInteractive = this.isBlockInteractive(this.block)
+    const hasNoExpressionInput = this.disableExpressionInput || this.propertyValue === BLOCK_RESPONSE_EXPRESSION
+
+    if (isInteractive && (hasNoExpressionInput)) {
+      return this.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE
     } else {
-      this.propertyValueAction = this.PROPERTY_VALUE_ACTION.OPEN_EXPRESSION
+      return this.PROPERTY_VALUE_ACTION.OPEN_EXPRESSION
     }
   }
 
-  updatePropertyValueAction({target: {value}}: {target: {value: string}}): void {
-    this.propertyValueAction = value
+  set propertyValueAction(value: string) {
     if (value === this.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE) {
       this.$emit('updateShouldUseCurrentBlockResponse', true)
       this.updateFirstContactPropertyValue(BLOCK_RESPONSE_EXPRESSION)
