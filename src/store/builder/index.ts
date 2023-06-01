@@ -268,6 +268,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     }
 
     commit('setTreeSaving', true, {root: true})
+    commit('setIsEditable', false)
     const inProgress = Vue.$toast.info({
       component: InProgressAction,
       props: {
@@ -297,11 +298,10 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
         timeout: 3000,
         hideProgressBar: true,
       })
-
-      dispatch('undoRedo/resetHistory', null, {root: true})
     }
 
     commit('setTreeSaving', false, {root: true})
+    commit('setIsEditable', true)
     Vue.$toast.dismiss(inProgress)
 
     return newFlowContainer ?? undefined

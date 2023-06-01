@@ -1,5 +1,5 @@
 <template>
-  <div class="undo-redo-button-group btn-group">
+  <fieldset class="undo-redo-button-group btn-group" :disabled="isTreeSaving">
     <button
       v-b-tooltip.hover="undoTooltip"
       class="btn btn-sm btn-outline-primary"
@@ -14,7 +14,7 @@
       @click.stop="handleRedo">
       <font-awesome-icon :icon="['fas', 'redo']" />
     </button>
-  </div>
+  </fieldset>
 </template>
 
 <script setup lang="ts">
@@ -27,6 +27,7 @@ const store = useStore()
 
 const canUndo = computed<boolean>(() => store.getters['undoRedo/canUndo'])
 const canRedo = computed<boolean>(() => store.getters['undoRedo/canRedo'])
+const isTreeSaving = computed<boolean>(() => store.getters['isTreeSaving'])
 
 // we need this check because if canUndo/canRedo becomes false, the button gets disabled and the tooltip doesn't go away
 const undoTooltip = computed<string>(() => (
