@@ -146,13 +146,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
     FROM_CURRENT_BLOCK_RESPONSE: 'fromCurrentBlockResponse',
   }
 
-  // null will help us to enforce validation error on empty value
-  propertyKey?: string = null
-  propertyValue?: string = ''
-
   created(): void {
-    this.propertyKey = this.firstContactPropertyKey
-    this.propertyValue = this.firstContactPropertyValue
     if (this.propertyValue === undefined) {
       // default setting
       if (this.isBlockInteractive) {
@@ -163,7 +157,6 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
         this.propertyValue = EMPTY_STRING_EXPRESSION
       }
     }
-    this.initPropertyValueAction()
   }
 
   get isBlockInteractive(): boolean {
@@ -179,8 +172,8 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
       this.block_setContactPropertyOnIndex({
         blockId: this.block.uuid,
         index: 0,
-        propertyKey: this.propertyKey,
-        propertyValue: this.shouldUseOpenExpression ? EMPTY_STRING_EXPRESSION : this.propertyValue,
+        propertyKey: this.propertyKey ?? '',
+        propertyValue: this.shouldUseOpenExpression ? EMPTY_STRING_EXPRESSION : this.propertyValue ?? '',
       })
     } else {
       this.block_removeConfigByKey({blockId: this.block.uuid, key: 'set_contact_property'})
@@ -214,7 +207,6 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
 
   // for input fields ######################
   updateFirstContactPropertyKey(value: string): void {
-    this.propertyKey = value
     this.block_setContactPropertyKeyOnIndex({
       blockId: this.block.uuid,
       // Consider the 1st element only
@@ -233,18 +225,27 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
     })
   }
 
-  get firstContactPropertyKey(): string | null {
+  get propertyKey(): string | null {
     return this.block.config.set_contact_property?.[0].property_key ?? null
   }
 
-  get firstContactPropertyValue(): string | null {
+  get propertyValue(): string | null {
     return this.block.config.set_contact_property?.[0].property_value ?? null
+  }
+
+  set propertyValue(value: string | null) {
+    this.block_setContactPropertyValueOnIndex({
+      blockId: this.block.uuid,
+      // Consider the 1st element only
+      index: 0,
+      propertyValue: value ?? '',
+    })
   }
 
   get flowSelectedContactPropertyField(): IContactPropertyOption | null {
     const selectedOption = find(
       this.subscriberPropertyFields,
-      (option: IContactPropertyOption) => option.name === this.firstContactPropertyKey,
+      (option: IContactPropertyOption) => option.name === this.propertyKey,
     )
     return selectedOption ?? null
   }
@@ -263,7 +264,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
   get subscriberPropertyFieldsForSelector(): IContactPropertyOptionForUISelector[] {
     return map(this.subscriberPropertyFields, (field: IContactPropertyOption) => {
       let shouldDisable
-      if (this.firstContactPropertyValue === '') {
+      if (this.propertyValue === '') {
         // users choose to set the contact prop from "expression" value
         shouldDisable = true
       } else {
