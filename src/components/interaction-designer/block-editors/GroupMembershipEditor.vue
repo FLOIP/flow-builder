@@ -93,7 +93,17 @@ export class GroupMembershipEditor extends mixins(Lang) {
   @Prop({type: Boolean, default: false}) readonly hasGroupsLoading!: boolean
 
   // User adds these  groups with vue-multiselect tagging interface
-  userAddedGroups: IGroupMembership[] = []
+  get userAddedGroups(): IGroupMembership[] {
+    return this.block.vendor_metadata?.floip.ui_metadata.user_added_groups ?? []
+  }
+
+  set userAddedGroups(groups) {
+    this.block_updateVendorMetadataByPath({
+      blockId: this.block.uuid,
+      path: 'floip.ui_metadata.user_added_groups',
+      value: groups,
+    })
+  }
 
   get groupOptions(): IGroupMembership[] {
     return this.availableGroups ?? this.userAddedGroups
@@ -181,11 +191,15 @@ export class GroupMembershipEditor extends mixins(Lang) {
       group_name: name,
     }
 
-    this.userAddedGroups.push(newGroup)
+    this.userAddedGroups = [...this.userAddedGroups, newGroup]
     this.selectedGroups = [...this.selectedGroups, newGroup]
   }
 
   @flowVuexNamespace.Mutation block_updateConfigByPath!: (
+    {blockId, path, value}: { blockId: string, path: string, value: ConfigFieldType }
+  ) => void
+
+  @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!: (
     {blockId, path, value}: { blockId: string, path: string, value: ConfigFieldType }
   ) => void
 }
