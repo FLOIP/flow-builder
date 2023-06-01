@@ -30,7 +30,7 @@ function pack(modules: ISnapshotModules): ISnapshot {
 }
 
 function unpack(snapshot: ISnapshot): ISnapshotModules {
-  return structuredClone(snapshot?.modules ?? {})
+  return structuredClone(snapshot.modules ?? {} as ISnapshotModules)
 }
 
 function getChangedModulesKeys(snapshotA: ISnapshot, snapshotB: ISnapshot): string[] {

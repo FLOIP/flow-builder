@@ -1,6 +1,6 @@
 import {StoreOptions} from 'vuex'
-import trees from '@/store/trees/trees'
-import audio from '@/store/trees/audio'
+import trees from '@/store/trees/trees.js'
+import audio from '@/store/trees/audio.js'
 import {IClipboardState, store as clipboard} from '@/store/clipboard'
 import {IUndoRedoState, store as undoRedo} from './undoRedo'
 import {IFlowsState, store as flow} from './flow'
