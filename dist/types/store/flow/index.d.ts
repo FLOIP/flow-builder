@@ -3,6 +3,7 @@ import { ActionTree, GetterTree, Module, MutationTree } from 'vuex';
 import { IRootState } from '..';
 export interface IFlowsState {
     isCreated: boolean;
+    savedAt?: string | null;
     specification_version: string;
     container_uuid: string;
     flows: IFlow[];

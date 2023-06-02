@@ -1,3 +1,10 @@
+declare global {
+    interface Window {
+        Cypress: any;
+        app: any;
+        store: any;
+    }
+}
 /**
  * This import modifies the jquery that should already be on the page globally at global.$
  * e.g. adding $().modal() and other jquery plugins
