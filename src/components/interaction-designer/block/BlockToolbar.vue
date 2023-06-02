@@ -97,7 +97,7 @@ export class BlockToolbar extends mixins(Lang) {
       name: 'block-selected-details',
       params: {blockId: duplicatedBlock.uuid},
     })
-    this.$emit('after-duplicate', {originalBlock: this.block, duplicatedBlock})
+    this.$emit('after-block-duplicate', {duplicateBlockUuid: duplicatedBlock.uuid})
   }
 
   @builderVuexNamespace.Getter isEditable !: boolean

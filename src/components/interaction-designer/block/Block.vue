@@ -45,7 +45,7 @@
           :is-block-selected="isBlockSelected"
           :is-editor-visible="shouldShowBlockEditorForCurrentBlock"
           :is-waiting-for-connection="isWaitingForConnection"
-          @after-duplicate="(...args) =>$emit('after-duplicate', ...args)" />
+          @after-block-duplicate="(...args) => $emit('after-block-duplicate', ...args)" />
 
         <block-title :block="block" />
 
