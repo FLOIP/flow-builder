@@ -80,7 +80,6 @@ export class SelectionBanner extends mixins(Lang) {
 
   async handleMultipleDuplicate(): Promise<void> {
     const duplicateBlockUuids = await this.flow_duplicateAllSelectedBlocks()
-    console.log('bulat handleMultipleDuplicate in community FB', JSON.stringify(duplicateBlockUuids))
     await this.flow_clearMultiSelection()
     this.$emit('after-multiple-block-duplicate', {duplicateBlockUuids})
   }

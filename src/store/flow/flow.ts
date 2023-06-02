@@ -586,10 +586,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
       dispatch('flow_duplicateBlock', {blockId}))
 
     const newBlocks: IBlock[] = await Promise.all(duplicateBlockActions)
-
     const newBlockUuids = newBlocks.map(block => block.uuid)
-
-    console.log('bulat in flow_duplicateAllSelectedBlocks', JSON.stringify(newBlockUuids))
 
     // make a copy to isolate from block selection changes
     state.selectedBlocks = [...newBlockUuids]
