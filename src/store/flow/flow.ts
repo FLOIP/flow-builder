@@ -582,15 +582,19 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   async flow_duplicateAllSelectedBlocks({state, dispatch}): Promise<string[]> {
-    const newBlocksUuid: string[] = []
-    forEach(state.selectedBlocks, async (blockId: IBlock['uuid']) => {
-      const duplicatedBlock: IBlock = await dispatch('flow_duplicateBlock', {blockId})
-      newBlocksUuid.push(duplicatedBlock.uuid)
-    })
-    console.log('bulat in flow_duplicateAllSelectedBlocks', JSON.stringify(newBlocksUuid))
+    const duplicateBlockActions = state.selectedBlocks.map((blockId: IBlock['uuid']) =>
+      dispatch('flow_duplicateBlock', {blockId}))
+
+    const newBlocks: IBlock[] = await Promise.all(duplicateBlockActions)
+
+    const newBlockUuids = newBlocks.map(block => block.uuid)
+
+    console.log('bulat in flow_duplicateAllSelectedBlocks', JSON.stringify(newBlockUuids))
+
     // make a copy to isolate from block selection changes
-    state.selectedBlocks = [...newBlocksUuid]
-    return newBlocksUuid
+    state.selectedBlocks = [...newBlockUuids]
+
+    return newBlockUuids
   },
 
   async flow_updateModes({state, getters, commit, dispatch}, {flowId, newModes}: {flowId: string, newModes: SupportedMode[]}) {
