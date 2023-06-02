@@ -120,20 +120,24 @@ export const mutations: MutationTree<IUndoRedoState> = {
 export const actions: ActionTree<IUndoRedoState, IRootState> = {
   async handleStateChange({commit, getters, rootState}) {
     // Take a snapshot of the current state to avoid mutating> it
-    const nextSnapshot = pack({
+    const newSnapshot = pack({
       flows: rootState.flow,
     })
 
-    let isLastFlowStateFromPersistence = !getters.hasCurrentSnapshot
+    let isNewSnapshotFromPersistenceAction = false
+    if (!getters.hasCurrentSnapshot) {
+      // If we don't have a current snapshot yet, we consider the new snapshot as from a persistence action
+      isNewSnapshotFromPersistenceAction = true
+    }
     const currentSavedAt = getters.currentSnapshot?.modules.flows?.savedAt
-    const nextSavedAt = nextSnapshot?.modules.flows?.savedAt
-    if (currentSavedAt !== undefined && nextSavedAt !== undefined && currentSavedAt !== nextSavedAt) {
-      isLastFlowStateFromPersistence = true
+    const newSavedAt = newSnapshot?.modules.flows?.savedAt
+    if (currentSavedAt !== newSavedAt && currentSavedAt !== undefined && newSavedAt !== undefined) {
+      isNewSnapshotFromPersistenceAction = true
     }
 
     // ####### force patch ##############
-    if (isLastFlowStateFromPersistence) {
-      commit('patchSnapshot', nextSnapshot)
+    if (isNewSnapshotFromPersistenceAction) {
+      commit('patchSnapshot', newSnapshot)
       return
     }
 
@@ -141,7 +145,7 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
 
     // We group changes by comparing sets of changed keys, and either
     // add a new snapshot or patch the current ones
-    const changedKeys = getChangedModulesKeys(getters.currentSnapshot as ISnapshot, nextSnapshot)
+    const changedKeys = getChangedModulesKeys(getters.currentSnapshot as ISnapshot, newSnapshot)
 
     const hasDifferentKeys = !isEmpty(difference(changedKeys, getters.previouslyChangedKeys as string[]))
     const hasSpecialKeys = shouldAlwaysTriggerSnapshot(changedKeys)
@@ -150,7 +154,7 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
 
     commit(
       shouldAddSnapshot ? 'addSnapshot' : 'patchSnapshot',
-      nextSnapshot,
+      newSnapshot,
     )
   },
 
