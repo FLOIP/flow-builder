@@ -67,6 +67,15 @@ export const getters: GetterTree<IUndoRedoState, IRootState> = {
   futureSnapshot(state): ISnapshot | null {
     return state.snapshots[state.position + 1] ?? null
   },
+  hasCurrentSnapshot(_state, getters): boolean {
+    return Boolean(getters.currentSnapshot)
+  },
+    hasPreviousSnapshot(_state, getters): boolean {
+    return Boolean(getters.previousSnapshot)
+  },
+  hasFutureSnapshot(_state, getters): boolean {
+    return Boolean(getters.futureSnapshot)
+  },
   previouslyChangedKeys(_state, getters): string[] {
     return getChangedModulesKeys(
       getters.currentSnapshot as ISnapshot,
@@ -115,15 +124,29 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
       flows: rootState.flow,
     })
 
+    let isLastFlowStateFromPersistence = !getters.hasCurrentSnapshot
+    const currentSavedAt = getters.currentSnapshot?.modules.flows?.savedAt
+    const nextSavedAt = nextSnapshot?.modules.flows?.savedAt
+    if (currentSavedAt !== undefined && nextSavedAt !== undefined && currentSavedAt !== nextSavedAt) {
+      isLastFlowStateFromPersistence = true
+    }
+
+    // ####### force patch ##############
+    if (isLastFlowStateFromPersistence) {
+      commit('patchSnapshot', nextSnapshot)
+      return
+    }
+
+    // ######## choose between `patch` and `add` ############
+
     // We group changes by comparing sets of changed keys, and either
     // add a new snapshot or patch the current ones
     const changedKeys = getChangedModulesKeys(getters.currentSnapshot as ISnapshot, nextSnapshot)
 
     const hasDifferentKeys = !isEmpty(difference(changedKeys, getters.previouslyChangedKeys as string[]))
     const hasSpecialKeys = shouldAlwaysTriggerSnapshot(changedKeys)
-    const hasFutureSnapshot = Boolean(getters.futureSnapshot)
 
-    const shouldAddSnapshot = hasDifferentKeys || hasFutureSnapshot || hasSpecialKeys
+    const shouldAddSnapshot = hasDifferentKeys || getters.hasFutureSnapshot || hasSpecialKeys
 
     commit(
       shouldAddSnapshot ? 'addSnapshot' : 'patchSnapshot',

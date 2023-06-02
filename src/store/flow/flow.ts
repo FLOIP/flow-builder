@@ -43,6 +43,7 @@ import {mergeFlowContainer} from './utils/importHelpers'
 
 export const stateFactory = (): IFlowsState => ({
   isCreated: false,
+  savedAt: null,
   //TODO - think about how to make this dynamic
   specification_version: '1.0.0-rc4',
   //For now we'll hard code this as it doesn't yet have a function
@@ -117,10 +118,13 @@ export const mutations: MutationTree<IFlowsState> = {
   //TODO - consider if this is correct? This only gets what the current flow needs and removes from the store any other flows
   //That means the flow list page (which we will build the production version of later) will get cleared of all flows if we continue with the current model - see the temporary page /src/views/Home.vue - unless we fetch the list again
   //That doesn't make sense if we run the builder standalone - without a fetch of the flows list
-  flow_setFlowContainer(state, flowContainer) {
+  flow_setFlowContainer(state, {flowContainer, isFromSaveAction}) {
     const persistedState = flowContainer
     state.isCreated = persistedState.isCreated
     state.flows = persistedState.flows
+    if (isFromSaveAction !== undefined) {
+      state.savedAt = new Date().toISOString()
+    }
   },
   flow_resetFlowState(state, flowState) {
     Object.assign(state, flowState)
@@ -225,7 +229,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const oldCreatedState = flowContainer.isCreated
     if (!persistRoute) {
       console.info('Flow persistence route not configured correctly in builder.config.json. Falling back to vuex store')
-      commit('flow_setFlowContainer', flowContainer)
+      commit('flow_setFlowContainer', {
+        flowContainer,
+        isFromSaveAction: true
+      })
       return getters.activeFlowContainer
     }
     try {
@@ -234,8 +241,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         {data: omit(flowContainer, ['isCreated'])},
       )
 
-      commit('flow_setFlowContainer', createdContainer)
-      // commit('flow_setFlowContainer', data)
+      commit('flow_setFlowContainer', {
+        flowContainer: createdContainer,
+        isFromSaveAction: true
+      })
       commit('flow_updateCreatedState', true)
       await dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
       return getters.activeFlowContainer
@@ -262,7 +271,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const oldCreatedState = flowContainer.isCreated
     if (!persistRoute) {
       console.info('Flow persistence route not configured correctly in builder.config.json. Falling back to vuex store')
-      commit('flow_setFlowContainer', flowContainer)
+      commit('flow_setFlowContainer', {
+        flowContainer,
+        isFromSaveAction: true
+      })
       return getters.activeFlowContainer
     }
 
@@ -274,7 +286,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         persistRoute,
         {data: omit(cleanupFlowResources(flowContainer, rootGetters['validation/choiceMimeType']), ['isCreated'])},
       )
-      commit('flow_setFlowContainer', container)
+      commit('flow_setFlowContainer', {
+        flowContainer: container,
+        isFromSaveAction: true
+      })
       commit('flow_updateCreatedState', true)
       await dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
       return getters.activeFlowContainer
@@ -293,7 +308,9 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
     try {
       const {data: {data: container}} = await axios.get(fetchRoute)
-      commit('flow_setFlowContainer', container)
+      commit('flow_setFlowContainer', {
+        flowContainer: container
+      })
       commit('flow_updateCreatedState', true)
       await dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
       return container
