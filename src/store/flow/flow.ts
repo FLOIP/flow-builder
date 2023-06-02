@@ -38,8 +38,8 @@ import {cleanupFlowResources, discoverContentTypesFor} from '@/store/flow/utils/
 import {computeBlockCanvasCoordinates} from '@/store/builder'
 import {ErrorObject} from 'ajv'
 import {ConfigFieldType, removeFlowValueByPath, updateFlowValueByPath} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
-import {mergeFlowContainer} from './utils/importHelpers'
 import {IFlowsState} from '@/store/flow/index'
+import {mergeFlowContainer} from './utils/importHelpers'
 
 export const stateFactory = (): IFlowsState => ({
   isCreated: false,
@@ -65,6 +65,8 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
       } catch (err) {
         return undefined
       }
+    } else {
+      return undefined
     }
   },
   blockUuidsOnActiveFlow: (state, getters): IBlock['uuid'][] => getters.activeFlow?.blocks,
@@ -112,7 +114,7 @@ export const getters: GetterTree<IFlowsState, IRootState> = {
 
 export const mutations: MutationTree<IFlowsState> = {
   flow_resetStates(state: IFlowsState) {
-    Object.assign(state, stateFactory() as IFlowsState)
+    Object.assign(state, stateFactory())
   },
   //TODO - consider if this is correct? This only gets what the current flow needs and removes from the store any other flows
   //That means the flow list page (which we will build the production version of later) will get cleared of all flows if we continue with the current model - see the temporary page /src/views/Home.vue - unless we fetch the list again
@@ -579,13 +581,14 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     state.selectedBlocks = []
   },
 
-  async flow_duplicateAllSelectedBlocks({state, dispatch}) {
+  async flow_duplicateAllSelectedBlocks({state, dispatch}): Promise<string[]> {
     const newBlocksUuid: string[] = []
     forEach(state.selectedBlocks, async (blockId: IBlock['uuid']) => {
       const duplicatedBlock: IBlock = await dispatch('flow_duplicateBlock', {blockId})
       newBlocksUuid.push(duplicatedBlock.uuid)
     })
     state.selectedBlocks = newBlocksUuid
+    return newBlocksUuid
   },
 
   async flow_updateModes({state, getters, commit, dispatch}, {flowId, newModes}: {flowId: string, newModes: SupportedMode[]}) {
