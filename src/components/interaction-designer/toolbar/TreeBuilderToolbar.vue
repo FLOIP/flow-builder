@@ -76,7 +76,7 @@
 
               <div
                 v-if="isResourceViewerEnabled"
-                class="btn-group mr-3">
+                class="btn-group">
                 <router-link
                   :class="{active: isBuilderCanvasEnabled, disabled: isTreeSaving}"
                   :to="treeUrl"
@@ -95,7 +95,7 @@
 
               <div
                 v-if="!ui.isEditableLocked && !isResourceViewerCanvasEnabled"
-                class="btn-group">
+                class="btn-group ml-3">
                 <router-link
                   v-b-tooltip.hover="trans('flow-builder.click-to-toggle-editing')"
                   :to="viewModeUrl"
