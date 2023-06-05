@@ -3,14 +3,14 @@
     <button
       v-b-tooltip.hover="undoTooltip"
       class="btn btn-sm btn-outline-primary"
-      :disabled="!canUndo"
+      :disabled="!hasPreviousSnapshot"
       @click.stop="handleUndo">
       <font-awesome-icon :icon="['fas', 'undo']" />
     </button>
     <button
       v-b-tooltip.hover="redoTooltip"
       class="btn btn-sm btn-outline-primary"
-      :disabled="!canRedo"
+      :disabled="!hasFutureSnapshot"
       @click.stop="handleRedo">
       <font-awesome-icon :icon="['fas', 'redo']" />
     </button>
@@ -25,16 +25,16 @@ import {BLOCK_RESET_CONNECTIONS} from '../block/Block.vue'
 
 const store = useStore()
 
-const canUndo = computed<boolean>(() => store.getters['undoRedo/canUndo'])
-const canRedo = computed<boolean>(() => store.getters['undoRedo/canRedo'])
+const hasPreviousSnapshot = computed<boolean>(() => store.getters['undoRedo/hasPreviousSnapshot'])
+const hasFutureSnapshot = computed<boolean>(() => store.getters['undoRedo/hasFutureSnapshot'])
 const isTreeSaving = computed<boolean>(() => store.getters['isTreeSaving'])
 
-// we need this check because if canUndo/canRedo becomes false, the button gets disabled and the tooltip doesn't go away
+// we need this check because if hasPreviousSnapshot/hasFutureSnapshot becomes false, the button gets disabled and the tooltip doesn't go away
 const undoTooltip = computed<string>(() => (
-  canUndo.value ? lang.trans('flow-builder.undo') : ''
+  hasPreviousSnapshot.value ? lang.trans('flow-builder.undo') : ''
 ))
 const redoTooltip = computed<string>(() => (
-  canRedo.value ? lang.trans('flow-builder.redo') : ''
+  hasFutureSnapshot.value ? lang.trans('flow-builder.redo') : ''
 ))
 
 function handleUndo(): void {
