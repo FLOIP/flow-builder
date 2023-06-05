@@ -3574,7 +3574,7 @@ __metadata:
 
 "@floip/flow-runner@https://github.com/FLOIP/flow-runner.git#feature/CORE-538/CORE-571/move-local-state-to-store":
   version: 1.0.12-rc4.18
-  resolution: "@floip/flow-runner@https://github.com/FLOIP/flow-runner.git#commit=fb762b02ab6619891435aa890f271f0bcdbf3204"
+  resolution: "@floip/flow-runner@https://github.com/FLOIP/flow-runner.git#commit=d889174331b02fffdbd7f161016f71bd9b7c1038"
   dependencies:
     "@floip/expression-evaluator": ^2.1.3
     ajv: ^7.2.1
@@ -3587,7 +3587,7 @@ __metadata:
     tslib: ^2.0.1
     uuid: ^3.3.2
     yaml-import: ^2.0.0
-  checksum: 0df359be2ba3c0eec5ae01cf46d5abb8f1f98fbb15911d24d01ca25e695009a1c12b33e130377f3e4253a5415dea38fefc08040cd33a41772fc04e757b2daec9
+  checksum: f0a796c983e69f920ab8e9c83fc39ee53a85c5a71e1b0e39c8b0261af8fcb6970aba8bbc3ae8830a4bdb53eb82981c3d80b058ce9f38cb549ceeb93846747096
   languageName: node
   linkType: hard
 
