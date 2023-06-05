@@ -73,12 +73,12 @@ export const NameEditor = defineComponent({
     },
     editBlockName: {
       get(): IBlockUIMetadata['editBlockName'] {
-        return this.block.vendor_metadata?.floip.edit_block_name ?? false
+        return this.block.vendor_metadata?.floip.ui_metadata.is_block_name_editable ?? false
       },
       set(value: IBlockUIMetadata['editBlockName']) {
         this.block_updateVendorMetadataByPath({
           blockId: this.block.uuid,
-          path: 'floip.edit_block_name',
+          path: 'floip.ui_metadata.is_block_name_editable',
           value,
         })
       },
