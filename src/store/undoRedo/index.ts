@@ -142,6 +142,10 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
     }
 
     // ######## choose between `patch` and `add` ############
+    if (getters.hasFutureSnapshot) {
+      commit('addSnapshot', newSnapshot)
+      return
+    }
 
     // We group changes by comparing sets of changed keys, and either
     // add a new snapshot or patch the current ones
@@ -150,12 +154,17 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
     const hasDifferentKeys = !isEmpty(difference(changedKeys, getters.previouslyChangedKeys as string[]))
     const hasSpecialKeys = shouldAlwaysTriggerSnapshot(changedKeys)
 
-    const shouldAddSnapshot = hasDifferentKeys || getters.hasFutureSnapshot || hasSpecialKeys
+    if (hasDifferentKeys) {
+      commit('addSnapshot', newSnapshot)
+      return
+    }
 
-    commit(
-      shouldAddSnapshot ? 'addSnapshot' : 'patchSnapshot',
-      newSnapshot,
-    )
+    if (hasSpecialKeys) {
+      commit('addSnapshot', newSnapshot)
+      return
+    }
+
+    commit('patchSnapshot', newSnapshot)
   },
 
   /**
