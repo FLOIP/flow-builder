@@ -52,6 +52,7 @@ import VueMultiselect from 'vue-multiselect'
 import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
 import {ConfigFieldType} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
+import {isEqual, unionWith} from 'lodash'
 import ValidationMessage from '../../common/ValidationMessage.vue'
 
 const flowVuexNamespace = namespace('flow')
@@ -106,7 +107,7 @@ export class GroupMembershipEditor extends mixins(Lang) {
   }
 
   get groupOptions(): IGroupMembership[] {
-    return this.availableGroups ?? this.userAddedGroups
+    return unionWith(this.availableGroups, this.userAddedGroups, isEqual)
   }
 
   get availableMembershipActions(): MembershipAction[] {
