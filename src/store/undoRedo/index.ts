@@ -14,6 +14,7 @@ export interface ISnapshotModules {
 
 export interface ISnapshot {
   modules: ISnapshotModules,
+  sourcePage?: string,
   timestamp: number,
 }
 
@@ -22,9 +23,10 @@ export interface IUndoRedoState {
   position: number,
 }
 
-function pack(modules: ISnapshotModules): ISnapshot {
+function pack({modules, sourcePage}: {modules: ISnapshotModules, sourcePage?: string}): ISnapshot {
   return {
     modules: structuredClone(modules),
+    sourcePage,
     timestamp: new Date().getTime(),
   }
 }
@@ -115,7 +117,10 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
   async handleStateChange({commit, getters, rootState}) {
     // Take a snapshot of the current state to avoid mutating> it
     const newSnapshot = pack({
-      flows: rootState.flow,
+      modules: {
+        flows: rootState.flow,
+      },
+      sourcePage: rootState.builder.activeMainComponent,
     })
 
     let isNewSnapshotFromPersistenceAction = false
@@ -199,7 +204,10 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
   async resetHistory({commit, rootState}) {
     setImmediate(() => {
       commit('resetSnapshots', pack({
-        flows: rootState.flow,
+        modules: {
+          flows: rootState.flow,
+        },
+        sourcePage: rootState.builder.activeMainComponent,
       }))
     })
   },
