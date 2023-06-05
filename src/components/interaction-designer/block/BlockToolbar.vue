@@ -91,14 +91,13 @@ export class BlockToolbar extends mixins(Lang) {
     this.$emit('after-delete')
   }
 
-  handleDuplicateBlock(): void {
-    this.flow_duplicateBlock({blockId: this.block.uuid}).then((duplicatedBlock) => {
-      this.$router.replace({
-        name: 'block-selected-details',
-        params: {blockId: duplicatedBlock.uuid},
-      })
+  async handleDuplicateBlock(): Promise<void> {
+    const duplicatedBlock = await this.flow_duplicateBlock({blockId: this.block.uuid})
+    await this.$router.replace({
+      name: 'block-selected-details',
+      params: {blockId: duplicatedBlock.uuid},
     })
-    this.$emit('after-duplicate')
+    this.$emit('after-block-duplicate', {duplicateBlockUuid: duplicatedBlock.uuid})
   }
 
   @builderVuexNamespace.Getter isEditable !: boolean
@@ -110,14 +109,3 @@ export class BlockToolbar extends mixins(Lang) {
 }
 export default BlockToolbar
 </script>
-
-<style scoped>
-.icon-container {
-  display: flex;
-  align-items: center;
-}
-.icon-text {
-  font-size: 0.8rem;
-  margin-right: 0.15rem;
-}
-</style>

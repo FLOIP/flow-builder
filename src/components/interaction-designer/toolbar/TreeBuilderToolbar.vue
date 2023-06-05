@@ -234,12 +234,15 @@
               </div>
             </li>
             <template v-if="!isEmpty(blockClassesForBranchingCategory)">
-              <li class="nav-item" v-if="Object.keys(blockClassesForBranchingCategory).length === 1">
-                <a v-for="(classDetails, className) in blockClassesForBranchingCategory"
-                   :key="className + 'item'"
-                   class="nav-link single-menu"
-                   href="#"
-                   @click.prevent="handleAddBlockByTypeSelected(classDetails)">
+              <li
+                v-if="Object.keys(blockClassesForBranchingCategory).length === 1"
+                class="nav-item">
+                <a
+                  v-for="(classDetails, className) in blockClassesForBranchingCategory"
+                  :key="className + 'item'"
+                  class="nav-link single-menu"
+                  href="#"
+                  @click.prevent="handleAddBlockByTypeSelected(classDetails)">
                   {{ 'flow-builder.branching' | trans }}
                 </a>
               </li>
@@ -314,12 +317,15 @@
         </div>
       </div>
     </div>
-    <div v-if="isBuilderCanvasEnabled" class="tree-builder-toolbar-alerts w-100">
+    <div
+      v-if="isBuilderCanvasEnabled"
+      class="tree-builder-toolbar-alerts w-100">
       <selection-banner
         v-if="isEditable"
-        @updated="handleHeightChangeFromDOM" />
+        @updated="handleHeightChangeFromDOM"
+        @after-multiple-block-duplicate="(...args) => $emit('after-multiple-block-duplicate', ...args)" />
       <error-notifications @updated="handleHeightChangeFromDOM" />
-      <block-editor v-if="isBlockEditorOpen"/>
+      <block-editor v-if="isBlockEditorOpen" />
     </div>
   </div>
 </template>
@@ -588,7 +594,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   /**
    * We have to make sure this is called using $nextTick() because we play with DOM
    */
-  handleHeightChangeFromDOM() {
+  handleHeightChangeFromDOM(): void {
     const elementRef = this.$refs['builder-toolbar'] as Element
     if (!elementRef) {
       console.debug('Interaction Designer', 'Unable to find DOM element corresponding to builder-toolbar')
@@ -606,11 +612,11 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     }
   }
 
-  handleFlowViewMenu() {
+  handleFlowViewMenu(): void {
     this.handlePersistFlow(this.treeUrl)
   }
 
-  handleResourceViewMenu() {
+  handleResourceViewMenu(): void {
     this.handlePersistFlow(this.resourceUrl)
     // scroll back to the top left in case the window has scroll bars from the builder-canvas
     window.scrollTo(0, 0)

@@ -1,8 +1,8 @@
 <template>
   <div
-    class="block"
     :id="`block/${block.uuid}`"
     :ref="`block/${block.uuid}`"
+    class="block"
     @click.stop="selectBlock"
     @mouseenter="setIsMouseOnBlock(true)"
     @mouseleave="setIsMouseOnBlock(false)">
@@ -44,9 +44,10 @@
           :is-activated-by-connection="isAssociatedWithActiveConnectionAsTargetBlock"
           :is-block-selected="isBlockSelected"
           :is-editor-visible="shouldShowBlockEditorForCurrentBlock"
-          :is-waiting-for-connection="isWaitingForConnection" />
+          :is-waiting-for-connection="isWaitingForConnection"
+          @after-block-duplicate="(...args) => $emit('after-block-duplicate', ...args)" />
 
-        <block-title :block="block"/>
+        <block-title :block="block" />
 
         <h3
           class="block-label"
@@ -55,7 +56,7 @@
           {{ block.label || trans('flow-builder.untitled-block') }}
         </h3>
 
-        <slot name="after-label"/>
+        <slot name="after-label" />
       </header>
 
       <footer

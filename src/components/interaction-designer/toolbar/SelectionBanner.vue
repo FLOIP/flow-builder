@@ -78,15 +78,16 @@ export class SelectionBanner extends mixins(Lang) {
     this.deleting = false
   }
 
-  async handleMultipleDuplicate() {
-    await this.flow_duplicateAllSelectedBlocks()
+  async handleMultipleDuplicate(): Promise<void> {
+    const duplicateBlockUuids = await this.flow_duplicateAllSelectedBlocks()
     await this.flow_clearMultiSelection()
+    this.$emit('after-multiple-block-duplicate', {duplicateBlockUuids})
   }
 
   @flowVuexNamespace.State selectedBlocks!: IBlock['uuid'][]
   @flowVuexNamespace.Action flow_clearMultiSelection!: () => Promise<void>
   @flowVuexNamespace.Action flow_removeAllSelectedBlocks!: () => Promise<void>
-  @flowVuexNamespace.Action flow_duplicateAllSelectedBlocks!: () => Promise<void>
+  @flowVuexNamespace.Action flow_duplicateAllSelectedBlocks!: () => Promise<string[]>
 }
 export default SelectionBanner
 </script>

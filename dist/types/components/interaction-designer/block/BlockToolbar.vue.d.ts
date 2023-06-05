@@ -9,7 +9,7 @@ export declare class BlockToolbar extends BlockToolbar_base {
     readonly isActivatedByConnection: boolean;
     isDeleting: boolean;
     handleDeleteBlock(): void;
-    handleDuplicateBlock(): void;
+    handleDuplicateBlock(): Promise<void>;
     isEditable: boolean;
     block_select: ({ blockId }: {
         blockId: IBlock['uuid'];
