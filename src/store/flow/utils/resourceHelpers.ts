@@ -11,6 +11,7 @@ import {
 } from '@floip/flow-runner'
 import {cloneDeep, difference, find, isEmpty, isEqual, map, pick, without} from 'lodash'
 import {ValidationException} from '@floip/flow-runner/src/domain/exceptions/ValidationException'
+import structuredClone from '@ungap/structured-clone'
 
 export type IResourceDefinitionVariantOverModesFilter = Partial<IResourceDefinitionVariantOverModes>
 export type IResourceDefinitionVariantOverModesFilterAsKey = Omit<IResourceDefinitionVariantOverModes, 'value'>
@@ -140,24 +141,36 @@ export function discoverContentTypesFor(mode: SupportedMode, resource?: IResourc
   return Object.assign(defaultModeMappings, contentTypeOverrides)[mode]
 }
 
-export function cleanupFlowResources(container: IContext, choiceMimeType: string): IContext {
+export function cleanupFlowBeforePersisting(container: IContext, choiceMimeType: string): IContext {
+  const flows = structuredClone(container.flows)
+
+  flows.forEach((flow) => {
+    // Cleanup resources
+    flow.resources
+      .map((resource) => {
+        resource.values = resource.values.filter((value) => {
+          const isChoice = value.mime_type === choiceMimeType
+          const hasAllowedMode = flow.supported_modes.some(mode => value.modes.includes(mode))
+          const hasSupportedLanguage = flow.languages.some(lang => value.language_id === lang.id)
+
+          return isChoice || (hasAllowedMode && hasSupportedLanguage)
+        })
+
+        return isEmpty(resource.values) ? null : resource
+      })
+      .filter(Boolean)
+
+    // Cleanup blocks
+    flow.blocks.forEach((block) => {
+      if (block.type === 'Core.SetGroupMembership') {
+        delete block.vendor_metadata?.floip.ui_metadata.user_added_groups
+      }
+    })
+  })
+
   return {
     ...container,
-    flows: container.flows.map((flow) => ({
-      ...flow,
-      resources: flow.resources
-        .map(resource => ({
-          ...resource,
-          values: resource.values.filter(value => {
-            const isChoice = value.mime_type === choiceMimeType
-            const hasAllowedMode = flow.supported_modes.some(mode => value.modes.includes(mode))
-            const hasSupportedLanguage = flow.languages.some(lang => value.language_id === lang.id)
-
-            return isChoice || (hasAllowedMode && hasSupportedLanguage)
-          }),
-        }))
-        .filter(resource => !isEmpty(resource.values)),
-    })),
+    flows,
   }
 }
 
