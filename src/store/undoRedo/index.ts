@@ -52,12 +52,6 @@ export const stateFactory = (): IUndoRedoState => ({
 })
 
 export const getters: GetterTree<IUndoRedoState, IRootState> = {
-  canUndo(_state, getters): boolean {
-    return getters.previousSnapshot !== null
-  },
-  canRedo(_state, getters): boolean {
-    return getters.futureSnapshot !== null
-  },
   currentSnapshot(state): ISnapshot {
     return state.snapshots[state.position]
   },
@@ -66,6 +60,15 @@ export const getters: GetterTree<IUndoRedoState, IRootState> = {
   },
   futureSnapshot(state): ISnapshot | null {
     return state.snapshots[state.position + 1] ?? null
+  },
+  hasCurrentSnapshot(_state, getters): boolean {
+    return Boolean(getters.currentSnapshot)
+  },
+  hasPreviousSnapshot(_state, getters): boolean {
+    return Boolean(getters.previousSnapshot)
+  },
+  hasFutureSnapshot(_state, getters): boolean {
+    return Boolean(getters.futureSnapshot)
   },
   previouslyChangedKeys(_state, getters): string[] {
     return getChangedModulesKeys(
@@ -111,24 +114,51 @@ export const mutations: MutationTree<IUndoRedoState> = {
 export const actions: ActionTree<IUndoRedoState, IRootState> = {
   async handleStateChange({commit, getters, rootState}) {
     // Take a snapshot of the current state to avoid mutating> it
-    const nextSnapshot = pack({
+    const newSnapshot = pack({
       flows: rootState.flow,
     })
 
+    let isNewSnapshotFromPersistenceAction = false
+    if (!getters.hasCurrentSnapshot) {
+      // If we don't have a current snapshot yet, we consider the new snapshot as from a persistence action
+      isNewSnapshotFromPersistenceAction = true
+    }
+    const currentSavedAt = getters.currentSnapshot?.modules.flows?.savedAt
+    const newSavedAt = newSnapshot?.modules.flows?.savedAt
+    if (currentSavedAt !== newSavedAt && currentSavedAt !== undefined && newSavedAt !== undefined) {
+      isNewSnapshotFromPersistenceAction = true
+    }
+
+    // ####### force patch ##############
+    if (isNewSnapshotFromPersistenceAction) {
+      commit('patchSnapshot', newSnapshot)
+      return
+    }
+
+    // ######## choose between `patch` and `add` ############
+    if (getters.hasFutureSnapshot) {
+      commit('addSnapshot', newSnapshot)
+      return
+    }
+
     // We group changes by comparing sets of changed keys, and either
     // add a new snapshot or patch the current ones
-    const changedKeys = getChangedModulesKeys(getters.currentSnapshot as ISnapshot, nextSnapshot)
+    const changedKeys = getChangedModulesKeys(getters.currentSnapshot as ISnapshot, newSnapshot)
 
     const hasDifferentKeys = !isEmpty(difference(changedKeys, getters.previouslyChangedKeys as string[]))
     const hasSpecialKeys = shouldAlwaysTriggerSnapshot(changedKeys)
-    const hasFutureSnapshot = Boolean(getters.futureSnapshot)
 
-    const shouldAddSnapshot = hasDifferentKeys || hasFutureSnapshot || hasSpecialKeys
+    if (hasDifferentKeys) {
+      commit('addSnapshot', newSnapshot)
+      return
+    }
 
-    commit(
-      shouldAddSnapshot ? 'addSnapshot' : 'patchSnapshot',
-      nextSnapshot,
-    )
+    if (hasSpecialKeys) {
+      commit('addSnapshot', newSnapshot)
+      return
+    }
+
+    commit('patchSnapshot', newSnapshot)
   },
 
   /**
@@ -136,7 +166,7 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
    */
   async undoAndUpdateState({commit, getters}): Promise<void> {
     // eslint-disable-next-line
-    if (!getters.canUndo) {
+    if (!getters.hasPreviousSnapshot) {
       console.warn('Cannot undo, the action history is empty or we have already reached the beginning of it')
       return
     }
@@ -152,7 +182,7 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
    */
   async redoAndUpdateState({commit, getters}): Promise<void> {
     // eslint-disable-next-line
-    if (!getters.canRedo) {
+    if (!getters.hasFutureSnapshot) {
       console.warn('Cannot redo, the action history is empty or we have already reached the end of it')
       return
     }

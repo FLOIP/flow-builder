@@ -9,6 +9,10 @@ import {actions as resourceActions, getters as resourceGetters, mutations as res
 export interface IFlowsState {
   //Created is *not* the same as persisted. It does not guarantee the current state is saved to the server. Only that the currently active flow in the container was persisted - the persistFlow route was called with the container and the active flow uuid and the route response did not have an error status code
   isCreated: boolean,
+
+  // to differentiate between the current flow and the last saved flow
+  // useful for the undo/redo feature for eg.
+  savedAt?: string | null,
   specification_version: string,
   container_uuid: string,
   flows: IFlow[],
