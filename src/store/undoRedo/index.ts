@@ -5,6 +5,7 @@ import structuredClone from '@ungap/structured-clone'
 import {difference, isEmpty} from 'lodash'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {getChangedKeys} from './getChangedKeys'
+import router from '@/router'
 
 const MAX_HISTORY_LENGTH = 100
 
@@ -169,7 +170,7 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
   /**
    * Undo user's command
    */
-  async undoAndUpdateState({commit, getters}): Promise<void> {
+  async undoAndUpdateState({commit, getters, dispatch}): Promise<void> {
     // eslint-disable-next-line
     if (!getters.hasPreviousSnapshot) {
       console.warn('Cannot undo, the action history is empty or we have already reached the beginning of it')
@@ -180,12 +181,13 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
     const modules = unpack(getters.currentSnapshot as ISnapshot)
 
     commit('flow/flow_resetFlowState', modules.flows, {root: true})
+    dispatch('redirectToSourcePage')
   },
 
   /**
    * Redo user's command
    */
-  async redoAndUpdateState({commit, getters}): Promise<void> {
+  async redoAndUpdateState({commit, dispatch, getters}): Promise<void> {
     // eslint-disable-next-line
     if (!getters.hasFutureSnapshot) {
       console.warn('Cannot redo, the action history is empty or we have already reached the end of it')
@@ -196,6 +198,7 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
     const modules = unpack(getters.currentSnapshot as ISnapshot)
 
     commit('flow/flow_resetFlowState', modules.flows, {root: true})
+    dispatch('redirectToSourcePage')
   },
 
   /**
@@ -211,6 +214,23 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
       }))
     })
   },
+
+  async redirectToSourcePage({getters, rootGetters}) {
+    try {
+      await router.push({
+        name: 'flow-canvas',
+        params: {
+          id: rootGetters['flow/activeFlow']?.uuid,
+          component: getters.currentSnapshot?.sourcePage,
+          mode: 'edit',
+        },
+      })
+    } catch (err) {
+      if (err.name !== 'NavigationDuplicated') {
+        console.error(err)
+      }
+    }
+  }
 }
 
 export const store: Module<IUndoRedoState, IRootState> = {
