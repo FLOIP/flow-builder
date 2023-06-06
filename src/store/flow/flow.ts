@@ -34,7 +34,7 @@ import {
   omit,
   sortBy,
 } from 'lodash'
-import {cleanupFlowResources, discoverContentTypesFor} from '@/store/flow/utils/resourceHelpers'
+import {cleanupFlowBeforePersisting, discoverContentTypesFor} from '@/store/flow/utils/resourceHelpers'
 import {computeBlockCanvasCoordinates} from '@/store/builder'
 import {ErrorObject} from 'ajv'
 import {ConfigFieldType, removeFlowValueByPath, updateFlowValueByPath} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
@@ -284,7 +284,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     try {
       const {data: {data: container}} = await axios[restVerb](
         persistRoute,
-        {data: omit(cleanupFlowResources(flowContainer, rootGetters['validation/choiceMimeType']), ['isCreated'])},
+        {data: omit(cleanupFlowBeforePersisting(flowContainer, rootGetters['validation/choiceMimeType']), ['isCreated'])},
       )
       commit('flow_setFlowContainer', {
         flowContainer: container,

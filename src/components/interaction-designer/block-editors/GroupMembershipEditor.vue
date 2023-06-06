@@ -52,6 +52,7 @@ import VueMultiselect from 'vue-multiselect'
 import Lang from '@/lib/filters/lang'
 import {mixins} from 'vue-class-component'
 import {ConfigFieldType} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
+import {isEqual, unionWith} from 'lodash'
 import ValidationMessage from '../../common/ValidationMessage.vue'
 
 const flowVuexNamespace = namespace('flow')
@@ -93,10 +94,20 @@ export class GroupMembershipEditor extends mixins(Lang) {
   @Prop({type: Boolean, default: false}) readonly hasGroupsLoading!: boolean
 
   // User adds these  groups with vue-multiselect tagging interface
-  userAddedGroups: IGroupMembership[] = []
+  get userAddedGroups(): IGroupMembership[] {
+    return this.block.vendor_metadata?.floip.ui_metadata.user_added_groups ?? []
+  }
+
+  set userAddedGroups(groups) {
+    this.block_updateVendorMetadataByPath({
+      blockId: this.block.uuid,
+      path: 'floip.ui_metadata.user_added_groups',
+      value: groups,
+    })
+  }
 
   get groupOptions(): IGroupMembership[] {
-    return this.availableGroups ?? this.userAddedGroups
+    return unionWith(this.availableGroups, this.userAddedGroups, isEqual)
   }
 
   get availableMembershipActions(): MembershipAction[] {
@@ -181,11 +192,15 @@ export class GroupMembershipEditor extends mixins(Lang) {
       group_name: name,
     }
 
-    this.userAddedGroups.push(newGroup)
+    this.userAddedGroups = [...this.userAddedGroups, newGroup]
     this.selectedGroups = [...this.selectedGroups, newGroup]
   }
 
   @flowVuexNamespace.Mutation block_updateConfigByPath!: (
+    {blockId, path, value}: { blockId: string, path: string, value: ConfigFieldType }
+  ) => void
+
+  @flowVuexNamespace.Mutation block_updateVendorMetadataByPath!: (
     {blockId, path, value}: { blockId: string, path: string, value: ConfigFieldType }
   ) => void
 }
