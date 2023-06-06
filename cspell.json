@@ -4,8 +4,9 @@
     "dictionaryDefinitions": [],
     "dictionaries": [],
     "words": [
-      "FLOIP",
-      "Vuex"
+        "FLOIP",
+        "ungap",
+        "Vuex"
     ],
     "ignoreWords": [],
     "import": []
