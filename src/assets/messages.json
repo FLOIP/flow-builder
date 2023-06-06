@@ -3393,6 +3393,7 @@
     "block-config-accuracy_timeout_seconds-type": "Accuracy timeout in seconds should be a number",
     "block-config-value-type": "Output expression should be a string",
     "block-config-is_member-type": "Value/Expression should be a string",
+    "block-config-set_contact_property-x-required": "Contact property should not be empty",
     "block-config-set_contact_property-x-property_key-minLength": "Contact property should not be empty",
     "resource-values-x-value-pattern": "Content should only contain basic Latin script, digits, or punctuation",
     "resource-values-x-value-pattern-ivr": "An audio file should be selected",

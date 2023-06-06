@@ -149,11 +149,14 @@ export function cleanupFlowBeforePersisting(container: IContext, choiceMimeType:
     flow.resources
       .map((resource) => {
         resource.values = resource.values.filter((value) => {
-          const isChoice = value.mime_type === choiceMimeType
+          if (value.mime_type === choiceMimeType) {
+            return true
+          }
+
           const hasAllowedMode = flow.supported_modes.some(mode => value.modes.includes(mode))
           const hasSupportedLanguage = flow.languages.some(lang => value.language_id === lang.id)
 
-          return isChoice || (hasAllowedMode && hasSupportedLanguage)
+          return hasAllowedMode && hasSupportedLanguage
         })
 
         return isEmpty(resource.values) ? null : resource
