@@ -406,8 +406,6 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     } else {
       console.debug('Builder Toolbar', 'Unable to find the edit flow modal on mount - deep linking may not work')
     }
-
-    await this.resetHistory()
   }
 
   @Watch('$route.meta', {immediate: true, deep: true})
@@ -700,9 +698,6 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   @clipboardVuexNamespace.Action setSimulatorActive!: (value: boolean) => void
 
   @validationVuexNamespace.Action remove_block_validation!: ({blockId}: { blockId?: IBlock['uuid']}) => void
-
-  // Undo/Redo feature
-  @undoRedoVuexNamespace.Action resetHistory!: () => Promise<void>
 }
 
 export default TreeBuilderToolbar
