@@ -125,7 +125,7 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
     })
 
     let isNewSnapshotFromPersistenceAction = false
-    if (!getters.hasCurrentSnapshot) {
+    if (!(getters.hasCurrentSnapshot as boolean)) {
       // If we don't have a current snapshot yet, we consider the new snapshot as from a persistence action
       isNewSnapshotFromPersistenceAction = true
     }
@@ -142,7 +142,7 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
     }
 
     // ######## choose between `patch` and `add` ############
-    if (getters.hasFutureSnapshot) {
+    if (getters.hasFutureSnapshot as boolean) {
       commit('addSnapshot', newSnapshot)
       return
     }
@@ -189,7 +189,7 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
    */
   async redoAndUpdateState({commit, dispatch, getters}): Promise<void> {
     // eslint-disable-next-line
-    if (!getters.hasFutureSnapshot) {
+    if (!getters.hasFutureSnapshot as boolean) {
       console.warn('Cannot redo, the action history is empty or we have already reached the end of it')
       return
     }
