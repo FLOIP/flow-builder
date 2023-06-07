@@ -5,6 +5,7 @@ import structuredClone from '@ungap/structured-clone'
 import {difference, isEmpty, union} from 'lodash'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {getChangedKeys} from './getChangedKeys'
+import router from '@/router'
 
 const MAX_HISTORY_LENGTH = 100
 
@@ -14,6 +15,7 @@ export interface ISnapshotModules {
 
 export interface ISnapshot {
   modules: ISnapshotModules,
+  sourcePage?: string,
   timestamp: number,
 }
 
@@ -22,9 +24,10 @@ export interface IUndoRedoState {
   position: number,
 }
 
-function pack(modules: ISnapshotModules): ISnapshot {
+function pack({modules, sourcePage}: {modules: ISnapshotModules, sourcePage?: string}): ISnapshot {
   return {
     modules: structuredClone(modules),
+    sourcePage,
     timestamp: new Date().getTime(),
   }
 }
@@ -115,11 +118,14 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
   async handleStateChange({commit, getters, rootState}) {
     // Take a snapshot of the current state to avoid mutating> it
     const newSnapshot = pack({
-      flows: rootState.flow,
+      modules: {
+        flows: rootState.flow,
+      },
+      sourcePage: rootState.builder.activeMainComponent,
     })
 
     let isNewSnapshotFromPersistenceAction = false
-    if (!getters.hasCurrentSnapshot) {
+    if (!(getters.hasCurrentSnapshot as boolean)) {
       // If we don't have a current snapshot yet, we consider the new snapshot as from a persistence action
       isNewSnapshotFromPersistenceAction = true
     }
@@ -136,7 +142,7 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
     }
 
     // ######## choose between `patch` and `add` ############
-    if (getters.hasFutureSnapshot) {
+    if (getters.hasFutureSnapshot as boolean) {
       commit('addSnapshot', newSnapshot)
       return
     }
@@ -167,7 +173,7 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
   /**
    * Undo user's command
    */
-  async undoAndUpdateState({commit, getters}): Promise<void> {
+  async undoAndUpdateState({commit, getters, dispatch}): Promise<void> {
     // eslint-disable-next-line
     if (!getters.hasPreviousSnapshot) {
       console.warn('Cannot undo, the action history is empty or we have already reached the beginning of it')
@@ -178,14 +184,15 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
     const modules = unpack(getters.currentSnapshot as ISnapshot)
 
     commit('flow/flow_resetFlowState', modules.flows, {root: true})
+    dispatch('redirectToSourcePage')
   },
 
   /**
    * Redo user's command
    */
-  async redoAndUpdateState({commit, getters}): Promise<void> {
+  async redoAndUpdateState({commit, dispatch, getters}): Promise<void> {
     // eslint-disable-next-line
-    if (!getters.hasFutureSnapshot) {
+    if (!getters.hasFutureSnapshot as boolean) {
       console.warn('Cannot redo, the action history is empty or we have already reached the end of it')
       return
     }
@@ -194,6 +201,7 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
     const modules = unpack(getters.currentSnapshot as ISnapshot)
 
     commit('flow/flow_resetFlowState', modules.flows, {root: true})
+    dispatch('redirectToSourcePage')
   },
 
   /**
@@ -202,10 +210,30 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
   async resetHistory({commit, rootState}) {
     setImmediate(() => {
       commit('resetSnapshots', pack({
-        flows: rootState.flow,
+        modules: {
+          flows: rootState.flow,
+        },
+        sourcePage: rootState.builder.activeMainComponent,
       }))
     })
   },
+
+  async redirectToSourcePage({getters, rootGetters}) {
+    try {
+      await router.push({
+        name: 'flow-canvas',
+        params: {
+          id: rootGetters['flow/activeFlow']?.uuid,
+          component: getters.currentSnapshot?.sourcePage,
+          mode: 'edit',
+        },
+      })
+    } catch (err) {
+      if (err.name !== 'NavigationDuplicated') {
+        console.error(err)
+      }
+    }
+  }
 }
 
 export const store: Module<IUndoRedoState, IRootState> = {
