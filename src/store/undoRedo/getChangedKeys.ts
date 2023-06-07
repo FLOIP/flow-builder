@@ -1,8 +1,13 @@
-/* eslint-disable import/prefer-default-export, @typescript-eslint/no-explicit-any */
-export function getChangedKeys(a: object, b: object): string[] {
+/* eslint-disable import/prefer-default-export */
+import {isObjectOrUndefined, ensureObject, NotNullOrUndefined} from '@/utils/type-utils'
+
+export function getChangedKeys(a: NotNullOrUndefined, b: NotNullOrUndefined): string[] {
   const changedKeys: string[] = []
 
-  Object.keys({...a, ...b})
+  Object.keys({
+      ...a as object,
+      ...b as object,
+  })
     .forEach((key) => {
       const aVal = (a as Record<string, unknown>)[key]
       const bVal = (b as Record<string, unknown>)[key]
@@ -18,12 +23,4 @@ export function getChangedKeys(a: object, b: object): string[] {
     })
 
   return changedKeys
-}
-
-function ensureObject(obj: any): object {
-  return obj !== null && obj !== undefined ? obj : {}
-}
-
-function isObjectOrUndefined(obj: any): boolean {
-  return obj === undefined || typeof obj === 'object'
 }
