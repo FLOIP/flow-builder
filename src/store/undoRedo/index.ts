@@ -2,7 +2,7 @@ import Vue from 'vue'
 import {IRootState} from '@/store'
 import {IFlowsState} from '@/store/flow'
 import structuredClone from '@ungap/structured-clone'
-import {difference, isEmpty} from 'lodash'
+import {difference, isEmpty, union} from 'lodash'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import {getChangedKeys} from './getChangedKeys'
 
@@ -145,15 +145,18 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
     // add a new snapshot or patch the current ones
     const changedKeys = getChangedModulesKeys(getters.currentSnapshot as ISnapshot, newSnapshot)
 
-    const hasDifferentKeys = !isEmpty(difference(changedKeys, getters.previouslyChangedKeys as string[]))
-    const hasSpecialKeys = shouldAlwaysTriggerSnapshot(changedKeys)
+    const previouslyChangedKeys = getters.previouslyChangedKeys as string[]
+    const differentKeys = union(
+      difference(changedKeys, previouslyChangedKeys),
+      difference(previouslyChangedKeys, changedKeys),
+    )
 
-    if (hasDifferentKeys) {
+    if (differentKeys.length > 0) {
       commit('addSnapshot', newSnapshot)
       return
     }
 
-    if (hasSpecialKeys) {
+    if (shouldAlwaysTriggerSnapshot(changedKeys)) {
       commit('addSnapshot', newSnapshot)
       return
     }
