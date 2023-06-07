@@ -1,11 +1,13 @@
 import Vue from 'vue'
+import {Location} from 'vue-router'
 import {IRootState} from '@/store'
 import {IFlowsState} from '@/store/flow'
 import structuredClone from '@ungap/structured-clone'
 import {difference, isEmpty} from 'lodash'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
-import {getChangedKeys} from './getChangedKeys'
 import router from '@/router'
+import {getChangedKeys} from './getChangedKeys'
+import {getDeepLink} from './deeplink'
 
 const MAX_HISTORY_LENGTH = 100
 
@@ -16,6 +18,8 @@ export interface ISnapshotModules {
 export interface ISnapshot {
   modules: ISnapshotModules,
   sourcePage?: string,
+  routeName: Location['name'],
+  routeParams: Location['params'],
   timestamp: number,
 }
 
@@ -24,10 +28,12 @@ export interface IUndoRedoState {
   position: number,
 }
 
-function pack({modules, sourcePage}: {modules: ISnapshotModules, sourcePage?: string}): ISnapshot {
+function pack({modules, sourcePage, routeName, routeParams}: Omit<ISnapshot, 'timestamp'>): ISnapshot {
   return {
     modules: structuredClone(modules),
     sourcePage,
+    routeName,
+    routeParams,
     timestamp: new Date().getTime(),
   }
 }
@@ -116,12 +122,16 @@ export const mutations: MutationTree<IUndoRedoState> = {
 
 export const actions: ActionTree<IUndoRedoState, IRootState> = {
   async handleStateChange({commit, getters, rootState}) {
-    // Take a snapshot of the current state to avoid mutating> it
+    const currentModules: ISnapshotModules = structuredClone({flows: getters.currentSnapshot.modules.flows})
+    const newModules: ISnapshotModules = structuredClone({flows: rootState.flow})
+    const changedKeys = getChangedKeys(currentModules, newModules)
+    const {routeName, routeParams} = getDeepLink(changedKeys, rootState.flow)
+
     const newSnapshot = pack({
-      modules: {
-        flows: rootState.flow,
-      },
-      sourcePage: rootState.builder.activeMainComponent,
+      modules: newModules,
+      sourcePage: rootState.builder.activeMainComponent!,
+      routeName,
+      routeParams,
     })
 
     let isNewSnapshotFromPersistenceAction = false
@@ -146,10 +156,6 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
       commit('addSnapshot', newSnapshot)
       return
     }
-
-    // We group changes by comparing sets of changed keys, and either
-    // add a new snapshot or patch the current ones
-    const changedKeys = getChangedModulesKeys(getters.currentSnapshot as ISnapshot, newSnapshot)
 
     const hasDifferentKeys = !isEmpty(difference(changedKeys, getters.previouslyChangedKeys as string[]))
     const hasSpecialKeys = shouldAlwaysTriggerSnapshot(changedKeys)
@@ -182,6 +188,7 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
 
     commit('flow/flow_resetFlowState', modules.flows, {root: true})
     dispatch('redirectToSourcePage')
+    dispatch('navigateToDeepLink')
   },
 
   /**
@@ -199,6 +206,7 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
 
     commit('flow/flow_resetFlowState', modules.flows, {root: true})
     dispatch('redirectToSourcePage')
+    dispatch('navigateToDeepLink')
   },
 
   /**
@@ -211,6 +219,8 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
           flows: rootState.flow,
         },
         sourcePage: rootState.builder.activeMainComponent,
+        routeName: '',
+        routeParams: {},
       }))
     })
   },
@@ -230,7 +240,21 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
         console.error(err)
       }
     }
-  }
+  },
+
+  async navigateToDeepLink({getters}) {
+    try {
+      const {routeName, routeParams} = getters.currentSnapshot as ISnapshot
+      await router.push({
+        name: routeName,
+        params: routeParams,
+      })
+    } catch (err) {
+      if (err.name !== 'NavigationDuplicated') {
+        console.error(err)
+      }
+    }
+  },
 }
 
 export const store: Module<IUndoRedoState, IRootState> = {
