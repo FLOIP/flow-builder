@@ -3,7 +3,7 @@ import {Location} from 'vue-router'
 import {IRootState} from '@/store'
 import {IFlowsState} from '@/store/flow'
 import structuredClone from '@ungap/structured-clone'
-import {difference, isEmpty, union} from 'lodash'
+import {difference, union} from 'lodash'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import router from '@/router'
 import {getDeepLink} from '@/store/undoRedo/deeplink'
@@ -120,12 +120,9 @@ export const mutations: MutationTree<IUndoRedoState> = {
 
 export const actions: ActionTree<IUndoRedoState, IRootState> = {
   async handleStateChange({commit, getters, rootState}) {
-    const currentModules: ISnapshotModules = structuredClone({flows: getters.currentSnapshot.modules.flows})
+    const currentModules: ISnapshotModules = structuredClone({flows: getters.currentSnapshot?.modules.flows ?? {}})
     const newModules: ISnapshotModules = structuredClone({flows: rootState.flow})
     const changedKeys = getChangedKeys(currentModules, newModules)
-
-    // todo CORE-601
-    // const changedKeys = (getters.currentSnapshot as ISnapshot, newSnapshot)
 
     if (changedKeys.length === 0) {
       return
