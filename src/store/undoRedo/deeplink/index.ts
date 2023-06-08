@@ -34,7 +34,7 @@ export function getDeepLink(changedKeys: string[], flows: IFlowsState): DeepLink
     const {flowIndex, resourceIndex, fieldPath} = parseResourceChangeParams(key)!
     const flow = flows.flows[flowIndex]
     const resource = flow.resources[resourceIndex]
-    const block = flow.blocks.find(block => block.prompt === resource.uuid || block.choices.includes(resource.uuid))
+    const block = flow.blocks.find(block => isBlockUsingResource(block, resource.uuid))!
 
     return {
       routeName: 'block-scroll-to-anchor',
