@@ -3380,6 +3380,7 @@
   "en.flow-builder-validation": {
     "floip-format": "FLOIP Expression should be valid",
     "flow-first_block_id-pattern": "Flow must contain at least one block",
+    "flow-first_block_id-type": "Set the starting block for this flow",
     "flow-name-minLength": "Flow Label should have a minimum of 3 characters",
     "flow-interaction_timeout-type": "Interaction Timeout should be a number",
     "flow-languages-minItems": "Minimum of {limit} language must be selected for the Flow",
@@ -3418,6 +3419,7 @@
   "fr.flow-builder-validation": {
     "floip-format": "L'expression FlOIP devrait être valide",
     "flow-first_block_id-pattern": "Le débit doit contenir au moins un bloc",
+    "flow-first_block_id-type": "Définir le bloc de départ pour ce flux",
     "flow-name-minLength": "L'étiquette de flux devrait avoir un minimum de 3 caractères",
     "flow-interaction_timeout-type": "Le délai d'interaction devrait être un nombre",
     "flow-languages-minItems": "Le minimum de {limit} langue doit être sélectionné pour le flux",
