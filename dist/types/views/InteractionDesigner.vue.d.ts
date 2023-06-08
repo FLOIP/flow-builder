@@ -4,7 +4,7 @@ import Routes from '../lib/mixins/Routes';
 import { Route } from 'vue-router';
 import { IBlock, IFlow, ILanguage, IResource, IResources, SupportedMode } from '@floip/flow-runner';
 import { ErrorObject } from 'ajv';
-import { MutationPayload } from 'vuex';
+import { ActionPayload, MutationPayload } from 'vuex';
 import { IValidationStatus } from '../store/validation';
 declare const InteractionDesigner_base: import("vue-class-component/lib/declarations").VueClass<Lang & Routes>;
 export declare class InteractionDesigner extends InteractionDesigner_base {
@@ -112,6 +112,7 @@ export declare class InteractionDesigner extends InteractionDesigner_base {
     discoverIsEditableFrom(mode: string, hash: string, isEditableLocked: boolean): boolean;
     showOrHideSidebar(): void;
     replaceRouteInHistory(name: string): void;
-    handleFlowChanges({ type, payload }: MutationPayload): void;
+    handleFlowChangesViaMutations({ type }: MutationPayload): void;
+    handleFlowChangesViaActions({ type }: ActionPayload): void;
 }
 export default InteractionDesigner;
