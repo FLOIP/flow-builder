@@ -7,7 +7,14 @@ import {parseResourceChangeParams, RESOURCE_CHANGE_REGEX} from './resource-chang
 import {FLOW_CHANGE_REGEX} from './flow-change'
 
 /* eslint-disable import/prefer-default-export, @typescript-eslint/no-explicit-any */
-export function getDeepLink(changedKeys: string[], flows: IFlowsState): DeepLink | null {
+/**
+ * Returns a route name & params for navigation when undoing-redoing user's commands.
+ * Returns null values for unsupported commands.
+ * Supported commands: create block, change block, change resource.
+ * @param changedKeys
+ * @param flows
+ */
+export function getDeepLink({changedKeys, flows}: {changedKeys: string[], flows: IFlowsState}): DeepLink {
   const key = changedKeys.find(key =>
     BLOCK_CREATE_REGEX.test(key)
     || BLOCK_CHANGE_REGEX.test(key)
@@ -15,8 +22,11 @@ export function getDeepLink(changedKeys: string[], flows: IFlowsState): DeepLink
     || FLOW_CHANGE_REGEX.test(key))
 
   if (key === undefined) {
-    console.info('No deep link found for changed keys', JSON.stringify(changedKeys))
-    return null
+    console.debug('No deep link found for changed keys', JSON.stringify(changedKeys))
+    return {
+      routeName: null,
+      routeParams: null,
+    }
   } else if (BLOCK_CREATE_REGEX.test(key)) {
     const {flowIndex, blockIndex} = parseBlockCreateParams(key)!
     const blockId = flows.flows[flowIndex].blocks[blockIndex].uuid
@@ -38,6 +48,7 @@ export function getDeepLink(changedKeys: string[], flows: IFlowsState): DeepLink
     }
   } else if (RESOURCE_CHANGE_REGEX.test(key)) {
     const {flowIndex, resourceIndex, fieldPath} = parseResourceChangeParams(key)!
+
     const flow = flows.flows[flowIndex]
     const resource = flow.resources[resourceIndex]
     const block = flow.blocks.find(block => isBlockUsingResource(block, resource.uuid))!
@@ -46,7 +57,6 @@ export function getDeepLink(changedKeys: string[], flows: IFlowsState): DeepLink
       routeName: 'block-scroll-to-anchor',
       routeParams: {
         blockId: block.uuid,
-        resourceId: resource.uuid,
         field: fieldPath,
       },
     }
@@ -57,11 +67,17 @@ export function getDeepLink(changedKeys: string[], flows: IFlowsState): DeepLink
     }
   } else {
     console.error('This should have never happened. Did you forget to implement a deep link case?')
-    return null
+    return {
+      routeName: null,
+      routeParams: null,
+    }
   }
 }
 
 type DeepLink = {
   routeName: Location['name'],
   routeParams: Location['params'],
+} | {
+  routeName: null,
+  routeParams: null,
 }

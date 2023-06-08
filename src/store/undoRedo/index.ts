@@ -6,8 +6,8 @@ import structuredClone from '@ungap/structured-clone'
 import {difference, isEmpty} from 'lodash'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import router from '@/router'
+import {getDeepLink} from '@/store/undoRedo/deeplink'
 import {getChangedKeys} from './getChangedKeys'
-import {getDeepLink} from './deeplink'
 
 const MAX_HISTORY_LENGTH = 100
 
@@ -17,9 +17,8 @@ export interface ISnapshotModules {
 
 export interface ISnapshot {
   modules: ISnapshotModules,
-  sourcePage?: string,
-  routeName: Location['name'],
-  routeParams: Location['params'],
+  routeName: Location['name'] | null,
+  routeParams: Location['params'] | null,
   timestamp: number,
 }
 
@@ -28,10 +27,9 @@ export interface IUndoRedoState {
   position: number,
 }
 
-function pack({modules, sourcePage, routeName, routeParams}: Omit<ISnapshot, 'timestamp'>): ISnapshot {
+function pack({modules, routeName, routeParams}: Omit<ISnapshot, 'timestamp'>): ISnapshot {
   return {
     modules: structuredClone(modules),
-    sourcePage,
     routeName,
     routeParams,
     timestamp: new Date().getTime(),
@@ -125,13 +123,25 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
     const currentModules: ISnapshotModules = structuredClone({flows: getters.currentSnapshot.modules.flows})
     const newModules: ISnapshotModules = structuredClone({flows: rootState.flow})
     const changedKeys = getChangedKeys(currentModules, newModules)
-    const {routeName, routeParams} = getDeepLink(changedKeys, rootState.flow)
+    if (changedKeys.length === 0) {
+      return
+    }
+
+    const {routeName, routeParams} = getDeepLink({
+      changedKeys,
+      flows: rootState.flow,
+    })
+    console.debug('Changed keys:', changedKeys)
+    console.debug('Deep linking route name', routeName)
+    console.debug('Deep linking route params', JSON.stringify(routeParams))
 
     const newSnapshot = pack({
       modules: newModules,
-      sourcePage: rootState.builder.activeMainComponent!,
-      routeName,
-      routeParams,
+      routeName: routeName ?? 'flow-canvas',
+      routeParams: {
+        component: rootState.builder.activeMainComponent!,
+        ...routeParams,
+      },
     })
 
     let isNewSnapshotFromPersistenceAction = false
@@ -187,7 +197,6 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
     const modules = unpack(getters.currentSnapshot as ISnapshot)
 
     commit('flow/flow_resetFlowState', modules.flows, {root: true})
-    dispatch('redirectToSourcePage')
     dispatch('navigateToDeepLink')
   },
 
@@ -205,7 +214,6 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
     const modules = unpack(getters.currentSnapshot as ISnapshot)
 
     commit('flow/flow_resetFlowState', modules.flows, {root: true})
-    dispatch('redirectToSourcePage')
     dispatch('navigateToDeepLink')
   },
 
@@ -218,36 +226,25 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
         modules: {
           flows: rootState.flow,
         },
-        sourcePage: rootState.builder.activeMainComponent,
-        routeName: '',
-        routeParams: {},
+        routeName: router.currentRoute.name,
+        routeParams: router.currentRoute.params,
       }))
     })
   },
 
-  async redirectToSourcePage({getters, rootGetters}) {
-    try {
-      await router.push({
-        name: 'flow-canvas',
-        params: {
-          id: rootGetters['flow/activeFlow']?.uuid,
-          component: getters.currentSnapshot?.sourcePage,
-          mode: 'edit',
-        },
-      })
-    } catch (err) {
-      if (err.name !== 'NavigationDuplicated') {
-        console.error(err)
-      }
+  async navigateToDeepLink({getters, rootGetters}) {
+    const {routeName, routeParams} = getters.currentSnapshot as ISnapshot
+    if (routeName === null) {
+      return
     }
-  },
-
-  async navigateToDeepLink({getters}) {
     try {
-      const {routeName, routeParams} = getters.currentSnapshot as ISnapshot
       await router.push({
         name: routeName,
-        params: routeParams,
+        params: {
+          id: rootGetters['flow/activeFlow']?.uuid,
+          mode: 'edit',
+          ...routeParams,
+        },
       })
     } catch (err) {
       if (err.name !== 'NavigationDuplicated') {
