@@ -1,3 +1,4 @@
+import { Location } from 'vue-router';
 import { IRootState } from '../../store';
 import { IFlowsState } from '../../store/flow';
 import { ActionTree, GetterTree, Module, MutationTree } from 'vuex';
@@ -6,6 +7,8 @@ export interface ISnapshotModules {
 }
 export interface ISnapshot {
     modules: ISnapshotModules;
+    routeName: Location['name'] | null;
+    routeParams: Location['params'] | null;
     timestamp: number;
 }
 export interface IUndoRedoState {
