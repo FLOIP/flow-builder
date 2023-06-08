@@ -43,21 +43,21 @@ export function getDeepLink({changedKeys, flows}: {changedKeys: string[], flows:
       routeName: 'block-scroll-to-anchor',
       routeParams: {
         blockId,
-        field: fieldPath,
+        field: `block/${blockId}/${fieldPath}`,
       },
     }
   } else if (RESOURCE_CHANGE_REGEX.test(key)) {
     const {flowIndex, resourceIndex, fieldPath} = parseResourceChangeParams(key)!
 
     const flow = flows.flows[flowIndex]
-    const resource = flow.resources[resourceIndex]
-    const block = flow.blocks.find(block => isBlockUsingResource(block, resource.uuid))!
+    const resourceId = flow.resources[resourceIndex].uuid
+    const block = flow.blocks.find(block => isBlockUsingResource(block, resourceId))!
 
     return {
       routeName: 'block-scroll-to-anchor',
       routeParams: {
         blockId: block.uuid,
-        field: fieldPath,
+        field: `resource/${resourceId}/${fieldPath}`,
       },
     }
   } else if (FLOW_CHANGE_REGEX.test(key)) {
