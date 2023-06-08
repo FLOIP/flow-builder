@@ -3,7 +3,7 @@ import {Location} from 'vue-router'
 import {IRootState} from '@/store'
 import {IFlowsState} from '@/store/flow'
 import structuredClone from '@ungap/structured-clone'
-import {difference, isEmpty} from 'lodash'
+import {difference, isEmpty, union} from 'lodash'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
 import router from '@/router'
 import {getDeepLink} from '@/store/undoRedo/deeplink'
@@ -123,6 +123,10 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
     const currentModules: ISnapshotModules = structuredClone({flows: getters.currentSnapshot.modules.flows})
     const newModules: ISnapshotModules = structuredClone({flows: rootState.flow})
     const changedKeys = getChangedKeys(currentModules, newModules)
+
+    // todo CORE-601
+    // const changedKeys = (getters.currentSnapshot as ISnapshot, newSnapshot)
+
     if (changedKeys.length === 0) {
       return
     }
@@ -167,15 +171,20 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
       return
     }
 
-    const hasDifferentKeys = !isEmpty(difference(changedKeys, getters.previouslyChangedKeys as string[]))
-    const hasSpecialKeys = shouldAlwaysTriggerSnapshot(changedKeys)
+    // We group changes by comparing sets of changed keys, and either
+    // add a new snapshot or patch the current ones
+    const previouslyChangedKeys = getters.previouslyChangedKeys as string[]
+    const differentKeys = union(
+      difference(changedKeys, previouslyChangedKeys),
+      difference(previouslyChangedKeys, changedKeys),
+    )
 
-    if (hasDifferentKeys) {
+    if (differentKeys.length > 0) {
       commit('addSnapshot', newSnapshot)
       return
     }
 
-    if (hasSpecialKeys) {
+    if (shouldAlwaysTriggerSnapshot(changedKeys)) {
       commit('addSnapshot', newSnapshot)
       return
     }
