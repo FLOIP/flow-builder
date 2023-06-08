@@ -107,6 +107,5 @@ export declare class TreeBuilderToolbar extends TreeBuilderToolbar_base {
     remove_block_validation: ({ blockId }: {
         blockId?: IBlock['uuid'];
     }) => void;
-    resetHistory: () => Promise<void>;
 }
 export default TreeBuilderToolbar;

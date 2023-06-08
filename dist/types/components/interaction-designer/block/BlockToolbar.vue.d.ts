@@ -8,18 +8,18 @@ export declare class BlockToolbar extends BlockToolbar_base {
     readonly isWaitingForConnection: boolean;
     readonly isActivatedByConnection: boolean;
     isDeleting: boolean;
-    handleDeleteBlock(): void;
+    handleDeleteBlock(): Promise<void>;
     handleDuplicateBlock(): Promise<void>;
     isEditable: boolean;
     block_select: ({ blockId }: {
         blockId: IBlock['uuid'];
-    }) => void;
+    }) => Promise<void>;
     block_deselect: ({ blockId }: {
         blockId: IBlock['uuid'];
-    }) => void;
+    }) => Promise<void>;
     flow_removeBlock: ({ blockId }: {
         blockId: IBlock['uuid'];
-    }) => void;
+    }) => Promise<void>;
     flow_duplicateBlock: ({ blockId }: {
         blockId: IBlock['uuid'];
     }) => Promise<IBlock>;

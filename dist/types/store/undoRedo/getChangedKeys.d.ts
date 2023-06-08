@@ -1,1 +1,2 @@
-export declare function getChangedKeys(a: object, b: object): string[];
+import { NotNullOrUndefined } from '../../utils/type-utils';
+export declare function getChangedKeys(a: NotNullOrUndefined, b: NotNullOrUndefined): string[];
