@@ -60,7 +60,7 @@ import ClipboardRoot from '@/components/interaction-designer/clipboard/Clipboard
 import {Route} from 'vue-router'
 import {IBlock, IFlow, ILanguage, IResource, IResources, SupportedMode} from '@floip/flow-runner'
 import {ErrorObject} from 'ajv'
-import {MutationPayload} from 'vuex'
+import {ActionPayload, MutationPayload} from 'vuex'
 import {IValidationStatus} from '@/store/validation'
 
 Component.registerHooks(['beforeRouteUpdate'])
@@ -251,7 +251,10 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     (global as any).builder = this
 
     // Listen to Flow updates to maintain "hasFlowChanges" state
-    this.$store.subscribe(this.handleFlowChanges.bind(this))
+    // 1- Listen to mutations first
+    this.$store.subscribe(this.handleFlowChangesViaMutations.bind(this))
+    // 2- Listen to actions, if we cannot identify the changes via mutations
+    this.$store.subscribeAction(this.handleFlowChangesViaActions.bind(this))
 
     this.initializeTreeModel()
 
@@ -399,14 +402,14 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     })
   }
 
-  handleFlowChanges({type, payload}: MutationPayload): void {
+  handleFlowChangesViaMutations({type}: MutationPayload): void {
     // We overwrite flow container after saving, reset change state
     if (type === 'flow/flow_setFlowContainer') {
       this.setHasFlowChanges(false)
       return
     }
 
-    // Consider changing block positoin a flow change
+    // Consider changing block position a flow change
     if (type === 'builder/setBlockPositionTo') {
       this.setHasFlowChanges(true)
       return
@@ -424,6 +427,15 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     ].includes(type)) {
       this.setHasFlowChanges(true)
     }
+  }
+
+  handleFlowChangesViaActions({type}: ActionPayload): void {
+    // Make sure we hande the delete block action
+    if (type === 'flow/flow_removeBlock') {
+      this.setHasFlowChanges(true)
+    }
+
+    return
   }
 }
 
