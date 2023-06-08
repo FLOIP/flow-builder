@@ -132,9 +132,6 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
       changedKeys,
       flows: rootState.flow,
     })
-    console.debug('Changed keys:', changedKeys)
-    console.debug('Deep linking route name', routeName)
-    console.debug('Deep linking route params', JSON.stringify(routeParams))
 
     const newSnapshot = pack({
       modules: newModules,
@@ -144,6 +141,10 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
         ...routeParams,
       },
     })
+
+    console.debug('Changed keys:', changedKeys)
+    console.debug('Deep linking route name:', newSnapshot.routeName)
+    console.debug('Deep linking route params:', JSON.stringify(newSnapshot.routeParams))
 
     let isNewSnapshotFromPersistenceAction = false
     if (!(getters.hasCurrentSnapshot as boolean)) {
@@ -240,6 +241,8 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
 
   async navigateToDeepLink({getters, rootGetters}) {
     const {routeName, routeParams} = getters.currentSnapshot as ISnapshot
+    console.debug('navigating to', routeName, routeParams)
+
     if (routeName === null) {
       return
     }
