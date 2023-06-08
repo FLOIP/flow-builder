@@ -1,11 +1,13 @@
 import Vue from 'vue'
+import {Location} from 'vue-router'
 import {IRootState} from '@/store'
 import {IFlowsState} from '@/store/flow'
 import structuredClone from '@ungap/structured-clone'
-import {difference, isEmpty, union} from 'lodash'
+import {difference, union} from 'lodash'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
-import {getChangedKeys} from './getChangedKeys'
 import router from '@/router'
+import {getDeepLink} from '@/store/undoRedo/deeplink'
+import {getChangedKeys} from './getChangedKeys'
 
 const MAX_HISTORY_LENGTH = 100
 
@@ -15,7 +17,8 @@ export interface ISnapshotModules {
 
 export interface ISnapshot {
   modules: ISnapshotModules,
-  sourcePage?: string,
+  routeName: Location['name'] | null,
+  routeParams: Location['params'] | null,
   timestamp: number,
 }
 
@@ -24,10 +27,11 @@ export interface IUndoRedoState {
   position: number,
 }
 
-function pack({modules, sourcePage}: {modules: ISnapshotModules, sourcePage?: string}): ISnapshot {
+function pack({modules, routeName, routeParams}: Omit<ISnapshot, 'timestamp'>): ISnapshot {
   return {
     modules: structuredClone(modules),
-    sourcePage,
+    routeName,
+    routeParams,
     timestamp: new Date().getTime(),
   }
 }
@@ -116,12 +120,26 @@ export const mutations: MutationTree<IUndoRedoState> = {
 
 export const actions: ActionTree<IUndoRedoState, IRootState> = {
   async handleStateChange({commit, getters, rootState}) {
-    // Take a snapshot of the current state to avoid mutating> it
+    const currentModules: ISnapshotModules = structuredClone({flows: getters.currentSnapshot?.modules.flows ?? {}})
+    const newModules: ISnapshotModules = structuredClone({flows: rootState.flow})
+    const changedKeys = getChangedKeys(currentModules, newModules)
+
+    if (changedKeys.length === 0) {
+      return
+    }
+
+    const {routeName, routeParams} = getDeepLink({
+      changedKeys,
+      flows: rootState.flow,
+    })
+
     const newSnapshot = pack({
-      modules: {
-        flows: rootState.flow,
+      modules: newModules,
+      routeName: routeName ?? 'flow-canvas',
+      routeParams: {
+        component: rootState.builder.activeMainComponent!,
+        ...routeParams,
       },
-      sourcePage: rootState.builder.activeMainComponent,
     })
 
     let isNewSnapshotFromPersistenceAction = false
@@ -149,8 +167,6 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
 
     // We group changes by comparing sets of changed keys, and either
     // add a new snapshot or patch the current ones
-    const changedKeys = getChangedModulesKeys(getters.currentSnapshot as ISnapshot, newSnapshot)
-
     const previouslyChangedKeys = getters.previouslyChangedKeys as string[]
     const differentKeys = union(
       difference(changedKeys, previouslyChangedKeys),
@@ -184,7 +200,7 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
     const modules = unpack(getters.currentSnapshot as ISnapshot)
 
     commit('flow/flow_resetFlowState', modules.flows, {root: true})
-    dispatch('redirectToSourcePage')
+    dispatch('navigateToDeepLink')
   },
 
   /**
@@ -201,7 +217,7 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
     const modules = unpack(getters.currentSnapshot as ISnapshot)
 
     commit('flow/flow_resetFlowState', modules.flows, {root: true})
-    dispatch('redirectToSourcePage')
+    dispatch('navigateToDeepLink')
   },
 
   /**
@@ -213,19 +229,26 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
         modules: {
           flows: rootState.flow,
         },
-        sourcePage: rootState.builder.activeMainComponent,
+        routeName: router.currentRoute.name,
+        routeParams: router.currentRoute.params,
       }))
     })
   },
 
-  async redirectToSourcePage({getters, rootGetters}) {
+  async navigateToDeepLink({getters, rootGetters}) {
+    const {routeName, routeParams} = getters.currentSnapshot as ISnapshot
+    console.debug('navigating to', routeName, routeParams)
+
+    if (routeName === null) {
+      return
+    }
     try {
       await router.push({
-        name: 'flow-canvas',
+        name: routeName,
         params: {
           id: rootGetters['flow/activeFlow']?.uuid,
-          component: getters.currentSnapshot?.sourcePage,
           mode: 'edit',
+          ...routeParams,
         },
       })
     } catch (err) {
@@ -233,7 +256,7 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
         console.error(err)
       }
     }
-  }
+  },
 }
 
 export const store: Module<IUndoRedoState, IRootState> = {

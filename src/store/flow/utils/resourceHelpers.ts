@@ -191,3 +191,12 @@ export function findBlockRelatedResourcesUuids({block}: {block: IBlock}): IResou
 
   return resources
 }
+
+export function isBlockUsingResource(block: IBlock, resourceUuid: string): boolean {
+  const isInPrompt = block.config.prompt === resourceUuid
+
+  const isInChoices = block.config.choices !== undefined
+    && (block.config.choices as IChoice[]).some(choice => choice.prompt === resourceUuid)
+
+  return isInPrompt || isInChoices
+}
