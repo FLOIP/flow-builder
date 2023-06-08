@@ -142,10 +142,6 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
       },
     })
 
-    console.debug('Changed keys:', changedKeys)
-    console.debug('Deep linking route name:', newSnapshot.routeName)
-    console.debug('Deep linking route params:', JSON.stringify(newSnapshot.routeParams))
-
     let isNewSnapshotFromPersistenceAction = false
     if (!(getters.hasCurrentSnapshot as boolean)) {
       // If we don't have a current snapshot yet, we consider the new snapshot as from a persistence action

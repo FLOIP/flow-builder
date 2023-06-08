@@ -22,7 +22,7 @@ export function getDeepLink({changedKeys, flows}: {changedKeys: string[], flows:
     || FLOW_CHANGE_REGEX.test(key))
 
   if (key === undefined) {
-    console.debug('No deep link found for changed keys', JSON.stringify(changedKeys))
+    console.warn('No deep link found for changed keys', JSON.stringify(changedKeys))
     return {
       routeName: null,
       routeParams: null,
