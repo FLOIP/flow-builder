@@ -99,7 +99,7 @@ export class BlockToolbar extends mixins(Lang) {
         name: 'block-selected-details',
         params: {blockId: duplicatedBlock.uuid},
       })
-      this.$emit('after-duplicate')
+      this.$emit('after-block-duplicate', {duplicateBlockUuid: duplicatedBlock.uuid})
     } catch (e) {
       console.error('Failed to duplicate a block:', e)
     }

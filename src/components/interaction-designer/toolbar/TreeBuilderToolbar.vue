@@ -325,7 +325,8 @@
       class="tree-builder-toolbar-alerts w-100">
       <selection-banner
         v-if="isEditable"
-        @updated="handleHeightChangeFromDOM" />
+        @updated="handleHeightChangeFromDOM"
+        @after-multiple-block-duplicate="(...args) => $emit('after-multiple-block-duplicate', ...args)" />
       <error-notifications @updated="handleHeightChangeFromDOM" />
       <block-editor v-if="isBlockEditorOpen" />
     </div>
@@ -612,7 +613,7 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   /**
    * We have to make sure this is called using $nextTick() because we play with DOM
    */
-  handleHeightChangeFromDOM() {
+  handleHeightChangeFromDOM(): void {
     const elementRef = this.$refs['builder-toolbar'] as Element
     if (!elementRef) {
       console.debug('Interaction Designer', 'Unable to find DOM element corresponding to builder-toolbar')
@@ -630,11 +631,11 @@ export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
     }
   }
 
-  handleFlowViewMenu() {
+  handleFlowViewMenu(): void {
     this.handlePersistFlow(this.treeUrl)
   }
 
-  handleResourceViewMenu() {
+  handleResourceViewMenu(): void {
     this.handlePersistFlow(this.resourceUrl)
     // scroll back to the top left in case the window has scroll bars from the builder-canvas
     window.scrollTo(0, 0)

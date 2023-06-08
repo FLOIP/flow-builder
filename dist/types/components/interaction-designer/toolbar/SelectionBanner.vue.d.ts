@@ -10,6 +10,6 @@ export declare class SelectionBanner extends SelectionBanner_base {
     selectedBlocks: IBlock['uuid'][];
     flow_clearMultiSelection: () => Promise<void>;
     flow_removeAllSelectedBlocks: () => Promise<void>;
-    flow_duplicateAllSelectedBlocks: () => Promise<void>;
+    flow_duplicateAllSelectedBlocks: () => Promise<string[]>;
 }
 export default SelectionBanner;
