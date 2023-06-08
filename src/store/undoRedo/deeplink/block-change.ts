@@ -11,7 +11,7 @@ export function parseBlockChangeParams(key: string): BlockChangeParams | null {
     return {
       flowIndex: Number(flowIndex),
       blockIndex: Number(blockIndex),
-      fieldPath,
+      fieldPath: fieldPath.replace(/\./g, '/'),
     }
   } else {
     return null

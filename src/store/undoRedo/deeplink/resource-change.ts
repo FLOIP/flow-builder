@@ -11,7 +11,7 @@ export function parseResourceChangeParams(key: string): ResourceChangeParams | n
     return {
       flowIndex: Number(flowIndex),
       resourceIndex: Number(resourceIndex),
-      fieldPath,
+      fieldPath: fieldPath.replace(/\./g, '/'),
     }
   } else {
     return null
