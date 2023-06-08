@@ -1,12 +1,18 @@
 import {Location} from 'vue-router'
 import {IFlowsState} from '@/store/flow'
+import {isBlockUsingResource} from '@/store/flow/utils/resourceHelpers'
 import {BLOCK_CREATE_REGEX, parseBlockCreateParams} from './block-create'
 import {BLOCK_CHANGE_REGEX, parseBlockChangeParams} from './block-change'
 import {parseResourceChangeParams, RESOURCE_CHANGE_REGEX} from './resource-change'
+import {FLOW_CHANGE_REGEX} from './flow-change'
 
 /* eslint-disable import/prefer-default-export, @typescript-eslint/no-explicit-any */
 export function getDeepLink(changedKeys: string[], flows: IFlowsState): DeepLink | null {
-  const key = changedKeys.find(key => BLOCK_CREATE_REGEX.test(key) || BLOCK_CHANGE_REGEX.test(key) || RESOURCE_CHANGE_REGEX.test(key))
+  const key = changedKeys.find(key =>
+    BLOCK_CREATE_REGEX.test(key)
+    || BLOCK_CHANGE_REGEX.test(key)
+    || RESOURCE_CHANGE_REGEX.test(key)
+    || FLOW_CHANGE_REGEX.test(key))
 
   if (key === undefined) {
     console.info('No deep link found for changed keys', JSON.stringify(changedKeys))
@@ -43,6 +49,11 @@ export function getDeepLink(changedKeys: string[], flows: IFlowsState): DeepLink
         resourceId: resource.uuid,
         field: fieldPath,
       },
+    }
+  } else if (FLOW_CHANGE_REGEX.test(key)) {
+    return {
+      routeName: 'flow-details',
+      routeParams: {},
     }
   } else {
     console.error('This should have never happened. Did you forget to implement a deep link case?')
