@@ -5,7 +5,6 @@ import {IFlowsState} from '@/store/flow'
 import structuredClone from '@ungap/structured-clone'
 import {difference, union} from 'lodash'
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex'
-import router from '@/router'
 import {getDeepLink} from '@/store/undoRedo/deeplink'
 import {getChangedKeys} from './getChangedKeys'
 
@@ -200,7 +199,6 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
     const modules = unpack(getters.currentSnapshot as ISnapshot)
 
     commit('flow/flow_resetFlowState', modules.flows, {root: true})
-    dispatch('navigateToDeepLink')
   },
 
   /**
@@ -217,45 +215,6 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
     const modules = unpack(getters.currentSnapshot as ISnapshot)
 
     commit('flow/flow_resetFlowState', modules.flows, {root: true})
-    dispatch('navigateToDeepLink')
-  },
-
-  /**
-   * Reset the history of changes to the current state
-   */
-  async resetHistory({commit, rootState}) {
-    setImmediate(() => {
-      commit('resetSnapshots', pack({
-        modules: {
-          flows: rootState.flow,
-        },
-        routeName: router.currentRoute.name,
-        routeParams: router.currentRoute.params,
-      }))
-    })
-  },
-
-  async navigateToDeepLink({getters, rootGetters}) {
-    const {routeName, routeParams} = getters.currentSnapshot as ISnapshot
-    console.debug('navigating to', routeName, routeParams)
-
-    if (routeName === null) {
-      return
-    }
-    try {
-      await router.push({
-        name: routeName,
-        params: {
-          id: rootGetters['flow/activeFlow']?.uuid,
-          mode: 'edit',
-          ...routeParams,
-        },
-      })
-    } catch (err) {
-      if (err.name !== 'NavigationDuplicated') {
-        console.error(err)
-      }
-    }
   },
 }
 
