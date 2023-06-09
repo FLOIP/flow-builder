@@ -3394,6 +3394,7 @@ export declare const defaultLocalisations: {
     "en.flow-builder-validation": {
         "floip-format": string;
         "flow-first_block_id-pattern": string;
+        "flow-first_block_id-type": string;
         "flow-name-minLength": string;
         "flow-interaction_timeout-type": string;
         "flow-languages-minItems": string;
@@ -3432,6 +3433,7 @@ export declare const defaultLocalisations: {
     "fr.flow-builder-validation": {
         "floip-format": string;
         "flow-first_block_id-pattern": string;
+        "flow-first_block_id-type": string;
         "flow-name-minLength": string;
         "flow-interaction_timeout-type": string;
         "flow-languages-minItems": string;
