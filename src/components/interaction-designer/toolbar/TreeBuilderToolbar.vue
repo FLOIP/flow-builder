@@ -350,7 +350,6 @@ import {Dictionary} from 'vue-router/types/router'
 import {Watch} from 'vue-property-decorator'
 import {VuexUndoRedoPlugin} from '@/lib/plugins/vuex-undo-redo-plugin'
 import undoRedoModule from '@/store/undoRedo'
-import UndoRedoButtonGroup from './UndoRedoButtonGroup'
 
 Vue.use(BootstrapVue)
 Vue.component('BTooltip', BTooltip)
@@ -364,7 +363,6 @@ const undoRedoVuexNamespace = namespace('undoRedo')
 @Component({
   components: {
     BModal,
-    UndoRedoButtonGroup,
   },
 })
 export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
