@@ -6,32 +6,27 @@ declare const GenericContactPropertyEditor_base: import("vue-class-component/lib
 export declare class GenericContactPropertyEditor extends GenericContactPropertyEditor_base {
     readonly block: IBlock;
     readonly disableExpressionInput: boolean;
-    shouldSetContactProperty: boolean;
     PROPERTY_VALUE_ACTION: {
         OPEN_EXPRESSION: string;
         FROM_CURRENT_BLOCK_RESPONSE: string;
     };
-    propertyValueAction: string;
-    propertyKey?: string;
-    propertyValue?: string;
     created(): void;
-    isBlockInteractive(block: IBlock): boolean;
-    toggleSetContactProperty(): void;
-    initPropertyValueAction(): void;
-    updatePropertyValueAction({ target: { value } }: {
-        target: {
-            value: string;
-        };
-    }): void;
+    get isBlockInteractive(): boolean;
+    get shouldSetContactProperty(): boolean;
+    set shouldSetContactProperty(value: boolean);
+    get propertyValueAction(): string;
+    set propertyValueAction(value: string);
     get shouldUseOpenExpression(): boolean;
     updateFirstContactPropertyKey(value: string): void;
     updateFirstContactPropertyValue(value: string): void;
-    get firstContactPropertyKey(): string | null;
-    get firstContactPropertyValue(): string | null;
+    get propertyKey(): string | null;
+    get propertyValue(): string | null;
+    set propertyValue(value: string | null);
     get flowSelectedContactPropertyField(): IContactPropertyOption | null;
     set flowSelectedContactPropertyField(option: IContactPropertyOption | null);
     get hasSubscriberPropertyFields(): boolean;
     get subscriberPropertyFieldsForSelector(): IContactPropertyOptionForUISelector[];
+    toggleSetContactProperty(): void;
     block_updateConfigByPath: ({ blockId, path, value }: {
         blockId: string;
         path: string;

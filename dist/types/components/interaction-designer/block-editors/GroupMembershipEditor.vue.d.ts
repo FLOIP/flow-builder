@@ -16,7 +16,8 @@ export declare class GroupMembershipEditor extends GroupMembershipEditor_base {
     readonly block: IBlock;
     readonly availableGroups?: IGroupMembership[];
     readonly hasGroupsLoading: boolean;
-    userAddedGroups: IGroupMembership[];
+    get userAddedGroups(): IGroupMembership[];
+    set userAddedGroups(groups: IGroupMembership[]);
     get groupOptions(): IGroupMembership[];
     get availableMembershipActions(): MembershipAction[];
     get membershipAction(): MEMBERSHIP_ACTION;
@@ -28,6 +29,11 @@ export declare class GroupMembershipEditor extends GroupMembershipEditor_base {
     onSearchChange(e: Event): void;
     onGroupAdd(name: string): void;
     block_updateConfigByPath: ({ blockId, path, value }: {
+        blockId: string;
+        path: string;
+        value: ConfigFieldType;
+    }) => void;
+    block_updateVendorMetadataByPath: ({ blockId, path, value }: {
         blockId: string;
         path: string;
         value: ConfigFieldType;
