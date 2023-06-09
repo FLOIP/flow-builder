@@ -6,6 +6,7 @@ export interface ISnapshotModules {
 }
 export interface ISnapshot {
     modules: ISnapshotModules;
+    sourcePage?: string;
     timestamp: number;
 }
 export interface IUndoRedoState {
