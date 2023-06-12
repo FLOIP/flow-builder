@@ -127,18 +127,9 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
       return
     }
 
-    const {routeName, routeParams} = getDeepLink({
+    let {routeName, routeParams} = getDeepLink({
       changedKeys,
       flows: rootState.flow,
-    })
-
-    const newSnapshot = pack({
-      modules: newModules,
-      routeName: routeName ?? 'flow-canvas',
-      routeParams: {
-        component: rootState.builder.activeMainComponent!,
-        ...routeParams,
-      },
     })
 
     let isNewSnapshotFromPersistenceAction = false
@@ -147,10 +138,30 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
       isNewSnapshotFromPersistenceAction = true
     }
     const currentSavedAt = getters.currentSnapshot?.modules.flows?.savedAt
-    const newSavedAt = newSnapshot?.modules.flows?.savedAt
+
+    const newSavedAt = newModules.flows?.savedAt
     if (currentSavedAt !== newSavedAt && currentSavedAt !== undefined && newSavedAt !== undefined) {
       isNewSnapshotFromPersistenceAction = true
     }
+
+    // if the action was from a persistence action, we don't want to change the route
+    if (isNewSnapshotFromPersistenceAction) {
+      routeName = getters.currentSnapshot?.routeName ?? 'flow-canvas'
+      routeParams = getters.currentSnapshot?.routeParams ?? {}
+    } else {
+      routeName = routeName ?? 'flow-canvas'
+      routeParams = {
+        component: rootState.builder.activeMainComponent!,
+        ...routeParams
+      }
+    }
+
+    // format the snapshot
+    const newSnapshot = pack({
+      modules: newModules,
+      routeName,
+      routeParams,
+    })
 
     // ####### force patch ##############
     if (isNewSnapshotFromPersistenceAction) {
