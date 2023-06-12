@@ -144,8 +144,8 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
       isNewSnapshotFromPersistenceAction = true
     }
 
-    // Do not display the flow details page if the snapshot is from a persistence action
-    if (routeName === 'flow-details' && isNewSnapshotFromPersistenceAction) {
+    // if the action was from a persistence action, we don't want to change the route
+    if (isNewSnapshotFromPersistenceAction) {
       routeName = getters.currentSnapshot?.routeName ?? 'flow-canvas'
       routeParams = getters.currentSnapshot?.routeParams ?? {}
     } else {
