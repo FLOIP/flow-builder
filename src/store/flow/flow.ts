@@ -143,6 +143,16 @@ export const mutations: MutationTree<IFlowsState> = {
       flow.first_block_id = block.uuid
     }
   },
+  flow_removeBlock(state, {flowId, blockId}: { flowId: string, blockId: string }) {
+    const flow = findFlowWith(flowId || state.first_flow_id || '', state as unknown as IContext)
+    const blockIndex = flow.blocks.findIndex((block) => block.uuid === blockId)
+
+    if (blockIndex === -1) {
+      throw new ValidationException(`Unable to delete block ${blockId} absent from flow ${flowId}`)
+    }
+
+    flow.blocks.splice(blockIndex, 1)
+  },
 
   flow_setExitBlockId(state, {flowId, blockId}) {
     const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
@@ -303,20 +313,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   flow_removeBlock({state, commit, dispatch}, {flowId, blockId}: { flowId: string, blockId: IBlock['uuid'] }) {
     const flow = findFlowWith(flowId || state.first_flow_id || '', state as unknown as IContext)
-    // @throws ValidationException when block absent
-    const block: IBlock = findBlockWith(blockId, flow)
 
-    if (block == null) {
-      throw new ValidationException('Unable to delete block absent from flow')
-    }
-
-    // Remove block & it's validation
-    const {blocks} = flow
-    blocks.splice(
-      blocks.indexOf(block),
-      1,
-    )
-    commit('validation/removeValidationStatusesFor', {key: `block/${block.uuid}`}, {root: true})
+    // Remove block & it's validation statuses
+    commit('flow_removeBlock', {flowId, blockId})
+    commit('validation/removeValidationStatusesFor', {key: `block/${blockId}`}, {root: true})
 
     // remove resources when they become orphaned, i.e. after removing the block
     dispatch('flow_removeOrphanedResourcesAndRelatedValidationsOnActiveFlow')
@@ -329,6 +329,8 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
     // todo: convert this whole operation to an ActionTree member
     // todo: use mutations for these:
+    const blocks = flow.blocks
+
     if (flow.first_block_id === blockId) {
       // todo: make this optional for builder
       flow.first_block_id = blocks.length ? blocks[0].uuid : ''
