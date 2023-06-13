@@ -34,6 +34,7 @@
             :options="groupOptions"
             :taggable="!availableGroups"
             :multiple="true"
+            :show-labels="false"
             track-by="group_key"
             label="group_name"
             @seach-change="onSearchChange"

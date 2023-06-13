@@ -150,7 +150,7 @@ fieldset[disabled] .multiselect {
 .multiselect__tags {
   min-height: 40px;
   display: block;
-  padding: 8px 40px 0 8px;
+  padding: 8px 54px 0 8px;
   border-radius: 5px;
   border: 1px solid #ccc;
   background: #fff;
