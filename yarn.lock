@@ -4391,7 +4391,7 @@ __metadata:
     "@cypress/webpack-preprocessor": ^5.17.1
     "@floip/expression-evaluator": ^2.1.0
     "@floip/expression-parser": ^1.11.3
-    "@floip/flow-runner": "https://github.com/FLOIP/flow-runner.git#feature/CORE-538/undo-redo-integration"
+    "@floip/flow-runner": ^1.0.12-rc4
     "@flowjs/flow.js": "link:./src/lib/flow"
     "@fortawesome/fontawesome-svg-core": ^1.2.35
     "@fortawesome/free-regular-svg-icons": ^5.15.3
@@ -4495,9 +4495,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@floip/flow-runner@https://github.com/FLOIP/flow-runner.git#feature/CORE-538/undo-redo-integration":
-  version: 1.0.12-rc4.18
-  resolution: "@floip/flow-runner@https://github.com/FLOIP/flow-runner.git#commit=bf3f414b047c2d1f6ba025cdc1928fba65c3a544"
+"@floip/flow-runner@npm:^1.0.12-rc4":
+  version: 1.0.12-rc4.19
+  resolution: "@floip/flow-runner@npm:1.0.12-rc4.19"
   dependencies:
     "@floip/expression-evaluator": ^2.1.3
     ajv: ^7.2.1
@@ -4510,7 +4510,7 @@ __metadata:
     tslib: ^2.0.1
     uuid: ^3.3.2
     yaml-import: ^2.0.0
-  checksum: ae3b0628c4a3f02d84c82b92d7711ce58f9c7f17d3757c0ec2c617eb59a8fe5be1f8b6160a253a6b592b96e99f2c7e3554142eb20ee0a4dfaca86d71023d5abb
+  checksum: 1a035952869a65327698551b8195777492ae7987cf874bd50a85d032f3982ccc27118f30177a52610bf49a0fc1654b1b126d48ae40eeacc29eabdb9557f3c88f
   languageName: node
   linkType: hard
 

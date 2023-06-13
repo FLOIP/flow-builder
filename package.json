@@ -33,7 +33,7 @@
     "@avcs/autosuggest": "^1.7.5",
     "@floip/expression-evaluator": "^2.1.0",
     "@floip/expression-parser": "^1.11.3",
-    "@floip/flow-runner": "https://github.com/FLOIP/flow-runner.git#feature/CORE-538/undo-redo-integration",
+    "@floip/flow-runner": "^1.0.12-rc4",
     "@flowjs/flow.js": "link:./src/lib/flow",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-regular-svg-icons": "^5.15.3",
