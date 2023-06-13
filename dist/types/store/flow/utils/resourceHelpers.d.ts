@@ -9,7 +9,8 @@ export declare function findIndexForResourceVariant(resource: IResource, filter:
 export declare function findOrGenerateStubbedVariantFor(resourceId: IResource['uuid'], filter: IResourceDefinitionVariantOverModesFilterAsKey, flow: IFlow): IResourceDefinitionVariantOverModes;
 export declare function findOrGenerateStubbedVariantOn(resource: IResource, filter: IResourceDefinitionVariantOverModesFilterAsKey): IResourceDefinitionVariantOverModes;
 export declare function discoverContentTypesFor(mode: SupportedMode, resource?: IResource): SupportedContentType[] | undefined;
-export declare function cleanupFlowResources(container: IContext, choiceMimeType: string): IContext;
+export declare function cleanupFlowBeforePersisting(container: IContext, choiceMimeType: string): IContext;
 export declare function findBlockRelatedResourcesUuids({ block }: {
     block: IBlock;
 }): IResource['uuid'][];
+export declare function isBlockUsingResource(block: IBlock, resourceUuid: string): boolean;

@@ -4,7 +4,7 @@ import lodash, {get, set} from 'lodash'
 import Vue from 'vue'
 
 import {routeFrom} from '@/lib/mixins/Routes'
-import flights from '@/store/common/flight-monitor'
+import flights from '@/store/common/flight-monitor.js'
 
 import flow from 'lodash/fp/flow'
 import pickBy from 'lodash/fp/pickBy'

@@ -27,6 +27,7 @@
               <a
                 :href="route('flows.editFlow', {flowId: activeFlow.uuid, component: 'builder', mode: 'edit'})"
                 class="btn btn-primary"
+                data-cy="create--btn"
                 @click.prevent="handlePersistFlow(route('flows.editFlow', {flowId: activeFlow.uuid, component: 'builder', mode: 'edit'}))">
                 {{ 'flow-builder.create' | trans }}
               </a>

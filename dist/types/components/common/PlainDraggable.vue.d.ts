@@ -9,6 +9,8 @@ export declare class PlainDraggable extends PlainDraggable_base {
     draggable: any;
     onToggleEditable(value: boolean): void;
     mounted(): void;
+    updated(): void;
+    get plainDraggableLibOptions(): Record<string, unknown>;
     destroyed(): void;
     handleInitialized(): void;
     handleDragged(position: IPositionLeftTop): void;
