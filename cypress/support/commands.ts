@@ -35,3 +35,42 @@
 //     }
 //   }
 // }
+
+export interface ICreateFlowOptions {
+  label: string
+  interactionTimeout: number
+  languages: string[]
+  modes: string[]
+}
+
+Cypress.Commands.add('createFlow', (options: Partial<ICreateFlowOptions>) => {
+  const optionsWithDefaults: ICreateFlowOptions = {
+    label: 'Test flow',
+    interactionTimeout: 1000,
+    languages: ['English'],
+    modes: ['IVR', 'SMS', 'USSD'],
+    ...options,
+  }
+
+  cy.visit('http://localhost:8081')
+
+  cy.get('#app').should('exist')
+  cy.get('[data-cy="create-flow--btn"]').click()
+
+  cy.get('[data-cy="create--btn"]').click()
+
+  cy.get('[data-cy="flow-label--editor"]')
+    .find('textarea')
+    .type(optionsWithDefaults.label)
+
+  cy.get('[data-cy="interaction-timeout--editor"]')
+    .find('input')
+    .type(String(optionsWithDefaults.interactionTimeout))
+
+  for (const language of optionsWithDefaults.languages) {
+    cy.get('[data-cy="languages--selector"]').click()
+    cy.contains('.multiselect__option', language).click();
+  }
+
+  cy.get('[data-cy="create--btn"]').click()
+})
