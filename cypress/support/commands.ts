@@ -97,3 +97,21 @@ Cypress.Commands.add('selectBlock', (uuid: string) => {
     return cy.wrap(block.attr('data-cy')?.replace('block--', ''))
   })
 })
+
+Cypress.Commands.add('undo', () => {
+  cy.get('[data-cy="undo--btn"]')
+    .should('not.have.attr', 'disabled')
+    .click()
+})
+
+Cypress.Commands.add('redo', () => {
+  cy.get('[data-cy="redo--btn"]')
+    .should('not.have.attr', 'disabled')
+    .click()
+})
+
+Cypress.Commands.add('save', () => {
+  cy.get('[data-cy="save--btn"]')
+    .should('not.have.attr', 'disabled')
+    .click()
+})
