@@ -3,6 +3,7 @@
     :id="`block/${block.uuid}`"
     :ref="`block/${block.uuid}`"
     class="block"
+    :data-cy="`block--${block.uuid}`"
     @click.stop="selectBlock"
     @mouseenter="setIsMouseOnBlock(true)"
     @mouseleave="setIsMouseOnBlock(false)">
