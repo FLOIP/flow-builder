@@ -4449,6 +4449,7 @@ __metadata:
     eslint-config-airbnb: ^18.2.1
     eslint-config-airbnb-base: ^14.2.1
     eslint-config-airbnb-typescript: ^12.3.1
+    eslint-plugin-cypress: ^2.13.3
     eslint-plugin-import: ^2.23.4
     eslint-plugin-jest: ^24.3.6
     eslint-plugin-lodash: ^7.2.0
@@ -14631,6 +14632,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-cypress@npm:^2.13.3":
+  version: 2.13.3
+  resolution: "eslint-plugin-cypress@npm:2.13.3"
+  dependencies:
+    globals: ^11.12.0
+  peerDependencies:
+    eslint: ">= 3.2.1"
+  checksum: 9affbcee29e030a4251c4794f7533e8e8c0e3b98ab3470a2c730ed059f733c5857a04c7ac214cc0ca7aeef1b11242e72595de7fc1f6b8b4d4578d9eca10af203
+  languageName: node
+  linkType: hard
+
 "eslint-plugin-import@npm:^2.21.2":
   version: 2.26.0
   resolution: "eslint-plugin-import@npm:2.26.0"
@@ -16539,7 +16551,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^11.1.0":
+"globals@npm:^11.1.0, globals@npm:^11.12.0":
   version: 11.12.0
   resolution: "globals@npm:11.12.0"
   checksum: 67051a45eca3db904aee189dfc7cd53c20c7d881679c93f6146ddd4c9f4ab2268e68a919df740d39c71f4445d2b38ee360fc234428baea1dbdfe68bbcb46979e
