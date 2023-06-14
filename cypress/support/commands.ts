@@ -85,3 +85,15 @@ Cypress.Commands.add('addBlock', (menuChoices: string[]) => {
     return cy.wrap(block.attr('data-cy')?.replace('block--', ''))
   })
 })
+
+Cypress.Commands.add('selectBlock', (uuid: string) => {
+  const block = cy.get(`[data-cy="block--${uuid}"] .block-draggable`)
+
+  block
+    .scrollIntoView()
+    .click()
+
+  return block.then((block) => {
+    return cy.wrap(block.attr('data-cy')?.replace('block--', ''))
+  })
+})
