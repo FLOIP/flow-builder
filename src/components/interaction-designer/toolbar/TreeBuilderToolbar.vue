@@ -76,7 +76,7 @@
 
               <div
                 v-if="isResourceViewerEnabled"
-                class="btn-group mr-3">
+                class="btn-group">
                 <router-link
                   :class="{active: isBuilderCanvasEnabled, disabled: isTreeSaving}"
                   :to="treeUrl"
@@ -95,7 +95,7 @@
 
               <div
                 v-if="!ui.isEditableLocked && !isResourceViewerCanvasEnabled"
-                class="btn-group">
+                class="btn-group ml-3">
                 <router-link
                   v-b-tooltip.hover="trans('flow-builder.click-to-toggle-editing')"
                   :to="viewModeUrl"
@@ -119,6 +119,9 @@
                   {{ trans('flow-builder.edit-mode') }}
                 </router-link>
               </div>
+
+              <div class="vertical-divider" />
+              <UndoRedoButtonGroup />
 
               <slot name="extra-buttons" />
             </div>
@@ -345,6 +348,8 @@ import {IBlock, IContext, IFlow, IResource} from '@floip/flow-runner'
 import {RawLocation} from 'vue-router'
 import {Dictionary} from 'vue-router/types/router'
 import {Watch} from 'vue-property-decorator'
+import {VuexUndoRedoPlugin} from '@/lib/plugins/vuex-undo-redo-plugin'
+import undoRedoModule from '@/store/undoRedo'
 
 Vue.use(BootstrapVue)
 Vue.component('BTooltip', BTooltip)
@@ -353,6 +358,7 @@ const flowVuexNamespace = namespace('flow')
 const builderVuexNamespace = namespace('builder')
 const clipboardVuexNamespace = namespace('clipboard')
 const validationVuexNamespace = namespace('validation')
+const undoRedoVuexNamespace = namespace('undoRedo')
 
 @Component({
   components: {
@@ -362,6 +368,17 @@ const validationVuexNamespace = namespace('validation')
 export class TreeBuilderToolbar extends mixins(Routes, Permissions, Lang) {
   isExportVisible = false
   height = 102
+
+  created(): void {
+    const $store = this.$store
+    const moduleName = 'undoRedo'
+
+    if (!$store.hasModule(moduleName)) {
+      $store.registerModule(moduleName, undoRedoModule)
+    }
+
+    VuexUndoRedoPlugin(this.$store)
+  }
 
   async mounted(): Promise<void> {
     const routeMeta = this.$route.meta ? this.$route.meta : {}

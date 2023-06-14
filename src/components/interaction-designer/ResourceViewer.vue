@@ -4,7 +4,7 @@
     <div class="resource-viewer-contents">
       <resource-viewer-block
         v-for="block in activeFlow?.blocks ?? []"
-        v-show="visibleBlocks.includes(block.uuid)"
+        v-show="visibleBlocks === null || visibleBlocks.includes(block.uuid)"
         :id="`block/${block.uuid}`"
         :key="block.uuid"
         :block="block"
@@ -27,6 +27,7 @@ export default {
   props: {
     visibleBlocks: {
       type: Array,
+      // if null, all blocks are visible
       default: () => null,
     },
   },
