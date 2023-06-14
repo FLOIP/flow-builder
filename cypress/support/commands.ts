@@ -24,23 +24,28 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-//
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      // custom commands
+      createFlow(options: Partial<ICreateFlowOptions>): Chainable<void>,
+      addBlock(menuChoices: string[]): Chainable<string>,
+      selectBlock(uuid: string): Chainable<string>,
+      undo(): Chainable<void>,
+      redo(): Chainable<void>,
+      save(): Chainable<void>,
+      // connectExitToBlock(exitUuid: string, targetBlockUuid: string): Chainable<void>,
+      // dragBlock(blockUuid: string): Chainable<void>,
+    }
+  }
+}
 
 export interface ICreateFlowOptions {
-  label: string
-  interactionTimeout: number
-  languages: string[]
-  modes: string[]
+  label: string,
+  interactionTimeout: number,
+  languages: string[],
+  modes: string[],
 }
 
 Cypress.Commands.add('createFlow', (options: Partial<ICreateFlowOptions>) => {
@@ -100,7 +105,7 @@ Cypress.Commands.add('undo', () => {
   cy.get('[data-cy="undo--btn"]')
     .as('undoBtn')
     .should('not.have.attr', 'disabled')
-  
+
     cy.get('@undoBtn').click()
 })
 
