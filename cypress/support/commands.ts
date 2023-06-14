@@ -87,9 +87,7 @@ Cypress.Commands.add('addBlock', (menuChoices: string[]) => {
 })
 
 Cypress.Commands.add('selectBlock', (uuid: string) => {
-  const blockHandle = cy.get(`[data-cy="block--${uuid}"] .block-draggable`)
-
-  blockHandle
+  cy.get(`[data-cy="block--${uuid}"] .block-draggable`)
     .scrollIntoView()
     .click()
 
