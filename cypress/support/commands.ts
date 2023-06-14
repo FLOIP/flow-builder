@@ -98,8 +98,10 @@ Cypress.Commands.add('selectBlock', (uuid: string) => {
 
 Cypress.Commands.add('undo', () => {
   cy.get('[data-cy="undo--btn"]')
+    .as('undoBtn')
     .should('not.have.attr', 'disabled')
-    .click()
+  
+    cy.get('@undoBtn').click()
 })
 
 Cypress.Commands.add('redo', () => {

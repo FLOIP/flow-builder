@@ -6,10 +6,9 @@ describe('undo-redo', () => {
     })
 
     it('undo block creation', () => {
-        cy.wait(1000)
+        cy.addBlock(['Branching'])
+        cy.wait(5000)
         const uuid = cy.addBlock(['Branching'])
-        cy.wait(1000)
-        
         cy.undo()
         cy.get(`[data-cy="block--${uuid}"]`).should('not.exist')
     })
