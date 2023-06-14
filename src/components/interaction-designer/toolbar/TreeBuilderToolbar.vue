@@ -167,12 +167,14 @@
       <!--TODO: Extract this div into a smaller component-->
       <div
         v-if="isBuilderCanvasEnabled && isEditable"
-        class="tree-workspace-panel-heading panel-heading w-100 bg-white d-flex justify-content-start pt-0 pb-0">
+        class="tree-workspace-panel-heading panel-heading w-100 bg-white d-flex justify-content-start pt-0 pb-0"
+        data-cy="blocks--menu">
         <div class="tree-workspace-panel-heading-contents">
           <ul class="nav">
             <li
               v-if="!isEmpty(blockClassesForContentCategory)"
-              class="nav-item dropdown nav">
+              class="nav-item dropdown nav"
+              data-cy="blocks--menu-item">
               <a
                 class="nav-link dropdown-toggle"
                 data-toggle="dropdown"
@@ -196,6 +198,7 @@
                     class="dropdown-item"
                     :data-block-type="className"
                     :data-default-num-connections="classDetails['defaultConnections']"
+                    data-cy="blocks--menu-item"
                     @click.prevent="handleAddBlockByTypeSelected(classDetails)">
                     {{ translateTreeClassName(className) }}
                   </a>
@@ -205,7 +208,8 @@
             </li>
             <li
               v-if="!isEmpty(blockClassesForContactCategory)"
-              class="nav-item dropdown">
+              class="nav-item dropdown"
+              data-cy="blocks--menu-item">
               <a
                 class="nav-link dropdown-toggle"
                 data-toggle="dropdown"
@@ -229,6 +233,7 @@
                     class="dropdown-item"
                     :data-block-type="className"
                     :data-default-num-connections="classDetails['defaultConnections']"
+                    data-cy="blocks--menu-item"
                     @click.prevent="handleAddBlockByTypeSelected(classDetails)">
                     {{ translateTreeClassName(className) }}
                   </a>
@@ -239,19 +244,22 @@
             <template v-if="!isEmpty(blockClassesForBranchingCategory)">
               <li
                 v-if="Object.keys(blockClassesForBranchingCategory).length === 1"
-                class="nav-item">
+                class="nav-item"
+                data-cy="blocks--menu-item">
                 <a
                   v-for="(classDetails, className) in blockClassesForBranchingCategory"
                   :key="className + 'item'"
                   class="nav-link single-menu"
                   href="#"
+                  data-cy="blocks--menu-item"
                   @click.prevent="handleAddBlockByTypeSelected(classDetails)">
                   {{ 'flow-builder.branching' | trans }}
                 </a>
               </li>
               <li
                 v-else
-                class="nav-item dropdown">
+                class="nav-item dropdown"
+                data-cy="blocks--menu-item">
                 <a
                   class="nav-link dropdown-toggle"
                   data-toggle="dropdown"
@@ -275,6 +283,7 @@
                       class="dropdown-item"
                       :data-block-type="className"
                       :data-default-num-connections="classDetails['defaultConnections']"
+                      data-cy="blocks--menu-item"
                       @click.prevent="handleAddBlockByTypeSelected(classDetails)">
                       {{ translateTreeClassName(className) }}
                     </a>
@@ -285,7 +294,8 @@
             </template>
             <li
               v-if="!isEmpty(blockClassesForDeveloperCategory)"
-              class="nav-item dropdown">
+              class="nav-item dropdown"
+              data-cy="blocks--menu-item">
               <a
                 class="nav-link dropdown-toggle"
                 data-toggle="dropdown"
@@ -309,6 +319,7 @@
                     class="dropdown-item"
                     :data-block-type="className"
                     :data-default-num-connections="classDetails['defaultConnections']"
+                    data-cy="blocks--menu-item"
                     @click.prevent="handleAddBlockByTypeSelected(classDetails)">
                     {{ translateTreeClassName(className) }}
                   </a>

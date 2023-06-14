@@ -74,3 +74,14 @@ Cypress.Commands.add('createFlow', (options: Partial<ICreateFlowOptions>) => {
 
   cy.get('[data-cy="create--btn"]').click()
 })
+
+Cypress.Commands.add('addBlock', (menuChoices: string[]) => {
+  for (const choice of menuChoices) {
+    cy.get('[data-cy="blocks--menu"]')
+    cy.contains('[data-cy="blocks--menu-item"]', choice).click()
+  }
+
+  return cy.get('[data-cy^="block--"]').last().then((block) => {
+    return cy.wrap(block.attr('data-cy')?.replace('block--', ''))
+  })
+})
