@@ -25,6 +25,10 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+import { UNDO_REDO_SNAPSHOT_DEBOUNCE_MS } from '../../src/lib/plugins/vuex-undo-redo-plugin'
+
+const UNDO_REDO_WAIT_MS = UNDO_REDO_SNAPSHOT_DEBOUNCE_MS * 2
+
 declare global {
   namespace Cypress {
     interface Chainable {
@@ -80,15 +84,19 @@ Cypress.Commands.add('createFlow', (options: Partial<ICreateFlowOptions>) => {
   cy.get('[data-cy="create--btn"]').click()
 
   // Let the first undo-redo snapshot be taken
-  cy.wait(500)
+  cy.wait(UNDO_REDO_WAIT_MS)
 })
 
 Cypress.Commands.add('addBlock', (menuChoices: string[]) => {
   for (const choice of menuChoices) {
     cy.get('[data-cy="blocks--menu"]')
     cy.contains('[data-cy="blocks--menu-item"]', choice).click()
+
+    // Let the block's creation be registered in a snapshot
+    cy.wait(UNDO_REDO_WAIT_MS)
   }
 
+  // This relies on appending new blocks to the DOM, unsure how fragile this may be
   return cy.get('[data-cy^="block--"]').last().then((block) => {
     return cy.wrap(block.attr('data-cy')!.replace('block--', ''))
   })
