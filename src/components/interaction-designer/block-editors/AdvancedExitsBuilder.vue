@@ -18,6 +18,7 @@
 
     <input
       class="btn btn-outline-primary btn-sm w-100"
+      data-cy="add-exit--btn"
       type="button"
       :value="trans('flow-builder.btn-add-exit')"
       @click="addDraftExitToBlock">
