@@ -1,4 +1,4 @@
-describe('adding blocks', () => {
+describe('selecting blocks', () => {
   beforeEach(() => {
     cy.createFlow({
       label: 'selecting blocks test',

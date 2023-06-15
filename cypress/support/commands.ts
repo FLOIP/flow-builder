@@ -103,11 +103,17 @@ Cypress.Commands.add('addBlock', (menuChoices: string[]) => {
 })
 
 Cypress.Commands.add('selectBlock', (uuid: string) => {
-  cy.get(`[data-cy="block--${uuid}"] .block-draggable`)
-    .scrollIntoView()
-    .click()
+  cy.get(`[data-cy="block--${uuid}"]`)
+    .as('block')
 
-  return cy.get(`[data-cy="block--${uuid}"]`).then((block) => {
+  cy.get('@block')
+    .find('.block-draggable')
+    .click({
+      // May be obscured by the block editor
+      force: true,
+    })
+
+  return cy.get('@block').then((block) => {
     return cy.wrap(block.attr('data-cy')!.replace('block--', ''))
   })
 })
