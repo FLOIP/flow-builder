@@ -1,26 +1,21 @@
-describe('undo-redo', () => {
+describe('Undo and Redo', () => {
   beforeEach(() => {
     cy.createFlow({
-      label: 'undo-redo test',
+      label: 'Undo-redo test',
     })
   })
 
-  it('undo block creation', () => {
+  it('undo adding a block', () => {
     cy.addBlock(['Content', 'Message']).then((uuid) => {
-      cy.wait(1000)
       cy.undo()
       cy.get(`[data-cy="block--${uuid}"]`).should('not.exist')
     })
   })
 
-  it('redo block creation', () => {
+  it('redo adding a block', () => {
     cy.addBlock(['Branching']).then((uuid) => {
-      cy.wait(1000)
       cy.undo()
-
-      cy.wait(1000)
       cy.redo()
-
       cy.get(`[data-cy="block--${uuid}"]`).should('exist')
     })
   })
