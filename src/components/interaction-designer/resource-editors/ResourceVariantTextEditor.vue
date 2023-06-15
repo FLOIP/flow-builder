@@ -1,5 +1,5 @@
 <template>
-  <div class="resource-variant-text-editor mb-0">
+  <div class="resource-variant-text-editor mb-0" :data-cy="`${mode}-resource-variant-text--editor`">
     <validation-message :message-key="`resource/${resourceId}/values/${index}/value`">
       <template #input-control="{ isValid }">
         <expression-input

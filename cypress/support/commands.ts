@@ -74,7 +74,7 @@ Cypress.Commands.add('createFlow', (options: Partial<ICreateFlowOptions>) => {
 
   for (const language of optionsWithDefaults.languages) {
     cy.get('[data-cy="languages--selector"]').click()
-    cy.contains('.multiselect__option', language).click();
+    cy.contains('.multiselect__option', language).click()
   }
 
   cy.get('[data-cy="create--btn"]').click()
