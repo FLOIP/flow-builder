@@ -78,6 +78,9 @@ Cypress.Commands.add('createFlow', (options: Partial<ICreateFlowOptions>) => {
   }
 
   cy.get('[data-cy="create--btn"]').click()
+
+  // Let the first undo-redo snapshot be taken
+  cy.wait(500)
 })
 
 Cypress.Commands.add('addBlock', (menuChoices: string[]) => {
@@ -87,7 +90,7 @@ Cypress.Commands.add('addBlock', (menuChoices: string[]) => {
   }
 
   return cy.get('[data-cy^="block--"]').last().then((block) => {
-    return cy.wrap(block.attr('data-cy')?.replace('block--', ''))
+    return cy.wrap(block.attr('data-cy')!.replace('block--', ''))
   })
 })
 
@@ -97,7 +100,7 @@ Cypress.Commands.add('selectBlock', (uuid: string) => {
     .click()
 
   return cy.get(`[data-cy="block--${uuid}"]`).then((block) => {
-    return cy.wrap(block.attr('data-cy')?.replace('block--', ''))
+    return cy.wrap(block.attr('data-cy')!.replace('block--', ''))
   })
 })
 
@@ -106,13 +109,18 @@ Cypress.Commands.add('undo', () => {
     .as('undoBtn')
     .should('not.have.attr', 'disabled')
 
-    cy.get('@undoBtn').click()
+  cy.get('@undoBtn').click()
 })
 
 Cypress.Commands.add('redo', () => {
   cy.get('[data-cy="redo--btn"]')
+    .as('redoBtn')
     .should('not.have.attr', 'disabled')
-    .click()
+
+  cy.get('@redoBtn').click({
+    // Undoing the creation of the 1st block triggers Flow Details modal
+    force: true,
+  })
 })
 
 Cypress.Commands.add('save', () => {
