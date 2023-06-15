@@ -4,11 +4,13 @@
 import {Store, Plugin, MutationPayload} from 'vuex'
 import {debounce} from 'lodash'
 
+export const UNDO_REDO_SNAPSHOT_DEBOUNCE_MS = 100
+
 export const VuexUndoRedoPlugin: Plugin<unknown> = (store: Store<any>) => {
   // Debouncing allows having cascade updates in a single undo/redo step
   const handleStateChangeDebounced = debounce(() => {
     store.dispatch('undoRedo/handleStateChange')
-  }, 100)
+  }, UNDO_REDO_SNAPSHOT_DEBOUNCE_MS)
 
   const storeChangeHandler = (mutation: MutationPayload): void => {
     if (mutation.type !== 'flow/flow_resetFlowState' && mutation.type.startsWith('flow/')) {
