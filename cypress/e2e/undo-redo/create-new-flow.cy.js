@@ -19,5 +19,4 @@ describe('create flows', () => {
     flowModuleState().its('isCreated').should('equal', true)
     flowsListState().its('[0].label').should('equal', 'This should be a valid empty flow')
   })
-
 })
