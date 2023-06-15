@@ -15,7 +15,10 @@ describe('create flows', () => {
   it('should mutate flow state when the update comes from common block configs UI', () => {
     const blockConfigs = {
       label: 'my block',
-      name: 'my_block',
+      name: {
+        beforeEdit: 'my_block',
+        afterEditPostFix: '_updated',
+      },
       resources: {
         ivr: ' 02_flowers_for_albert.mp3',
         sms: 'content for sms',
@@ -41,14 +44,20 @@ describe('create flows', () => {
     const firstBlockState = () => flowsListState().its('[0].blocks[0]')
     const firstResourcesState = () => flowsListState().its('[0].resources[0]')
 
-    // Block label & name
+    // ####### Block label & name
     cy.get('[data-cy="label--editor"]')
       .find('textarea')
       .type(String(blockConfigs.label))
     firstBlockState().its('label').should('equal', blockConfigs.label)
-    firstBlockState().its('name').should('equal', blockConfigs.name)
+    firstBlockState().its('name').should('equal', blockConfigs.name.beforeEdit)
+    cy.get('[data-cy="name-editor--edit-btn"]').click()
+    cy.get('[data-cy="name-editor--input"]')
+      .type(blockConfigs.name.afterEditPostFix)
+    cy.get('[data-cy="name-editor--save-btn"]').click()
+    firstBlockState().its('name')
+      .should('equal', `${blockConfigs.name.beforeEdit}${blockConfigs.name.afterEditPostFix}`)
 
-    // Resource UIs
+    // ####### Resource UIs
     cy.get('[data-cy="audio-library-search--btn"]').click()
     cy.contains('.dropdown-item', blockConfigs.resources.ivr).click()
 
