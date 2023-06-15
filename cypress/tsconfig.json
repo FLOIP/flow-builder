@@ -5,6 +5,7 @@
     "types": [
       "cypress",
       "node",
+      "@4tw/cypress-drag-drop"
     ],
     "strictNullChecks": true
   },
