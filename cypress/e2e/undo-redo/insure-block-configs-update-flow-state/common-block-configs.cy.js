@@ -26,6 +26,11 @@ describe('create flows', () => {
           name: 'banana',
           expression: '@block.value = "banana"',
         }
+      ],
+      tags: [
+        {
+          name: 'my tag 1',
+        }
       ]
     }
     const getStore = () => cy.window().its('store')
@@ -87,5 +92,15 @@ describe('create flows', () => {
     // ######### 2. UNIFIED branching #####
     cy.get('[data-cy="output-branching--unified--btn"]').click()
     firstBlockState().its('vendor_metadata.floip.ui_metadata.branching_type').should('equal', 'UNIFIED')
+
+    // ###### Tags ######
+    firstBlockState().its('tags').should('have.length', 0)
+    cy.get('[data-cy="tag--selector"]').as('tagSelector').click()
+    cy.get('@tagSelector')
+      .find('input')
+      .type(String(blockConfigs.tags[0].name))
+    cy.get('@tagSelector').contains('.multiselect__option', blockConfigs.tags[0].name).click()
+    firstBlockState().its('tags').should('have.length', 1)
+    firstBlockState().its('tags.[0]').should('eq', blockConfigs.tags[0].name)
   })
 })
