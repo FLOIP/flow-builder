@@ -5,14 +5,14 @@
  *
  * Secondly, a working config UI doesn't mean the component is working with UNDO/REDO, it has to mutate the flow state and not use local state.
  */
-describe('create flows', () => {
+describe('mutate flow state when the update comes from common block configs UI', () => {
   beforeEach(() => {
     cy.createFlow({
       label: 'adding blocks test',
     })
   })
 
-  it('should mutate flow state when the update comes from common block configs UI', () => {
+  it('should validate non interactive blocks', () => {
     const blockConfigs = {
       label: 'my block',
       name: {
@@ -111,5 +111,39 @@ describe('create flows', () => {
     cy.get('@tagSelector').contains('.multiselect__option', blockConfigs.tags[0].name).click()
     firstBlockState().its('tags').should('have.length', 1)
     firstBlockState().its('tags.[0]').should('eq', blockConfigs.tags[0].name)
+  })
+
+  it('should validate interactive blocks', () => {
+    const blockConfigs = {
+      contactProperties: [
+        {
+          key: 'age',
+          name: 'Age (number)',
+          value: '@contact.age',
+        }
+      ]
+    }
+    const getStore = () => cy.window().its('store')
+    const flowModuleState = () => getStore().its('state.flow')
+    const flowsListState = () => flowModuleState().its('flows')
+
+    const firstBlockState = () => flowsListState().its('[0].blocks[0]')
+
+    cy.addBlock(['Content', 'Numeric Response'])
+
+    // ####### Contact properties
+    cy.get('[data-cy="set-contact-property--checkbox"]').check({force: true})
+    firstBlockState().its('config.set_contact_property.[0].property_key').should('eq', '')
+    firstBlockState().its('config.set_contact_property.[0].property_value').should('eq', '')
+    cy.get('[data-cy="contact-property--selector"]').as('contactPropertySelector').click()
+    cy.get('@contactPropertySelector')
+      .contains('.multiselect__option', blockConfigs.contactProperties[0].name).click()
+    firstBlockState().its('config.set_contact_property.[0].property_key').should('eq', blockConfigs.contactProperties[0].key)
+    cy.get('[data-cy="contact-property--expression-input"]')
+      .type(blockConfigs.contactProperties[0].value)
+    firstBlockState().its('config.set_contact_property.[0].property_value').should('eq', blockConfigs.contactProperties[0].value)
+    cy.get('[data-cy="set-contact-property--from-current-block-response"]')
+      .check({force: true})
+    firstBlockState().its('config.set_contact_property.[0].property_value').should('eq', '@block.value')
   })
 })
