@@ -17,7 +17,7 @@ describe('Creating a connection', () => {
     cy.wait(300)
   })
 
-  it('creates a connection', () => {
+  it('creates and removes a connection', () => {
     cy.get('@firstBlock').find('[data-cy^="exit--"]').as('exit')
     cy.get('@secondBlock').find('[data-cy^="block-handle--"]').as('secondBlockArea')
 
@@ -28,6 +28,14 @@ describe('Creating a connection', () => {
 
     // The only way to identify current line so far: https://github.com/anseki/leader-line/issues/185
     cy.get('body>.leader-line:last-of-type').as('connection')
+
     cy.get('@connection').should('be.visible')
+
+    // remove connection
+    cy.get('@exit')
+      .realHover()
+      .click()
+
+    cy.get('@connection').should('not.exist')
   })
 })
