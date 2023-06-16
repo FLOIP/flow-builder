@@ -5,15 +5,6 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@4tw/cypress-drag-drop@npm:^2.2.4":
-  version: 2.2.4
-  resolution: "@4tw/cypress-drag-drop@npm:2.2.4"
-  peerDependencies:
-    cypress: ^2.1.0 || ^3.1.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0
-  checksum: f437d752569e6c7911a77b2a3222260e662b5f91774b8abeb2c6e2f750073070dbeeebb2ee371b4c0ca515e91071a3320137fc63aff001e438c336671ef30a2e
-  languageName: node
-  linkType: hard
-
 "@achrinza/node-ipc@npm:9.2.2":
   version: 9.2.2
   resolution: "@achrinza/node-ipc@npm:9.2.2"
@@ -4392,7 +4383,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@floip/flow-builder@workspace:."
   dependencies:
-    "@4tw/cypress-drag-drop": ^2.2.4
     "@avcs/autosuggest": ^1.7.5
     "@babel/core": ^7.22.1
     "@babel/plugin-proposal-nullish-coalescing-operator": ^7.18.6

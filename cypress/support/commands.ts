@@ -37,12 +37,10 @@ declare global {
       save(): Chainable<void>,
 
       /**
-       * Custom command to drag-n-drop
+       * Custom command to drag-n-drop an element
        * @example cy.get('.element-to-drag').dragAndDropTo('.drop-zone')
        */
       dragAndDropTo(targetSelectorOrAlias: string): Chainable<void>,
-
-      // dragBlock(blockUuid: string): Chainable<void>,
     }
   }
 }
