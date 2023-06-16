@@ -35,7 +35,13 @@ declare global {
       undo(): Chainable<void>,
       redo(): Chainable<void>,
       save(): Chainable<void>,
-      // connectExitToBlock(exitUuid: string, targetBlockUuid: string): Chainable<void>,
+
+      /**
+       * Custom command to drag-n-drop
+       * @example cy.get('.element-to-drag').dragAndDropTo('.drop-zone')
+       */
+      dragAndDropTo(targetSelectorOrAlias: string): Chainable<void>,
+
       // dragBlock(blockUuid: string): Chainable<void>,
     }
   }
@@ -127,4 +133,18 @@ Cypress.Commands.add('save', () => {
   cy.get('[data-cy="save--btn"]')
     .should('not.have.attr', 'disabled')
     .click()
+})
+
+Cypress.Commands.add('dragAndDropTo', {prevSubject: 'element'}, (subject, targetSelectorOrAlias) => {
+  cy.wrap(subject).scrollIntoView()
+  cy.wrap(subject).should('be.visible')
+  cy.get(targetSelectorOrAlias).should('be.visible')
+
+  cy.wrap(subject)
+    .realHover()
+    .realMouseDown()
+
+  cy.get(targetSelectorOrAlias)
+    .realMouseMove(0, 0, {position: 'center'})
+    .realMouseUp({position: 'center'})
 })

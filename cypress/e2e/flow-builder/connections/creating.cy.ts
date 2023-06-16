@@ -17,27 +17,16 @@ describe('Creating a connection', () => {
     cy.wait(300)
   })
 
-  it('creates a connection correctly', () => {
-    // assign aliases
+  it('creates a connection', () => {
     cy.get('@firstBlock').find('[data-cy^="exit--"]').as('exit')
-    cy.get('@firstBlock').find('[data-cy^="block-handle--"]').as('firstBlockArea')
     cy.get('@secondBlock').find('[data-cy^="block-handle--"]').as('secondBlockArea')
 
     // deselect blocks and close block editor
     cy.get('[data-cy="builder-canvas"]').click('left')
 
-    // ensure visibility
-    cy.get('@firstBlockArea').scrollIntoView()
-    cy.get('@exit').should('be.visible')
-    cy.get('@secondBlockArea').should('be.visible')
+    cy.get('@exit').dragAndDropTo('@secondBlockArea')
 
-    // drag and drop
-    cy.get('@exit').realHover()
-    cy.get('@exit').realMouseDown()
-    cy.get('@secondBlockArea').realMouseMove(0, 0, {position: 'center'})
-    cy.get('@secondBlockArea').realMouseUp({position: 'center'})
-
-    // check connection
+    // The only way to identify current line so far: https://github.com/anseki/leader-line/issues/185
     cy.get('body>.leader-line:last-of-type').as('connection')
     cy.get('@connection').should('be.visible')
   })
