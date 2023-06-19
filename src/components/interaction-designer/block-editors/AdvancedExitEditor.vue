@@ -12,9 +12,11 @@
           v-model="name"
           :placeholder="trans('flow-builder.advanced-exit-name-placeholder')"
           class="form-control"
+          data-cy="advanced-exit-name--input"
           rows="1" />
         <button
           class="btn btn-outline-primary ml-3"
+          data-cy="advanced-exit-delete--btn"
           @click="$emit('deleteExit', exit)">
           <font-awesome-icon :icon="['far', 'trash-alt']" />
         </button>
@@ -30,6 +32,7 @@
             :placeholder="trans('flow-builder.advanced-exit-expression-placeholder')"
             :current-expression="test"
             :rows="1"
+            data-cy="advanced-exit-test-expression--input"
             @commitExpressionChange="commitExpressionChange" />
         </template>
       </validation-message>

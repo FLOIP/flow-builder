@@ -13,6 +13,7 @@
             'btn-outline-primary': !isBranchingTypeExitPerChoice,
           }"
           class="btn btn-sm"
+          data-cy="output-branching--exit-per-choice--btn"
           @click="selectedBranchingType = OutputBranchingType.EXIT_PER_CHOICE">
           <font-awesome-icon
             :icon="['fac', 'one-exit-per-choice']"
@@ -28,6 +29,7 @@
             'btn-outline-primary': !isBranchingTypeUnified,
           }"
           class="btn btn-sm"
+          data-cy="output-branching--unified--btn"
           @click="selectedBranchingType = OutputBranchingType.UNIFIED">
           <font-awesome-icon
             :icon="['fac', 'single-exit']"
@@ -42,6 +44,7 @@
             'btn-outline-primary': !isBranchingTypeAdvanced,
           }"
           class="btn btn-sm"
+          data-cy="output-branching--advanced--btn"
           :disabled="!hasUnifiedExit && !hasExitPerChoice"
           @click="selectedBranchingType = OutputBranchingType.ADVANCED">
           <font-awesome-icon

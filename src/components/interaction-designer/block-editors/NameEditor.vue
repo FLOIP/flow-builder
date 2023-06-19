@@ -1,5 +1,5 @@
 <template>
-  <div class="name-editor mt-3">
+  <div class="name-editor mt-3" data-cy="name--editor">
     <validation-message :message-key="`block/${block.uuid}/name`">
       <template #input-control="{ isValid }">
         <div v-if="editBlockName || isValid === false">
@@ -11,9 +11,11 @@
               :label="''"
               :placeholder="trans('flow-builder.enter-block-code')"
               :valid-state="isValid"
+              data-cy="name-editor--input"
               @keydown="filterName" />
             <span
               class="btn btn-primary btn-xs align-self-center ml-2"
+              data-cy="name-editor--save-btn"
               @click="handleCompleteEditing">
               <font-awesome-icon
                 :icon="['fas', 'check']"
@@ -32,6 +34,7 @@
           </div>
           <span
             class="btn btn-primary btn-xs align-self-baseline ml-2"
+            data-cy="name-editor--edit-btn"
             @click="editBlockName = true">
             <font-awesome-icon
               :icon="['far', 'edit']"
