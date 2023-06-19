@@ -4,6 +4,8 @@
  * - if a block config UI updates the flow state, it should work with the UNDO/REDO feature
  *
  * Secondly, a working config UI doesn't mean the component is working with UNDO/REDO, it has to mutate the flow state and not use local state.
+ *
+ * This spec is a vertical e2e testing (see more here for details https://katalon.com/resources-center/blog/end-to-end-e2e-testing#h5)
  */
 describe('mutate flow state when the update comes from common block configs UI', () => {
   beforeEach(() => {
