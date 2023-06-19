@@ -123,7 +123,10 @@ Cypress.Commands.add('undo', () => {
     .as('undoBtn')
     .should('not.have.attr', 'disabled')
 
-  cy.get('@undoBtn').click()
+  cy.get('@undoBtn').click({
+    // May be covered with a toast
+    force: true,
+  })
 })
 
 Cypress.Commands.add('redo', () => {
@@ -133,12 +136,18 @@ Cypress.Commands.add('redo', () => {
 
   cy.get('@redoBtn').click({
     // Undoing the creation of the 1st block triggers Flow Details modal
+    // May be covered with a toast
     force: true,
   })
 })
 
 Cypress.Commands.add('save', () => {
   cy.get('[data-cy="save--btn"]')
+    .as('saveBtn')
     .should('not.have.attr', 'disabled')
-    .click()
+
+  cy.get('@saveBtn').click({
+    // May be covered with a toast
+    force: true,
+  })
 })
