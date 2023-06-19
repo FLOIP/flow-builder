@@ -38,6 +38,7 @@ export function getDeepLink({changedKeys, flows}: {changedKeys: string[], flows:
     }
   } else if (BLOCK_CHANGE_REGEX.test(key)) {
     const {flowIndex, blockIndex, fieldPath} = parseBlockChangeParams(key)!
+    // blockId might be empty if we have deleted the block
     const blockId = flows.flows[flowIndex].blocks[blockIndex].uuid
     return {
       routeName: 'block-scroll-to-anchor',

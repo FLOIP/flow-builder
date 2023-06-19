@@ -17,36 +17,38 @@ describe('Add/Delete/Duplicate blocks', () => {
       cy.get(`[data-cy="block--${blockUuid}"]`).should('exist')
 
       // #### Duplicate that block
-      cy.wait(1000)
       let duplicatedMessageBlockUuid = null
-      console.debug('messageBlockUuid 1', messageBlockUuid)
       cy.duplicateBlock(messageBlockUuid).then((blockUuid) => {
-        console.debug('messageBlockUuid 2', messageBlockUuid)
         duplicatedMessageBlockUuid = blockUuid
-        cy.get(`[data-cy="block--${blockUuid}"]`).should('exist')
+        cy.get(`[data-cy="block--${duplicatedMessageBlockUuid}"]`).should('exist')
         cy.undo()
-        cy.get(`[data-cy="block--${blockUuid}"]`).should('not.exist')
+        cy.get(`[data-cy="block--${duplicatedMessageBlockUuid}"]`).should('not.exist')
         cy.redo()
-        cy.get(`[data-cy="block--${blockUuid}"]`).should('exist')
+        cy.get(`[data-cy="block--${duplicatedMessageBlockUuid}"]`).should('exist')
+
+        // #### Duplicate multiple blocks
+        cy.addBlock(['Content', 'Numeric Response']).then((blockUuid2) => {
+          cy.duplicateMultipleBlocks([duplicatedMessageBlockUuid, blockUuid2]).then((duplicatedBlocks) => {
+            cy.get(`[data-cy="block--${duplicatedBlocks[0]}"]`).should('exist')
+            cy.get(`[data-cy="block--${duplicatedBlocks[1]}"]`).should('exist')
+            cy.undo()
+            cy.get(`[data-cy="block--${duplicatedBlocks[0]}"]`).should('not.exist')
+            cy.get(`[data-cy="block--${duplicatedBlocks[1]}"]`).should('not.exist')
+            cy.redo()
+            cy.get(`[data-cy="block--${duplicatedBlocks[0]}"]`).should('exist')
+            cy.get(`[data-cy="block--${duplicatedBlocks[1]}"]`).should('exist')
+
+            // #### Delete a block
+            // cy.deleteBlock(duplicatedMessageBlockUuid).then(() => {
+            //   cy.get(`[data-cy="block--${duplicatedMessageBlockUuid}"]`).should('not.exist')
+            //   cy.undo()
+            //   cy.get(`[data-cy="block--${duplicatedMessageBlockUuid}"]`).should('exist')
+            //   cy.redo()
+            //   cy.get(`[data-cy="block--${duplicatedMessageBlockUuid}"]`).should('not.exist')
+            // })
+          })
+        })
       })
     })
-
-
-
-
-
-    // // #### Delete a block
-    // cy.deleteBlock(duplicatedBlock1)
-    // cy.get(`[data-cy="block--${duplicatedBlock1}"]`).should('not.exist')
-    // cy.undo()
-    // cy.get(`[data-cy="block--${duplicatedBlock1}"]`).should('exist')
-    // cy.redo()
-    // cy.get(`[data-cy="block--${duplicatedBlock1}"]`).should('not.exist')
-    //
-    // // #### Duplicate multiple blocks
-    // const blockUuid2 = cy.addBlock(['Content', 'Numeric Response'])
-    // const duplicatedBlocks = cy.duplicateMultipleBlocks([blockUuid, blockUuid2])
-    // cy.get(`[data-cy="block--${duplicatedBlocks[0]}"]`).should('exist')
-    // cy.get(`[data-cy="block--${duplicatedBlocks[1]}"]`).should('exist')
   })
 })

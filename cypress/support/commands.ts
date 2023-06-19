@@ -144,9 +144,9 @@ Cypress.Commands.add('selectBlockAndCheck', (uuid: string) => {
 
 Cypress.Commands.add('duplicateBlock', (uuid: string) => {
   const flowsListState = () => cy.window().its('store.state.flow.flows')
-  let beforeCreateBlockNumber = 0
+  let beforeDuplicateBlockNumber = 0
   flowsListState().its('0.blocks').then((blocks_1) => {
-    beforeCreateBlockNumber = blocks_1.length
+    beforeDuplicateBlockNumber = blocks_1.length
 
     cy.get(`[data-cy="block--${uuid}"]`)
       .as('block')
@@ -160,8 +160,8 @@ Cypress.Commands.add('duplicateBlock', (uuid: string) => {
 
     // Double check the blocks were created to insure the return of this custom command would be correct
     flowsListState().its('0.blocks').then((blocks_2) => {
-      expect(blocks_2).to.have.length(beforeCreateBlockNumber + 1)
-      const blockUuid = blocks_2[beforeCreateBlockNumber].uuid
+      expect(blocks_2).to.have.length(beforeDuplicateBlockNumber + 1)
+      const blockUuid = blocks_2[beforeDuplicateBlockNumber].uuid
       // make sure we see the configuration editor for this block
       cy.get(`[data-cy="block-id-${blockUuid}"]`).should('exist')
       return cy.wrap(blockUuid)
@@ -189,20 +189,38 @@ Cypress.Commands.add('deleteBlock', (uuid: string) => {
 })
 
 Cypress.Commands.add('duplicateMultipleBlocks', (uuids: string[]) => {
-  let newUuids: string[] = []
-  // select and check one by one
-  uuids.forEach((uuid) => {
-    cy.selectBlockAndCheck(uuid)
-  })
+  const flowsListState = () => cy.window().its('store.state.flow.flows')
+  let beforeDuplicateBlocksNumber = 0
+  flowsListState().its('0.blocks').then((blocks_1) => {
+    beforeDuplicateBlocksNumber = blocks_1.length
 
-  // duplicate with one action
-  cy.get('[data-cy="builder-toolbar--duplicate-x-block--btn"]')
-    .click({
-      // May be obscured by the block editor
-      force: true,
+    let newUuids: string[] = []
+    // select and check one by one
+    uuids.forEach((uuid) => {
+      cy.selectBlockAndCheck(uuid)
     })
 
-  return cy.wrap(newUuids)
+    // duplicate with one action
+    cy.get('[data-cy="builder-toolbar--duplicate-x-block--btn"]')
+      .click({
+        // May be obscured by the block editor
+        force: true,
+      })
+
+    // Double-check the blocks were created to insure the return of this custom command would be correct
+    flowsListState().its('0.blocks').then((blocks_2) => {
+      expect(blocks_2).to.have.length(beforeDuplicateBlocksNumber + uuids.length)
+      // Check all duplicated blocks
+      for (let index = beforeDuplicateBlocksNumber; index < beforeDuplicateBlocksNumber + uuids.length; index++) {
+        const blockUuid = blocks_2[index].uuid
+        newUuids.push(blockUuid)
+        // the block on canvas does exist
+        cy.get(`[data-cy="block--${blockUuid}"]`).should('exist')
+      }
+
+      return cy.wrap(newUuids)
+    })
+  })
 })
 
 Cypress.Commands.add('undo', () => {
