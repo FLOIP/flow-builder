@@ -49,7 +49,7 @@ describe('mutate flow state when the update comes from common block configs UI',
     // ####### Block label & name
     cy.get('[data-cy="label--editor"]')
       .find('textarea')
-      .type(String(blockConfigs.label))
+      .type(blockConfigs.label)
     firstBlockState().its('label').should('equal', blockConfigs.label)
     firstBlockState().its('name').should('equal', blockConfigs.name.beforeEdit)
     cy.get('[data-cy="name-editor--edit-btn"]').click()
@@ -65,13 +65,12 @@ describe('mutate flow state when the update comes from common block configs UI',
 
     cy.get('[data-cy="SMS-resource-variant-text--editor"]')
       .find('textarea')
-      .type(String(blockConfigs.resources.sms))
+      .type(blockConfigs.resources.sms)
 
     cy.get('[data-cy="USSD-resource-variant-text--editor"]')
       .find('textarea')
-      .type(String(blockConfigs.resources.ussd))
+      .type(blockConfigs.resources.ussd)
     firstResourcesState().its('values').should((values) => {
-      console.debug('test rs', values)
       expect(values).to.have.length(3)
       // the order follows how we set the flow modes from createFlow() command
       expect(values[0].value).to.equal(blockConfigs.resources.sms)
@@ -89,10 +88,10 @@ describe('mutate flow state when the update comes from common block configs UI',
     firstBlockState().its('exits').should('have.length', 2)
 
     cy.get('[data-cy="advanced-exit-name--input"]')
-      .type(String(blockConfigs.exits[0].name))
+      .type(blockConfigs.exits[0].name)
     cy.get('[data-cy="advanced-exit-test-expression--input"]')
       .find('textarea')
-      .type(String(blockConfigs.exits[0].expression))
+      .type(blockConfigs.exits[0].expression)
     // new exits are put at the index 0
     firstBlockState().its('exits.[0].name').should('eq', blockConfigs.exits[0].name)
     firstBlockState().its('exits.[0].test').should('eq', blockConfigs.exits[0].expression)
@@ -109,7 +108,7 @@ describe('mutate flow state when the update comes from common block configs UI',
     cy.get('[data-cy="tag--selector"]').as('tagSelector').click()
     cy.get('@tagSelector')
       .find('input')
-      .type(String(blockConfigs.tags[0].name))
+      .type(blockConfigs.tags[0].name)
     cy.get('@tagSelector').contains('.multiselect__option', blockConfigs.tags[0].name).click()
     firstBlockState().its('tags').should('have.length', 1)
     firstBlockState().its('tags.[0]').should('eq', blockConfigs.tags[0].name)
