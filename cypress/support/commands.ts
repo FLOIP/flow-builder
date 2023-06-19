@@ -88,17 +88,28 @@ Cypress.Commands.add('createFlow', (options: Partial<ICreateFlowOptions>) => {
 })
 
 Cypress.Commands.add('addBlock', (menuChoices: string[]) => {
-  for (const choice of menuChoices) {
-    cy.get('[data-cy="blocks--menu"]')
-    cy.contains('[data-cy="blocks--menu-item"]', choice).click()
+  const flowsListState = () => cy.window().its('store.state.flow.flows')
+  let beforeCreateBlockNumber = 0
+  flowsListState().its('0.blocks').then((blocks_1) => {
+    beforeCreateBlockNumber = blocks_1.length
 
-    // Let the block's creation be registered in a snapshot
-    cy.wait(UNDO_REDO_WAIT_MS)
-  }
+    // Create all the blocks
+    for (const choice of menuChoices) {
+      cy.get('[data-cy="blocks--menu"]')
+      cy.contains('[data-cy="blocks--menu-item"]', choice).click()
 
-  // This relies on appending new blocks to the DOM, unsure how fragile this may be
-  return cy.get('[data-cy^="block--"]').last().then((block) => {
-    return cy.wrap(block.attr('data-cy')!.replace('block--', ''))
+      // Let the block's creation be registered in a snapshot
+      cy.wait(UNDO_REDO_WAIT_MS)
+    }
+
+    // Double check the blocks were created to insure the return of this custom command would be correct
+    flowsListState().its('0.blocks').then((blocks_2) => {
+      expect(blocks_2).to.have.length(beforeCreateBlockNumber + 1)
+      const blockUuid = blocks_2[beforeCreateBlockNumber].uuid
+      // make sure we see the configuration editor for this block
+      cy.get(`[data-cy="block-id-${blockUuid}"]`).should('exist')
+      return cy.wrap(blockUuid)
+    })
   })
 })
 
@@ -118,7 +129,85 @@ Cypress.Commands.add('selectBlock', (uuid: string) => {
   })
 })
 
+Cypress.Commands.add('selectBlockAndCheck', (uuid: string) => {
+  cy.get(`[data-cy="block--${uuid}"]`)
+    .as('block')
+
+  cy.selectBlock(uuid)
+  cy.get('@block')
+    .find('[data-cy="block-toolbar--select-block--btn"]')
+    .click({
+      // May be obscured by the block editor
+      force: true,
+    })
+})
+
+Cypress.Commands.add('duplicateBlock', (uuid: string) => {
+  const flowsListState = () => cy.window().its('store.state.flow.flows')
+  let beforeCreateBlockNumber = 0
+  flowsListState().its('0.blocks').then((blocks_1) => {
+    beforeCreateBlockNumber = blocks_1.length
+
+    cy.get(`[data-cy="block--${uuid}"]`)
+      .as('block')
+
+    cy.get('@block')
+      .find('[data-cy="block-toolbar--duplicate--btn"]')
+      .click({
+        // May be obscured by the block editor
+        force: true,
+      })
+
+    // Double check the blocks were created to insure the return of this custom command would be correct
+    flowsListState().its('0.blocks').then((blocks_2) => {
+      expect(blocks_2).to.have.length(beforeCreateBlockNumber + 1)
+      const blockUuid = blocks_2[beforeCreateBlockNumber].uuid
+      // make sure we see the configuration editor for this block
+      cy.get(`[data-cy="block-id-${blockUuid}"]`).should('exist')
+      return cy.wrap(blockUuid)
+    })
+  })
+})
+
+Cypress.Commands.add('deleteBlock', (uuid: string) => {
+  cy.get(`[data-cy="block--${uuid}"]`)
+    .as('block')
+
+  cy.get('@block')
+    .find('[data-cy="block-toolbar--delete--btn"]')
+    .click({
+      // May be obscured by the block editor
+      force: true,
+    })
+
+  cy.get('@block')
+    .find('[data-cy="block-toolbar--confirm-deletion--btn"]')
+    .click({
+      // May be obscured by the block editor
+      force: true,
+    })
+})
+
+Cypress.Commands.add('duplicateMultipleBlocks', (uuids: string[]) => {
+  let newUuids: string[] = []
+  // select and check one by one
+  uuids.forEach((uuid) => {
+    cy.selectBlockAndCheck(uuid)
+  })
+
+  // duplicate with one action
+  cy.get('[data-cy="builder-toolbar--duplicate-x-block--btn"]')
+    .click({
+      // May be obscured by the block editor
+      force: true,
+    })
+
+  return cy.wrap(newUuids)
+})
+
 Cypress.Commands.add('undo', () => {
+  // Wait first, in case we call undo then redo actions too fast
+  cy.wait(UNDO_REDO_WAIT_MS)
   cy.get('[data-cy="undo--btn"]')
     .as('undoBtn')
     .should('not.have.attr', 'disabled')
@@ -130,6 +219,8 @@ Cypress.Commands.add('undo', () => {
 })
 
 Cypress.Commands.add('redo', () => {
+  // Wait first, in case we call undo then redo actions too fast
+  cy.wait(UNDO_REDO_WAIT_MS)
   cy.get('[data-cy="redo--btn"]')
     .as('redoBtn')
     .should('not.have.attr', 'disabled')
