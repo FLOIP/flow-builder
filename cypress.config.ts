@@ -7,5 +7,7 @@ export default defineConfig({
     },
     specPattern: 'cypress/e2e/**/*.cy.js',
     experimentalRunAllSpecs: true,
+    "viewportWidth": 1440,
+    "viewportHeight": 900
   },
 })
