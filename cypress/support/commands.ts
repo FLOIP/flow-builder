@@ -36,6 +36,7 @@ declare global {
       createFlow(options: Partial<ICreateFlowOptions>): Chainable<void>,
       addBlock(menuChoices: string[]): Chainable<string>,
       selectBlock(uuid: string): Chainable<string>,
+      setBlockText(language: string, channel: string, value: string): Chainable<JQuery<HTMLElement>>,
       undo(): Chainable<void>,
       redo(): Chainable<void>,
       save(): Chainable<void>,
@@ -115,6 +116,26 @@ Cypress.Commands.add('selectBlock', (uuid: string) => {
 
   return cy.get('@block').then((block) => {
     return cy.wrap(block.attr('data-cy')!.replace('block--', ''))
+  })
+})
+
+Cypress.Commands.add('setBlockText', (language: string, channel: string, value: string) => {
+  cy.get('[data-cy="resource-editor"]')
+    .as('resourceEditor')
+
+  cy.get('@resourceEditor')
+    .find(`[data-cy="resource-editor--tab--${language}"]`)
+    .click()
+
+  cy.get('@resourceEditor')
+    .find(`[data-cy="resource--${channel}"]`)
+    .as('editor')
+    .type(value)
+
+  cy.wait(UNDO_REDO_WAIT_MS)
+
+  return cy.get('@editor').then((editor) => {
+    return cy.wrap(editor)
   })
 })
 
