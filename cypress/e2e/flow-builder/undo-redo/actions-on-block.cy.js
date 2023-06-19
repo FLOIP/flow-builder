@@ -38,6 +38,7 @@ describe('Add/Delete/Duplicate blocks', () => {
             cy.get(`[data-cy="block--${duplicatedBlocks[0]}"]`).should('exist')
             cy.get(`[data-cy="block--${duplicatedBlocks[1]}"]`).should('exist')
 
+            // TODO in CORE-664: enable the test after fixing the bug
             // #### Delete a block
             // cy.deleteBlock(duplicatedMessageBlockUuid).then(() => {
             //   cy.get(`[data-cy="block--${duplicatedMessageBlockUuid}"]`).should('not.exist')
