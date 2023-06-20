@@ -25,6 +25,7 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+import { difference } from 'lodash'
 import { UNDO_REDO_SNAPSHOT_DEBOUNCE_MS } from '../../src/lib/plugins/vuex-undo-redo-plugin'
 
 const UNDO_REDO_WAIT_MS = UNDO_REDO_SNAPSHOT_DEBOUNCE_MS * 2
@@ -34,6 +35,7 @@ declare global {
     interface Chainable {
       // custom commands
       createFlow(options: Partial<ICreateFlowOptions>): Chainable<void>,
+      getBlockUuids(): Chainable<string[]>,
       addBlock(menuChoices: string[]): Chainable<string>,
       selectBlock(uuid: string): Chainable<string>,
       undo(): Chainable<void>,
@@ -87,12 +89,16 @@ Cypress.Commands.add('createFlow', (options: Partial<ICreateFlowOptions>) => {
   cy.wait(UNDO_REDO_WAIT_MS)
 })
 
-Cypress.Commands.add('addBlock', (menuChoices: string[]) => {
+Cypress.Commands.add('getBlockUuids', () => {
   const flowsListState = () => cy.window().its('store.state.flow.flows')
-  let beforeCreateBlockNumber = 0
-  flowsListState().its('0.blocks').then((blocks_1) => {
-    beforeCreateBlockNumber = blocks_1.length
 
+  return flowsListState().its('0.blocks').then((blocks) => {
+    return cy.wrap(blocks.map((block: any) => block.uuid) as string[])
+  })
+})
+
+Cypress.Commands.add('addBlock', (menuChoices: string[]) => {
+  cy.getBlockUuids().then((before) => {
     // Create all the blocks
     for (const choice of menuChoices) {
       cy.get('[data-cy="blocks--menu"]')
@@ -103,12 +109,14 @@ Cypress.Commands.add('addBlock', (menuChoices: string[]) => {
     }
 
     // Double check the blocks were created to insure the return of this custom command would be correct
-    flowsListState().its('0.blocks').then((blocks_2) => {
-      expect(blocks_2).to.have.length(beforeCreateBlockNumber + 1)
-      const blockUuid = blocks_2[beforeCreateBlockNumber].uuid
-      // make sure we see the configuration editor for this block
-      cy.get(`[data-cy="block-id-${blockUuid}"]`).should('exist')
-      return cy.wrap(blockUuid)
+    cy.getBlockUuids().then((after) => {
+      expect(after).to.have.length(before.length + 1)
+      const blockUuid = difference(after, before)[0]
+
+      cy.get(`[data-cy="block-id-${blockUuid}"]`)
+        .should('exist')
+
+        return cy.wrap(blockUuid)
     })
   })
 })
@@ -144,6 +152,7 @@ Cypress.Commands.add('selectBlockAndCheck', (uuid: string) => {
 
 Cypress.Commands.add('duplicateBlock', (uuid: string) => {
   const flowsListState = () => cy.window().its('store.state.flow.flows')
+
   let beforeDuplicateBlockNumber = 0
   flowsListState().its('0.blocks').then((blocks_1) => {
     beforeDuplicateBlockNumber = blocks_1.length
