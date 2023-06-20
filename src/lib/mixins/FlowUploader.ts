@@ -48,6 +48,8 @@ const dispatch = (el: HTMLElement, name: string, data: {}): void => {
             tagName: 'INPUT',
             type: 'file',
           } as any)
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore: Property 'accept' does not exist on type
           .assign({accept})
           .value()
 
