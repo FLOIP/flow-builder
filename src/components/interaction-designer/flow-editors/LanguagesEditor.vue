@@ -1,5 +1,5 @@
 <template>
-  <div class="languages-editor form-group" data-cy="flow-languages--editor">
+  <div class="languages-editor form-group">
     <label class="text-primary">{{ 'flow-builder.languages' | trans }}</label>
     <vue-multiselect
       v-model="selectedLanguages"

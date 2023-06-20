@@ -1,5 +1,5 @@
 <template>
-  <div class="modes-editor form-group" data-cy="flow-modes--editor">
+  <div class="modes-editor form-group">
     <label class="text-primary">{{ 'flow-builder.modes' | trans }}</label>
     <vue-multiselect
       v-model="selectedModes"

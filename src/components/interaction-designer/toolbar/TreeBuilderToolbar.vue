@@ -52,6 +52,7 @@
               </button>
               <b-modal
                 ref="edit-flow-modal"
+                data-cy="flow-editor--modal"
                 ok-only
                 :ok-title="'flow-builder.done' | trans"
                 @ok="showOrHideEditFlowModal">
@@ -63,6 +64,7 @@
                     type="button"
                     aria-label="Close"
                     class="close"
+                    data-cy="flow-editor--modal--close-btn"
                     @click="showOrHideEditFlowModal">
                     ×
                   </button>
