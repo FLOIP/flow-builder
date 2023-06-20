@@ -1,5 +1,5 @@
 <template>
-  <div class="block-id text-right">
+  <div class="block-id text-right" :data-cy="`block-id-${block.uuid}`">
     <small class="text-muted">{{ trans('flow-builder.block-id') }}: <em>{{ blockId }}</em></small>
   </div>
 </template>
