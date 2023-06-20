@@ -1,7 +1,7 @@
-describe('Creating a connection', () => {
+describe('Creating/removing a connection', () => {
   beforeEach(() => {
     cy.createFlow({
-      label: 'Creating a connection',
+      label: 'Creating/removing a connection',
     })
 
     cy.addBlock(['Content', 'Message']).then(blockId => {

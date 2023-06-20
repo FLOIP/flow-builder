@@ -274,6 +274,10 @@ Cypress.Commands.add('save', () => {
   })
 })
 
+/**
+ * cypress-real-events works only in Chromium-based browsers.
+ * This means we won't be able to run this particular cypress test in Firefox, etc.
+ */
 Cypress.Commands.add('dragAndDropTo', {prevSubject: 'element'}, (subject, targetSelectorOrAlias) => {
   cy.wrap(subject).scrollIntoView()
   cy.wrap(subject).should('be.visible')
