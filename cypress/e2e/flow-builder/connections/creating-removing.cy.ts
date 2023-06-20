@@ -1,7 +1,7 @@
 describe('Creating/removing a connection', () => {
   beforeEach(() => {
     cy.createFlow({
-      label: 'Creating/removing a connection',
+      label: 'test flow',
     })
 
     cy.addBlock(['Content', 'Message']).then(blockId => {
@@ -22,7 +22,10 @@ describe('Creating/removing a connection', () => {
     cy.get('@secondBlock').find('[data-cy^="block-handle--"]').as('secondBlockArea')
 
     // deselect blocks and close block editor
-    cy.get('[data-cy="builder-canvas--page"]').click('left')
+    cy.get('[data-cy="builder-canvas--page"]').click('left', {
+      // the center of the element might be hidden, so we need to force the click
+      force: true,
+    })
 
     cy.get('@exit').dragAndDropTo('@secondBlockArea')
 
