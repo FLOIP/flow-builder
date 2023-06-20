@@ -16,6 +16,18 @@ describe('Add/Delete/Duplicate blocks', () => {
       cy.redo()
       cy.get(`[data-cy="block--${blockUuid}"]`).should('exist')
 
+      // TODO in CORE-664: enable the test after fixing the bug
+      // Block deletion, scenario1: Delete the block right away, with just one block in the snapshot
+      // cy.deleteBlock(messageBlockUuid).then(() => {
+      //   cy.get(`[data-cy="block--${messageBlockUuid}"]`).should('not.exist')
+      //   cy.undo()
+      //   cy.get(`[data-cy="block--${messageBlockUuid}"]`).should('exist')
+      //   cy.redo()
+      //   cy.get(`[data-cy="block--${messageBlockUuid}"]`).should('not.exist')
+      //
+      //   // TODO in CORE-664: bring next tests in this line once the bug is fixed
+      // })
+
       // #### Duplicate that block
       let duplicatedMessageBlockUuid = null
       cy.duplicateBlock(messageBlockUuid).then((blockUuid) => {
@@ -38,15 +50,14 @@ describe('Add/Delete/Duplicate blocks', () => {
             cy.get(`[data-cy="block--${duplicatedBlocks[0]}"]`).should('exist')
             cy.get(`[data-cy="block--${duplicatedBlocks[1]}"]`).should('exist')
 
-            // TODO in CORE-664: enable the test after fixing the bug
-            // #### Delete a block
-            // cy.deleteBlock(duplicatedMessageBlockUuid).then(() => {
-            //   cy.get(`[data-cy="block--${duplicatedMessageBlockUuid}"]`).should('not.exist')
-            //   cy.undo()
-            //   cy.get(`[data-cy="block--${duplicatedMessageBlockUuid}"]`).should('exist')
-            //   cy.redo()
-            //   cy.get(`[data-cy="block--${duplicatedMessageBlockUuid}"]`).should('not.exist')
-            // })
+            // #### Block deletion, scenario2: Delete a block, after we have few snapshots
+            cy.deleteBlock(duplicatedMessageBlockUuid).then(() => {
+              cy.get(`[data-cy="block--${duplicatedMessageBlockUuid}"]`).should('not.exist')
+              cy.undo()
+              cy.get(`[data-cy="block--${duplicatedMessageBlockUuid}"]`).should('exist')
+              cy.redo()
+              cy.get(`[data-cy="block--${duplicatedMessageBlockUuid}"]`).should('not.exist')
+            })
           })
         })
       })
