@@ -8,6 +8,7 @@ declare const TreeBuilderToolbar_base: import("vue-class-component/lib/declarati
 export declare class TreeBuilderToolbar extends TreeBuilderToolbar_base {
     isExportVisible: boolean;
     height: number;
+    created(): void;
     mounted(): Promise<void>;
     onMetaChanged(meta: {
         [key: string]: string;

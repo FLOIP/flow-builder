@@ -34,7 +34,7 @@ import {
   omit,
   sortBy,
 } from 'lodash'
-import {cleanupFlowResources, discoverContentTypesFor} from '@/store/flow/utils/resourceHelpers'
+import {cleanupFlowBeforePersisting, discoverContentTypesFor} from '@/store/flow/utils/resourceHelpers'
 import {computeBlockCanvasCoordinates} from '@/store/builder'
 import {ErrorObject} from 'ajv'
 import {ConfigFieldType, removeFlowValueByPath, updateFlowValueByPath} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
@@ -43,6 +43,7 @@ import {mergeFlowContainer} from './utils/importHelpers'
 
 export const stateFactory = (): IFlowsState => ({
   isCreated: false,
+  savedAt: null,
   //TODO - think about how to make this dynamic
   specification_version: '1.0.0-rc4',
   //For now we'll hard code this as it doesn't yet have a function
@@ -119,10 +120,16 @@ export const mutations: MutationTree<IFlowsState> = {
   //TODO - consider if this is correct? This only gets what the current flow needs and removes from the store any other flows
   //That means the flow list page (which we will build the production version of later) will get cleared of all flows if we continue with the current model - see the temporary page /src/views/Home.vue - unless we fetch the list again
   //That doesn't make sense if we run the builder standalone - without a fetch of the flows list
-  flow_setFlowContainer(state, flowContainer) {
+  flow_setFlowContainer(state, {flowContainer, isFromSaveAction}) {
     const persistedState = flowContainer
     state.isCreated = persistedState.isCreated
     state.flows = persistedState.flows
+    if (isFromSaveAction !== undefined) {
+      state.savedAt = new Date().toISOString()
+    }
+  },
+  flow_resetFlowState(state, flowState) {
+    Object.assign(state, flowState)
   },
   //used to track whether we should put or post when persisting
   flow_updateCreatedState(state, createdState) {
@@ -201,6 +208,17 @@ export const mutations: MutationTree<IFlowsState> = {
   flow_removeVendorMetadataByPath(state, {flowId, path}: { flowId: string, path: string }) {
     removeFlowValueByPath(state, flowId, `vendor_metadata.${path}`)
   },
+
+  flow_updateBlockCoordinates(
+      state, {flowId, blockId, coordinates}: { flowId: string, blockId: string, coordinates: {x: number, y: number} },
+  ) {
+    const flow: IFlow = findFlowWith(flowId, state as unknown as IContext)
+    const block: IBlock = findBlockWith(blockId, flow)
+
+    Vue.set(block, 'ui_metadata', {
+      canvas_coordinates: coordinates,
+    })
+  },
 }
 
 export const actions: ActionTree<IFlowsState, IRootState> = {
@@ -213,7 +231,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const oldCreatedState = flowContainer.isCreated
     if (!persistRoute) {
       console.info('Flow persistence route not configured correctly in builder.config.json. Falling back to vuex store')
-      commit('flow_setFlowContainer', flowContainer)
+      commit('flow_setFlowContainer', {
+        flowContainer,
+        isFromSaveAction: true
+      })
       return getters.activeFlowContainer
     }
     try {
@@ -222,8 +243,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
         {data: omit(flowContainer, ['isCreated'])},
       )
 
-      commit('flow_setFlowContainer', createdContainer)
-      // commit('flow_setFlowContainer', data)
+      commit('flow_setFlowContainer', {
+        flowContainer: createdContainer,
+        isFromSaveAction: true
+      })
       commit('flow_updateCreatedState', true)
       await dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
       return getters.activeFlowContainer
@@ -250,7 +273,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const oldCreatedState = flowContainer.isCreated
     if (!persistRoute) {
       console.info('Flow persistence route not configured correctly in builder.config.json. Falling back to vuex store')
-      commit('flow_setFlowContainer', flowContainer)
+      commit('flow_setFlowContainer', {
+        flowContainer,
+        isFromSaveAction: true
+      })
       return getters.activeFlowContainer
     }
 
@@ -260,9 +286,12 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     try {
       const {data: {data: container}} = await axios[restVerb](
         persistRoute,
-        {data: omit(cleanupFlowResources(flowContainer, rootGetters['validation/choiceMimeType']), ['isCreated'])},
+        {data: omit(cleanupFlowBeforePersisting(flowContainer, rootGetters['validation/choiceMimeType']), ['isCreated'])},
       )
-      commit('flow_setFlowContainer', container)
+      commit('flow_setFlowContainer', {
+        flowContainer: container,
+        isFromSaveAction: true
+      })
       commit('flow_updateCreatedState', true)
       await dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
       return getters.activeFlowContainer
@@ -281,7 +310,9 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
     try {
       const {data: {data: container}} = await axios.get(fetchRoute)
-      commit('flow_setFlowContainer', container)
+      commit('flow_setFlowContainer', {
+        flowContainer: container
+      })
       commit('flow_updateCreatedState', true)
       await dispatch('validation/validate_allBlocksFromBackend', null, {root: true})
       return container
@@ -576,9 +607,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   async flow_removeAllSelectedBlocks({state, dispatch}) {
-    forEach(state.selectedBlocks, (blockId: IBlock['uuid']) => {
-      dispatch('flow_removeBlock', {blockId})
-    })
+    const removeBlock_actions = state.selectedBlocks.map((blockId: IBlock['uuid']) =>
+      dispatch('flow_removeBlock', {blockId}))
+
+    await Promise.all(removeBlock_actions)
 
     state.selectedBlocks = []
   },

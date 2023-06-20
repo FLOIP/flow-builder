@@ -468,7 +468,8 @@
       "simulator",
       "treeSave",
       "addLanguageOnImport",
-      "callToRecord"
+      "callToRecord",
+      "resourceViewer"
     ],
     "supportedModes": [
       "TEXT",

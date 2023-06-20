@@ -48,7 +48,6 @@ export declare class Block extends Block_base {
     get isBlockActivated(): boolean;
     get shouldShowBlockEditorForCurrentBlock(): boolean;
     activateBlock: () => void;
-    setBlockPositionTo: BlockPositionAction;
     initDraggableForExitsByUuid: () => void;
     setIsBlockEditorOpen: (value: boolean) => void;
     deactivateConnectionFromExitUuid: ({ exitUuid }: {
@@ -56,6 +55,7 @@ export declare class Block extends Block_base {
     }) => void;
     setConnectionCreateTargetBlock: BlockAction;
     setConnectionCreateTargetBlockToNullFrom: BlockAction;
+    setBlockPositionTo: BlockPositionAction;
     setIsMouseOnBlock(value: boolean): void;
     setIsConnectionSource(value: boolean): void;
     updateLabelContainerMaxWidth(blockExitsLength?: number, isRemoving?: boolean): void;

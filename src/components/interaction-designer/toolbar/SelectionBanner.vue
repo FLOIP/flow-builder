@@ -60,6 +60,7 @@ import {IBlock} from '@floip/flow-runner'
 import {size} from 'lodash'
 
 const flowVuexNamespace = namespace('flow')
+const undoRedoVuexNamespace = namespace('undoRedo')
 
 @Component({})
 export class SelectionBanner extends mixins(Lang) {

@@ -18,7 +18,8 @@
           :should-hide-validation="!didUserSubmit">
           <flow-label-editor
             :flow="flow"
-            :valid-state="isValid" />
+            :valid-state="isValid"
+            data-cy="flow-label--editor"/>
         </validation-message>
 
         <validation-message
@@ -29,7 +30,8 @@
           :should-hide-validation="!didUserSubmit">
           <interaction-timeout-editor
             :flow="flow"
-            :valid-state="isValid" />
+            :valid-state="isValid"
+            data-cy="interaction-timeout--editor"/>
         </validation-message>
       </div>
       <div class="row">
@@ -38,7 +40,7 @@
           :class="otherRowsClass"
           :message-key="`flow/${flow.uuid}/languages`"
           :should-hide-validation="!didUserSubmit">
-          <languages-editor :flow="flow" />
+          <languages-editor :flow="flow" data-cy="languages--selector"/>
         </validation-message>
 
         <validation-message
@@ -46,7 +48,7 @@
           :class="otherRowsClass"
           :message-key="`flow/${flow.uuid}/supported_modes`"
           :should-hide-validation="!didUserSubmit">
-          <modes-editor :flow="flow" />
+          <modes-editor :flow="flow" data-cy="modes--selector"/>
         </validation-message>
       </div>
 

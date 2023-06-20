@@ -58,6 +58,13 @@ export default {
 
   data() {
     return {
+      /**
+       * Despite using local state, this component does not cause problems with undo/redo
+       * because the UI within a modal dialog is updated before the undo/redo action,
+       * which means re-rendering of the entire component.
+       *
+       * See CORE-573 for more details.
+       */
       draftExpression: '',
     }
   },

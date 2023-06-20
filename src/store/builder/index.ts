@@ -106,6 +106,9 @@ export const getters: GetterTree<IBuilderState, IRootState> = {
 }
 
 export const mutations: MutationTree<IBuilderState> = {
+  resetBuilderState(state, builderState) {
+    Object.assign(state, builderState)
+  },
   activateBlock(state, {blockId}: { blockId: IBlock['uuid'] | null }) {
     state.activeBlockId = blockId
 
@@ -135,11 +138,6 @@ export const mutations: MutationTree<IBuilderState> = {
 
   setOperation({operations}, {operation}: { operation: SupportedOperation }) {
     operations[operation.kind] = operation
-  },
-
-  setBlockPositionTo(state, {position: {x, y}, block}) {
-    block.ui_metadata.canvas_coordinates.x = x
-    block.ui_metadata.canvas_coordinates.y = y
   },
 
   setIsEditable(state, value) {
@@ -270,6 +268,7 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     }
 
     commit('setTreeSaving', true, {root: true})
+    commit('setIsEditable', false)
     const inProgress = Vue.$toast.info({
       component: InProgressAction,
       props: {
@@ -302,9 +301,18 @@ export const actions: ActionTree<IBuilderState, IRootState> = {
     }
 
     commit('setTreeSaving', false, {root: true})
+    commit('setIsEditable', true)
     Vue.$toast.dismiss(inProgress)
 
     return newFlowContainer ?? undefined
+  },
+
+  setBlockPositionTo({commit, rootGetters}, {position: {x, y}, block}) {
+    commit('flow/flow_updateBlockCoordinates', {
+      flowId: rootGetters['flow/activeFlow'].uuid,
+      blockId: block.uuid,
+      coordinates: {x, y},
+    }, {root: true})
   },
 }
 

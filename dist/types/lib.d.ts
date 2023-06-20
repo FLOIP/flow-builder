@@ -1186,6 +1186,7 @@ export declare const defaultLocalisations: {
         "recommended-export-format-settings": string;
         "record-group-message": string;
         "record-group-message-title": string;
+        redo: string;
         reject: string;
         "relative-to-numeric-input": string;
         "relative-to-the-call-date": string;
@@ -2874,6 +2875,7 @@ export declare const defaultLocalisations: {
         "recommended-export-format-settings": string;
         "record-group-message": string;
         "record-group-message-title": string;
+        redo: string;
         reject: string;
         "relative-to-numeric-input": string;
         "relative-to-the-call-date": string;
@@ -3407,6 +3409,7 @@ export declare const defaultLocalisations: {
         "block-config-value-type": string;
         "block-config-is_member-type": string;
         "block-config-set_contact_property-x-required": string;
+        "block-config-set_contact_property-x-property_key-minLength": string;
         "resource-values-x-value-pattern": string;
         "resource-values-x-value-pattern-ivr": string;
         "numeric-block-min-value-must-be-lower-than-max-value": string;

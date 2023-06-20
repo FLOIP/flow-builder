@@ -44,62 +44,75 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop} from 'vue-property-decorator'
-import {mixins} from 'vue-class-component'
-import Lang from '@/lib/filters/lang'
 import {IBlock, IBlockUIMetadata} from '@floip/flow-runner'
-import {namespace} from 'vuex-class'
+import {defineComponent} from 'vue'
+import {mapActions, mapMutations} from 'vuex'
+import Lang from '@/lib/filters/lang'
 
-const flowVuexNamespace = namespace('flow')
+export const NameEditor = defineComponent({
+  name: 'NameEditor',
+  mixins: [Lang],
+  props: {
+    block: {
+      type: Object as () => IBlock,
+      required: true,
+    },
+  },
+  computed: {
+    blockName: {
+      get(): IBlock['name'] {
+        return this.block.name
+      },
+      set(value: IBlock['name']) {
+        this.block_setName({
+          blockId: this.block.uuid,
+          value,
+          lockAutoUpdate: true,
+        })
+      },
+    },
+    editBlockName: {
+      get(): IBlockUIMetadata['editBlockName'] {
+        return this.block.vendor_metadata?.floip.ui_metadata.is_block_name_editable ?? false
+      },
+      set(value: IBlockUIMetadata['editBlockName']) {
+        this.block_updateVendorMetadataByPath({
+          blockId: this.block.uuid,
+          path: 'floip.ui_metadata.is_block_name_editable',
+          value,
+        })
+      },
+    },
+  },
+  methods: {
+    ...mapActions({
+      block_setName: 'flow/block_setName',
+      block_resetName: 'flow/block_resetName',
+    }),
+    ...mapMutations({
+      block_updateVendorMetadataByPath: 'flow/block_updateVendorMetadataByPath',
+    }),
+    filterName(e: KeyboardEvent): void {
+      // Consider user input as name editing
+      this.editBlockName = true
 
-@Component({})
-export class NameEditor extends mixins(Lang) {
-  editBlockName = false
+      if (e.key.match(/\W+|Enter/g)) {
+        e.preventDefault()
+      }
+    },
+    handleCompleteEditing(): void {
+      this.editBlockName = false
 
-  @Prop() readonly block!: IBlock
+      if (this.blockName === '') {
+        // This will turn on automatic name generation from the label
+        this.block_resetName({
+          blockId: this.block.uuid,
+        })
+      }
+    },
+  },
+})
 
-  get blockName(): IBlock['name'] {
-    return this.block.name
-  }
-
-  set blockName(value: IBlock['name']) {
-    this.block_setName({
-      blockId: this.block.uuid,
-      value,
-      lockAutoUpdate: true,
-    })
-  }
-
-  filterName(e: KeyboardEvent): void {
-    // Consider user input as name editing
-    this.editBlockName = true
-
-    if (e.key.match(/\W+|Enter/g)) {
-      e.preventDefault()
-    }
-  }
-
-  handleCompleteEditing(): void {
-    this.editBlockName = false
-
-    if (this.blockName === '') {
-      // This will turn on automatic name generation from the label
-      this.block_resetName({blockId: this.block.uuid})
-    }
-  }
-
-  @flowVuexNamespace.Action block_setName!: ({
-    blockId,
-    value,
-    lockAutoUpdate,
-  }: {
-    blockId: IBlock['uuid'],
-    value: IBlock['name'],
-    lockAutoUpdate: boolean,
-  }) => void;
-
-  @flowVuexNamespace.Action block_resetName!: ({blockId}: { blockId: IBlock['uuid'] }) => void;
-}
 export default NameEditor
 </script>
 
