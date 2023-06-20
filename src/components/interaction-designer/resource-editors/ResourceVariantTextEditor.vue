@@ -11,6 +11,7 @@
           :rows="rows"
           :valid-state="isValid"
           :disabled-auto-complete="disabledAutoComplete"
+          :cypress-data-attribute="`resource--${mode}`.toLowerCase()"
           class="mb-0"
           @commitExpressionChange="commitExpressionChange" />
         <div

@@ -28,7 +28,7 @@
 import { difference } from 'lodash'
 import { UNDO_REDO_SNAPSHOT_DEBOUNCE_MS } from '../../src/lib/plugins/vuex-undo-redo-plugin'
 
-const UNDO_REDO_WAIT_MS = UNDO_REDO_SNAPSHOT_DEBOUNCE_MS * 2
+export const UNDO_REDO_WAIT_MS = UNDO_REDO_SNAPSHOT_DEBOUNCE_MS * 2
 
 declare global {
   namespace Cypress {
@@ -38,6 +38,7 @@ declare global {
       getBlockUuids(): Chainable<string[]>,
       addBlock(menuChoices: string[]): Chainable<string>,
       selectBlock(uuid: string): Chainable<string>,
+      setBlockTextResource(language: string, channel: string, value: string): Chainable<JQuery<HTMLElement>>,
       undo(): Chainable<void>,
       redo(): Chainable<void>,
       save(): Chainable<void>,
@@ -134,6 +135,26 @@ Cypress.Commands.add('selectBlock', (uuid: string) => {
 
   return cy.get('@block').then((block) => {
     return cy.wrap(block.attr('data-cy')!.replace('block--', ''))
+  })
+})
+
+Cypress.Commands.add('setBlockTextResource', (language: string, channel: string, value: string) => {
+  cy.get('[data-cy="resource-editor"]')
+    .as('resourceEditor')
+
+  cy.get('@resourceEditor')
+    .find(`[data-cy="resource-editor--tab--${language}"]`)
+    .click()
+
+  cy.get('@resourceEditor')
+    .find(`[data-cy="resource--${channel}"]`)
+    .as('editor')
+    .type(value)
+
+  cy.wait(UNDO_REDO_WAIT_MS)
+
+  return cy.get('@editor').then((editor) => {
+    return cy.wrap(editor)
   })
 })
 

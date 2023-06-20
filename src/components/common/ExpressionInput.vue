@@ -19,6 +19,7 @@
           :disabled="disabled"
           :rows="rows"
           :placeholder="placeholder"
+          :data-cy="cypressDataAttribute"
           @click="handleClick()"
           @input="$emit('input', $event.target.value)" />
       </div>
@@ -61,6 +62,7 @@ export class ExpressionInput extends mixins(Lang) {
   @Prop({type: String, default: ''}) readonly prependText!: string
   @Prop({type: Boolean, default: false}) readonly disabled!: boolean
   @Prop({type: Boolean, default: false}) readonly disabledAutoComplete!: boolean
+  @Prop({type: String, default: ''}) readonly cypressDataAttribute!: string
 
   suggest: IAutoSuggest = {} as IAutoSuggest
 
