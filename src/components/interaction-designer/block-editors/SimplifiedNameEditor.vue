@@ -1,5 +1,5 @@
 <template>
-  <div class="simplified-name-editor">
+  <div class="simplified-name-editor" data-cy="simplified-name--editor">
     <validation-message :message-key="`block/${block.uuid}/name`">
       <template #input-control="{ isValid }">
         <div v-if="editBlockName || isValid === false">

@@ -22,7 +22,7 @@ describe('Creating/removing a connection', () => {
     cy.get('@secondBlock').find('[data-cy^="block-handle--"]').as('secondBlockArea')
 
     // deselect blocks and close block editor
-    cy.get('[data-cy="builder-canvas"]').click('left')
+    cy.get('[data-cy="builder-canvas--page"]').click('left')
 
     cy.get('@exit').dragAndDropTo('@secondBlockArea')
 
