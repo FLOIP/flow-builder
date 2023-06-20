@@ -38,6 +38,7 @@ export function getDeepLink({changedKeys, flows}: {changedKeys: string[], flows:
     }
   } else if (BLOCK_CHANGE_REGEX.test(key)) {
     const {flowIndex, blockIndex, fieldPath} = parseBlockChangeParams(key)!
+    // TODO in CORE-664: fix block deletion which triggers a console error here because flows.flows[flowIndex].blocks[blockIndex] is undefined
     const blockId = flows.flows[flowIndex].blocks[blockIndex].uuid
     return {
       routeName: 'block-scroll-to-anchor',

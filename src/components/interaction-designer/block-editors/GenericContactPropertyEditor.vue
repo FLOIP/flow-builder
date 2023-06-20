@@ -1,6 +1,6 @@
 <template>
   <!--Contact property editor for all block types-->
-  <div class="generic-contact-property-editor">
+  <div class="generic-contact-property-editor" data-cy="generic-contact-property--editor">
     <hr>
     <label class="text-primary">{{ 'flow-builder.contact-properties' | trans }}</label>
     <div class="custom-control custom-checkbox">
@@ -11,6 +11,7 @@
         type="checkbox"
         name="setContactProperty"
         class="custom-control-input"
+        data-cy="set-contact-property--checkbox"
         @change="toggleSetContactProperty">
       <label
         class="custom-control-label font-weight-normal"
@@ -26,7 +27,7 @@
       <validation-message
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/set_contact_property/0/property_key`">
-        <div class="block-contact-property-key">
+        <div class="block-contact-property-key" data-cy="contact-property--selector">
           <div v-if="hasSubscriberPropertyFields">
             <label for="contact-property-selector">{{ trans('flow-builder.property') }}</label>
             <vue-multiselect
@@ -66,6 +67,7 @@
               name="contactPropAction"
               v-model="propertyValueAction"
               :value="PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
+              data-cy="set-contact-property--from-current-block-response"
               class="custom-control-input">
             <label
               class="custom-control-label font-weight-normal"
@@ -85,6 +87,7 @@
               name="contactPropAction"
               v-model="propertyValueAction"
               :value="PROPERTY_VALUE_ACTION.OPEN_EXPRESSION"
+              data-cy="set-contact-property--open-expression"
               class="custom-control-input">
             <label
               class="custom-control-label font-weight-normal"
@@ -103,6 +106,7 @@
                 :placeholder="'flow-builder.enter-expression' | trans"
                 :current-expression="propertyValue"
                 :valid-state="isValid"
+                data-cy="contact-property--expression-input"
                 @commitExpressionChange="updateFirstContactPropertyValue" />
             </template>
           </validation-message>

@@ -1,11 +1,11 @@
-describe('adding blocks', () => {
+describe('Selecting blocks', () => {
   beforeEach(() => {
     cy.createFlow({
       label: 'selecting blocks test',
     })
   })
 
-  it('adds three blocks, selects the 2nd', () => {
+  it('by UUID', () => {
     const foo = cy.addBlock(['Content', 'Message'])
     cy.addBlock(['Branching'])
 
