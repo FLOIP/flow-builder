@@ -2,6 +2,7 @@
   <div
     v-if="activeFlow"
     class="builder-canvas no-select"
+    data-cy="builder-canvas--page"
     :style="{ minWidth: `${canvasWidth}px` , minHeight: `${canvasHeight}px` }">
     <block
       v-for="block in activeFlow.blocks"

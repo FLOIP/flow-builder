@@ -84,6 +84,7 @@
                   :class="{active: isBuilderCanvasEnabled, disabled: isTreeSaving}"
                   :to="treeUrl"
                   class="btn btn-outline-primary btn-sm"
+                  data-cy="builder-toolbar--builder-view--btn"
                   @click.native.prevent="handleFlowViewMenu">
                   {{ trans('flow-builder.flow-view') }}
                 </router-link>
@@ -91,6 +92,7 @@
                   :to="resourceUrl"
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: isResourceViewerCanvasEnabled, disabled: isTreeSaving}"
+                  data-cy="builder-toolbar--resource-view--btn"
                   @click.native.prevent="handleResourceViewMenu">
                   {{ trans('flow-builder.resource-view') }}
                 </router-link>
