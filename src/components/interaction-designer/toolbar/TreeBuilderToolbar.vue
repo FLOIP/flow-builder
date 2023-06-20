@@ -46,6 +46,7 @@
                   'btn-outline-primary': hasToolbarNewFlowButton,
                   'btn-primary': !hasToolbarNewFlowButton }
                 "
+                data-cy="builder-toolbar--flow-details--btn"
                 @click="showOrHideEditFlowModal">
                 {{ 'flow-builder.flow-details' | trans }}
               </button>

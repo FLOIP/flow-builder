@@ -1,5 +1,5 @@
 <template>
-  <div class="flow-label-editor form-group">
+  <div class="flow-label-editor form-group" data-cy="flow-label--editor">
     <text-editor
       v-model="label"
       :valid-state="validState"

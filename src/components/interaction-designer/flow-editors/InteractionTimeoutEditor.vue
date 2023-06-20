@@ -1,5 +1,5 @@
 <template>
-  <div class="interaction-timeout-editor form-group">
+  <div class="interaction-timeout-editor form-group" data-cy="flow-interaction-timeout--editor">
     <numeric-editor
       v-model.number="interactionTimeout"
       :regex-numeric-filtering="'[0-9]'"
