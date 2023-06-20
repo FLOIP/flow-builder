@@ -36,7 +36,7 @@ declare global {
       createFlow(options: Partial<ICreateFlowOptions>): Chainable<void>,
       addBlock(menuChoices: string[]): Chainable<string>,
       selectBlock(uuid: string): Chainable<string>,
-      setBlockText(language: string, channel: string, value: string): Chainable<JQuery<HTMLElement>>,
+      setBlockTextResource(language: string, channel: string, value: string): Chainable<JQuery<HTMLElement>>,
       undo(): Chainable<void>,
       redo(): Chainable<void>,
       save(): Chainable<void>,
@@ -119,7 +119,7 @@ Cypress.Commands.add('selectBlock', (uuid: string) => {
   })
 })
 
-Cypress.Commands.add('setBlockText', (language: string, channel: string, value: string) => {
+Cypress.Commands.add('setBlockTextResource', (language: string, channel: string, value: string) => {
   cy.get('[data-cy="resource-editor"]')
     .as('resourceEditor')
 

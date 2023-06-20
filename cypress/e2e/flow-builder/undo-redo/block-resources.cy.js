@@ -1,31 +1,24 @@
-import {UNDO_REDO_WAIT_MS} from '../../../support/commands'
+import { UNDO_REDO_WAIT_MS } from '../../../support/commands'
 
 describe('Block resources', () => {
   beforeEach(() => {
     cy.createFlow({
-      label: 'Undo-redo test',
+      label: 'Undo-redo block resources test',
     })
   })
 
-  const sampleText = 'hello sms'
-  const sampleChoice = 'sample choice'
+  it('should undo/redo content resources', () => {
+    const sampleText = 'hello sms'
 
-  it('undo adding a resource', () => {
     cy.addBlock(['Content', 'Message']).then(() => {
-      cy.setBlockText('eng', 'sms', sampleText).then((editor) => {
+      cy.setBlockTextResource('eng', 'sms', sampleText).then((editor) => {
         cy.get(editor)
           .should('have.value', sampleText)
+
         cy.undo()
         cy.get(editor)
           .should('have.value', '')
-      })
-    })
-  })
 
-  it('redo adding a resource', () => {
-    cy.addBlock(['Content', 'Message']).then(() => {
-      cy.setBlockText('eng', 'sms', sampleText).then((editor) => {
-        cy.undo()
         cy.redo()
         cy.get(editor)
           .should('have.value', sampleText)
@@ -33,7 +26,9 @@ describe('Block resources', () => {
     })
   })
 
-  it('should undo adding choices', () => {
+  it('should undo/redo adding choices', () => {
+    const sampleChoice = 'sample choice'
+
     cy.addBlock(['Content', 'Select One Response']).then(() => {
       cy.get('.choices-builder')
         .as('choicesBuilder')
@@ -43,25 +38,11 @@ describe('Block resources', () => {
       cy.wait(UNDO_REDO_WAIT_MS)
 
       cy.undo()
-
       cy.get('@choicesBuilder')
         .find('textarea')
         .should('have.value', '')
-    })
-  })
 
-  it('should redo adding choices', () => {
-    cy.addBlock(['Content', 'Select One Response']).then(() => {
-      cy.get('.choices-builder')
-        .as('choicesBuilder')
-        .find('textarea')
-        .type(sampleChoice)
-
-      cy.wait(UNDO_REDO_WAIT_MS)
-
-      cy.undo()
       cy.redo()
-
       cy.get('@choicesBuilder')
         .find('textarea')
         .should('have.value', sampleChoice)
