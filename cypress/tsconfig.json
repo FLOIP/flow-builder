@@ -5,6 +5,7 @@
     "types": [
       "cypress",
       "node",
+      "cypress-real-events",
     ],
     "strictNullChecks": true
   },

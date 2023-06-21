@@ -42,8 +42,12 @@ declare global {
       undo(): Chainable<void>,
       redo(): Chainable<void>,
       save(): Chainable<void>,
-      // connectExitToBlock(exitUuid: string, targetBlockUuid: string): Chainable<void>,
-      // dragBlock(blockUuid: string): Chainable<void>,
+
+      /**
+       * Custom command to drag-n-drop an element
+       * @example cy.get('.element-to-drag').dragAndDropTo('.drop-zone')
+       */
+      dragAndDropTo(targetSelectorOrAlias: string): Chainable<void>,
     }
   }
 }
@@ -289,4 +293,22 @@ Cypress.Commands.add('save', () => {
     // May be covered with a toast
     force: true,
   })
+})
+
+/**
+ * cypress-real-events works only in Chromium-based browsers.
+ * This means we won't be able to run this particular cypress test in Firefox, etc.
+ */
+Cypress.Commands.add('dragAndDropTo', {prevSubject: 'element'}, (subject, targetSelectorOrAlias) => {
+  cy.wrap(subject).scrollIntoView()
+  cy.wrap(subject).should('be.visible')
+  cy.get(targetSelectorOrAlias).should('be.visible')
+
+  cy.wrap(subject)
+    .realHover()
+    .realMouseDown()
+
+  cy.get(targetSelectorOrAlias)
+    .realMouseMove(0, 0, {position: 'center'})
+    .realMouseUp({position: 'center'})
 })

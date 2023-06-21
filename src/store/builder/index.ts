@@ -361,33 +361,42 @@ export function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): 
   ]
 }
 
-export function computeBlockCanvasCoordinates(block?: IBlock | null): IBlockUIMetadataCanvasCoordinates {
+export function computeBlockCanvasCoordinates(prevBlock?: IBlock | null): IBlockUIMetadataCanvasCoordinates {
+  const blockWidth = 220
+  const blockHeight = 124
   const xDelta = 120
-  const yDelta = 110
-  let xPosition = block?.ui_metadata?.canvas_coordinates?.x
-  let yPosition = block?.ui_metadata?.canvas_coordinates?.y
+  const yDelta = 134
+  const xPrevBlock = prevBlock?.ui_metadata?.canvas_coordinates?.x
+  const yPrevBlock = prevBlock?.ui_metadata?.canvas_coordinates?.y
 
-  if (xPosition == null || yPosition == null) {
-    const viewPortCenter = getViewportCenter()
-    xPosition = viewPortCenter.x
-    yPosition = viewPortCenter.y
-  }
-
-  return {
-    x: xPosition != null ? xPosition + xDelta : xDelta,
-    y: yPosition != null ? yPosition + yDelta : yDelta,
+  if (xPrevBlock == null || yPrevBlock == null) {
+    const viewportCenter = getViewportCenter()
+    return {
+      x: viewportCenter.x - Math.round(blockWidth / 2),
+      y: viewportCenter.y - Math.round(blockHeight / 2),
+    }
+  } else {
+    return {
+      x: xPrevBlock + xDelta,
+      y: yPrevBlock + yDelta,
+    }
   }
 }
 
 export function getViewportCenter(): IPosition {
   const builderCanvasElement = document.getElementsByClassName('builder-canvas')[0]
+  const canvasRect = builderCanvasElement.getBoundingClientRect()
+
   const sideBarElement = document.getElementsByClassName('tree-sidebar-container')[0]
-  const rect = builderCanvasElement.getBoundingClientRect()
+  const rightSidebarWidth = sideBarElement !== undefined ? sideBarElement.clientWidth : 0
 
-  const sidebarAdjustment = sideBarElement !== undefined ? sideBarElement.clientWidth : 0
+  const visibleCanvasWidth = window.innerWidth - rightSidebarWidth - canvasRect.left
+  const visibleCanvasHeight = window.innerHeight - canvasRect.top
 
-  return {
-    x: Math.round(Math.abs(rect.left) + (window.innerWidth - sidebarAdjustment) / 2),
-    y: Math.round(Math.abs(rect.top) + window.innerHeight / 2),
-  }
+  // We should add top and left toolbar sizes back (canvasRect.left & canvasRect.top),
+  // because block's coordinates are based on plain-draggable and so are relative to the document, not the builder canvas.
+  const x = Math.round(canvasRect.left + visibleCanvasWidth / 2 + window.scrollX)
+  const y = Math.round(canvasRect.top + visibleCanvasHeight / 2 + window.scrollY)
+
+  return {x, y}
 }
