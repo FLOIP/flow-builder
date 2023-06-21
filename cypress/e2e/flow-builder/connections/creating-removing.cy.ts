@@ -19,7 +19,7 @@ describe('Creating/removing a connection', () => {
 
     // deselect blocks and close block editor
     cy.get('[data-cy="builder-canvas--page"]').click('left', {
-      // the center of the element might be hidden, so we need to force the click
+      // the left end of the canvas might be hidden if it's scrolled, so we need to force the click
       force: true,
     })
 
@@ -34,6 +34,10 @@ describe('Creating/removing a connection', () => {
     cy.get('@exit')
       .realHover()
       .click()
+
+    // remove mouse hover from exit to hide the distracting tooltip
+    cy.get('[data-cy="undo--btn"]')
+      .realMouseMove(0, 0, {position: 'center'})
 
     cy.get('@connection').should('not.exist')
 
