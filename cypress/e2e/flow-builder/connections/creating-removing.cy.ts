@@ -17,7 +17,7 @@ describe('Creating/removing a connection', () => {
     cy.wait(300)
   })
 
-  it('creates and removes a connection', () => {
+  it('creates and removes a connection, does undo-redo correctly', () => {
     cy.get('@firstBlock').find('[data-cy^="exit--"]').as('exit')
     cy.get('@secondBlock').find('[data-cy^="block-handle--"]').as('secondBlockArea')
 
@@ -39,6 +39,22 @@ describe('Creating/removing a connection', () => {
       .realHover()
       .click()
 
+    cy.get('@connection').should('not.exist')
+
+    // undo remove (= add back)
+    cy.undo()
+    cy.get('@connection').should('be.visible')
+
+    // undo add (= remove)
+    cy.undo()
+    cy.get('@connection').should('not.exist')
+
+    // redo add
+    cy.redo()
+    cy.get('@connection').should('be.visible')
+
+    // redo remove
+    cy.redo()
     cy.get('@connection').should('not.exist')
   })
 })
