@@ -11,10 +11,6 @@ describe('Creating/removing a connection', () => {
     cy.addBlock(['Content', 'Numeric Response']).then(blockId => {
       cy.get(`[data-cy="block--${blockId}"]`).as('secondBlock')
     })
-
-    // wait for flow validation after adding blocks
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(300)
   })
 
   it('creates and removes a connection, does undo-redo correctly', () => {
