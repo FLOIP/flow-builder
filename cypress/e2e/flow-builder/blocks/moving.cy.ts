@@ -67,8 +67,8 @@ function getBlockVisualCoordinates(): Chainable<{x: number, y: number}> {
 function getBlockMetadataCoordinates(): Chainable<{x: number, y: number}> {
   return cy.window()
     .its('store.state.flow.flows[0].blocks[0]')
-    .then((oldState: IBlock) => {
-      const {x, y} = oldState.ui_metadata!.canvas_coordinates!
+    .then((blockState: IBlock) => {
+      const {x, y} = blockState.ui_metadata!.canvas_coordinates!
       return {x, y}
     })
 }
