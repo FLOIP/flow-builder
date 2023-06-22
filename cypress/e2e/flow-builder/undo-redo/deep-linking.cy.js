@@ -8,7 +8,7 @@ describe('Deep linking on block config & flow config', () => {
 
   it('can undo/redo block config & flow config with deep linking remains working', () => {
     // #### Add a block
-    cy.addBlock(['Content', 'Message']).then((messageBlockUuid) => {
+    cy.addBlock(['Message']).then((messageBlockUuid) => {
       // ######## add 1st block
       // block on canvas
       cy.get(`[data-cy="block--${messageBlockUuid}"]`).should('exist')
@@ -25,7 +25,7 @@ describe('Deep linking on block config & flow config', () => {
       cy.get(`[data-cy="flow-editor--modal--close-btn"`).click()
 
       // ######### add 2nd block
-      cy.addBlock(['Content', 'Numeric Response']).then((numericBlockUuid) => {
+      cy.addBlock(['Numeric Response']).then((numericBlockUuid) => {
         // block on canvas
         cy.get(`[data-cy="block--${numericBlockUuid}"]`).should('exist')
         // block id on block config

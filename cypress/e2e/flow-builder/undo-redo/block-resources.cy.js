@@ -10,7 +10,7 @@ describe('Block resources', () => {
   it('should undo/redo content resources', () => {
     const sampleText = 'hello sms'
 
-    cy.addBlock(['Content', 'Message']).then(() => {
+    cy.addBlock(['Message']).then(() => {
       cy.setBlockTextResource('eng', 'sms', sampleText).then((editor) => {
         cy.get(editor)
           .should('have.value', sampleText)
@@ -29,7 +29,7 @@ describe('Block resources', () => {
   it('should undo/redo adding choices', () => {
     const sampleChoice = 'sample choice'
 
-    cy.addBlock(['Content', 'Select One Response']).then(() => {
+    cy.addBlock(['Select One Response']).then(() => {
       cy.get('.choices-builder')
         .as('choicesBuilder')
         .find('textarea')
