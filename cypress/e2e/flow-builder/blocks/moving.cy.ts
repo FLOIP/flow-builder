@@ -27,7 +27,6 @@ describe('Moving a block', () => {
     return getBlockVisualCoordinates().then(({x: oldVisualX, y: oldVisualY}) => {
       return getBlockMetadataCoordinates().then(({x: oldMetadataX, y: oldMetadataY}) => {
         cy.get('@blockArea').move({deltaX, deltaY})
-        // cy.wait(200)
 
         // eslint-disable-next-line arrow-body-style
         return getBlockVisualCoordinates().then(({x: newVisualX, y: newVisualY}) => {
