@@ -32,7 +32,7 @@ describe('non common configs on location response block and apply undo/redo to c
 const getStore = () => cy.window().its('store')
 const flowModuleState = () => getStore().its('state.flow')
 const flowsListState = () => flowModuleState().its('flows')
-cy.addBlock(['Content', 'Open Response']).then((openResponseBlockUuid) => {
+cy.addBlock(['Content', 'Open Response']).then((LocationBlockUuid) => {
     const firstBlockState = () => flowsListState().its('[0].blocks[0]')
     const firstResourcesState = () => flowsListState().its('[0].resources[0]')
 
@@ -97,7 +97,7 @@ expect(values[2].value).to.contains('.mp3')
          cy.undo();
         } 
 // verify that the block has been removed from the builder
-    cy.get(`[data-cy="block--${openResponseBlockUuid}"]`).should('not.exist')
+    cy.get(`[data-cy="block--${LocationBlockUuid}"]`).should('not.exist')
 
     cy.wait(7000)
 
