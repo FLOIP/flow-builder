@@ -72,7 +72,7 @@ expect(values[2].value).to.contains('.mp3')
     .type(blockConfigs.threshold.accuracy_threshold)
     firstBlockState().its('config.accuracy_threshold_meters').should('equal', 5+blockConfigs.threshold.accuracy_threshold)
 
-    cy.get('[data-cy="accuracy-threshold"]')
+    cy.get('[data-cy="accuracy_timeout"]')
     .type(blockConfigs.threshold.accuracy_timeout)
     firstBlockState().its('config.accuracy_timeout_seconds').should('eq', 120+blockConfigs.threshold.accuracy_timeout)
 

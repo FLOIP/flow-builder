@@ -6,7 +6,7 @@
       :label="'flow-builder.Interaction-timeout' | trans"
       :placeholder="'flow-builder.enter-value' | trans"
       :valid-state="validState" 
-      :data-cy="'accuracy_threshold'"/>
+      :data-cy="'accuracy_timeout'"/>
   </div>
 </template>
 
