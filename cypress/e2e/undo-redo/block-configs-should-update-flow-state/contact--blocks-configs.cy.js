@@ -1,4 +1,4 @@
-describe('mutate flow state for CONTENT blocks', () => {
+describe('mutate flow state for CONTACT blocks', () => {
   beforeEach(() => {
     cy.createFlow({
       label: 'adding blocks test',
