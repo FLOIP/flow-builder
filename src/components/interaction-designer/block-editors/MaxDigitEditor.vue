@@ -10,7 +10,8 @@
           :label="'flow-builder.maximum-digits' | trans"
           :placeholder="'flow-builder.enter-value' | trans"
         :tooltip-hint="'flow-builder.max-digits-help-text' | trans"
-          :valid-state="isValid" />
+          :valid-state="isValid"
+          :data-cy="'Num-maxDigit'" />
       </div>
     </template>
   </validation-message>
