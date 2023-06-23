@@ -1,13 +1,18 @@
 <template>
   <div
     v-if="languages.length > 0"
-    class="per-language-resource-editor">
+    class="per-language-resource-editor"
+    data-cy="resource-editor">
     <div>
       <b-tabs>
         <b-tab
-          v-for="({id: languageId, label: language}) in languages"
-          :key="languageId"
-          :title="language || 'flow-builder.unknown-language' | trans">
+          v-for="({id: languageId, label: language, iso_639_3}) in languages"
+          :key="languageId">
+          <template #title>
+            <span :data-cy="`resource-editor--tab--${iso_639_3}`">
+              {{ trans(language || 'flow-builder.unknown-language') }}
+            </span>
+          </template>
           <per-language-resource-editor-row
             :block="block"
             :language-id="languageId"

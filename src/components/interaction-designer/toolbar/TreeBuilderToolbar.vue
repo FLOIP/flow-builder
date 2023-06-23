@@ -46,11 +46,13 @@
                   'btn-outline-primary': hasToolbarNewFlowButton,
                   'btn-primary': !hasToolbarNewFlowButton }
                 "
+                data-cy="builder-toolbar--flow-details--btn"
                 @click="showOrHideEditFlowModal">
                 {{ 'flow-builder.flow-details' | trans }}
               </button>
               <b-modal
                 ref="edit-flow-modal"
+                data-cy="flow-editor--modal"
                 ok-only
                 :ok-title="'flow-builder.done' | trans"
                 @ok="showOrHideEditFlowModal">
@@ -62,6 +64,7 @@
                     type="button"
                     aria-label="Close"
                     class="close"
+                    data-cy="flow-editor--modal--close-btn"
                     @click="showOrHideEditFlowModal">
                     ×
                   </button>
@@ -81,6 +84,7 @@
                   :class="{active: isBuilderCanvasEnabled, disabled: isTreeSaving}"
                   :to="treeUrl"
                   class="btn btn-outline-primary btn-sm"
+                  data-cy="builder-toolbar--builder-view--btn"
                   @click.native.prevent="handleFlowViewMenu">
                   {{ trans('flow-builder.flow-view') }}
                 </router-link>
@@ -88,6 +92,7 @@
                   :to="resourceUrl"
                   class="btn btn-outline-primary btn-sm"
                   :class="{active: isResourceViewerCanvasEnabled, disabled: isTreeSaving}"
+                  data-cy="builder-toolbar--resource-view--btn"
                   @click.native.prevent="handleResourceViewMenu">
                   {{ trans('flow-builder.resource-view') }}
                 </router-link>

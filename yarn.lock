@@ -4444,6 +4444,7 @@ __metadata:
     core-js: ^3.6.5
     cssprefix: ^2.0.16
     cypress: ^12.0.0
+    cypress-real-events: ^1.8.1
     dompurify: ^2.4.0
     eslint: ^7.32.0
     eslint-config-airbnb: ^18.2.1
@@ -13153,6 +13154,15 @@ __metadata:
   version: 1.0.1
   resolution: "cyclist@npm:1.0.1"
   checksum: 3cc2fdeb358599ca0ea96f5ecf2fc530ccab7ed1f8aa1a894aebfacd2009281bd7380cb9b30db02a18cdd00b3ed1d7ce81a3b11fe56e33a6a0fe4424dc592fbe
+  languageName: node
+  linkType: hard
+
+"cypress-real-events@npm:^1.8.1":
+  version: 1.8.1
+  resolution: "cypress-real-events@npm:1.8.1"
+  peerDependencies:
+    cypress: ^4.x || ^5.x || ^6.x || ^7.x || ^8.x || ^9.x || ^10.x || ^11.x || ^12.x
+  checksum: 48f229335f26f8c225428563e94ca091ab7a00e943a4c953e062135b1d37672edec9cb7667452d894b43528b52924cd1b6061df044ccb0665b9c0965a0fe214f
   languageName: node
   linkType: hard
 

@@ -9,7 +9,8 @@
       :show-labels="false"
       :preselect-first="true"
       track-by="name"
-      label="label" />
+      label="label" 
+      />
     <slot />
   </div>
 </template>

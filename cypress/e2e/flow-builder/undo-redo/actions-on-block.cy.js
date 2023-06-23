@@ -6,7 +6,10 @@ describe('Actions on blocks', () => {
   })
 
   it('can undo/redo adding a block', () => {
-    cy.addBlock(['Content', 'Message']).then((blockUuid) => {
+    // #### Add a block
+    let messageBlockUuid = null
+    cy.addBlock(['Message']).then((blockUuid) => {
+      messageBlockUuid = blockUuid
       cy.get(`[data-cy="block--${blockUuid}"]`).should('exist')
       cy.undo()
       cy.get(`[data-cy="block--${blockUuid}"]`).should('not.exist')

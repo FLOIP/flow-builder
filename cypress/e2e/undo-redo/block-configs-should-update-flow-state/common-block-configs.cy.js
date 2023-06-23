@@ -1,12 +1,3 @@
-/**
- * In general, e2e should focus on what are VISIBLE from users perspective.
- * But, as we have a bunch of configs to test, we can assume that:
- * - if a block config UI updates the flow state, it should work with the UNDO/REDO feature
- *
- * Secondly, a working config UI doesn't mean the component is working with UNDO/REDO, it has to mutate the flow state and not use local state.
- *
- * This spec is a vertical e2e testing (see more here for details https://katalon.com/resources-center/blog/end-to-end-e2e-testing#h5)
- */
 describe('mutate flow state when the update comes from common block configs UI', () => {
   beforeEach(() => {
     cy.createFlow({
@@ -42,7 +33,7 @@ describe('mutate flow state when the update comes from common block configs UI',
     const flowModuleState = () => getStore().its('state.flow')
     const flowsListState = () => flowModuleState().its('flows')
 
-    cy.addBlock(['Content', 'Message'])
+    cy.addBlock(['Message'])
     const firstBlockState = () => flowsListState().its('[0].blocks[0]')
     const firstResourcesState = () => flowsListState().its('[0].resources[0]')
 

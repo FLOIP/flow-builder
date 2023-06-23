@@ -28,7 +28,7 @@
 import { difference } from 'lodash'
 import { UNDO_REDO_SNAPSHOT_DEBOUNCE_MS } from '../../src/lib/plugins/vuex-undo-redo-plugin'
 
-const UNDO_REDO_WAIT_MS = UNDO_REDO_SNAPSHOT_DEBOUNCE_MS * 2
+export const UNDO_REDO_WAIT_MS = UNDO_REDO_SNAPSHOT_DEBOUNCE_MS * 2
 
 declare global {
   namespace Cypress {
@@ -38,11 +38,16 @@ declare global {
       getBlockUuids(): Chainable<string[]>,
       addBlock(menuChoices: string[]): Chainable<string>,
       selectBlock(uuid: string): Chainable<string>,
+      setBlockTextResource(language: string, channel: string, value: string): Chainable<JQuery<HTMLElement>>,
       undo(): Chainable<void>,
       redo(): Chainable<void>,
       save(): Chainable<void>,
-      // connectExitToBlock(exitUuid: string, targetBlockUuid: string): Chainable<void>,
-      // dragBlock(blockUuid: string): Chainable<void>,
+
+      /**
+       * Custom command to drag-n-drop an element
+       * @example cy.get('.element-to-drag').dragAndDropTo('.drop-zone')
+       */
+      dragAndDropTo(targetSelectorOrAlias: string): Chainable<void>,
     }
   }
 }
@@ -102,7 +107,9 @@ Cypress.Commands.add('addBlock', (menuChoices: string[]) => {
     // Create all the blocks
     for (const choice of menuChoices) {
       cy.get('[data-cy="blocks--menu"]')
-      cy.contains('[data-cy="blocks--menu-item"]', choice).click()
+      cy.contains('[data-cy="blocks--menu-item"]', choice).click({
+        force: true,
+      })
 
       // Let the block's creation be registered in a snapshot
       cy.wait(UNDO_REDO_WAIT_MS)
@@ -134,6 +141,26 @@ Cypress.Commands.add('selectBlock', (uuid: string) => {
 
   return cy.get('@block').then((block) => {
     return cy.wrap(block.attr('data-cy')!.replace('block--', ''))
+  })
+})
+
+Cypress.Commands.add('setBlockTextResource', (language: string, channel: string, value: string) => {
+  cy.get('[data-cy="resource-editor"]')
+    .as('resourceEditor')
+
+  cy.get('@resourceEditor')
+    .find(`[data-cy="resource-editor--tab--${language}"]`)
+    .click()
+
+  cy.get('@resourceEditor')
+    .find(`[data-cy="resource--${channel}"]`)
+    .as('editor')
+    .type(value)
+
+  cy.wait(UNDO_REDO_WAIT_MS)
+
+  return cy.get('@editor').then((editor) => {
+    return cy.wrap(editor)
   })
 })
 
@@ -268,4 +295,22 @@ Cypress.Commands.add('save', () => {
     // May be covered with a toast
     force: true,
   })
+})
+
+/**
+ * cypress-real-events works only in Chromium-based browsers.
+ * This means we won't be able to run this particular cypress test in Firefox, etc.
+ */
+Cypress.Commands.add('dragAndDropTo', {prevSubject: 'element'}, (subject, targetSelectorOrAlias) => {
+  cy.wrap(subject).scrollIntoView()
+  cy.wrap(subject).should('be.visible')
+  cy.get(targetSelectorOrAlias).should('be.visible')
+
+  cy.wrap(subject)
+    .realHover()
+    .realMouseDown()
+
+  cy.get(targetSelectorOrAlias)
+    .realMouseMove(0, 0, {position: 'center'})
+    .realMouseUp({position: 'center'})
 })

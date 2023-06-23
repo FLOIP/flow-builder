@@ -8,7 +8,8 @@
           :regex-float-filtering="'[0-9.,]'"
           :label="'flow-builder.accuracy-threshold-in-meters' | trans"
           :placeholder="'flow-builder.enter-value' | trans"
-          :valid-state="isValid" />
+          :valid-state="isValid" 
+          :data-cy="'accuracy-threshold'"/>
       </div>
     </template>
   </ValidationMessage>

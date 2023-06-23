@@ -10,7 +10,7 @@ describe('Persistence', () => {
     cy.get('[data-cy="undo--btn"]')
       .should('have.attr', 'disabled')
 
-    cy.addBlock(['Content', 'Message']).then(() => {
+    cy.addBlock(['Message']).then(() => {
       cy.save()
       cy.get('[data-cy="save--btn"]').should('have.attr', 'disabled')
 
