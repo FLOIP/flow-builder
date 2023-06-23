@@ -40,6 +40,7 @@ export function getDeepLink({changedKeys, flows}: {changedKeys: string[], flows:
     const {flowIndex, blockIndex, fieldPath} = parseBlockChangeParams(key)!
     const blockId = flows.flows[flowIndex].blocks[blockIndex]?.uuid ?? null
 
+    // If the block was deleted, we can't navigate to it
     if (blockId === null) {
       return {
         routeName: 'flow-canvas',

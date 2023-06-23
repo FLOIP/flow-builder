@@ -67,8 +67,8 @@ describe('getChangedKeys', () => {
   })
 
   it('should handle deleted array items', () => {
-    const a = {foo: {bar: [1, 2, 3]}}
-    const b = {foo: {bar: [1, 3]}}
+    const a = {foo: {bar: ['uwu', 'qwq', 'owo']}}
+    const b = {foo: {bar: ['uwu', 'owo']}}
 
     expect(getChangedKeys(a, b)).toEqual(['foo.bar.1~', 'foo.bar.2-'])
   })
