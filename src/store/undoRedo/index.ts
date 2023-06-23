@@ -78,8 +78,8 @@ export const getters: GetterTree<IUndoRedoState, IRootState> = {
   },
   previouslyChangedKeys(_state, getters): string[] {
     return getChangedModulesKeys(
-      getters.currentSnapshot as ISnapshot,
       getters.previousSnapshot as ISnapshot,
+      getters.currentSnapshot as ISnapshot,
     )
   },
 }

@@ -18,7 +18,13 @@ export function getChangedKeys(a: NotNullOrUndefined, b: NotNullOrUndefined): st
           ensureObject(bVal),
         ).map((k) => `${key}.${k}`))
       } else if (aVal !== bVal) {
-        changedKeys.push(key)
+        if (aVal === undefined) {
+          changedKeys.push(`${key}+`)
+        } else if (bVal === undefined) {
+          changedKeys.push(`${key}-`)
+        } else {
+          changedKeys.push(`${key}~`)
+        }
       }
     })
 
