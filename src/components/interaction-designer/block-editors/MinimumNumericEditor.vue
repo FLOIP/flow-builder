@@ -8,7 +8,8 @@
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.minimum-value-(inclusive)' | trans"
         :placeholder="'flow-builder.enter-value' | trans"
-        :valid-state="isValid" />
+        :valid-state="isValid" 
+        :data-cy="'Num-miniValue'"/>
     </div>
   </validation-message>
 </template>

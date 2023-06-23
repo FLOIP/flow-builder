@@ -5,7 +5,8 @@
       :regex-numeric-filtering="'[0-9]'"
       :label="'flow-builder.Interaction-timeout' | trans"
       :placeholder="'flow-builder.enter-value' | trans"
-      :valid-state="validState" />
+      :valid-state="validState" 
+      :data-cy="'accuracy_timeout'"/>
   </div>
 </template>
 
