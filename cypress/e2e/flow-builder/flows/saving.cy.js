@@ -10,7 +10,7 @@ describe('Saving flows', () => {
   })
 
   it('is working when there are changes', () => {
-    cy.addBlock(['Content', 'Message'])
+    cy.addBlock(['Message'])
     cy.save()
     cy.get('[data-cy="save--btn"]').should('be.disabled')
   })

@@ -4,11 +4,11 @@ describe('Creating/removing a connection', () => {
       label: 'test flow',
     })
 
-    cy.addBlock(['Content', 'Message']).then(blockId => {
+    cy.addBlock(['Message']).then(blockId => {
       cy.get(`[data-cy="block--${blockId}"]`).as('firstBlock')
     })
 
-    cy.addBlock(['Content', 'Numeric Response']).then(blockId => {
+    cy.addBlock(['Numeric Response']).then(blockId => {
       cy.get(`[data-cy="block--${blockId}"]`).as('secondBlock')
     })
   })

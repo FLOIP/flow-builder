@@ -6,7 +6,7 @@ describe('Selecting blocks', () => {
   })
 
   it('by UUID', () => {
-    const foo = cy.addBlock(['Content', 'Message'])
+    const foo = cy.addBlock(['Message'])
     cy.addBlock(['Branching'])
 
     foo.then((uuid) => {

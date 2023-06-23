@@ -8,7 +8,7 @@ describe('Add/Delete/Duplicate blocks', () => {
   it('can undo/redo correctly', () => {
     // #### Add a block
     let messageBlockUuid = null
-    cy.addBlock(['Content', 'Message']).then((blockUuid) => {
+    cy.addBlock(['Message']).then((blockUuid) => {
       messageBlockUuid = blockUuid
       cy.get(`[data-cy="block--${blockUuid}"]`).should('exist')
       cy.undo()
@@ -39,7 +39,7 @@ describe('Add/Delete/Duplicate blocks', () => {
         cy.get(`[data-cy="block--${duplicatedMessageBlockUuid}"]`).should('exist')
 
         // #### Duplicate multiple blocks
-        cy.addBlock(['Content', 'Numeric Response']).then((blockUuid2) => {
+        cy.addBlock(['Numeric Response']).then((blockUuid2) => {
           cy.duplicateMultipleBlocks([duplicatedMessageBlockUuid, blockUuid2]).then((duplicatedBlocks) => {
             cy.get(`[data-cy="block--${duplicatedBlocks[0]}"]`).should('exist')
             cy.get(`[data-cy="block--${duplicatedBlocks[1]}"]`).should('exist')

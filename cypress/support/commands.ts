@@ -107,7 +107,9 @@ Cypress.Commands.add('addBlock', (menuChoices: string[]) => {
     // Create all the blocks
     for (const choice of menuChoices) {
       cy.get('[data-cy="blocks--menu"]')
-      cy.contains('[data-cy="blocks--menu-item"]', choice).click()
+      cy.contains('[data-cy="blocks--menu-item"]', choice).click({
+        force: true,
+      })
 
       // Let the block's creation be registered in a snapshot
       cy.wait(UNDO_REDO_WAIT_MS)
