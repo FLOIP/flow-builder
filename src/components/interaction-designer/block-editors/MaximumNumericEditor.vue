@@ -2,14 +2,13 @@
   <validation-message
     #input-control="{ isValid }"
     :message-key="`block/${block.uuid}/config/validation_maximum`">
-    <div class="maximum-numeric-editor">
+    <div class="maximum-numeric-editor" data-cy="maximum-numeric--editor">
       <numeric-editor
         v-model.number="maxValue"
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.maximum-value-(inclusive)' | trans"
         :placeholder="'flow-builder.enter-value' | trans"
-        :valid-state="isValid"
-        :data-cy="'Num-maxValue'" />
+        :valid-state="isValid" />
     </div>
   </validation-message>
 </template>

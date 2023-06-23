@@ -2,14 +2,13 @@
   <validation-message
     #input-control="{ isValid }"
     :message-key="`block/${block.uuid}/config/validation_minimum`">
-    <div class="minimum-numeric-editor">
+    <div class="minimum-numeric-editor" data-cy="minimum-numeric--editor">
       <numeric-editor
         v-model.number="minValue"
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.minimum-value-(inclusive)' | trans"
         :placeholder="'flow-builder.enter-value' | trans"
-        :valid-state="isValid" 
-        :data-cy="'Num-miniValue'"/>
+        :valid-state="isValid" />
     </div>
   </validation-message>
 </template>

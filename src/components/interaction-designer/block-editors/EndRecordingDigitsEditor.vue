@@ -9,8 +9,8 @@
           v-model="endRecordingDigits"
           :label="'flow-builder.end-recording-by-pressing' | trans"
           :placeholder="'flow-builder.enter-value' | trans"
-          :valid-state="isValid" 
-          :data-cy='"end-recording"'/>
+          :valid-state="isValid"
+          data-cy="end-recording-digit--selector" />
       </template>
     </validation-message>
   </div>
