@@ -5,7 +5,7 @@
     <div class="minimum-choices-editor">
       <numeric-editor
         v-model.number="minChoices"
-        data-cy="minimum-choices-editor"
+        data-cy="minimum-choices--editor"
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.minimum-choices' | trans"
         :placeholder="'flow-builder.enter-value' | trans"

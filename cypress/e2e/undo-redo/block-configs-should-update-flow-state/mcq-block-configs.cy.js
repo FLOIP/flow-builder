@@ -11,23 +11,15 @@ describe('Mutate flow state for the case (branching) block', () => {
       cy.addBlock(['Select One Response'])
 
       cy.get('[data-cy="choices-builder"]')
-        .find('[data-cy="resource--text"]')
-        .last()
+        .find('[data-cy="choices-builder--editor-new"]')
         .type(CHOICE_NAME)
 
       cy.get('[data-cy="choices-builder"]')
-        .find('[data-cy="resource--text"]')
-        .last()
+        .find('[data-cy="choices-builder--editor-new"]')
         .type(SECOND_CHOICE_NAME)
     })
 
     it('should add choices', () => {
-      const getStore = () => cy.window().its('store')
-      const flowModuleState = () => getStore().its('state.flow')
-      const flowsListState = () => flowModuleState().its('flows')
-
-      const firstBlockState = () => flowsListState().its('[0].blocks[0]')
-
       firstBlockState().its('config.choices').should('have.length', 2)
 
       firstBlockState().its('config.choices[0].name').should('eq', CHOICE_NAME)
@@ -40,15 +32,10 @@ describe('Mutate flow state for the case (branching) block', () => {
     })
 
     it('should remove choices', () => {
-      const getStore = () => cy.window().its('store')
-      const flowModuleState = () => getStore().its('state.flow')
-      const flowsListState = () => flowModuleState().its('flows')
-
-      const firstBlockState = () => flowsListState().its('[0].blocks[0]')
-
       cy.get('[data-cy="choices-builder"]')
-        .find('[data-cy="resource--text"]')
+        .find('[data-cy="choices-builder--editor"]')
         .eq(1)
+        .find('[data-cy="resource--text"]')
         .clear()
 
       firstBlockState().its('config.choices').should('have.length', 1)
@@ -56,14 +43,8 @@ describe('Mutate flow state for the case (branching) block', () => {
     })
 
     it('should allow to set choice options', () => {
-      const getStore = () => cy.window().its('store')
-      const flowModuleState = () => getStore().its('state.flow')
-      const flowsListState = () => flowModuleState().its('flows')
-
-      const firstBlockState = () => flowsListState().its('[0].blocks[0]')
-
       cy.get('[data-cy="choices-builder"]')
-        .find('[data-cy="set-choice-options"]')
+        .find('[data-cy="set-choice-options--btn"]')
         .click()
 
       cy.get('[data-cy="choice-mapping-modal"]')
@@ -125,12 +106,6 @@ describe('Mutate flow state for the case (branching) block', () => {
     })
 
     it('should allow switching to standard mode', () => {
-      const getStore = () => cy.window().its('store')
-      const flowModuleState = () => getStore().its('state.flow')
-      const flowsListState = () => flowModuleState().its('flows')
-
-      const firstBlockState = () => flowsListState().its('[0].blocks[0]')
-
       firstBlockState().its('vendor_metadata.floip.ui_metadata.branching_type').should('equal', 'EXIT_PER_CHOICE')
 
       firstBlockState().its('exits').should('have.length', 3)
@@ -158,19 +133,18 @@ describe('Mutate flow state for the case (branching) block', () => {
     const MINIMUM_CHOICES = 2
     const MAXIMUM_CHOICES = 5
 
-    cy.get('[data-cy="minimum-choices-editor"]')
+    cy.get('[data-cy="minimum-choices--editor"]')
       .type(MINIMUM_CHOICES)
 
-    cy.get('[data-cy="maximum-choices-editor"]')
+    cy.get('[data-cy="maximum-choices--editor"]')
       .type(MAXIMUM_CHOICES)
-
-    const getStore = () => cy.window().its('store')
-    const flowModuleState = () => getStore().its('state.flow')
-    const flowsListState = () => flowModuleState().its('flows')
-
-    const firstBlockState = () => flowsListState().its('[0].blocks[0]')
 
     firstBlockState().its('config.minimum_choices').should('eq', MINIMUM_CHOICES)
     firstBlockState().its('config.maximum_choices').should('eq', MAXIMUM_CHOICES)
   })
 })
+
+const getStore = () => cy.window().its('store')
+const flowModuleState = () => getStore().its('state.flow')
+const flowsListState = () => flowModuleState().its('flows')
+const firstBlockState = () => flowsListState().its('[0].blocks[0]')

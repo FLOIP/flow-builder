@@ -4,7 +4,7 @@
       <button
         :disabled="block.config.choices.length === 0"
         class="btn btn-primary btn-sm"
-        data-cy="set-choice-options"
+        data-cy="set-choice-options--btn"
         @click="showModal">
         {{ trans('flow-builder.set-choice-options') }}
       </button>
