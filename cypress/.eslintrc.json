@@ -10,6 +10,8 @@
   ],
   "rules" : {
     "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+    "jest/expect-expect": "off",
+    "jest/valid-expect-in-promise": "off",
     "@typescript-eslint/no-namespace": "off"
   }
 }
