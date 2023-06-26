@@ -23,14 +23,12 @@ describe('Moving a block', () => {
     const deltaX = 200
     const deltaY = 300
 
-    // eslint-disable-next-line arrow-body-style
-    return getBlockVisualCoordinates().then(({x: oldVisualX, y: oldVisualY}) => {
-      return getBlockMetadataCoordinates().then(({x: oldMetadataX, y: oldMetadataY}) => {
+    getBlockVisualCoordinates().then(({x: oldVisualX, y: oldVisualY}) => {
+      getBlockMetadataCoordinates().then(({x: oldMetadataX, y: oldMetadataY}) => {
         cy.get('@blockArea').move({deltaX, deltaY})
 
-        // eslint-disable-next-line arrow-body-style
-        return getBlockVisualCoordinates().then(({x: newVisualX, y: newVisualY}) => {
-          return getBlockMetadataCoordinates().then(({x: newMetadataX, y: newMetadataY}) => {
+        getBlockVisualCoordinates().then(({x: newVisualX, y: newVisualY}) => {
+          getBlockMetadataCoordinates().then(({x: newMetadataX, y: newMetadataY}) => {
             cy.log('old visual x,y:', oldVisualX, oldVisualY)
             cy.log('new visual x,y:', newVisualX, newVisualY)
 
