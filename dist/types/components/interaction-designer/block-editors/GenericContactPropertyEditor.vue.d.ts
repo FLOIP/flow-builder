@@ -6,6 +6,7 @@ declare const GenericContactPropertyEditor_base: import("vue-class-component/lib
 export declare class GenericContactPropertyEditor extends GenericContactPropertyEditor_base {
     readonly block: IBlock;
     readonly disableExpressionInput: boolean;
+    readonly forceUsingBlockValue: boolean;
     PROPERTY_VALUE_ACTION: {
         OPEN_EXPRESSION: string;
         FROM_CURRENT_BLOCK_RESPONSE: string;
