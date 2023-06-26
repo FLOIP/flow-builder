@@ -23,6 +23,7 @@
               :current-expression="value"
               :valid-state="isValid"
               :rows="expressionEditorRows"
+              data-cy="output-expression--input"
               @commitExpressionChange="commitExpressionChange" />
           </template>
         </validation-message>
@@ -47,7 +48,7 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 import {IOutputBlock} from '@floip/flow-runner/src/model/block/IOutputBlock'
-import {IBlock, IFlow} from '@floip/flow-runner'
+import {IBlock} from '@floip/flow-runner'
 import OutputStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_OutputBlockStore'
 import Lang from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'
