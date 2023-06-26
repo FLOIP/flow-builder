@@ -40,6 +40,28 @@ describe('Moving a block', () => {
 
             cy.wrap(newMetadataX - oldMetadataX).should('eq', deltaX)
             cy.wrap(newMetadataY - oldMetadataY).should('eq', deltaY)
+
+            cy.undo()
+
+            getBlockVisualCoordinates().then(({x: undoneVisualX, y: undoneVisualY}) => {
+              getBlockMetadataCoordinates().then(({x: undoneMetadataX, y: undoneMetadataY}) => {
+                cy.wrap(undoneVisualX).should('eq', oldVisualX)
+                cy.wrap(undoneVisualY).should('eq', oldVisualY)
+                cy.wrap(undoneMetadataX).should('eq', oldMetadataX)
+                cy.wrap(undoneMetadataY).should('eq', oldMetadataY)
+
+                cy.redo()
+
+                getBlockVisualCoordinates().then(({x: redoneVisualX, y: redoneVisualY}) => {
+                  getBlockMetadataCoordinates().then(({x: redoneMetadataX, y: redoneMetadataY}) => {
+                    cy.wrap(redoneVisualX).should('eq', newVisualX)
+                    cy.wrap(redoneVisualY).should('eq', newVisualY)
+                    cy.wrap(redoneMetadataX).should('eq', newMetadataX)
+                    cy.wrap(redoneMetadataY).should('eq', newMetadataY)
+                  })
+                })
+              })
+            })
           })
         })
       })
