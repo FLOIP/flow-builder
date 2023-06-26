@@ -1,5 +1,7 @@
 <template>
-  <div class="choices-builder form-group">
+  <div
+    class="choices-builder form-group"
+    data-cy="choices-builder">
     <label class="text-primary">{{ 'flow-builder.choices' | trans }}</label>
 
     <!-- Show non-empty choices -->

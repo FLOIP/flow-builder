@@ -1,10 +1,16 @@
 <template>
-  <tr class="text-mapping-row">
+  <tr
+    class="text-mapping-row"
+    data-cy="text-mapping-entry">
     <td>
       {{ currentChoice.name }}
     </td>
     <td>
-      <text-synonyms-editor :block="block" :current-choice="currentChoice" :index="index" :lang-id="langId"/>
+      <text-synonyms-editor
+        :block="block"
+        :current-choice="currentChoice"
+        :index="index"
+        :lang-id="langId" />
     </td>
   </tr>
 </template>
@@ -19,6 +25,7 @@ export default {
   components: {
     TextSynonymsEditor,
   },
+  mixins: [Lang],
   props: {
     block: {
       type: ISelectOneResponseBlock,
@@ -37,7 +44,6 @@ export default {
       required: true,
     },
   },
-  mixins: [Lang],
 }
 </script>
 
