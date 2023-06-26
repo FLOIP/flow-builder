@@ -24,7 +24,7 @@
               :label="'flow-builder.destination-flow' | trans"
               :placeholder="'flow-builder.enter-destination-flow-id' | trans"
               :valid-state="isValid"
-              data-cy="run-flow-block--flow-id--input" />
+              data-cy="destination-flow-id--input" />
           </div>
         </validation-message>
       </slot>

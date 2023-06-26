@@ -23,7 +23,7 @@
             :placeholder="'flow-builder.enter-message' | trans"
             :current-expression="value"
             :valid-state="isValid"
-            data-cy="log-block--message--input"
+            data-cy="log-message--input"
             @commitExpressionChange="commitMessageChange" />
         </validation-message>
       </slot>

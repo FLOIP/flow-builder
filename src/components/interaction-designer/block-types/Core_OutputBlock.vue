@@ -23,7 +23,7 @@
               :current-expression="value"
               :valid-state="isValid"
               :rows="expressionEditorRows"
-              data-cy="output-block--expression--input"
+              data-cy="output-expression--input"
               @commitExpressionChange="commitExpressionChange" />
           </template>
         </validation-message>

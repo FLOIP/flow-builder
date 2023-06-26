@@ -14,7 +14,7 @@ describe('mutate flow state for ADVANCED blocks', () => {
 
     firstBlockState().its('config.message').should('eq', '')
 
-    cy.get('[data-cy="log-block--message--input"]')
+    cy.get('[data-cy="log-message--input"]')
       .find('textarea')
       .type(blockConfigs.logMessageOrExpression)
 
@@ -30,7 +30,7 @@ describe('mutate flow state for ADVANCED blocks', () => {
 
     firstBlockState().its('config.value').should('eq', '@')
 
-    cy.get('[data-cy="output-block--expression--input"]')
+    cy.get('[data-cy="output-expression--input"]')
       .find('textarea')
       .type(blockConfigs.outputExpression)
 
@@ -45,7 +45,7 @@ describe('mutate flow state for ADVANCED blocks', () => {
 
     firstBlockState().its('config.flow_id').should('eq', '')
 
-    cy.get('[data-cy="run-flow-block--flow-id--input"]')
+    cy.get('[data-cy="destination-flow-id--input"]')
       .find('textarea')
       .type(blockConfigs.flowId)
 
