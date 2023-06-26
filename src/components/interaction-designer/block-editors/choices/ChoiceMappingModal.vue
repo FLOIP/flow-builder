@@ -1,7 +1,11 @@
 <template>
   <div class="choice-mapping-modal">
     <div class="form-group">
-      <button :disabled="block.config.choices.length === 0" class="btn btn-primary btn-sm" @click="showModal">
+      <button
+        :disabled="block.config.choices.length === 0"
+        class="btn btn-primary btn-sm"
+        data-cy="set-choice-options--btn"
+        @click="showModal">
         {{ trans('flow-builder.set-choice-options') }}
       </button>
     </div>
@@ -12,12 +16,19 @@
       :title="trans('flow-builder.choice-options')"
       ok-only
       size="lg">
-      <div v-if="shouldHaveTabs" class="choice-mapping-navs">
+      <div
+        data-cy="choice-mapping-modal"
+        v-if="shouldHaveTabs"
+        class="choice-mapping-navs">
         <nav>
-          <div id="choice-options-nav-tab" class="nav nav-tabs" role="tablist">
+          <div
+            id="choice-options-nav-tab"
+            class="nav nav-tabs"
+            role="tablist">
             <a
               v-if="hasVoiceMode"
               id="nav-voice-tab"
+              data-cy="voice-tab"
               :class="{'active': hasVoiceMode}"
               aria-controls="nav-home"
               aria-selected="true"
@@ -29,9 +40,10 @@
             </a>
             <template v-if="hasTextMode">
               <a
-                v-for="({id: languageId, label: language}, index) in textLanguages"
+                v-for="({id: languageId, label: language, iso_639_3}, index) in textLanguages"
                 :id="`nav-lang-tab-${languageId}`"
                 :key="languageId"
+                :data-cy="`text-tab-${iso_639_3}`"
                 :class="{'active': !hasVoiceMode && hasTextMode && index === 0}"
                 :href="`#nav-lang-${languageId}`"
                 :title="language || trans('flow-builder.unknown-language')"
@@ -45,7 +57,9 @@
             </template>
           </div>
         </nav>
-        <div id="choice-options-nav-tab-content" class="tab-content">
+        <div
+          id="choice-options-nav-tab-content"
+          class="tab-content">
           <div
             v-if="hasVoiceMode"
             id="nav-voice"
@@ -54,7 +68,7 @@
             class="tab-pane fade"
             role="tabpanel">
             <div class="mt-3">
-              <voice-mapping-table :block="block"/>
+              <voice-mapping-table :block="block" />
             </div>
           </div>
           <template v-if="hasTextMode">
@@ -67,7 +81,9 @@
               class="tab-pane fade"
               role="tabpanel">
               <div class="mt-3">
-                <text-mapping-table :block="block" :lang-id="languageId"/>
+                <text-mapping-table
+                  :block="block"
+                  :lang-id="languageId" />
               </div>
             </div>
           </template>

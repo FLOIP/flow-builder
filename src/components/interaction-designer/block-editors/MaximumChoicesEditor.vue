@@ -5,6 +5,7 @@
     <div class="maximum-choices-editor">
       <numeric-editor
         v-model.number="maxChoices"
+        data-cy="maximum-choices--editor"
         :regex-numeric-filtering="'[0-9]'"
         :label="'flow-builder.maximum-choices' | trans"
         :placeholder="'flow-builder.enter-value' | trans"

@@ -1,5 +1,7 @@
 <template>
-  <tr class="voice-mapping-row">
+  <tr
+    class="voice-mapping-row"
+    data-cy="voice-mapping-entry">
     <td class="d-flex">
       {{ currentChoice.name }}
       <div class="custom-control custom-checkbox ml-auto">
@@ -9,7 +11,9 @@
           :name="`useExpression-${index}`"
           class="custom-control-input"
           type="checkbox">
-        <label :for="`useExpression-${index}`" class="custom-control-label font-weight-normal">
+        <label
+          :for="`useExpression-${index}`"
+          class="custom-control-label font-weight-normal">
           {{ trans('flow-builder.use-expressions') }}
         </label>
       </div>
@@ -20,7 +24,7 @@
           :block="block"
           :current-choice="currentChoice"
           :disabled="shouldUseExpression"
-          :index="index"/>
+          :index="index" />
       </div>
     </td>
     <td>
