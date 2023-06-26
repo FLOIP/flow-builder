@@ -62,9 +62,9 @@
             class="custom-control custom-radio">
             <input
               id="setProp"
+              v-model="propertyValueAction"
               type="radio"
               name="contactPropAction"
-              v-model="propertyValueAction"
               :value="PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
               class="custom-control-input">
             <label
@@ -81,9 +81,9 @@
             class="custom-control custom-radio">
             <input
               id="clearProp"
+              v-model="propertyValueAction"
               type="radio"
               name="contactPropAction"
-              v-model="propertyValueAction"
               :value="PROPERTY_VALUE_ACTION.OPEN_EXPRESSION"
               class="custom-control-input">
             <label
