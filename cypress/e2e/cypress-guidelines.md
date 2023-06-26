@@ -24,5 +24,5 @@ or Cypress's `trigger` command to work in this case.
 On the other hand, moving blocks on the canvas using `realMouseDown`-`realMouseMove`-`realMouseUp`
 did not work as expected, so <b>cypress-drag-drop</b> was used instead.
 
-At the end of the day, all approaches provide similar functionality and it is up to the developer
-to decide which one to use.
+At the end of the day, all approaches provide similar functionality but have their own limitations, and it is up to
+the developer to decide which one to use.
