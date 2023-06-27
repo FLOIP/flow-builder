@@ -3,7 +3,9 @@
     v-if="activeFlow"
     ref="interaction-designer-contents"
     class="interaction-designer interaction-designer-contents">
-    <header ref="interaction-designer-header" class="interaction-designer-header">
+    <header
+      ref="interaction-designer-header"
+      class="interaction-designer-header">
       <slot name="toolbar">
         <tree-builder-toolbar />
       </slot>
@@ -39,9 +41,11 @@
         :width-adjustment="builderWidthAdjustment"
         @click.native="handleCanvasSelected" />
       <resource-viewer
-        v-else-if="mainComponent === 'resource-viewer'"/>
+        v-else-if="mainComponent === 'resource-viewer'" />
       <div v-else>
-        <div class="alert alert-danger">ERROR: component '{{ mainComponent }}' is not supported</div>
+        <div class="alert alert-danger">
+          ERROR: component '{{ mainComponent }}' is not supported
+        </div>
       </div>
     </main>
   </div>
@@ -131,7 +135,7 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
   @validationVuexNamespace.Action validate_allBlocksWithinFlow!: () => Promise<void>
   debounceBlockValidation = debounce(function (this: any) {
     if (this.activeFlow !== undefined) {
-      console.debug('watch/activeFlow.blocks:', 'blocks inside active flow have changed', `from ${this.mainComponent}.`, 'Validating ...');
+      console.debug('watch/activeFlow.blocks:', 'blocks inside active flow have changed', `from ${this.mainComponent}.`, 'Validating ...')
       this.validate_allBlocksWithinFlow()
     } else {
       console.warn('watch/activeFlow.blocks:', 'activeFlow is undefined')
@@ -301,11 +305,11 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     console.debug('Vuej tree interaction designer mounted!')
   }
 
-  beforeDestroy() {
+  beforeDestroy(): void {
     window.removeEventListener('scroll', this.onScroll, true)
   }
 
-  onScroll(e) {
+  onScroll(e): void {
     if (this.isBuilderCanvasEnabled) {
       // will be used to set other elements' position in the canvas (eg: for block editor)
       if (this.$refs['interaction-designer-header'] !== undefined) {
@@ -430,8 +434,10 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
 export default InteractionDesigner
 </script>
 
-<style lang="scss"> @import '../css/customized/vue-multiselect.css';</style>
 <style lang="scss">
+  @import '../css/customized/vue-multiselect.css';
+  @import '../css/customized/autosuggest.css';
+
   $sidebar-width: 365px;
 
   .interaction-designer-contents {
