@@ -32,3 +32,16 @@ export function snakeCaseOnSpaces(value?: string | null, char = '_') {
 
   return value.replaceAll(' ', char).toLowerCase()
 }
+
+export function getModifiedLabelForDuplicatedBlock(oldLabel: string): string {
+  const FIRST_COPY_REGEX = /^\(Copy\)/
+  const NUMBERED_COPY_REGEX = /^\(Copy (\d+)\)/
+
+  if (FIRST_COPY_REGEX.test(oldLabel)) {
+    return oldLabel.replace(FIRST_COPY_REGEX, '(Copy 2)')
+  } else if (NUMBERED_COPY_REGEX.test(oldLabel)) {
+    return oldLabel.replace(NUMBERED_COPY_REGEX, (_match, copyNumber) => `(Copy ${Number(copyNumber) + 1})`)
+  } else {
+    return `(Copy) ${oldLabel}`
+  }
+}
