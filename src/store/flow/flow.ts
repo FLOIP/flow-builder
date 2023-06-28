@@ -39,6 +39,7 @@ import {computeBlockCanvasCoordinates} from '@/store/builder'
 import {ErrorObject} from 'ajv'
 import {ConfigFieldType, removeFlowValueByPath, updateFlowValueByPath} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
 import {IFlowsState} from '@/store/flow/index'
+import {getModifiedLabelForDuplicatedBlock, snakeCaseOnSpaces} from '@/utils/string-utils'
 import {mergeFlowContainer} from './utils/importHelpers'
 
 export const stateFactory = (): IFlowsState => ({
@@ -551,11 +552,15 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     // @throws ValidationException when block absent
     const block: IBlock = findBlockWith(blockId, flow)
 
-    // Deep clone
     const duplicatedBlock: IBlock = cloneDeep(block)
 
-    // Set UUIDs, and remove non relevant props
     duplicatedBlock.uuid = await (new IdGeneratorUuidV4()).generate()
+
+    // todo: remove ts-ignores / refactor
+    // @ts-ignore
+    duplicatedBlock.label = getModifiedLabelForDuplicatedBlock(duplicatedBlock.label)
+    // @ts-ignore
+    duplicatedBlock.name = snakeCaseOnSpaces(duplicatedBlock.label)
 
     await Promise.all(
       duplicatedBlock.exits.map(async (item) => {
