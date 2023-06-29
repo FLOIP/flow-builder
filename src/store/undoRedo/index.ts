@@ -152,7 +152,7 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
       routeName = routeName ?? 'flow-canvas'
       routeParams = {
         component: rootState.builder.activeMainComponent!,
-        ...routeParams
+        ...routeParams,
       }
     }
 
@@ -165,7 +165,12 @@ export const actions: ActionTree<IUndoRedoState, IRootState> = {
 
     // ####### force patch ##############
     if (isNewSnapshotFromPersistenceAction) {
-      commit('patchSnapshot', newSnapshot)
+      if (getters.hasCurrentSnapshot as boolean) {
+        commit('patchSnapshot', newSnapshot)
+      } else {
+        // We cannot patch non-existing snapshots
+        commit('addSnapshot', newSnapshot)
+      }
       return
     }
 
