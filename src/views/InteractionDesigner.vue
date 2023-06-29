@@ -260,6 +260,15 @@ export class InteractionDesigner extends mixins(Lang, Routes) {
     this.setActiveMainComponent({mainComponent: this.mainComponent})
   }
 
+  beforeMount(): void {
+    window.addEventListener('beforeunload', event => {
+      if (this.isEditable && this.hasFlowChanges) {
+        event.preventDefault()
+        event.returnValue = ''
+      }
+    })
+  }
+
   /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
   async mounted(): Promise<void> {
     window.addEventListener('scroll', this.onScroll, true)
