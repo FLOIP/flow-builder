@@ -168,9 +168,8 @@ fieldset[disabled] .multiselect {
   background: #8C215C;
   margin-bottom: 5px;
   white-space: normal;
-  overflow: hidden;
   max-width: 100%;
-  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
 }
 
 .multiselect__tag-icon {
