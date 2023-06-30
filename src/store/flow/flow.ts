@@ -589,57 +589,6 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return duplicatedBlock
   },
 
-  // todo: discuss & delete - in favor of flow_generateLabelForBlockDuplicate
-  flow_complexGenerateLabelForBlockDuplicate({state}, {flowId, blockId}: {flowId: string, blockId: IBlock['uuid']}): string | undefined {
-    const flow = findFlowWith(flowId || state.first_flow_id || '', state as unknown as IContext)
-    const block: IBlock = findBlockWith(blockId, flow)
-
-    // this helps us trigger validation error for duplicated block's name if the original block had one
-    if (block.label === undefined) {
-      return undefined
-    }
-
-    const FIRST_COPY_REGEX = /^\(Copy\) /
-    const NUMBERED_COPY_REGEX = /^\(Copy (\d+)\) /
-
-    const labelWithoutCopyPrefix = block.label
-      .replace(FIRST_COPY_REGEX, '')
-      .replace(NUMBERED_COPY_REGEX, '')
-
-    const FULL_NUMBERED_COPY_REGEX = new RegExp(`^\\(Copy (\\d+)\\) ${labelWithoutCopyPrefix}`)
-
-    const allCopyNumbers = flow.blocks
-        .map(block => block.label)
-        .map(label => {
-          if (label === undefined) {
-            return null
-          } else if (label === labelWithoutCopyPrefix) {
-            return 0
-          } else if (label === `(Copy) ${labelWithoutCopyPrefix}`) {
-            return 1
-          } else if (FULL_NUMBERED_COPY_REGEX.test(label)) {
-            const match = FULL_NUMBERED_COPY_REGEX.exec(label)!
-            return parseInt(match[1], 10)
-          } else {
-            return null
-          }
-        })
-        .filter(copyNumber => copyNumber !== null)
-
-    // get the unoccupied copy number
-    for (let i = 0; ; i += 1) {
-      if (!allCopyNumbers.includes(i)) {
-        if (i === 0) {
-          return labelWithoutCopyPrefix
-        } else if (i === 1) {
-          return `(Copy) ${labelWithoutCopyPrefix}`
-        } else {
-          return `(Copy ${i}) ${labelWithoutCopyPrefix}`
-        }
-      }
-    }
-  },
-
   flow_generateLabelForBlockDuplicate({state}, {flowId, blockId}: {flowId: string, blockId: IBlock['uuid']}): string | undefined {
     const flow = findFlowWith(flowId || state.first_flow_id || '', state as unknown as IContext)
     const block: IBlock = findBlockWith(blockId, flow)
