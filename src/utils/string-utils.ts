@@ -22,6 +22,6 @@ function snakeCaseOnParentheses(value: string, char = '_'): string {
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export function generateBlockCodeFromLabel(label: string | null | undefined): string {
+export function generateBlockCodeFromLabel(label: string | undefined): string {
   return snakeCaseOnParentheses(snakeCaseOnSpaces(label ?? ''))
 }

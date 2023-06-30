@@ -180,7 +180,7 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
 
   block_setLabel({commit, dispatch}, {blockId, value}: {blockId: string, value: string | undefined}) {
     commit('block_setLabel', {blockId, value})
-    dispatch('block_setName', {blockId, value: generateBlockCodeFromLabel(value ?? '')})
+    dispatch('block_setName', {blockId, value: generateBlockCodeFromLabel(value)})
   },
 
   /**
