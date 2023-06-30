@@ -7,29 +7,21 @@
  * @param value
  * @param char
  */
-// todo: rename
-export function snakeCaseOnSpaces(value?: string | null, char = '_'): string | null | undefined {
-  if (value === null || value === undefined) {
-    return value
-  }
+function snakeCaseOnSpaces(value: string, char = '_'): string {
+  // we are not using replaceAll because it is not available in Node 14 that Jest uses
+  return value.replace(/ /g, char).toLowerCase()
+}
 
+function snakeCaseOnParentheses(value: string, char = '_'): string {
   return value
-    // replace spaces and parentheses
-    .replaceAll(/[ )(]/g, char)
+    // replace parentheses
+    .replace(/[)(]/g, char)
     // remove all underscores at the beginning
     .replace(/^_+/, '')
     .toLowerCase()
 }
 
-export function getModifiedLabelForDuplicatedBlock(oldLabel: string): string {
-  const FIRST_COPY_REGEX = /^\(Copy\)/
-  const NUMBERED_COPY_REGEX = /^\(Copy (\d+)\)/
-
-  if (FIRST_COPY_REGEX.test(oldLabel)) {
-    return oldLabel.replace(FIRST_COPY_REGEX, '(Copy 2)')
-  } else if (NUMBERED_COPY_REGEX.test(oldLabel)) {
-    return oldLabel.replace(NUMBERED_COPY_REGEX, (_match, copyNumber) => `(Copy ${Number(copyNumber) + 1})`)
-  } else {
-    return `(Copy) ${oldLabel}`
-  }
+// eslint-disable-next-line import/prefer-default-export
+export function generateBlockCodeFromLabel(label: string | null | undefined): string {
+  return snakeCaseOnParentheses(snakeCaseOnSpaces(label ?? ''))
 }

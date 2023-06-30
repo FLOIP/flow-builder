@@ -39,7 +39,8 @@ import {computeBlockCanvasCoordinates} from '@/store/builder'
 import {ErrorObject} from 'ajv'
 import {ConfigFieldType, removeFlowValueByPath, updateFlowValueByPath} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
 import {IFlowsState} from '@/store/flow/index'
-import {getModifiedLabelForDuplicatedBlock, snakeCaseOnSpaces} from '@/utils/string-utils'
+import {prefixBlockLabelWithNextAvailableCopyNumber} from '@/store/flow/utils/blockLabelHelpers'
+import {generateBlockCodeFromLabel} from '@/utils/string-utils'
 import {mergeFlowContainer} from './utils/importHelpers'
 
 export const stateFactory = (): IFlowsState => ({
@@ -553,14 +554,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const block: IBlock = findBlockWith(blockId, flow)
 
     const duplicatedBlock: IBlock = cloneDeep(block)
-
     duplicatedBlock.uuid = await (new IdGeneratorUuidV4()).generate()
-
-    // todo: remove ts-ignores / refactor
-    // @ts-ignore
-    duplicatedBlock.label = getModifiedLabelForDuplicatedBlock(duplicatedBlock.label)
-    // @ts-ignore
-    duplicatedBlock.name = snakeCaseOnSpaces(duplicatedBlock.label)
+    // note: make sure to call flow_generateLabelForBlockDuplicate before the duplicated block is added to flow.blocks
+    duplicatedBlock.label = await dispatch('flow_generateLabelForBlockDuplicate', {flowId, blockId})
+    duplicatedBlock.name = generateBlockCodeFromLabel(duplicatedBlock.label)
 
     await Promise.all(
       duplicatedBlock.exits.map(async (item) => {
@@ -590,6 +587,69 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     commit('flow_addBlock', {block: duplicatedBlock})
 
     return duplicatedBlock
+  },
+
+  // todo: discuss & delete - in favor of flow_generateLabelForBlockDuplicate
+  flow_complexGenerateLabelForBlockDuplicate({state}, {flowId, blockId}: {flowId: string, blockId: IBlock['uuid']}): string | undefined {
+    const flow = findFlowWith(flowId || state.first_flow_id || '', state as unknown as IContext)
+    const block: IBlock = findBlockWith(blockId, flow)
+
+    // this helps us trigger validation error for duplicated block's name if the original block had one
+    if (block.label === undefined) {
+      return undefined
+    }
+
+    const FIRST_COPY_REGEX = /^\(Copy\) /
+    const NUMBERED_COPY_REGEX = /^\(Copy (\d+)\) /
+
+    const labelWithoutCopyPrefix = block.label
+      .replace(FIRST_COPY_REGEX, '')
+      .replace(NUMBERED_COPY_REGEX, '')
+
+    const FULL_NUMBERED_COPY_REGEX = new RegExp(`^\\(Copy (\\d+)\\) ${labelWithoutCopyPrefix}`)
+
+    const allCopyNumbers = flow.blocks
+        .map(block => block.label)
+        .map(label => {
+          if (label === undefined) {
+            return null
+          } else if (label === labelWithoutCopyPrefix) {
+            return 0
+          } else if (label === `(Copy) ${labelWithoutCopyPrefix}`) {
+            return 1
+          } else if (FULL_NUMBERED_COPY_REGEX.test(label)) {
+            const match = FULL_NUMBERED_COPY_REGEX.exec(label)!
+            return parseInt(match[1], 10)
+          } else {
+            return null
+          }
+        })
+        .filter(copyNumber => copyNumber !== null)
+
+    // get the unoccupied copy number
+    for (let i = 0; ; i += 1) {
+      if (!allCopyNumbers.includes(i)) {
+        if (i === 0) {
+          return labelWithoutCopyPrefix
+        } else if (i === 1) {
+          return `(Copy) ${labelWithoutCopyPrefix}`
+        } else {
+          return `(Copy ${i}) ${labelWithoutCopyPrefix}`
+        }
+      }
+    }
+  },
+
+  flow_generateLabelForBlockDuplicate({state}, {flowId, blockId}: {flowId: string, blockId: IBlock['uuid']}): string | undefined {
+    const flow = findFlowWith(flowId || state.first_flow_id || '', state as unknown as IContext)
+    const block: IBlock = findBlockWith(blockId, flow)
+
+    if (block.label === undefined) {
+      // this helps us trigger validation error for duplicated block's name if the original block had one
+      return undefined
+    } else {
+      return prefixBlockLabelWithNextAvailableCopyNumber(block.label, flow.blocks.map(block => block.label))
+    }
   },
 
   async flow_duplicateResource({getters, dispatch}, {resourceUuid}: {resourceUuid: IResource['uuid']}): Promise<IResource['uuid']> {
