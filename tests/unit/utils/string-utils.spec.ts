@@ -1,9 +1,9 @@
 import {generateBlockCodeFromLabel} from '@/utils/string-utils'
 
 describe('generateBlockCodeFromLabel', () => {
-  it('should return null/undefined if null/undefined is passed', () => {
-    expect(generateBlockCodeFromLabel(null)).toBeNull()
-    expect(generateBlockCodeFromLabel(undefined)).toBeUndefined()
+  it('should return empty string if null/undefined is passed', () => {
+    expect(generateBlockCodeFromLabel(null)).toBe('')
+    expect(generateBlockCodeFromLabel(undefined)).toBe('')
   })
 
   it('should return the same string if no spaces or parentheses are present', () => {

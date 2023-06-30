@@ -27,6 +27,6 @@ export function incrementBlockLabelCopyNumber(oldLabel: string): string {
 export function prefixBlockLabelWithNextAvailableCopyNumber(blockLabel: string, allBlockLabels: IBlock['label'][]): string {
   do {
     blockLabel = incrementBlockLabelCopyNumber(blockLabel)
-  } while (!allBlockLabels.includes(blockLabel))
+  } while (allBlockLabels.includes(blockLabel))
   return blockLabel
 }
