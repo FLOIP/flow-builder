@@ -21,23 +21,24 @@ describe('prefixBlockLabelWithNextAvailableCopyNumber', () => {
     const originalLabel = 'AAA'
     const allBlockLabels = [
       'AAA',
-      // gap
-      '(Copy 2) AAA',
+      // (Copy) AAA - missing
       '(Copy 3) AAA',
+      '(Copy 2) AAA',
     ]
     expect(prefixBlockLabelWithNextAvailableCopyNumber(originalLabel, allBlockLabels))
       .toBe('(Copy) AAA')
   })
 
   it('generates label ignoring preceding "gaps"', () => {
-    const originalLabel = '(Copy 2) AAA'
+    const originalLabel = '(Copy 3) AAA'
     const allBlockLabels = [
       'AAA',
-      // gap
-      '(Copy 2) AAA',
+      // (Copy) AAA - missing
       '(Copy 3) AAA',
+      '(Copy 2) AAA',
+      '(Copy 4) AAA',
     ]
     expect(prefixBlockLabelWithNextAvailableCopyNumber(originalLabel, allBlockLabels))
-      .toBe('(Copy 4) AAA')
+      .toBe('(Copy 5) AAA')
   })
 })
