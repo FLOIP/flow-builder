@@ -589,6 +589,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return duplicatedBlock
   },
 
+  /**
+   * Call this before adding the duplicated block to the flow.blocks.
+   * blockId is the uuid of the original block.
+   */
   flow_generateLabelForBlockDuplicate({state}, {flowId, blockId}: {flowId: string, blockId: IBlock['uuid']}): string | undefined {
     const flow = findFlowWith(flowId || state.first_flow_id || '', state as unknown as IContext)
     const block: IBlock = findBlockWith(blockId, flow)
@@ -630,11 +634,16 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   async flow_duplicateAllSelectedBlocks({state, dispatch}): Promise<string[]> {
-    const duplicateBlockActions = state.selectedBlocks.map((blockId: IBlock['uuid']) =>
-      dispatch('flow_duplicateBlock', {blockId}))
+    const newBlockUuids: string[] = []
 
-    const newBlocks: IBlock[] = await Promise.all(duplicateBlockActions)
-    const newBlockUuids = newBlocks.map(block => block.uuid)
+    // We need to duplicate blocks one by one rather than in parallel
+    // because blocks get prefixed with `(Copy N)` and need an up-to-date list of all block labels for that.
+    // eslint-disable-next-line no-restricted-syntax
+    for (const blockId of state.selectedBlocks) {
+      // eslint-disable-next-line no-await-in-loop
+      const duplicatedBlock: IBlock = await dispatch('flow_duplicateBlock', {blockId})
+      newBlockUuids.push(duplicatedBlock.uuid)
+    }
 
     // make a copy to isolate from block selection changes
     state.selectedBlocks = [...newBlockUuids]
