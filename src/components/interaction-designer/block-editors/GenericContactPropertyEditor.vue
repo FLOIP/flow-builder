@@ -52,7 +52,7 @@
       </validation-message>
 
       <!--Contact property value editor with actions-->
-      <template v-if="flowSelectedContactPropertyField !== null">
+      <template v-if="flowSelectedContactPropertyField !== null && !forceUsingBlockValue">
         <label>{{ 'flow-builder.value' | trans }}</label>
         <div
           v-if="isBlockInteractive"
@@ -62,9 +62,9 @@
             class="custom-control custom-radio">
             <input
               id="setProp"
+              v-model="propertyValueAction"
               type="radio"
               name="contactPropAction"
-              v-model="propertyValueAction"
               :value="PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE"
               class="custom-control-input">
             <label
@@ -81,9 +81,9 @@
             class="custom-control custom-radio">
             <input
               id="clearProp"
+              v-model="propertyValueAction"
               type="radio"
               name="contactPropAction"
-              v-model="propertyValueAction"
               :value="PROPERTY_VALUE_ACTION.OPEN_EXPRESSION"
               class="custom-control-input">
             <label
@@ -140,6 +140,7 @@ const BLOCK_RESPONSE_EXPRESSION = '@block.value'
 export class GenericContactPropertyEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop({default: false}) readonly disableExpressionInput!: boolean
+  @Prop({default: false}) readonly forceUsingBlockValue!: boolean
 
   PROPERTY_VALUE_ACTION = {
     OPEN_EXPRESSION: 'openExpression',
@@ -169,11 +170,21 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
 
   set shouldSetContactProperty(value: boolean) {
     if (value) {
+      let propertyValue
+
+      if (this.forceUsingBlockValue) {
+        propertyValue = BLOCK_RESPONSE_EXPRESSION
+      } else {
+        propertyValue = this.shouldUseOpenExpression
+          ? EMPTY_STRING_EXPRESSION
+          : this.propertyValue ?? ''
+      }
+
       this.block_setContactPropertyOnIndex({
         blockId: this.block.uuid,
         index: 0,
         propertyKey: this.propertyKey ?? '',
-        propertyValue: this.shouldUseOpenExpression ? EMPTY_STRING_EXPRESSION : this.propertyValue ?? '',
+        propertyValue,
       })
     } else {
       this.block_removeConfigByKey({blockId: this.block.uuid, key: 'set_contact_property'})
@@ -184,7 +195,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
     const isInteractive = this.isBlockInteractive
     const hasNoExpressionInput = this.disableExpressionInput || this.propertyValue === BLOCK_RESPONSE_EXPRESSION
 
-    if (isInteractive && (hasNoExpressionInput)) {
+    if ((isInteractive && hasNoExpressionInput) || this.forceUsingBlockValue) {
       return this.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE
     } else {
       return this.PROPERTY_VALUE_ACTION.OPEN_EXPRESSION
@@ -192,7 +203,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
   }
 
   set propertyValueAction(value: string) {
-    if (value === this.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE) {
+    if (value === this.PROPERTY_VALUE_ACTION.FROM_CURRENT_BLOCK_RESPONSE || this.forceUsingBlockValue) {
       this.$emit('updateShouldUseCurrentBlockResponse', true)
       this.updateFirstContactPropertyValue(BLOCK_RESPONSE_EXPRESSION)
     } else {
@@ -264,7 +275,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
   get subscriberPropertyFieldsForSelector(): IContactPropertyOptionForUISelector[] {
     return map(this.subscriberPropertyFields, (field: IContactPropertyOption) => {
       let shouldDisable
-      if (this.propertyValue === '') {
+      if (this.propertyValue === '' || this.forceUsingBlockValue) {
         // users choose to set the contact prop from "expression" value
         shouldDisable = true
       } else {
