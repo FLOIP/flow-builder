@@ -593,9 +593,9 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     const flow = findFlowWith(flowId || state.first_flow_id || '', state as unknown as IContext)
     const block: IBlock = findBlockWith(blockId, flow)
 
-    if (block.label === undefined) {
+    if (block.label === undefined || block.label === '') {
       // this helps us trigger validation error for duplicated block's name if the original block had one
-      return undefined
+      return block.label
     } else {
       return prefixBlockLabelWithNextAvailableCopyNumber(block.label, flow.blocks.map(block => block.label))
     }
