@@ -1,0 +1,4 @@
+.autosuggest-dropdown .dropdown-menu>li>a {
+    white-space: normal;
+    overflow-wrap: break-word;
+}
