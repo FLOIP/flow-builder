@@ -69,6 +69,7 @@ export declare class InteractionDesigner extends InteractionDesigner_base {
     }) => void;
     activated(): void;
     created(): void;
+    beforeMount(): void;
     /** @note - mixin's mount() is called _before_ local mount() (eg. InteractionDesigner.legacy::mount() is 1st) */
     mounted(): Promise<void>;
     beforeDestroy(): void;

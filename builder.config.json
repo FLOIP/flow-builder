@@ -417,7 +417,7 @@
       },
       {
         "id": "14",
-        "name": "my group with a very long name that should not be truncated"
+        "name": "my group with anextremelylonggroupnameyoucan'tevenbelieveit that should not be truncated"
       }
     ],
     "languageNames": {"1": "English", "2": "Spanish"},
