@@ -4,6 +4,7 @@ import { IUndoRedoState } from './undoRedo';
 import { IFlowsState } from './flow';
 import { IBuilderState } from './builder';
 import { IValidationState } from './validation';
+export * from './flow/utils';
 export interface IRootState {
     builder: IBuilderState;
     flow: IFlowsState;

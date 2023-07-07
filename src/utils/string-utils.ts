@@ -1,21 +1,3 @@
-import {snakeCase} from 'lodash'
-
-/**
- * Snake case only non digit text
- * eg:
- *  - input: "01 a23 b45 c67c 89de"
- *  - output: "01_a23_b45_c67_c89_de"
- * @param value
- */
-// eslint-disable-next-line import/prefer-default-export
-export function snakeCaseNonDigits(value?: string | null) {
-  if (value === null || value === undefined) {
-    return value
-  }
-
-  return snakeCase(value).replace(/_(\d+)/g, '$1')
-}
-
 /**
  * Snake case on spaces only
  * eg:
@@ -25,10 +7,21 @@ export function snakeCaseNonDigits(value?: string | null) {
  * @param value
  * @param char
  */
-export function snakeCaseOnSpaces(value?: string | null, char = '_') {
-  if (value === null || value === undefined) {
-    return value
-  }
+function snakeCaseOnSpaces(value: string, char = '_'): string {
+  // we are not using replaceAll because it is not available in Node 14 that Jest uses
+  return value.replace(/ /g, char).toLowerCase()
+}
 
-  return value.replaceAll(' ', char).toLowerCase()
+function snakeCaseOnParentheses(value: string, char = '_'): string {
+  return value
+    // replace parentheses
+    .replace(/[)(]/g, char)
+    // remove all underscores at the beginning
+    .replace(/^_+/, '')
+    .toLowerCase()
+}
+
+// eslint-disable-next-line import/prefer-default-export
+export function generateBlockCodeFromLabel(label: string | undefined): string {
+  return snakeCaseOnParentheses(snakeCaseOnSpaces(label ?? ''))
 }
