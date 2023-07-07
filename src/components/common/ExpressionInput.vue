@@ -4,28 +4,23 @@
       v-if="label"
       :class="labelClass">{{ label }}</label>
 
-    <div class="input-group d-flex flex-column">
+    <div class="input-group">
       <div
         v-if="prependText"
-        class="input-group-prepend flex-row">
+        class="input-group-prepend">
         <span class="input-group-text">{{ prependText }}</span>
       </div>
-
-      <div class="flex-row">
-        <textarea
-          ref="input"
-          v-model="expression"
-          :class="['form-control', {'is-invalid': isInvalid}]"
-          :disabled="disabled"
-          :rows="rows"
-          :placeholder="placeholder"
-          @click="handleClick()"
-          @input="$emit('input', $event.target.value)" />
-      </div>
-      <div
-        ref="suggest"
-        class="cloned-auto-suggest-content flex-row" />
+      <textarea
+        ref="input"
+        v-model="expression"
+        :class="['form-control', {'is-invalid': isInvalid}]"
+        :disabled="disabled"
+        :rows="rows"
+        :placeholder="placeholder"
+        @click="handleClick()"
+        @input="$emit('input', $event.target.value)" />
     </div>
+    <div ref="suggest" />
     <slot />
   </div>
 </template>
@@ -43,7 +38,8 @@ import {getSuggestions} from '@/lib/suggestions'
 
 interface IAutoSuggest {
   dropdown: {
-    dropdown: HTMLElement,
+    dropdown: HTMLDivElement,
+    dropdownContent: HTMLUListElement,
   },
 }
 
@@ -112,7 +108,11 @@ export class ExpressionInput extends mixins(Lang) {
     // override position which came from AutoSuggest original code
     this.autoSuggestDropdown.style.position = 'relative'
     this.autoSuggestDropdown.style.left = '0px'
-    this.autoSuggestDropdown.style.top = `0px`
+    this.autoSuggestDropdown.style.top = '0px'
+
+    const {width} = this.refInputElement.getBoundingClientRect()
+    this.autoSuggestDropdown.style.width = `${width}px`
+    this.suggest.dropdown.dropdownContent.style.width = `${width}px`
 
     // move the created autoSuggestDropdown inside the desired dom
     this.refAutoSuggestElement?.appendChild(this.autoSuggestDropdown)

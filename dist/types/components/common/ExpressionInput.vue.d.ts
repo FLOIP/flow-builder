@@ -4,7 +4,8 @@ import { IFlow } from '@floip/flow-runner';
 import { ISubscriberPropertyField, ISuggestion } from '../../lib/types';
 interface IAutoSuggest {
     dropdown: {
-        dropdown: HTMLElement;
+        dropdown: HTMLDivElement;
+        dropdownContent: HTMLUListElement;
     };
 }
 declare const ExpressionInput_base: import("vue-class-component/lib/declarations").VueClass<Lang>;
