@@ -20,6 +20,7 @@ export declare class ExpressionInput extends ExpressionInput_base {
     readonly prependText: string;
     readonly disabled: boolean;
     readonly disabledAutoComplete: boolean;
+    readonly cypressDataAttribute: string;
     suggest: IAutoSuggest;
     get autoSuggestDropdown(): HTMLElement;
     get refAutoSuggestElement(): HTMLElement;

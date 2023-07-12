@@ -51,5 +51,5 @@ export declare const store: Module<IBuilderState, IRootState>;
 export default store;
 export declare function createDefaultBlockTypeInstallerFor(blockType: IBlock['type'], storeForBlockType: Module<any, IRootState>): (builder: Vue) => true | void;
 export declare function generateConnectionLayoutKeyFor(source: IBlock, target: IBlock): ConnectionLayout;
-export declare function computeBlockCanvasCoordinates(block?: IBlock | null): IBlockUIMetadataCanvasCoordinates;
+export declare function computeBlockCanvasCoordinates(prevBlock?: IBlock | null): IBlockUIMetadataCanvasCoordinates;
 export declare function getViewportCenter(): IPosition;
