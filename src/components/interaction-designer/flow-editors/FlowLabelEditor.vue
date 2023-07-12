@@ -5,8 +5,8 @@
       :valid-state="validState"
       :label="'flow-builder.flow-label' | trans"
       :placeholder="'flow-builder.enter-flow-label' | trans"
-      :class="{ 'is-invalid': isInvalid }" 
-      :data-cy='"Open-response-label"'/>
+      :class="{ 'is-invalid': isInvalid }"
+      data-cy="Open-response-label" />
   </div>
 </template>
 

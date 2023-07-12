@@ -1,6 +1,8 @@
 <template>
   <!--Contact property editor for all block types-->
-  <div class="generic-contact-property-editor" data-cy="generic-contact-property--editor">
+  <div
+    class="generic-contact-property-editor"
+    data-cy="generic-contact-property--editor">
     <hr>
     <label class="text-primary">{{ 'flow-builder.contact-properties' | trans }}</label>
     <div class="custom-control custom-checkbox">
@@ -27,7 +29,9 @@
       <validation-message
         #input-control="{ isValid }"
         :message-key="`block/${block.uuid}/config/set_contact_property/0/property_key`">
-        <div class="block-contact-property-key" data-cy="contact-property--selector">
+        <div
+          class="block-contact-property-key"
+          data-cy="contact-property--selector">
           <div v-if="hasSubscriberPropertyFields">
             <label for="contact-property-selector">{{ trans('flow-builder.property') }}</label>
             <vue-multiselect

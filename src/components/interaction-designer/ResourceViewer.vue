@@ -1,5 +1,7 @@
 <template>
-  <div class="resource-viewer" data-cy="resource-viewer--page">
+  <div
+    class="resource-viewer"
+    data-cy="resource-viewer--page">
     <slot name="vendor-header" />
     <div class="resource-viewer-contents">
       <resource-viewer-block

@@ -1,5 +1,7 @@
 <template>
-  <div class="name-editor mt-3" data-cy="name--editor">
+  <div
+    class="name-editor mt-3"
+    data-cy="name--editor">
     <validation-message :message-key="`block/${block.uuid}/name`">
       <template #input-control="{ isValid }">
         <div v-if="editBlockName || isValid === false">

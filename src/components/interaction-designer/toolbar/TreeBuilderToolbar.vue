@@ -161,8 +161,8 @@
                   'btn-primary': hasFlowChanges
                 }"
                 :disabled="isSavingDisabled"
-                @click="handlePersistFlow()"
-                data-cy="save--btn">
+                data-cy="save--btn"
+                @click="handlePersistFlow()">
                 {{ saveButtonText }}
               </button>
             </div>

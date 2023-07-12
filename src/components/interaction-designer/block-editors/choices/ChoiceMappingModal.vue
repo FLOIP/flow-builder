@@ -17,8 +17,8 @@
       ok-only
       size="lg">
       <div
-        data-cy="choice-mapping-modal"
         v-if="shouldHaveTabs"
+        data-cy="choice-mapping-modal"
         class="choice-mapping-navs">
         <nav>
           <div

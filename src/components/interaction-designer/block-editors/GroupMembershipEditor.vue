@@ -1,5 +1,7 @@
 <template>
-  <div class="group-membership-editor" data-cy="group-membership--editor">
+  <div
+    class="group-membership-editor"
+    data-cy="group-membership--editor">
     <div class="form-group">
       <label class="text-primary">{{ trans('flow-builder.action-label') }}</label>
       <p>{{ trans('flow-builder.group-membership-action-hint') }}</p>
@@ -38,8 +40,8 @@
             :show-labels="false"
             track-by="group_key"
             label="group_name"
-            @seach-change="onSearchChange"
             data-cy="group-membership--selector"
+            @seach-change="onSearchChange"
             @tag="onGroupAdd" />
         </template>
       </ValidationMessage>

@@ -1,5 +1,7 @@
 <template>
-  <div class="contact-property-editor" data-cy="contact-property--editor">
+  <div
+    class="contact-property-editor"
+    data-cy="contact-property--editor">
     <div class="form-group">
       <label class="text-primary">{{ 'flow-builder.action-label' | trans }}</label>
       <p>{{ 'flow-builder.contact-property-action-hint' | trans }}</p>
