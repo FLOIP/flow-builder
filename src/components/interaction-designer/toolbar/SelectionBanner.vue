@@ -13,6 +13,7 @@
       <div v-if="!deleting">
         <button
           class="btn btn-danger btn-sm mr-2"
+          data-cy="builder-toolbar--delete-x-block--btn"
           @click="deleting = true">
           <font-awesome-icon :icon="['far', 'trash-alt']" />
           {{ 'flow-builder.delete' | trans }}
@@ -20,6 +21,7 @@
 
         <button
           class="btn btn-outline-dark btn-sm mr-2"
+          data-cy="builder-toolbar--duplicate-x-block--btn"
           @click.prevent="handleMultipleDuplicate">
           <font-awesome-icon :icon="['fac', 'copy']" />
           {{ 'flow-builder.duplicate' | trans }}
@@ -44,6 +46,7 @@
 
         <button
           class="btn btn-danger btn-sm mr-2"
+          data-cy="builder-toolbar--confirm-delete-x-block--btn"
           @click="confirmMultipleDeletion">
           {{ 'flow-builder.yes-delete' | trans }}
         </button>

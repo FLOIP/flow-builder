@@ -8,12 +8,14 @@
           v-b-tooltip.hover="trans('flow-builder.deselect-block')"
           :icon="['far', 'check-circle']"
           class="cursor-pointer text-info"
+          data-cy="block-toolbar--deselect-block--btn"
           @click.stop="isEditable && block_deselect({ blockId: block.uuid })" />
         <font-awesome-icon
           v-if="!isBlockSelected"
           v-b-tooltip.hover="trans('flow-builder.select-block')"
           :icon="['far', 'circle']"
           class="cursor-pointer"
+          data-cy="block-toolbar--select-block--btn"
           @click.stop="isEditable && block_select({ blockId: block.uuid })" />
       </template>
     </div>
@@ -35,6 +37,7 @@
               'btn-secondary': isWaitingForConnection || isActivatedByConnection,
             }"
             class="btn btn-xs ml-1"
+            data-cy="block-toolbar--confirm-deletion--btn"
             @click.stop="handleDeleteBlock">
             <small>{{ trans('flow-builder.delete-block') }}</small>
           </button>
@@ -47,6 +50,7 @@
             'text-danger': !isWaitingForConnection && !isActivatedByConnection,
           }"
           class="cursor-pointer"
+          data-cy="block-toolbar--delete--btn"
           @click.stop="isDeleting = true" />
       </div>
       <!--Duplicate-->
@@ -56,6 +60,7 @@
           v-b-tooltip.hover="trans('flow-builder.tooltip-duplicate-block')"
           :icon="['fac', 'copy']"
           class="cursor-pointer"
+          data-cy="block-toolbar--duplicate--btn"
           @click.stop="handleDuplicateBlock" />
       </div>
     </div>

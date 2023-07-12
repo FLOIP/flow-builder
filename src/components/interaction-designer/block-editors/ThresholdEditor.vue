@@ -1,7 +1,9 @@
 <template>
   <ValidationMessage :message-key="`block/${block.uuid}/config/accuracy_threshold_meters`">
     <template #input-control="{ isValid }">
-      <div class="threshold-editor">
+      <div
+        class="threshold-editor"
+        data-cy="accuracy-threshold--editor">
         <float-editor
           v-model.number="threshold"
           :min="0"

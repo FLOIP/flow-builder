@@ -23,7 +23,8 @@
               v-model="destinationFlowId"
               :label="'flow-builder.destination-flow' | trans"
               :placeholder="'flow-builder.enter-destination-flow-id' | trans"
-              :valid-state="isValid" />
+              :valid-state="isValid"
+              data-cy="destination-flow-id--input" />
           </div>
         </validation-message>
       </slot>
@@ -48,7 +49,7 @@ import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
 import {IRunFlowBlock} from '@floip/flow-runner/src/model/block/IRunFlowBlock'
-import {IBlock, IFlow} from '@floip/flow-runner'
+import {IBlock} from '@floip/flow-runner'
 import RunAnotherFlowStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_RunFlowBlockStore'
 import Lang from '@/lib/filters/lang'
 import {createDefaultBlockTypeInstallerFor} from '@/store/builder'

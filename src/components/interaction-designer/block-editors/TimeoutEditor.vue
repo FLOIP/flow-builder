@@ -2,7 +2,9 @@
   <validation-message
     :message-key="`block/${block.uuid}/config/accuracy_timeout_seconds`">
     <template #input-control="{ isValid }">
-      <div class="timeout-editor">
+      <div
+        class="timeout-editor"
+        data-cy="accuracy-timeout--editor">
         <numeric-editor
           v-model.number="timeout"
           :regex-numeric-filtering="'[0-9]'"

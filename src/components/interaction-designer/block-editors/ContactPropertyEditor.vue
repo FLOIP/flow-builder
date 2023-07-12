@@ -1,5 +1,7 @@
 <template>
-  <div class="contact-property-editor">
+  <div
+    class="contact-property-editor"
+    data-cy="contact-property--editor">
     <div class="form-group">
       <label class="text-primary">{{ 'flow-builder.action-label' | trans }}</label>
       <p>{{ 'flow-builder.contact-property-action-hint' | trans }}</p>
@@ -11,6 +13,7 @@
             type="radio"
             name="contactPropAction"
             :value="PROPERTY_ACTION.SET"
+            data-cy="set-contact-property--radio"
             class="custom-control-input">
           <label
             class="custom-control-label font-weight-normal"
@@ -25,6 +28,7 @@
             type="radio"
             name="contactPropAction"
             :value="PROPERTY_ACTION.CLEAR"
+            data-cy="clear-contact-property--radio"
             class="custom-control-input">
           <label
             class="custom-control-label font-weight-normal"
@@ -43,6 +47,7 @@
             :label="'flow-builder.contact-property-label' | trans"
             :label-class="'font-weight-bold'"
             :placeholder="'flow-builder.enter-contact-property-label' | trans"
+            data-cy="contact-property-key--input"
             :valid-state="isValid" />
         </div>
       </validation-message>
@@ -57,6 +62,7 @@
           :label-class="'font-weight-bold'"
           :current-expression="propertyValue"
           :valid-state="isValid"
+          data-cy="contact-property-value--expression-input"
           @commitExpressionChange="updatePropertyValue" />
       </validation-message>
     </div>

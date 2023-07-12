@@ -1,5 +1,7 @@
 <template>
-  <div class="label-editor">
+  <div
+    class="label-editor"
+    data-cy="label--editor">
     <section class="mb-3">
       <label class="text-primary">{{ 'flow-builder.title' | trans }}</label>
       <validation-message

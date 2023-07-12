@@ -9,6 +9,7 @@
         :label="trans('flow-builder.max-duration-in-seconds')"
         :placeholder="trans('flow-builder.enter-value')"
         :valid-state="isValid"
+        data-cy="max-duration--input"
         class="max-duration-seconds-editor" />
     </template>
   </validation-message>

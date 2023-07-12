@@ -3,6 +3,7 @@
     :id="`block/${block.uuid}`"
     :ref="`block/${block.uuid}`"
     class="block"
+    :data-cy="`block--${block.uuid}`"
     @click.stop="selectBlock"
     @mouseenter="setIsMouseOnBlock(true)"
     @mouseleave="setIsMouseOnBlock(false)">
@@ -31,6 +32,7 @@
       @mouseleave.native="isConnectionCreateActive && deactivateBlockAsDropZone()">
       <header
         :id="`block/${block.uuid}/handle`"
+        :data-cy="`block-handle--${block.uuid}`"
         class="block-target draggable-handle"
         :class="{
           'initial': false,
@@ -70,6 +72,7 @@
           :key="exit.uuid"
           :exit="exit"
           :block="block"
+          :data-cy="`exit--${exit.uuid}`"
           @connection-create-start="setIsConnectionSource(true)"
           @connection-create-end="setIsConnectionSource(false)" />
       </footer>

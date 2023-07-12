@@ -23,6 +23,7 @@
             :placeholder="'flow-builder.enter-message' | trans"
             :current-expression="value"
             :valid-state="isValid"
+            data-cy="log-message--input"
             @commitExpressionChange="commitMessageChange" />
         </validation-message>
       </slot>
@@ -46,7 +47,7 @@
 import {namespace} from 'vuex-class'
 import {Component, Prop} from 'vue-property-decorator'
 
-import {IFlow, IBlock} from '@floip/flow-runner'
+import {IBlock} from '@floip/flow-runner'
 import {ILogBlock} from '@floip/flow-runner/src/model/block/ILogBlock'
 
 import LogStore, {BLOCK_TYPE} from '@/store/flow/block-types/Core_LogBlockStore'

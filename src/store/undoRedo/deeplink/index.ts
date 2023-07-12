@@ -38,7 +38,20 @@ export function getDeepLink({changedKeys, flows}: {changedKeys: string[], flows:
     }
   } else if (BLOCK_CHANGE_REGEX.test(key)) {
     const {flowIndex, blockIndex, fieldPath} = parseBlockChangeParams(key)!
-    const blockId = flows.flows[flowIndex].blocks[blockIndex].uuid
+    const blockId = flows.flows[flowIndex].blocks[blockIndex]?.uuid ?? null
+
+    // If the block was deleted, we can't navigate to it
+    if (blockId === null) {
+      return {
+        routeName: 'flow-canvas',
+        routeParams: {
+          id: flows.flows[flowIndex].uuid,
+          component: 'builder',
+          mode: 'edit',
+        },
+      }
+    }
+
     return {
       routeName: 'block-scroll-to-anchor',
       routeParams: {

@@ -4,6 +4,7 @@
       v-b-tooltip.hover="undoTooltip"
       class="btn btn-sm btn-outline-primary"
       :disabled="!hasPreviousSnapshot"
+      data-cy="undo--btn"
       @click.stop="handleUndo">
       <font-awesome-icon :icon="['fas', 'undo']" />
     </button>
@@ -11,6 +12,7 @@
       v-b-tooltip.hover="redoTooltip"
       class="btn btn-sm btn-outline-primary"
       :disabled="!hasFutureSnapshot"
+      data-cy="redo--btn"
       @click.stop="handleRedo">
       <font-awesome-icon :icon="['fas', 'redo']" />
     </button>

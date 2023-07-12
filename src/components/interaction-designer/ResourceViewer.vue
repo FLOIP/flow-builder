@@ -1,5 +1,7 @@
 <template>
-  <div class="resource-viewer">
+  <div
+    class="resource-viewer"
+    data-cy="resource-viewer--page">
     <slot name="vendor-header" />
     <div class="resource-viewer-contents">
       <resource-viewer-block
@@ -18,8 +20,7 @@
 import Lang from '@/lib/filters/lang'
 import {debounce} from 'lodash'
 import {mapActions, mapGetters} from 'vuex'
-
-export const DEBOUNCE_FLOW_PERSIST_MS = 1500
+import {DEBOUNCE_FLOW_PERSIST_MS} from '@/lib/constants'
 
 export default {
   name: 'ResourceViewer',

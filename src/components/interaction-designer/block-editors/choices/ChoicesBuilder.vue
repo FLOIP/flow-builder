@@ -1,5 +1,7 @@
 <template>
-  <div class="choices-builder form-group">
+  <div
+    class="choices-builder form-group"
+    data-cy="choices-builder">
     <label class="text-primary">{{ 'flow-builder.choices' | trans }}</label>
 
     <!-- Show non-empty choices -->
@@ -11,6 +13,7 @@
         :key="resource.uuid"
         :index="0"
         class="choices-builder-item"
+        data-cy="choices-builder--editor"
         :prepend-text="(i + 1).toString()"
         :title="resource.uuid"
         :rows="1"
@@ -30,6 +33,7 @@
       v-if="draftResource"
       ref="draftChoice"
       class="choices-builder-item"
+      data-cy="choices-builder--editor-new"
       :prepend-text="(choiceResourcesOrderedByResourcesList.length + 1).toString()"
       :rows="1"
       :placeholder="'Enter choice...'"

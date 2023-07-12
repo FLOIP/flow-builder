@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["es5", "dom"],
+    "types": [
+      "cypress",
+      "node",
+      "@4tw/cypress-drag-drop",
+      "cypress-real-events",
+    ],
+    "strictNullChecks": true
+  },
+  "include": ["**/*.ts", "**/*.js"]
+}

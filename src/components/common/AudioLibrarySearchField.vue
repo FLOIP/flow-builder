@@ -15,6 +15,7 @@
         <button
           :class="{active: isEntireLibraryModeEnabled}"
           class="btn btn-primary dropdown-toggle"
+          data-cy="audio-library-search--btn"
           @click.prevent="toggleAudioLibrary">
           <i class="glyphicon glyphicon-search" />
         </button>

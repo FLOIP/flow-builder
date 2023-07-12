@@ -5,6 +5,15 @@ __metadata:
   version: 6
   cacheKey: 8
 
+"@4tw/cypress-drag-drop@npm:^2.2.4":
+  version: 2.2.4
+  resolution: "@4tw/cypress-drag-drop@npm:2.2.4"
+  peerDependencies:
+    cypress: ^2.1.0 || ^3.1.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0
+  checksum: f437d752569e6c7911a77b2a3222260e662b5f91774b8abeb2c6e2f750073070dbeeebb2ee371b4c0ca515e91071a3320137fc63aff001e438c336671ef30a2e
+  languageName: node
+  linkType: hard
+
 "@achrinza/node-ipc@npm:9.2.2":
   version: 9.2.2
   resolution: "@achrinza/node-ipc@npm:9.2.2"
@@ -4383,6 +4392,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@floip/flow-builder@workspace:."
   dependencies:
+    "@4tw/cypress-drag-drop": ^2.2.4
     "@avcs/autosuggest": ^1.7.5
     "@babel/core": ^7.22.1
     "@babel/plugin-proposal-nullish-coalescing-operator": ^7.18.6
@@ -4444,11 +4454,13 @@ __metadata:
     core-js: ^3.6.5
     cssprefix: ^2.0.16
     cypress: ^12.0.0
+    cypress-real-events: ^1.8.1
     dompurify: ^2.4.0
     eslint: ^7.32.0
     eslint-config-airbnb: ^18.2.1
     eslint-config-airbnb-base: ^14.2.1
     eslint-config-airbnb-typescript: ^12.3.1
+    eslint-plugin-cypress: ^2.13.3
     eslint-plugin-import: ^2.23.4
     eslint-plugin-jest: ^24.3.6
     eslint-plugin-lodash: ^7.2.0
@@ -13155,6 +13167,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cypress-real-events@npm:^1.8.1":
+  version: 1.8.1
+  resolution: "cypress-real-events@npm:1.8.1"
+  peerDependencies:
+    cypress: ^4.x || ^5.x || ^6.x || ^7.x || ^8.x || ^9.x || ^10.x || ^11.x || ^12.x
+  checksum: 48f229335f26f8c225428563e94ca091ab7a00e943a4c953e062135b1d37672edec9cb7667452d894b43528b52924cd1b6061df044ccb0665b9c0965a0fe214f
+  languageName: node
+  linkType: hard
+
 "cypress@npm:^12.0.0":
   version: 12.13.0
   resolution: "cypress@npm:12.13.0"
@@ -14628,6 +14649,17 @@ __metadata:
     eslint:
       optional: true
   checksum: 5da13645daff145a5c922896b258f8bba560722c3767254e458d894ff5fbb505d6dfd945bffa932a5b0ae06714da2379bd41011c4c20d2d59cc83e23895360f7
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-cypress@npm:^2.13.3":
+  version: 2.13.3
+  resolution: "eslint-plugin-cypress@npm:2.13.3"
+  dependencies:
+    globals: ^11.12.0
+  peerDependencies:
+    eslint: ">= 3.2.1"
+  checksum: 9affbcee29e030a4251c4794f7533e8e8c0e3b98ab3470a2c730ed059f733c5857a04c7ac214cc0ca7aeef1b11242e72595de7fc1f6b8b4d4578d9eca10af203
   languageName: node
   linkType: hard
 
@@ -16539,7 +16571,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^11.1.0":
+"globals@npm:^11.1.0, globals@npm:^11.12.0":
   version: 11.12.0
   resolution: "globals@npm:11.12.0"
   checksum: 67051a45eca3db904aee189dfc7cd53c20c7d881679c93f6146ddd4c9f4ab2268e68a919df740d39c71f4445d2b38ee360fc234428baea1dbdfe68bbcb46979e

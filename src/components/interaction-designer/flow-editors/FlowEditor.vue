@@ -1,5 +1,7 @@
 <template>
-  <div class="flow-editor">
+  <div
+    class="flow-editor"
+    data-cy="flow-editor">
     <h3
       v-if="flowHeader"
       class="no-room-above">
