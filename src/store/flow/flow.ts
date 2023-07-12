@@ -39,6 +39,8 @@ import {computeBlockCanvasCoordinates} from '@/store/builder'
 import {ErrorObject} from 'ajv'
 import {ConfigFieldType, removeFlowValueByPath, updateFlowValueByPath} from '@/store/flow/utils/vuexBlockAndFlowHelpers'
 import {IFlowsState} from '@/store/flow/index'
+import {prefixBlockLabelWithNextAvailableCopyNumber} from '@/store/flow/utils/blockLabelHelpers'
+import {generateBlockCodeFromLabel} from '@/utils/string-utils'
 import {mergeFlowContainer} from './utils/importHelpers'
 
 export const stateFactory = (): IFlowsState => ({
@@ -551,11 +553,11 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     // @throws ValidationException when block absent
     const block: IBlock = findBlockWith(blockId, flow)
 
-    // Deep clone
     const duplicatedBlock: IBlock = cloneDeep(block)
-
-    // Set UUIDs, and remove non relevant props
     duplicatedBlock.uuid = await (new IdGeneratorUuidV4()).generate()
+    // note: make sure to call flow_generateLabelForBlockDuplicate before the duplicated block is added to flow.blocks
+    duplicatedBlock.label = await dispatch('flow_generateLabelForBlockDuplicate', {flowId, blockId})
+    duplicatedBlock.name = generateBlockCodeFromLabel(duplicatedBlock.label)
 
     await Promise.all(
       duplicatedBlock.exits.map(async (item) => {
@@ -587,6 +589,22 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     return duplicatedBlock
   },
 
+  /**
+   * Call this before adding the duplicated block to the flow.blocks.
+   * blockId is the uuid of the original block.
+   */
+  flow_generateLabelForBlockDuplicate({state}, {flowId, blockId}: {flowId: string, blockId: IBlock['uuid']}): string | undefined {
+    const flow = findFlowWith(flowId || state.first_flow_id || '', state as unknown as IContext)
+    const block: IBlock = findBlockWith(blockId, flow)
+
+    if (block.label === undefined || block.label === '') {
+      // this helps us trigger validation error for duplicated block's name if the original block had one
+      return block.label
+    } else {
+      return prefixBlockLabelWithNextAvailableCopyNumber(block.label, flow.blocks.map(block => block.label))
+    }
+  },
+
   async flow_duplicateResource({getters, dispatch}, {resourceUuid}: {resourceUuid: IResource['uuid']}): Promise<IResource['uuid']> {
     const oldResource: IResource | undefined = getters.resourcesByUuidOnActiveFlow[resourceUuid]
     if (oldResource === undefined) {
@@ -616,11 +634,16 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   },
 
   async flow_duplicateAllSelectedBlocks({state, dispatch}): Promise<string[]> {
-    const duplicateBlockActions = state.selectedBlocks.map((blockId: IBlock['uuid']) =>
-      dispatch('flow_duplicateBlock', {blockId}))
+    const newBlockUuids: string[] = []
 
-    const newBlocks: IBlock[] = await Promise.all(duplicateBlockActions)
-    const newBlockUuids = newBlocks.map(block => block.uuid)
+    // We need to duplicate blocks one by one rather than in parallel
+    // because blocks get prefixed with `(Copy N)` and need an up-to-date list of all block labels for that.
+    // eslint-disable-next-line no-restricted-syntax
+    for (const blockId of state.selectedBlocks) {
+      // eslint-disable-next-line no-await-in-loop
+      const duplicatedBlock: IBlock = await dispatch('flow_duplicateBlock', {blockId})
+      newBlockUuids.push(duplicatedBlock.uuid)
+    }
 
     // make a copy to isolate from block selection changes
     state.selectedBlocks = [...newBlockUuids]
