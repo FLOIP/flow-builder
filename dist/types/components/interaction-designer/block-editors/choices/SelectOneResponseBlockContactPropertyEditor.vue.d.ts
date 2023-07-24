@@ -5,10 +5,6 @@ export declare const SelectOneResponseBlockContactPropertyEditor: import("vue").
         type: PropType<ISelectOneResponseBlock>;
         required: true;
     };
-    showCreateContactPropertyOption: {
-        type: BooleanConstructor;
-        default: boolean;
-    };
 }, {}, {}, {
     contactPropertyName(): any;
     contactProperty(): any;
@@ -43,11 +39,5 @@ export declare const SelectOneResponseBlockContactPropertyEditor: import("vue").
         type: PropType<ISelectOneResponseBlock>;
         required: true;
     };
-    showCreateContactPropertyOption: {
-        type: BooleanConstructor;
-        default: boolean;
-    };
-}>>, {
-    showCreateContactPropertyOption: boolean;
-}>;
+}>>, {}>;
 export default SelectOneResponseBlockContactPropertyEditor;
