@@ -149,10 +149,18 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
   @Prop() readonly block!: IBlock
   @Prop({default: false}) readonly disableExpressionInput!: boolean
   @Prop({default: false}) readonly forceUsingBlockValue!: boolean
+  @Prop({default: false}) readonly showCreateContactPropertyOption!: boolean
 
   PROPERTY_VALUE_ACTION = {
     OPEN_EXPRESSION: 'openExpression',
     FROM_CURRENT_BLOCK_RESPONSE: 'fromCurrentBlockResponse',
+  }
+
+  CREATE_CONTACT_PROPERTY_OPTION: IContactPropertyOption = {
+    id: 'confirm_contact_property_creation',
+    name: 'confirm_contact_property_creation',
+    display_label: `+ ${this.trans('flow-builder.new-property')}`,
+    data_type: 'confirm_contact_property_creation',
   }
 
   created(): void {
@@ -270,6 +278,12 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
   }
 
   set flowSelectedContactPropertyField(option: IContactPropertyOption | null) {
+    if (option?.name === this.CREATE_CONTACT_PROPERTY_OPTION.name) {
+      // we are not updating the block config, just emitting
+      this.$emit('onCreateContactPropertySelected')
+      return
+    }
+
     if (this.flowSelectedContactPropertyField?.data_type !== option?.data_type) {
       this.$emit('changeContactPropertyType')
     }
@@ -281,7 +295,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
   }
 
   get subscriberPropertyFieldsForSelector(): IContactPropertyOptionForUISelector[] {
-    return map(this.subscriberPropertyFields, (field: IContactPropertyOption) => {
+    const fields = map(this.subscriberPropertyFields, (field: IContactPropertyOption) => {
       let shouldDisable
       if (this.propertyValue === '' || this.forceUsingBlockValue) {
         // users choose to set the contact prop from "expression" value
@@ -292,6 +306,12 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
 
       return {...field, $isDisabled: !shouldDisable}
     })
+
+    if (this.showCreateContactPropertyOption) {
+      fields.push({...this.CREATE_CONTACT_PROPERTY_OPTION})
+    }
+
+    return fields
   }
 
   toggleSetContactProperty(): void {
