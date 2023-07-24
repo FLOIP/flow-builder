@@ -3,8 +3,6 @@
     <generic-contact-property-editor
       :block="block"
       :disable-expression-input="true"
-      :show-create-contact-property-option="showCreateContactPropertyOption"
-      @onCreateContactPropertySelected="$emit('onCreateContactPropertySelected', $event)"
       @toggleSetContactProperty="onSetContactPropertyToggle"
       @changeContactPropertyType="resetMapping"
       @updateShouldUseCurrentBlockResponse="onShouldUseCurrentBlockResponseUpdate">
@@ -91,10 +89,6 @@ export const SelectOneResponseBlockContactPropertyEditor = defineComponent({
     block: {
       type: Object as PropType<ISelectOneResponseBlock>,
       required: true,
-    },
-    showCreateContactPropertyOption: {
-      type: Boolean,
-      default: false,
     },
   },
 
