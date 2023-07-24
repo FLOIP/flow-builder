@@ -308,7 +308,7 @@ export class GenericContactPropertyEditor extends mixins(Lang) {
     })
 
     if (this.showCreateContactPropertyOption) {
-      fields.push({...this.CREATE_CONTACT_PROPERTY_OPTION})
+      fields.push({...this.CREATE_CONTACT_PROPERTY_OPTION, $isDisabled: false})
     }
 
     return fields
