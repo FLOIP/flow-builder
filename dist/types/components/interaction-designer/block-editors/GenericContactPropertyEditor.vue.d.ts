@@ -7,10 +7,12 @@ export declare class GenericContactPropertyEditor extends GenericContactProperty
     readonly block: IBlock;
     readonly disableExpressionInput: boolean;
     readonly forceUsingBlockValue: boolean;
+    readonly showCreateContactPropertyOption: boolean;
     PROPERTY_VALUE_ACTION: {
         OPEN_EXPRESSION: string;
         FROM_CURRENT_BLOCK_RESPONSE: string;
     };
+    CREATE_CONTACT_PROPERTY_OPTION: IContactPropertyOption;
     created(): void;
     get isBlockInteractive(): boolean;
     get shouldSetContactProperty(): boolean;

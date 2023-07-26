@@ -1,0 +1,535 @@
+{
+  "ui": {
+    "routes": {
+      "languages": {
+        "persistLanguage": {
+          "name": "persistLanguage",
+          "path": "\/backend\/languages",
+          "methods": ["POST"]
+        }
+      },
+      "flows": {
+        "persistFlow": {
+          "name": "persistFlow",
+          "path": "\/backend\/flows",
+          "methods": ["POST", "PUT"]
+        },
+        "fetchFlowServer": {
+          "name": "fetchFlowServer",
+          "path": "\/backend\/flows\/{flowId}",
+          "params": ["flowId"],
+          "methods": ["GET"]
+        },
+        "newFlow": {
+          "name": "newFlow",
+          "path": "\/flows\/new",
+          "methods": ["GET"]
+        },
+        "importFlow": {
+          "name": "importFlow",
+          "path": "\/flows\/import",
+          "methods": ["GET"]
+        },
+        "persistFlowImport": {
+          "name": "persistFlowImport",
+          "path": "\/backend\/flows\/import",
+          "methods": ["POST", "PUT"]
+        },
+        "fetchFlow": {
+          "name": "fetchFlow",
+          "path": "\/flows\/{flowId}",
+          "params": ["flowId"],
+          "methods": ["GET"]
+        },
+        "home": {
+          "name": "home",
+          "path": "\/",
+          "methods": ["GET"]
+        },
+        "cancelImport": {
+          "name": "cancelImport",
+          "path": "\/",
+          "methods": ["GET"]
+        },
+        "cancelCreate": {
+          "name": "cancelCreate",
+          "path": "\/",
+          "methods": ["GET"]
+        },
+        "editFlow": {
+          "name": "editFlow",
+          "path": "\/flows\/{flowId}\/{component?}\/{mode?}",
+          "params": ["flowId", "component", "mode"],
+          "methods": ["GET", "HEAD"]
+        }
+      },
+      "trees": {
+        "resumeableAudioUpload": {
+          "name": "resumeableAudioUpload",
+          "path": "\/audiofiles\/upload",
+          "methods": ["POST", "GET", "HEAD"]
+        },
+        "calltorecordStart": {
+          "name": "calltorecordStart",
+          "path": "\/calltorecord\/start",
+          "params": [],
+          "methods": ["POST", "HEAD"]
+        },
+        "calltorecordStatus": {
+          "name": "calltorecordStatus",
+          "path": "\/calltorecord\/status",
+          "params": [],
+          "methods": ["POST", "HEAD"]
+        }
+      }
+    },
+    "supportedFlowSpecVersionsForImport": ["1.0.0-rc4"],
+    "languages": [
+      {
+        "id": "22",
+        "label": "English",
+        "iso_639_3": "eng"
+      },
+      {
+        "id": "23",
+        "label": "French",
+        "iso_639_3": "fra"
+      }
+    ],
+    "blockClasses": {
+      "Core.Case": {
+        "name": "Core.Case",
+        "type": "Core.Case",
+        "is_interactive": false,
+        "is_branching": true,
+        "category":  2,
+        "menu_category": 3
+      },
+      "Core.Log": {
+        "name": "Core.Log",
+        "type": "Core.Log",
+        "is_interactive": false,
+        "is_branching": false,
+        "category":  0,
+        "menu_category": 5
+      },
+      "Core.Output": {
+        "name": "Core.Output",
+        "type": "Core.Output",
+        "is_interactive": false,
+        "is_branching": false,
+        "category":  0,
+        "menu_category": 5
+      },
+      "Core.RunFlow": {
+        "name": "Core.RunFlow",
+        "type": "Core.RunFlow",
+        "is_interactive": false,
+        "is_branching": false,
+        "category":  0,
+        "menu_category": 5
+      },
+      "Core.SetContactProperty": {
+        "name": "Core.SetContactProperty",
+        "type": "Core.SetContactProperty",
+        "is_interactive": false,
+        "is_branching": false,
+        "category":  0,
+        "menu_category": 2
+      },
+      "Core.SetGroupMembership": {
+        "name": "Core.SetGroupMembership",
+        "type": "Core.SetGroupMembership",
+        "is_interactive": false,
+        "is_branching": false,
+        "category":  0,
+        "menu_category": 2
+      },
+      "MobilePrimitives.Message": {
+        "name": "MobilePrimitives.Message",
+        "type": "MobilePrimitives.Message",
+        "is_interactive": false,
+        "is_branching": false,
+        "category":  1,
+        "menu_category": 1
+      },
+      "MobilePrimitives.SelectOneResponse": {
+        "name": "MobilePrimitives.SelectOneResponse",
+        "type": "MobilePrimitives.SelectOneResponse",
+        "is_interactive": true,
+        "is_branching": true,
+        "category":  2,
+        "menu_category": 1,
+        "divider_before": true,
+        "exits": {
+          "default_branching_type": "EXIT_PER_CHOICE",
+          "primary": {
+            "name": "1",
+            "test": "@block.value != null"
+          },
+          "default": {
+            "name": "Default"
+          }
+        },
+        "explanatory_texts": [
+          {
+            "title": "flow-builder.multiple-choice-mode",
+            "description": "flow-builder.explanation-mcq-mc",
+            "show_for_branching_types": [
+              "EXIT_PER_CHOICE"
+            ]
+          }
+        ]
+      },
+      "MobilePrimitives.SelectManyResponse": {
+        "name": "MobilePrimitives.SelectManyResponse",
+        "type": "MobilePrimitives.SelectManyResponse",
+        "is_interactive": true,
+        "is_branching": true,
+        "category":  2,
+        "menu_category": 1,
+        "exits": {
+          "default_branching_type": "EXIT_PER_CHOICE",
+          "primary": {
+            "name": "1"
+          },
+          "default": {
+            "name": "Default"
+          }
+        }
+      },
+      "MobilePrimitives.NumericResponse": {
+        "name": "MobilePrimitives.NumericResponse",
+        "type": "MobilePrimitives.NumericResponse",
+        "is_interactive": true,
+        "is_branching": false,
+        "category":  1,
+        "menu_category": 1,
+        "exits": {
+          "primary": {
+            "name": "Valid",
+            "test": "@ISNUMBER(block.value)"
+          },
+          "default": {
+            "name": "Default"
+          }
+        },
+        "explanatory_texts": [
+          {
+            "title": "flow-builder.valid",
+            "description": "flow-builder.explanation-numeric-success"
+          },
+          {
+            "title": "flow-builder.default",
+            "description": "flow-builder.explanation-default"
+          }
+        ]
+      },
+      "MobilePrimitives.OpenResponse": {
+        "name": "MobilePrimitives.OpenResponse",
+        "type": "MobilePrimitives.OpenResponse",
+        "is_interactive": true,
+        "is_branching": false,
+        "category":  1,
+        "menu_category": 1
+      },
+      "SmartDevices.LocationResponse": {
+        "name": "SmartDevices.LocationResponse",
+        "type": "SmartDevices.LocationResponse",
+        "is_interactive": true,
+        "is_branching": false,
+        "category":  1,
+        "menu_category": 1,
+        "divider_before": true,
+        "exits": {
+          "primary": {
+            "name": "Valid",
+            "test": "NOT(block.value = false)"
+          },
+          "default": {
+            "name": "Default"
+          }
+        }
+      },
+      "SmartDevices.PhotoResponse": {
+        "name": "SmartDevices.PhotoResponse",
+        "type": "SmartDevices.PhotoResponse",
+        "is_interactive": true,
+        "is_branching": false,
+        "category":  1,
+        "menu_category": 1,
+        "exits": {
+          "primary": {
+            "name": "Valid",
+            "test": "NOT(block.value = false)"
+          },
+          "default": {
+            "name": "Default"
+          }
+        }
+      }
+    },
+    "blockTags": [],
+    "contentBlockTypes": [
+      "MessageBlock",
+      "MultipleChoiceQuestionBlock",
+      "NumericQuestionBlock",
+      "OpenQuestionBlock",
+      "WebhookContentBlock",
+      "RandomOrderMultipleChoiceQuestionBlock",
+      "DirectorySelectionBlock",
+      "MultipleSelectMultipleChoiceQuestionBlock",
+      "WeatherAlertsBlock",
+      "LocationBlock",
+      "CollaborativeFilteringQuestionBlock",
+      "CollaborativeFilteringRatingBlock"
+    ],
+    "callCenterQueues": [],
+    "originalTreeJson": {
+      "id": "1",
+      "details": {
+        "title": "My first Flow",
+        "description": "",
+        "enabledLanguages": ["1"],
+        "hasVoice": 1,
+        "hasUssd": 1,
+        "hasSms": 1,
+        "hasSocial": 0,
+        "hasClipboard": 0,
+        "syncedLanguage": "",
+        "startingBlockKey": "",
+        "savedByUserOrganisationId": null
+      },
+      "treeSetId": "1",
+      "createdAt": {
+        "date": "2020-07-10T12:54:10-06:00"
+      },
+      "editedAt": "2020-07-10T12:54:10-06:00",
+      "updatedAt": {
+        "date": "2020-07-10T12:54:10-06:00"},
+      "otherVersionsCount": 0,
+      "isDuplicateOf": null,
+      "duplicateTree": null,
+      "floipSyncedAt": null,
+      "orgId": null,
+      "blocks": [],
+      "connections": [],
+      "hasVoice": 1,
+      "hasSms": 1,
+      "hasUssd": 1,
+      "hasSocial": 0,
+      "hasClipboard": 0
+    },
+    "originalValidationResults": [],
+    "isTreeImport": 0,
+    "importTreeJson": null,
+    "isEditable": 0,
+    "isEditableLocked": 0,
+    "subscriberCount": 0,
+    "subscriberPropertyFields": [
+      {
+        "id": "10",
+        "name": "name",
+        "display_label": "Name (text)",
+        "data_type": "text"
+      },
+      {
+        "id": "11",
+        "name": "comment",
+        "display_label": "Comment (text)",
+        "data_type": "text"
+      },
+      {
+        "id": "12",
+        "name": "age",
+        "display_label": "Age (number)",
+        "data_type": "number"
+      },
+      {
+        "id": "13",
+        "name": "phone_number",
+        "display_label": "Phone number (phone)",
+        "data_type": "phone"
+      },
+      {
+        "id": "14",
+        "name": "favourite_fruits",
+        "display_label": "Favourite fruits (multiple_choice)",
+        "data_type": "multiple_choice",
+        "choices": [
+          {
+            "description": "Apple",
+            "value": "apple"
+          },
+          {
+            "description": "Banana",
+            "value": "banana"
+          },
+          {
+            "description": "Mango",
+            "value": "mango"
+          },
+          {
+            "description": "I don't like fruits",
+            "value": "doesn't like fruits"
+          }
+        ]
+      },
+      {
+        "id": "15",
+        "name": "address",
+        "display_label": "Address (location)",
+        "data_type": "location"
+      },
+      {
+        "id": "16",
+        "name": "avatar",
+        "display_label": "Avatar (media)",
+        "data_type": "media"
+      },
+      {
+        "id": "17",
+        "name": "newsletter",
+        "display_label": "Newsletter (boolean)",
+        "data_type": "boolean"
+      }
+    ],
+    "subscriberPropertyFieldDataTypesMapping": {
+      "text": ["MobilePrimitives.OpenResponse", "SmartDevices.LocationResponse", "MobilePrimitives.NumericResponse", "MobilePrimitives.SelectOneResponse", "MobilePrimitives.SelectManyResponse"],
+      "location": ["SmartDevices.LocationResponse"],
+      "number": ["MobilePrimitives.NumericResponse", "MobilePrimitives.OpenResponse", "MobilePrimitives.SelectOneResponse", "MobilePrimitives.SelectManyResponse"],
+      "phone": ["MobilePrimitives.NumericResponse"],
+      "multiple_choice": ["MobilePrimitives.SelectOneResponse"],
+      "media": ["SmartDevices.PhotoResponse"],
+      "boolean": ["MobilePrimitives.SelectOneResponse"]
+    },
+    "treeTitles": {},
+    "treeSetTitles": {},
+    "groupNames": {},
+    "groups": [
+      {
+        "id": "12",
+        "name": "my group 1"
+      },
+      {
+        "id": "13",
+        "name": "my group 2"
+      },
+      {
+        "id": "14",
+        "name": "my group with anextremelylonggroupnameyoucan'tevenbelieveit that should not be truncated"
+      }
+    ],
+    "languageNames": {"1": "English", "2": "Spanish"},
+    "apiKey": null,
+    "publicId": null,
+    "operatorContacts": [],
+    "interactionTotals": [],
+    "org": {
+      "id": null,
+      "org_name": "Sample Org"
+    },
+    "outgoingCallGroups": [],
+    "scheduleTypes": [
+      {
+        "id": "1",
+        "type": "now",
+        "description": "Now"
+      },
+      {
+        "id": "2",
+        "type": "fixed",
+        "description": "Fixed Date"
+      },
+      {
+        "id": "3",
+        "type": "routine",
+        "description": "Routine"
+      },
+      {
+        "id": "4",
+        "type": "repeating",
+        "description": "Repeating"
+      },
+      {
+        "id": "5",
+        "type": "continuous",
+        "description": "Continuous"
+      }
+    ],
+    "currentDate": "2020-07-10T12:54:10-06:00",
+    "currentTime": "00:00",
+    "surveysEnabled": true,
+    "surveySets": [],
+    "messageSets": [],
+    "treeSets": [],
+    "enabledFeatures": [
+      "audioUpload",
+      "simulator",
+      "treeSave",
+      "addLanguageOnImport",
+      "callToRecord",
+      "resourceViewer"
+    ],
+    "supportedModes": [
+      "TEXT",
+      "SMS",
+      "USSD",
+      "IVR",
+      "RICH_MESSAGING",
+      "OFFLINE"
+    ],
+    "toolbar": {
+      "hasFlowTitle": true,
+      "hasHomeButton": true,
+      "hasNewFlowButton": true,
+      "hasExportButton": true
+    },
+    "defaultModes": [
+      "SMS",
+      "USSD",
+      "IVR"
+    ],
+    "appWideInteractionTimeout": null,
+    "pages": {
+      "createFlow": {
+        "hasPageTitle": true
+      },
+      "importFlow": {
+        "hasPageTitle": true
+      },
+      "interactionDesigner": {
+        "builderWidthAdjustment": 0
+      }
+    }
+  },
+  "audio": {
+    "library": [
+      {
+        "id": "586533",
+        "audio_uuid": "5cae2f49b605a6.45924131",
+        "uri": "https://your-domain/path/to/5cae2f49b605a6.45924131.mp3",
+        "description": "02_flowers_for_albert.mp3",
+        "language_id": "23",
+        "duration_seconds": 357.712,
+        "original_extension": "mp3",
+        "created_at": "2019-04-10 18:00:52"
+      },
+      {
+        "id": "309466",
+        "audio_uuid": "598283afde6f31.04148017",
+        "uri": "https://your-domain/path/to/598283afde6f31.04148017.ogg",
+        "description": "health menu.ogg (final version, from Alex)",
+        "language_id": "23",
+        "duration_seconds": 230.69462,
+        "original_extension": "ogg",
+        "created_at": "2017-08-03 02:00:16"
+      }
+    ],
+    "recording": {
+      "recorders": [],
+      "isCalling": {},
+      "isRecorderSelectorVisible": false
+    }
+  }
+}

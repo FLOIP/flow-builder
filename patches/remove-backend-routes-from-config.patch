@@ -1,7 +1,7 @@
-diff --git a/builder.config.json b/builder.config.json
-index b4b68aa7..79008a77 100644
---- a/builder.config.json
-+++ b/builder.config.json
+diff --git a/src/builder.config.json b/src/builder.config.json
+index 35a2ce8e..b8a540e6 100644
+--- a/src/builder.config.json
++++ b/src/builder.config.json
 @@ -1,25 +1,7 @@
  {
    "ui": {

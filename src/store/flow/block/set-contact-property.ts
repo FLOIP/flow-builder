@@ -4,14 +4,12 @@ import {
   IBlock,
   IChoice,
   IContext,
-  ISelectOneResponseBlockConfig,
   SetContactProperty,
 } from '@floip/flow-runner'
 import {ActionTree, GetterTree, MutationTree} from 'vuex'
-import {IFlowsState} from '../index'
-import Vue from 'vue'
 import {choicesToExpression} from '@/components/interaction-designer/block-editors/choices/expressionTransformers'
 import {ISelectOneResponseBlock} from '@floip/flow-runner/src/model/block/ISelectOneResponseBlock'
+import {IFlowsState} from '../index'
 
 export interface ISetContactPropertyBlockKey {
   blockId: IBlock['uuid'],
@@ -68,6 +66,11 @@ export const mutations: MutationTree<IFlowsState> = {
 
     block.config.set_contact_property = (block.config.set_contact_property ?? [])
       .filter(({property_key}) => property_key !== key)
+  },
+
+  block_removeAllContactProperties(state, {blockId}: ISetContactPropertyBlockKey) {
+    const block = findBlock(blockId, state as unknown as IContext)
+    block.config.set_contact_property = []
   },
 
   block_changeContactProperty(state, {blockId, key, value: newValue}: ISetContactPropertyBlockKeyWithValue) {
@@ -173,7 +176,10 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     }
   },
 
-  block_updateContactPropertyMetadataAfterNewChoiceAdded({state, commit, dispatch}, {blockId, prompt}: {blockId: IBlock['uuid'], prompt: IChoice['prompt']}): void {
+  block_updateContactPropertyMetadataAfterNewChoiceAdded(
+    {state, commit, dispatch},
+    {blockId, prompt}: {blockId: IBlock['uuid'], prompt: IChoice['prompt']},
+  ): void {
     commit('block_updateVendorMetadataByPath', {
       blockId,
       path: `floip.ui_metadata.set_contact_property.property_value_mapping.${prompt}`,

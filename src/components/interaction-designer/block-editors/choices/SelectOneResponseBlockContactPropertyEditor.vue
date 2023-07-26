@@ -67,16 +67,18 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import {defineComponent, PropType} from 'vue'
 import {mapGetters, mapMutations, mapActions} from 'vuex'
 import VueMultiselect from 'vue-multiselect'
 import {find} from 'lodash'
+import {ISelectOneResponseBlock} from '@floip/flow-runner'
 import {lang} from '@/lib/filters/lang'
 import {choicesToExpression} from './expressionTransformers'
 
 const NO_VALUE = 'NULL'
 
-export const SelectOneResponseBlockContactPropertyEditor = {
+export const SelectOneResponseBlockContactPropertyEditor = defineComponent({
   components: {
     VueMultiselect,
   },
@@ -85,7 +87,7 @@ export const SelectOneResponseBlockContactPropertyEditor = {
 
   props: {
     block: {
-      type: Object,
+      type: Object as PropType<ISelectOneResponseBlock>,
       required: true,
     },
   },
@@ -173,7 +175,7 @@ export const SelectOneResponseBlockContactPropertyEditor = {
       })
     },
 
-    onSetContactPropertyToggle(shouldSetContactProperty) {
+    onSetContactPropertyToggle(shouldSetContactProperty: boolean) {
       if (shouldSetContactProperty) {
         this.resetMapping()
       } else {
@@ -181,7 +183,7 @@ export const SelectOneResponseBlockContactPropertyEditor = {
       }
     },
 
-    onShouldUseCurrentBlockResponseUpdate(shouldUseCurrentBlockResponse) {
+    onShouldUseCurrentBlockResponseUpdate(shouldUseCurrentBlockResponse: boolean) {
       if (shouldUseCurrentBlockResponse) {
         this.resetMapping()
       } else {
@@ -218,7 +220,7 @@ export const SelectOneResponseBlockContactPropertyEditor = {
       this.setChoiceValue(choiceValueOption?.value ?? '', choicePrompt)
     },
   },
-}
+})
 
 export default SelectOneResponseBlockContactPropertyEditor
 </script>

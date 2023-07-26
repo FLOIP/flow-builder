@@ -1,0 +1,15 @@
+  {
+    "locale": "en",
+    "defaultLocales": {"en": "English", "fr": "Fran\u00e7ais"},
+    "permissions": {
+      "edit-collabofiltering-statements": true,
+      "edit-content": true,
+      "export-collabofiltering-submissions": true,
+      "export-result-details": true,
+      "moderate-collabofiltering-candidates": true,
+      "send-call-to-records": false,
+      "view-personal-info": true
+    },
+    "constants": null
+  }
+

@@ -14,8 +14,8 @@ import defaultLocalisationsJson from './assets/messages.json'
 // Block helpers
 import BaseBlockComponent from './components/interaction-designer/block-types/BaseBlock.vue'
 
-export const appConfig = require('../app.config')
-export const builderConfig = require('../builder.config')
+export {default as appConfig} from './app.config.json'
+export {default as builderConfig} from './builder.config.json'
 
 export const InteractionDesigner = InteractionDesignerComponent
 export const FetchFlow = FetchFlowComponent

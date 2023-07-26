@@ -1,8 +1,8 @@
-diff --git a/builder.config.json b/builder.config.json
-index d98c1e63..5836bdd0 100644
---- a/builder.config.json
-+++ b/builder.config.json
-@@ -462,7 +462,6 @@
+diff --git a/src/builder.config.json b/src/builder.config.json
+index 35a2ce8e..e1294a34 100644
+--- a/src/builder.config.json
++++ b/src/builder.config.json
+@@ -466,7 +466,6 @@
      "enabledFeatures": [
        "audioUpload",
        "simulator",

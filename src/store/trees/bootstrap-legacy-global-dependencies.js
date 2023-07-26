@@ -5,8 +5,8 @@ import {isEmpty, merge} from 'lodash'
 
 export function bootstrapLegacyGlobalDependencies(appConfig = {}, builderConfig = {}) {
   // initialize configuration sources
-  const __APP__ = !isEmpty(appConfig) ? appConfig : require('../../../app.config')
-  const __CONTEXT__ = !isEmpty(builderConfig) ? builderConfig : require('../../../builder.config')
+  const __APP__ = !isEmpty(appConfig) ? appConfig : require('../../app.config.json')
+  const __CONTEXT__ = !isEmpty(builderConfig) ? builderConfig : require('../../builder.config.json')
   const source = appConfig.i18n ? appConfig.i18n : require('../../assets/messages.json')
 
   // todo: the remaining legacy code still expects the ability to mutate data directly on `app.ui.*` rather than using trees store
