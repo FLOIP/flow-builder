@@ -479,14 +479,16 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
   /** add (or remove) resource values, e.g. if a language or mode is added (or removed) from the flow */
   async flow_updateResourceValues({getters, rootGetters, dispatch}): Promise<void> {
     const activeFlow: IFlow = getters.activeFlow
-    const resources = activeFlow.resources
+    // ignore choice resources as they don't change
+    const nonChoiceResources = activeFlow.resources.filter(resource =>
+      resource.values.every(value => value.mime_type !== rootGetters['validation/choiceMimeType']))
     const modes = activeFlow.supported_modes
     const languages = activeFlow.languages.map(language => language.id)
 
     const promises: Promise<void>[] = []
 
     // remove unused variants
-    resources.forEach(resource => {
+    nonChoiceResources.forEach(resource => {
       const variantsToRemove = resource.values.filter(variant => {
         const hasUnusedLanguage = !languages.includes(variant.language_id)
         const hasUnusedModes = intersection(variant.modes, modes).length === 0
@@ -496,33 +498,30 @@ export const actions: ActionTree<IFlowsState, IRootState> = {
     })
 
     // add missing variants
-    resources
-      // Choices are a special case, we should not add variants
-      .filter(resource => resource.values.every(value => value.mime_type !== rootGetters['validation/choiceMimeType']))
-      .forEach(resource => {
-        modes.forEach(mode => {
-          languages.forEach(language => {
-            const resourceValue = resource.values.find(value => value.language_id === language && value.modes.includes(mode))
-            if (resourceValue === undefined) {
-              console.warn(`Adding missing variant: lang ${language}, mode: ${mode} for resource ${resource.uuid}`)
+    nonChoiceResources.forEach(resource => {
+      modes.forEach(mode => {
+        languages.forEach(language => {
+          const variantForModeAndLanguage = resource.values.find(value => value.language_id === language && value.modes.includes(mode))
+          if (variantForModeAndLanguage === undefined) {
+            console.warn(`Adding missing variant: lang ${language}, mode: ${mode} for resource ${resource.uuid}`)
 
-              discoverContentTypesFor(mode)?.forEach((content_type) => {
-                promises.push(
-                  dispatch('resource_createVariant', {
-                    resourceId: resource.uuid,
-                    variant: {
-                      content_type,
-                      language_id: language,
-                      modes: [mode],
-                      value: '',
-                    },
-                  }) as Promise<void>,
-                )
-              })
-            }
-          })
+            discoverContentTypesFor(mode)?.forEach((content_type) => {
+              promises.push(
+                dispatch('resource_createVariant', {
+                  resourceId: resource.uuid,
+                  variant: {
+                    content_type,
+                    language_id: language,
+                    modes: [mode],
+                    value: '',
+                  },
+                }) as Promise<void>,
+              )
+            })
+          }
         })
       })
+    })
 
     await Promise.all(promises)
   },
