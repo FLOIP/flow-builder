@@ -3,15 +3,15 @@
     class="block-editor"
     :style="{top: topPosition}">
     <div v-if="activeBlock">
-      <!-- use the key prop to force block editor re-rendering -->
       <div
-        :key="activeBlock.uuid"
         class="tree-sidebar-edit-block"
-        :data-block-type="activeBlock.type"
-        :data-for-block-id="activeBlock.uuid">
+        :data-block-type="activeBlock && activeBlock.type"
+        :data-for-block-id="activeBlock && activeBlock.uuid">
+        <!-- use :key to re-render editor when switching blocks -->
         <component
           :is="`Flow${activeBlock.type.replace('.', '')}`"
           v-if="activeBlock"
+          :key="activeBlock.uuid"
           :block="activeBlock"
           :flow="activeFlow" />
       </div>
