@@ -1,13 +1,17 @@
 <template>
-  <div class="block-editor" :style="{top: topPosition}">
+  <div
+    class="block-editor"
+    :style="{top: topPosition}">
     <div v-if="activeBlock">
       <div
         class="tree-sidebar-edit-block"
         :data-block-type="activeBlock && activeBlock.type"
         :data-for-block-id="activeBlock && activeBlock.uuid">
+        <!-- use :key to re-render editor when switching blocks -->
         <component
           :is="`Flow${activeBlock.type.replace('.', '')}`"
           v-if="activeBlock"
+          :key="activeBlock.uuid"
           :block="activeBlock"
           :flow="activeFlow" />
       </div>
@@ -31,12 +35,14 @@ export class BlockEditor extends mixins(Lang) {
   @builderNamespace.Getter interactionDesignerHeaderBoundingClientRect!: DOMRect
   @flowNamespace.Getter activeFlow?: IFlow
 
-  get topPosition() {
+  get topPosition(): string {
     // the interaction designer header may change:
-    // - top: related to how the builder is embedded in the consumer UI, eg: the might be other elements above it
-    // - height: related to which toolbar elements are visible, eg: 'multi-select blocks' toolbar is not always visible, same for the validations
+    // - top: related to how the builder is embedded in the consumer UI, eg: there might be other elements above it
+    // - height: related to which toolbar elements are visible, eg: 'multi-select blocks' toolbar is not always visible,
+    //   same for the validations
+    const {top, height} = this.interactionDesignerHeaderBoundingClientRect
     const correction = 5
-    return `${this.interactionDesignerHeaderBoundingClientRect.top + this.interactionDesignerHeaderBoundingClientRect.height + correction}px`
+    return `${top + height + correction}px`
   }
 }
 
