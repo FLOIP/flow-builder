@@ -293,6 +293,8 @@ export default {
       // Redraw all connections related to that block:
       // this.resetJsPlumbBindings(true, app.ui.mostRecentlyDeletedBlock.jsKey)
 
+      this.undoDeleteDecisionBranchBlockReferencesIfAny()
+
       // Set mostRecentlyDeletedBlock to false so that
       // multiple undo presses do not add duplicate blocks.
       app.ui.mostRecentlyDeletedBlock = false
@@ -328,8 +330,16 @@ export default {
       app.tree.deleteBlock(selectedBlockKey)
 
       // handle if the deleted block was a numeric question block - amend associated
-      if (selectedBlock.type == 'NumericQuestionBlock') {
+      if (selectedBlock.type === 'NumericQuestionBlock') {
         app.tree.handleDeleteNumericQuestionBlockAssociations(selectedBlockKey)
+      }
+
+      if (selectedBlock.type === 'MultipleChoiceQuestionBlock'
+        || selectedBlock.type === 'DirectorySelectionBlock'
+        || selectedBlock.type === 'MultipleSelectMultipleChoiceQuestionBlock') {
+        this.deleteDecisionBranchBlockReferencesIfAny(selectedBlock)
+      } else {
+        app.ui.mostRecentlyDeletedDecisionBranchBlockReferences = []
       }
 
       // Flag that a change has occured:
@@ -433,6 +443,30 @@ export default {
         : Lang.has(`trees.output-${_.kebabCase(name)}`)
           ? Lang.trans(`trees.output-${_.kebabCase(name)}`)
           : name
+    },
+
+    deleteDecisionBranchBlockReferencesIfAny(selectedBlock) {
+      app.ui.mostRecentlyDeletedDecisionBranchBlockReferences = []
+
+      _.filter(app.tree.get('blocks'), (block) => block.type === 'DecisionBranchBlock')
+        .forEach((decisionBranchBlock) => {
+          const removedQuestionBlocks = _.remove(decisionBranchBlock.customData.questionBlocks, (questionBlock) =>
+            questionBlock.jsKey === selectedBlock.jsKey)
+          app.ui.mostRecentlyDeletedDecisionBranchBlockReferences.push({
+            decisionBranchBlockJsKey: decisionBranchBlock.jsKey,
+            removedQuestionBlocks,
+          })
+          // VMO-4787 todo: clear the decisionBranchBlock.customData.title? do anything else?
+        })
+    },
+
+    undoDeleteDecisionBranchBlockReferencesIfAny() {
+      _.forEach(app.ui.mostRecentlyDeletedDecisionBranchBlockReferences, (reference) => {
+        const decisionBranchBlock = _.find(app.tree.get('blocks'), (block) => block.jsKey === reference.decisionBranchBlockJsKey)
+        decisionBranchBlock.customData.questionBlocks.push(reference.removedQuestionBlocks)
+      })
+      app.ui.mostRecentlyDeletedDecisionBranchBlockReferences = []
+      // VMO-4787 todo: undo clear title, etc.
     },
   },
 }
