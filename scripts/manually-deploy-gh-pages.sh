@@ -1,6 +1,6 @@
 #!/bin/bash
 # Call this from project root dir `bash scripts/manually-deploy-gh-pages.sh`
-# If it encounters an error, we can always follow steps here : https://github.com/FLOIP/flow-builder/blob/master/gh-pages-deploy.md
+# If it encounters an error, we can always follow steps here : https://github.com/FLOIP/flow-builder/blob/main/gh-pages-deploy.md
 
 # abort on errors
 set -e
@@ -16,7 +16,7 @@ cd dist
 git init
 git add -A
 git commit -m 'deploy'
-git push -f git@github.com:FLOIP/flow-builder.git master:gh-pages
+git push -f git@github.com:FLOIP/flow-builder.git main:gh-pages
 cd -
 
 # rollback changes on flow-builder branch
