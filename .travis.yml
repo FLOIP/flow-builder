@@ -1,5 +1,5 @@
 # conditional builds
-if: (type = push AND branch = master) OR type = pull_request
+if: (type = push AND branch = main) OR type = pull_request
 language: node_js
 node_js:
   - 14
@@ -14,4 +14,4 @@ deploy:
   github_token: $GITHUB_TOKEN #the env. variable is set in travis-ci > https://travis-ci.com/github/FLOIP/flow-builder/settings
   local_dir: dist #the build output folder
   on:
-    branch: master
+    branch: main

@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/FLOIP/flow-builder.svg?branch=master)](https://travis-ci.com/FLOIP/flow-builder)
+[![Build Status](https://travis-ci.com/FLOIP/flow-builder.svg?branch=main)](https://travis-ci.com/FLOIP/flow-builder)
 
 # flow-builder
 flow-builder provides an open source frontend for authoring [flow interoperability project specification](https://floip.gitbook.io/flow-specification/) compliant flows. It enables the importing, editing and exporting of flow json, as well as authoring from scratch. Such flows can then be run using a compatible flow runner such as [FLOIP/flow-runner](https://github.com/FLOIP/flow-runner).
@@ -52,7 +52,7 @@ Therefore, if we want to integrate the `flow-builder` repo into **other projects
 - we should create equivalent routes (and their associated controllers) inside the project which will use the flow-builder
 
 To integrate with/embed it in a Host App (consumer apps), find here a configuration Guide:
-[See here](https://github.com/FLOIP/flow-builder/blob/master/docs/BUILDER_INTEGRATION.md)
+[See here](https://github.com/FLOIP/flow-builder/blob/main/docs/BUILDER_INTEGRATION.md)
 
 ### How to work on the flow-builder repo, and consume from an other app (consumer app)?
 #### Steps on the community flow-builder repo:
@@ -67,7 +67,7 @@ Let's assume we already have added the `"@floip/flow-builder"` as part of our de
 ```
 "dependencies": {
     ...
-    "@floip/flow-builder": "https://github.com/FLOIP/flow-builder.git#master",
+    "@floip/flow-builder": "https://github.com/FLOIP/flow-builder.git#main",
     ...
 }
 ```
@@ -75,7 +75,7 @@ We just need to:
 - create
 - go to the packages.json
 - create a feature branch (recommended to use the same name as in the flow-builder community), eg: 'feature/my-branch'
-- update the `@floip/flow-builder` by changing this `"@floip/flow-builder": "https://github.com/FLOIP/flow-builder.git#master"` into `"@floip/flow-builder": "https://github.com/FLOIP/flow-builder.git#feature/my-branch"`
+- update the `@floip/flow-builder` by changing this `"@floip/flow-builder": "https://github.com/FLOIP/flow-builder.git#main"` into `"@floip/flow-builder": "https://github.com/FLOIP/flow-builder.git#feature/my-branch"`
 - run `yarn install`. Note that this will update the `yarn.lock`
 - then serve the app as defined in the packages.json (eg: `yarn watch`)
 
